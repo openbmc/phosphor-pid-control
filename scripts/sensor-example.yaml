@@ -1,0 +1,31 @@
+fan2:
+  type: fan
+  readpath: /xyz/openbmc_project/sensors/fan_tach/fan2
+  writepath: /sys/class/hwmon/hwmon0/pwm1
+  min: 0
+  max: 255
+  timeout: 0
+
+fan6:
+  type: fan
+  readpath: /xyz/openbmc_project/sensors/fan_tach/fan6
+  writepath:
+  min: 0
+  max: 0
+  timeout: 0
+
+temp1:
+  type: temp
+  readpath: /xyz/openbmc_project/sensors/temperature/temp1
+  writepath: 
+  min: 0
+  max: 0
+  timeout: 0
+
+sluggish0:
+  type: margin
+  readpath: /xyz/openbmc_project/extsensors/margin/sluggish0
+  writepath:
+  min: 0
+  max: 0
+  timeout: 0

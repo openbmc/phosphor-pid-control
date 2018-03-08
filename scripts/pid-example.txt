@@ -1,0 +1,24 @@
+0x01:  /* zone ID */
+  fan2-6: /* PID name */
+    type: fan /* Type of PID, fan, temp, or margin. */
+    inputs:   /* Sensor names that are inputs for the PID */
+      fan2
+      fan6
+    /* For temp/margin PIDs this is the set-point, ignored otherwise (float) */
+    set-point: 90.0
+    pid: /* The PID calculation configuration. */
+      sampleperiod: 0.1        /* The input sample period. (float) */
+      p_coefficient: 0.01      /* The proportional coefficient. (float) */
+      i_coefficient: 0.001     /* The integral coefficient. (float) */
+      /* The feed-forward offset coefficient. (float) */
+      ff_off_coefficient: 0.0
+      /* The feed-forward gain coefficient. (float) */
+      ff_gain_coefficient: 0.0
+      i_limit:   /* The integral limit clamp, min, max (float) */
+        min: 0
+        max: 100
+      out_limit: /* the PID output clamp, min, max (float) */
+        min: 0
+        max: 100
+      slew_neg: -100 /* The slew negative value. (float) */
+      slew_pos: 0 /* The slew positive value. (float) */
