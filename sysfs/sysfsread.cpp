@@ -20,7 +20,6 @@
 
 #include "sysfs/sysfsread.hpp"
 
-
 ReadReturn SysFsRead::read(void)
 {
     int64_t value;
@@ -30,10 +29,8 @@ ReadReturn SysFsRead::read(void)
     ifs >> value;
     ifs.close();
 
-    struct ReadReturn r = {
-        static_cast<double>(value),
-        std::chrono::high_resolution_clock::now()
-    };
+    struct ReadReturn r = {static_cast<double>(value),
+                           std::chrono::high_resolution_clock::now()};
 
     return r;
 }

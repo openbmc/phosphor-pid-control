@@ -25,7 +25,6 @@
 #include "controller.hpp"
 #include "ec/pid.hpp"
 
-
 void PIDController::pid_process(void)
 {
     float input;

@@ -22,10 +22,8 @@
 #include "zone.hpp"
 
 std::unique_ptr<PIDController> FanController::CreateFanPid(
-    std::shared_ptr<PIDZone> owner,
-    const std::string& id,
-    std::vector<std::string>& inputs,
-    ec::pidinfo initial)
+    std::shared_ptr<PIDZone> owner, const std::string& id,
+    std::vector<std::string>& inputs, ec::pidinfo initial)
 {
     auto fan = std::make_unique<FanController>(id, inputs, owner);
     ec::pid_info_t* info = fan->get_pid_info();
@@ -73,7 +71,7 @@ float FanController::input_proc(void)
         /* When this is a configuration option in a later update, this code
          * will be updated.
          */
-        //value = sum / _inputs.size();
+        // value = sum / _inputs.size();
 
         /* the fan PID algorithm was unstable with average, and seemed to work
          * better with minimum.  I had considered making this choice a variable
@@ -143,4 +141,3 @@ void FanController::output_proc(float value)
 
     return;
 }
-

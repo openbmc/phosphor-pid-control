@@ -6,7 +6,6 @@
 
 #include "pid/ec/pid.hpp"
 
-
 /*
  * General sensor structure used for configuration.
  */

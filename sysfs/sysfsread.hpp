@@ -5,21 +5,19 @@
 #include "interfaces.hpp"
 #include "sysfs/util.hpp"
 
-
 /*
  * A ReadInterface that is expecting a path that's sysfs, but really could be
  * any filesystem path.
  */
 class SysFsRead : public ReadInterface
 {
-    public:
-        SysFsRead(const std::string& path)
-            : ReadInterface(),
-              _path(FixupPath(path))
-        { }
+  public:
+    SysFsRead(const std::string& path) : ReadInterface(), _path(FixupPath(path))
+    {
+    }
 
-        ReadReturn read(void) override;
+    ReadReturn read(void) override;
 
-    private:
-        const std::string _path;
+  private:
+    const std::string _path;
 };

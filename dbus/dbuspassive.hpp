@@ -10,7 +10,6 @@
 #include <tuple>
 #include <vector>
 
-
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
 #include <sdbusplus/server.hpp>
@@ -33,26 +32,24 @@ int DbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
  */
 class DbusPassive : public ReadInterface
 {
-    public:
-        DbusPassive(sdbusplus::bus::bus& bus,
-                    const std::string& type,
-                    const std::string& id);
+  public:
+    DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
+                const std::string& id);
 
-        ReadReturn read(void) override;
+    ReadReturn read(void) override;
 
-        void setValue(double value);
-        int64_t getScale(void);
-        std::string getId(void);
+    void setValue(double value);
+    int64_t getScale(void);
+    std::string getId(void);
 
-    private:
-        sdbusplus::bus::bus& _bus;
-        sdbusplus::server::match::match _signal;
-        int64_t _scale;
-        std::string _id; // for debug identification
+  private:
+    sdbusplus::bus::bus& _bus;
+    sdbusplus::server::match::match _signal;
+    int64_t _scale;
+    std::string _id; // for debug identification
 
-        std::mutex _lock;
-        double _value = 0;
-        /* The last time the value was refreshed, not necessarily changed. */
-        std::chrono::high_resolution_clock::time_point _updated;
+    std::mutex _lock;
+    double _value = 0;
+    /* The last time the value was refreshed, not necessarily changed. */
+    std::chrono::high_resolution_clock::time_point _updated;
 };
-

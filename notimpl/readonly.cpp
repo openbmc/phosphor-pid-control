@@ -18,7 +18,6 @@
 
 #include "readonly.hpp"
 
-
 void ReadOnly::write(double value)
 {
     throw std::runtime_error("Not supported.");

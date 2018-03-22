@@ -36,11 +36,10 @@
 #include "sensors/pluggable.hpp"
 #include "sysfs/sysfswrite.hpp"
 
-
 static constexpr bool deferSignals = true;
 
-std::shared_ptr<SensorManager> BuildSensors(
-    std::map<std::string, struct sensor>& Config)
+std::shared_ptr<SensorManager>
+BuildSensors(std::map<std::string, struct sensor>& Config)
 {
     auto mgmr = std::make_shared<SensorManager>();
     auto& HostSensorBus = mgmr->getHostBus();
@@ -62,17 +61,15 @@ std::shared_ptr<SensorManager> BuildSensors(
 
         // fan sensors can be ready any way and written others.
         // fan sensors are the only sensors this is designed to write.
-        // Nothing here should be write-only, although, in theory a fan could be.
-        // I'm just not sure how that would fit together.
+        // Nothing here should be write-only, although, in theory a fan could
+        // be. I'm just not sure how that would fit together.
         // TODO(venture): It should check with the ObjectMapper to check if
         // that sensor exists on the Dbus.
         switch (rtype)
         {
             case IOInterfaceType::DBUSPASSIVE:
-                ri = std::make_unique<DbusPassive>(
-                         PassiveListeningBus,
-                         info->type,
-                         name);
+                ri = std::make_unique<DbusPassive>(PassiveListeningBus,
+                                                   info->type, name);
                 break;
             case IOInterfaceType::EXTERNAL:
                 // These are a special case for read-only.
@@ -93,16 +90,12 @@ std::shared_ptr<SensorManager> BuildSensors(
                     if (info->max > 0)
                     {
                         wi = std::make_unique<SysFsWritePercent>(
-                                 info->writepath,
-                                 info->min,
-                                 info->max);
+                            info->writepath, info->min, info->max);
                     }
                     else
                     {
-                        wi = std::make_unique<SysFsWrite>(
-                                 info->writepath,
-                                 info->min,
-                                 info->max);
+                        wi = std::make_unique<SysFsWrite>(info->writepath,
+                                                          info->min, info->max);
                     }
 
                     break;
@@ -112,10 +105,7 @@ std::shared_ptr<SensorManager> BuildSensors(
             }
 
             auto sensor = std::make_unique<PluggableSensor>(
-                              name,
-                              info->timeout,
-                              std::move(ri),
-                              std::move(wi));
+                name, info->timeout, std::move(ri), std::move(wi));
             mgmr->addSensor(info->type, name, std::move(sensor));
         }
         else if (info->type == "temp" || info->type == "margin")
@@ -134,21 +124,15 @@ std::shared_ptr<SensorManager> BuildSensors(
                  * not quite pluggable; but maybe it could be.
                  */
                 auto sensor = HostSensor::CreateTemp(
-                                  name,
-                                  info->timeout,
-                                  HostSensorBus,
-                                  info->readpath.c_str(),
-                                  deferSignals);
+                    name, info->timeout, HostSensorBus, info->readpath.c_str(),
+                    deferSignals);
                 mgmr->addSensor(info->type, name, std::move(sensor));
             }
             else
             {
                 wi = std::make_unique<ReadOnlyNoExcept>();
                 auto sensor = std::make_unique<PluggableSensor>(
-                                  name,
-                                  info->timeout,
-                                  std::move(ri),
-                                  std::move(wi));
+                    name, info->timeout, std::move(ri), std::move(wi));
                 mgmr->addSensor(info->type, name, std::move(sensor));
             }
         }
@@ -178,7 +162,8 @@ std::shared_ptr<SensorManager> BuildSensorsFromConfig(std::string& path)
     }
     catch (const FileIOException& fioex)
     {
-        std::cerr << "I/O error while reading file: " << fioex.what() << std::endl;
+        std::cerr << "I/O error while reading file: " << fioex.what()
+                  << std::endl;
         throw;
     }
     catch (const ParseException& pex)
@@ -203,7 +188,8 @@ std::shared_ptr<SensorManager> BuildSensorsFromConfig(std::string& path)
             std::string name;
             struct sensor thisOne;
 
-            /* Not a super fan of using this library for run-time configuration. */
+            /* Not a super fan of using this library for run-time configuration.
+             */
             name = sensor.lookup("name").c_str();
             thisOne.type = sensor.lookup("type").c_str();
             thisOne.readpath = sensor.lookup("readpath").c_str();
@@ -221,20 +207,18 @@ std::shared_ptr<SensorManager> BuildSensorsFromConfig(std::string& path)
 
             // leaving for verification for now.  and yea the above is
             // necessary.
-            std::cerr << "min: " << min
-                    << " max: " << max
-                    << " savedmin: " << thisOne.min
-                    << " savedmax: " << thisOne.max
-                    << " timeout: " << thisOne.timeout
-                    << std::endl;
+            std::cerr << "min: " << min << " max: " << max
+                      << " savedmin: " << thisOne.min
+                      << " savedmax: " << thisOne.max
+                      << " timeout: " << thisOne.timeout << std::endl;
 
             config[name] = thisOne;
         }
     }
-    catch (const SettingTypeException &setex)
+    catch (const SettingTypeException& setex)
     {
-        std::cerr << "Setting '" << setex.getPath()
-                  << "' type exception!" << std::endl;
+        std::cerr << "Setting '" << setex.getPath() << "' type exception!"
+                  << std::endl;
         throw;
     }
     catch (const SettingNotFoundException& snex)
@@ -245,4 +229,3 @@ std::shared_ptr<SensorManager> BuildSensorsFromConfig(std::string& path)
 
     return BuildSensors(config);
 }
-

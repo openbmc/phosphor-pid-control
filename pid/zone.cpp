@@ -32,7 +32,6 @@
 #include "pid/thermalcontroller.hpp"
 #include "pid/ec/pid.hpp"
 
-
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
 
@@ -139,7 +138,8 @@ void PIDZone::determineMaxRPMRequest(void)
         int value;
         std::ifstream ifs;
         ifs.open(setpointpath);
-        if (ifs.good()) {
+        if (ifs.good())
+        {
             ifs >> value;
             max = value; // expecting RPM set-point, not pwm%
         }
@@ -198,7 +198,9 @@ void PIDZone::updateFanTelemetry(void)
      */
 #ifdef __TUNING_LOGGING__
     tstamp now = std::chrono::high_resolution_clock::now();
-    _log << std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    _log << std::chrono::duration_cast<std::chrono::milliseconds>(
+                now.time_since_epoch())
+                .count();
     _log << "," << _maximumRPMSetPt;
 #endif
 
@@ -241,12 +243,12 @@ void PIDZone::updateSensors(void)
          */
         if (timeout > 0)
         {
-            auto duration = duration_cast<std::chrono::seconds>
-                    (now - then).count();
+            auto duration =
+                duration_cast<std::chrono::seconds>(now - then).count();
             auto period = std::chrono::seconds(timeout).count();
             if (duration >= period)
             {
-                //std::cerr << "Entering fail safe mode.\n";
+                // std::cerr << "Entering fail safe mode.\n";
                 _failSafeSensors.insert(t);
             }
             else
@@ -327,11 +329,11 @@ static std::string GetControlPath(int64_t zone)
     return std::string(objectPath) + std::to_string(zone);
 }
 
-std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
-            std::map<int64_t, PIDConf>& ZonePids,
-            std::map<int64_t, struct zone>& ZoneConfigs,
-            std::shared_ptr<SensorManager> mgr,
-            sdbusplus::bus::bus& ModeControlBus)
+std::map<int64_t, std::shared_ptr<PIDZone>>
+BuildZones(std::map<int64_t, PIDConf>& ZonePids,
+           std::map<int64_t, struct zone>& ZoneConfigs,
+           std::shared_ptr<SensorManager> mgr,
+           sdbusplus::bus::bus& ModeControlBus)
 {
     std::map<int64_t, std::shared_ptr<PIDZone>> zones;
 
@@ -356,13 +358,9 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
         PIDConf& PIDConfig = zi.second;
 
         auto zone = std::make_shared<PIDZone>(
-                        zoneId,
-                        zoneConf->second.minthermalrpm,
-                        zoneConf->second.failsafepercent,
-                        mgr,
-                        ModeControlBus,
-                        GetControlPath(zi.first).c_str(),
-                        deferSignals);
+            zoneId, zoneConf->second.minthermalrpm,
+            zoneConf->second.failsafepercent, mgr, ModeControlBus,
+            GetControlPath(zi.first).c_str(), deferSignals);
 
         zones[zoneId] = zone;
 
@@ -390,11 +388,8 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
                     zone->addFanInput(i);
                 }
 
-                auto pid = FanController::CreateFanPid(
-                               zone,
-                               name,
-                               inputs,
-                               info->info);
+                auto pid =
+                    FanController::CreateFanPid(zone, name, inputs, info->info);
                 zone->addFanPID(std::move(pid));
             }
             else if (info->type == "temp" || info->type == "margin")
@@ -406,11 +401,7 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
                 }
 
                 auto pid = ThermalController::CreateThermalPid(
-                               zone,
-                               name,
-                               inputs,
-                               info->setpoint,
-                               info->info);
+                    zone, name, inputs, info->setpoint, info->info);
                 zone->addThermalPID(std::move(pid));
             }
 
@@ -430,10 +421,9 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
     return zones;
 }
 
-std::map<int64_t, std::shared_ptr<PIDZone>> BuildZonesFromConfig(
-            std::string& path,
-            std::shared_ptr<SensorManager> mgr,
-            sdbusplus::bus::bus& ModeControlBus)
+std::map<int64_t, std::shared_ptr<PIDZone>>
+BuildZonesFromConfig(std::string& path, std::shared_ptr<SensorManager> mgr,
+                     sdbusplus::bus::bus& ModeControlBus)
 {
     using namespace libconfig;
     // zone -> pids
@@ -452,7 +442,8 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZonesFromConfig(
     }
     catch (const FileIOException& fioex)
     {
-        std::cerr << "I/O error while reading file: " << fioex.what() << std::endl;
+        std::cerr << "I/O error while reading file: " << fioex.what()
+                  << std::endl;
         throw;
     }
     catch (const ParseException& pex)
@@ -479,10 +470,9 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZonesFromConfig(
 
             zoneSettings.lookupValue("id", id);
 
-            thisZoneConfig.minthermalrpm =
-                    zoneSettings.lookup("minthermalrpm");
+            thisZoneConfig.minthermalrpm = zoneSettings.lookup("minthermalrpm");
             thisZoneConfig.failsafepercent =
-                    zoneSettings.lookup("failsafepercent");
+                zoneSettings.lookup("failsafepercent");
 
             const Setting& pids = zoneSettings["pids"];
             int pidCount = pids.getLength();
@@ -538,14 +528,16 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZonesFromConfig(
             zoneConfig[static_cast<int64_t>(id)] = thisZoneConfig;
         }
     }
-    catch (const SettingTypeException &setex)
+    catch (const SettingTypeException& setex)
     {
-        std::cerr << "Setting '" << setex.getPath() << "' type exception!" << std::endl;
+        std::cerr << "Setting '" << setex.getPath() << "' type exception!"
+                  << std::endl;
         throw;
     }
     catch (const SettingNotFoundException& snex)
     {
-        std::cerr << "Setting '" << snex.getPath() << "' not found!" << std::endl;
+        std::cerr << "Setting '" << snex.getPath() << "' not found!"
+                  << std::endl;
         throw;
     }
 

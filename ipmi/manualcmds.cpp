@@ -34,12 +34,14 @@ enum ManualSubCmd
     GET_FAILSAFE_STATE = 2,
 };
 
-struct FanCtrlRequest {
+struct FanCtrlRequest
+{
     uint8_t command;
     uint8_t zone;
 } __attribute__((packed));
 
-struct FanCtrlRequestSet {
+struct FanCtrlRequestSet
+{
     uint8_t command;
     uint8_t zone;
     uint8_t value;
@@ -72,16 +74,14 @@ static std::string GetControlPath(int8_t zone)
  * a{sv} 2 "Manual" b false "FailSafe" b false
  */
 
-static ipmi_ret_t
-GetFanCtrlProperty(uint8_t zoneId, bool *value, const std::string &property)
+static ipmi_ret_t GetFanCtrlProperty(uint8_t zoneId, bool* value,
+                                     const std::string& property)
 {
     std::string path = GetControlPath(zoneId);
 
     auto propertyReadBus = sdbusplus::bus::new_default();
-    auto pimMsg = propertyReadBus.new_method_call(busName,
-                  path.c_str(),
-                  propertiesintf,
-                  "GetAll");
+    auto pimMsg = propertyReadBus.new_method_call(busName, path.c_str(),
+                                                  propertiesintf, "GetAll");
     pimMsg.append(intf);
 
     auto valueResponseMsg = propertyReadBus.call(pimMsg);
@@ -103,8 +103,8 @@ GetFanCtrlProperty(uint8_t zoneId, bool *value, const std::string &property)
     return IPMI_CC_OK;
 }
 
-static ipmi_ret_t
-GetFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
+static ipmi_ret_t GetFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+                                       size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
     bool current;
@@ -115,7 +115,7 @@ GetFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
     }
 
     const auto request =
-            reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
+        reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
     rc = GetFanCtrlProperty(request->zone, &current, failsafeProperty);
     if (rc)
@@ -134,8 +134,8 @@ GetFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
  *   <arg name="properties" direction="out" type="a{sv}"/>
  * </method>
  */
-static ipmi_ret_t
-GetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
+static ipmi_ret_t GetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+                                     size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
     bool current;
@@ -146,7 +146,7 @@ GetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
     }
 
     const auto request =
-            reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
+        reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
     rc = GetFanCtrlProperty(request->zone, &current, manualProperty);
     if (rc)
@@ -166,8 +166,8 @@ GetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
  *   <arg name="value" direction="in" type="v"/>
  * </method>
  */
-static ipmi_ret_t
-SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
+static ipmi_ret_t SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+                                     size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
     if (*dataLen < sizeof(struct FanCtrlRequestSet))
@@ -178,20 +178,18 @@ SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
     using Value = sdbusplus::message::variant<bool>;
 
     const auto request =
-            reinterpret_cast<const struct FanCtrlRequestSet*>(&reqBuf[0]);
+        reinterpret_cast<const struct FanCtrlRequestSet*>(&reqBuf[0]);
 
     /* 0 is false, 1 is true */
     bool setValue = static_cast<bool>(request->value);
-    Value v {setValue};
+    Value v{setValue};
 
     auto PropertyWriteBus = sdbusplus::bus::new_default();
 
     std::string path = GetControlPath(request->zone);
 
-    auto pimMsg = PropertyWriteBus.new_method_call(busName,
-                  path.c_str(),
-                  propertiesintf,
-                  "Set");
+    auto pimMsg = PropertyWriteBus.new_method_call(busName, path.c_str(),
+                                                   propertiesintf, "Set");
     pimMsg.append(intf);
     pimMsg.append(manualProperty);
     pimMsg.append(v);
@@ -206,12 +204,8 @@ SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
 }
 
 /* Three command packages: get, set true, set false */
-static ipmi_ret_t
-ManualModeControl(
-    ipmi_cmd_t cmd,
-    const uint8_t* reqBuf,
-    uint8_t* replyCmdBuf,
-    size_t* dataLen)
+static ipmi_ret_t ManualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
+                                    uint8_t* replyCmdBuf, size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
     // FanCtrlRequest is the smaller of the requests, so it's at a minimum.
@@ -221,7 +215,7 @@ ManualModeControl(
     }
 
     const auto request =
-            reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
+        reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
     switch (request->command)
     {
@@ -249,8 +243,7 @@ void setupGlobalOemFanControl()
             ipmid::oem::openbmc::obmcOemNumber,
             ipmid::oem::openbmc::OemCmd::fanManualCmd);
 
-    oemRouter->registerHandler(
-        ipmid::oem::openbmc::obmcOemNumber,
-        ipmid::oem::openbmc::OemCmd::fanManualCmd,
-        ManualModeControl);
+    oemRouter->registerHandler(ipmid::oem::openbmc::obmcOemNumber,
+                               ipmid::oem::openbmc::OemCmd::fanManualCmd,
+                               ManualModeControl);
 }

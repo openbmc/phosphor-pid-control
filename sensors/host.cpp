@@ -21,14 +21,13 @@
 
 #include "host.hpp"
 
-std::unique_ptr<Sensor> HostSensor::CreateTemp(
-    const std::string& name,
-    int64_t timeout,
-    sdbusplus::bus::bus& bus,
-    const char* objPath,
-    bool defer)
+std::unique_ptr<Sensor> HostSensor::CreateTemp(const std::string& name,
+                                               int64_t timeout,
+                                               sdbusplus::bus::bus& bus,
+                                               const char* objPath, bool defer)
 {
-    auto sensor = std::make_unique<HostSensor>(name, timeout, bus, objPath, defer);
+    auto sensor =
+        std::make_unique<HostSensor>(name, timeout, bus, objPath, defer);
     sensor->value(0);
 
     // TODO(venture): Need to not hard-code that this is DegreesC and scale
@@ -58,10 +57,7 @@ ReadReturn HostSensor::read(void)
     std::lock_guard<std::mutex> guard(_lock);
 
     /* This doesn't sanity check anything, that's the caller's job. */
-    struct ReadReturn r = {
-        _value,
-        _updated
-    };
+    struct ReadReturn r = {_value, _updated};
 
     return r;
 }
@@ -70,4 +66,3 @@ void HostSensor::write(double value)
 {
     throw std::runtime_error("Not Implemented.");
 }
-
