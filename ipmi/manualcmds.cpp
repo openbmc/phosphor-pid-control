@@ -47,7 +47,7 @@ struct FanCtrlRequestSet {
 
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 static constexpr auto busName = "xyz.openbmc_project.State.FanCtrl";
-static constexpr auto intf = "xyz.openbmc_project.Control.FanCtrl.Mode";
+static constexpr auto intf = "xyz.openbmc_project.Control.Mode";
 static constexpr auto manualProperty = "Manual";
 static constexpr auto failsafeProperty = "FailSafe";
 static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
@@ -68,7 +68,7 @@ static std::string GetControlPath(int8_t zone)
  *     org.freedesktop.DBus.Properties \
  *     GetAll \
  *     s \
- *     xyz.openbmc_project.Control.FanCtrl.Mode
+ *     xyz.openbmc_project.Control.Mode
  * a{sv} 2 "Manual" b false "FailSafe" b false
  */
 
