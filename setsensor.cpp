@@ -7,7 +7,7 @@
 /* Fan Control */
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 static constexpr auto busName = "xyz.openbmc_project.State.FanCtrl";
-static constexpr auto intf = "xyz.openbmc_project.Control.FanCtrl.Mode";
+static constexpr auto intf = "xyz.openbmc_project.Control.Mode";
 static constexpr auto property = "Manual";
 using Value = sdbusplus::message::variant<bool>;
 

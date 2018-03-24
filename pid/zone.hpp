@@ -12,14 +12,14 @@
 #include "sensors/sensor.hpp"
 #include "sensors/manager.hpp"
 
-#include "xyz/openbmc_project/Control/FanCtrl/Mode/server.hpp"
+#include "xyz/openbmc_project/Control/Mode/server.hpp"
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
 
 template <typename... T>
 using ServerObject = typename sdbusplus::server::object::object<T...>;
 using ModeInterface =
-    sdbusplus::xyz::openbmc_project::Control::FanCtrl::server::Mode;
+    sdbusplus::xyz::openbmc_project::Control::server::Mode;
 using ModeObject = ServerObject<ModeInterface>;
 
 /*
