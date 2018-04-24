@@ -137,10 +137,6 @@ void FanController::output_proc(float value)
         sensor->write(static_cast<double>(percent));
     }
 
-#ifdef __TUNING_LOGGING__
-    _owner->getLogHandle() << "," << percent;
-#endif
-
     return;
 }
 
