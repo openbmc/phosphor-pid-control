@@ -95,6 +95,7 @@ void PIDControlThread(std::shared_ptr<PIDZone> zone)
         zone->process_fans();
 
 #ifdef __TUNING_LOGGING__
+        zone->getLogHandle() << "," << zone->getFailSafeMode();
         zone->getLogHandle() << std::endl;
 #endif
 

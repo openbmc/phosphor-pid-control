@@ -158,7 +158,9 @@ void PIDZone::determineMaxRPMRequest(void)
 #ifdef __TUNING_LOGGING__
 void PIDZone::initializeLog(void)
 {
-    /* Print header for log file. */
+    /* Print header for log file:
+     * epoch_ms,setpt,fan1,fan2,fanN,sensor1,sensor2,sensorN,failsafe
+     */
 
     _log << "epoch_ms,setpt";
 
@@ -166,6 +168,11 @@ void PIDZone::initializeLog(void)
     {
         _log << "," << f;
     }
+    for (auto& t : _thermalInputs)
+    {
+        _log << "," << t;
+    }
+    _log << ",failsafe";
     _log << std::endl;
 
     return;
@@ -217,6 +224,13 @@ void PIDZone::updateFanTelemetry(void)
         _log << "," << r.value;
 #endif
     }
+
+#ifdef __TUNING_LOGGING__
+    for (auto& t : _thermalInputs)
+    {
+        _log << "," << _cachedValuesByName[t];
+    }
+#endif
 
     return;
 }
