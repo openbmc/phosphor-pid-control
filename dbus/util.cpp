@@ -68,11 +68,7 @@ void GetProperties(sdbusplus::bus::bus& bus,
     PropertyMap propMap;
     valueResponseMsg.read(propMap);
 
-    if (propMap.size() != 3)
-    {
-        throw std::runtime_error("ERROR in results, expected three properties");
-    }
-
+    // If no error was set, the values should all be there.
     prop->unit = sdbusplus::message::variant_ns::get<std::string>(propMap["Unit"]);
     prop->scale = sdbusplus::message::variant_ns::get<int64_t>(propMap["Scale"]);
     prop->value = sdbusplus::message::variant_ns::get<int64_t>(propMap["Value"]);
