@@ -27,6 +27,7 @@ PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], ,[AC_MSG_ERROR([The openbmc/sdbusplu
 PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging], ,[AC_MSG_ERROR([The openbmc/phosphor-logging package is required])])
 PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
 AC_CHECK_HEADER(experimental/any, ,[AC_MSG_ERROR([Could not find experimental/any...libstdc++fs developement package required])])
+PKG_CHECK_MODULES([LIBCONFIGXX], [libconfig++ >= 1.5], ,AC_MSG_ERROR([libconfig++ 1.5 or newer not found.]))
 
 # Checks for library functions.
 LT_INIT # Required for systemd linking
