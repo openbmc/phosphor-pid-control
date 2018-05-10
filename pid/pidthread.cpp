@@ -25,7 +25,6 @@
 #include "pid/controller.hpp"
 #include "sensors/sensor.hpp"
 
-
 static void ProcessThermals(std::shared_ptr<PIDZone> zone)
 {
     // Get the latest margins.
@@ -37,7 +36,6 @@ static void ProcessThermals(std::shared_ptr<PIDZone> zone)
     // Get the maximum RPM set-point.
     zone->determineMaxRPMRequest();
 }
-
 
 void PIDControlThread(std::shared_ptr<PIDZone> zone)
 {
@@ -103,5 +101,3 @@ void PIDControlThread(std::shared_ptr<PIDZone> zone)
 
     return;
 }
-
-

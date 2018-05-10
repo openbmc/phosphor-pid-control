@@ -21,7 +21,6 @@
 #include "dbusactiveread.hpp"
 #include "dbus/util.hpp"
 
-
 ReadReturn DbusActiveRead::read(void)
 {
     struct SensorProperties settings;
@@ -35,11 +34,7 @@ ReadReturn DbusActiveRead::read(void)
      * Technically it might not be a value from now, but there's no timestamp
      * on Sensor.Value yet.
      */
-    struct ReadReturn r = {
-        value,
-        std::chrono::high_resolution_clock::now()
-    };
+    struct ReadReturn r = {value, std::chrono::high_resolution_clock::now()};
 
     return r;
 }
-

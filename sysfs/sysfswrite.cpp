@@ -19,7 +19,6 @@
 
 #include "sysfswrite.hpp"
 
-
 void SysFsWritePercent::write(double value)
 {
     float minimum = getMin();

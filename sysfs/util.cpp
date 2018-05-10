@@ -18,13 +18,13 @@
 #include <iostream>
 #include <string>
 
-
 #include "sysfs/util.hpp"
 
 /*
  * There are two basic paths I want to support:
  * 1. /sys/class/hwmon/hwmon0/pwm1
- * 2. /sys/devices/platform/ahb/1e786000.pwm-tacho-controller/hwmon/<asterisk asterisk>/pwm1
+ * 2. /sys/devices/platform/ahb/1e786000.pwm-tacho-controller/hwmon/<asterisk
+ * asterisk>/pwm1
  *
  * In this latter case, I want to fill in that gap.  Assuming because it's this
  * path that it'll only have one directory there.
@@ -32,7 +32,6 @@
 
 static constexpr auto platform = "/sys/devices/platform/";
 namespace fs = std::experimental::filesystem;
-
 
 std::string FixupPath(std::string original)
 {

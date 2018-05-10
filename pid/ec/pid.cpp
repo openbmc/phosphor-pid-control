@@ -53,15 +53,15 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
     // calculate P, I, D, FF
 
     // Pid
-    error   = setpoint - input;
-    p_term  = pidinfoptr->p_c * error;
+    error = setpoint - input;
+    p_term = pidinfoptr->p_c * error;
 
     // pId
     if (0.0f != pidinfoptr->i_c)
     {
-        i_term  = pidinfoptr->integral;
-        i_term  += error * pidinfoptr->i_c * pidinfoptr->ts;
-        i_term  = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
+        i_term = pidinfoptr->integral;
+        i_term += error * pidinfoptr->i_c * pidinfoptr->ts;
+        i_term = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
     }
 
     // FF
@@ -79,8 +79,8 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
         if (pidinfoptr->slew_neg != 0.0f)
         {
             // Don't decrease too fast
-            float min_out = pidinfoptr->last_output + pidinfoptr->slew_neg *
-                            pidinfoptr->ts;
+            float min_out =
+                pidinfoptr->last_output + pidinfoptr->slew_neg * pidinfoptr->ts;
             if (output < min_out)
             {
                 output = min_out;
@@ -89,8 +89,8 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
         if (pidinfoptr->slew_pos != 0.0f)
         {
             // Don't increase too fast
-            float max_out = pidinfoptr->last_output + pidinfoptr->slew_pos *
-                            pidinfoptr->ts;
+            float max_out =
+                pidinfoptr->last_output + pidinfoptr->slew_pos * pidinfoptr->ts;
             if (output > max_out)
             {
                 output = max_out;
@@ -107,12 +107,12 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
 
     // Clamp again because having limited the output may result in a
     // larger integral term
-    i_term  = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
+    i_term = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
     pidinfoptr->integral = i_term;
-    pidinfoptr->initialized    = true;
-    pidinfoptr->last_output    = output;
+    pidinfoptr->initialized = true;
+    pidinfoptr->last_output = output;
 
     return output;
 }
 
-}
+} // namespace ec

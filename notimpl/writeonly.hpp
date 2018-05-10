@@ -3,13 +3,12 @@
 
 #include "interfaces.hpp"
 
-
-class WriteOnly: public ReadInterface
+class WriteOnly : public ReadInterface
 {
-    public:
-        WriteOnly()
-            : ReadInterface()
-        { }
+  public:
+    WriteOnly() : ReadInterface()
+    {
+    }
 
-        ReadReturn read(void) override;
+    ReadReturn read(void) override;
 };

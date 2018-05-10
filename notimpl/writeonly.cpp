@@ -18,9 +18,7 @@
 
 #include "writeonly.hpp"
 
-
 ReadReturn WriteOnly::read(void)
 {
     throw std::runtime_error("Not supported.");
 }
-

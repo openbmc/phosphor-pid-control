@@ -32,15 +32,13 @@ using tstamp = std::chrono::high_resolution_clock::time_point;
 #define DRIVE DRIVE_TIME
 #define MAX_PWM 255
 
-static std::unique_ptr<Sensor> Create(
-    std::string readpath,
-    std::string writepath)
+static std::unique_ptr<Sensor> Create(std::string readpath,
+                                      std::string writepath)
 {
     return std::make_unique<PluggableSensor>(
-               readpath,
-               0, /* default the timeout to disabled */
-               std::make_unique<SysFsRead>(readpath),
-               std::make_unique<SysFsWrite>(writepath, 0, MAX_PWM));
+        readpath, 0, /* default the timeout to disabled */
+        std::make_unique<SysFsRead>(readpath),
+        std::make_unique<SysFsWrite>(writepath, 0, MAX_PWM));
 }
 
 int64_t getAverage(std::tuple<tstamp, int64_t, int64_t>& values)
@@ -68,12 +66,9 @@ bool valueClose(int64_t value, int64_t goal)
     return false;
 }
 
-static void driveGoal(
-    int64_t& seriesCnt,
-    int64_t setPwm,
-    int64_t goal,
-    std::vector<std::tuple<tstamp, int64_t, int64_t>>& series,
-    std::vector<std::unique_ptr<Sensor>>& fanSensors)
+static void driveGoal(int64_t& seriesCnt, int64_t setPwm, int64_t goal,
+                      std::vector<std::tuple<tstamp, int64_t, int64_t>>& series,
+                      std::vector<std::unique_ptr<Sensor>>& fanSensors)
 {
     bool reading = true;
 
@@ -132,12 +127,9 @@ static void driveGoal(
     return;
 }
 
-static void driveTime(
-    int64_t& seriesCnt,
-    int64_t setPwm,
-    int64_t goal,
-    std::vector<std::tuple<tstamp, int64_t, int64_t>>& series,
-    std::vector<std::unique_ptr<Sensor>>& fanSensors)
+static void driveTime(int64_t& seriesCnt, int64_t setPwm, int64_t goal,
+                      std::vector<std::tuple<tstamp, int64_t, int64_t>>& series,
+                      std::vector<std::unique_ptr<Sensor>>& fanSensors)
 {
     using namespace std::literals::chrono_literals;
 
@@ -162,8 +154,9 @@ static void driveTime(
 
         series.push_back(std::make_tuple(t1, n0, n1));
 
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>
-                        (t1 - t0).count();
+        auto duration =
+            std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0)
+                .count();
         if (duration >= (20000000us).count())
         {
             reading = false;
@@ -175,7 +168,8 @@ static void driveTime(
 
 int driveMain(void)
 {
-    /* Time series of the data, the timestamp after both are read and the values. */
+    /* Time series of the data, the timestamp after both are read and the
+     * values. */
     std::vector<std::tuple<tstamp, int64_t, int64_t>> series;
     int64_t seriesCnt = 0; /* in case vector count isn't constant time */
     int drive = DRIVE;
@@ -187,17 +181,11 @@ int driveMain(void)
      *  --> 2 | 6
      *  --> 3 | 7
      */
-    std::vector<std::string> fans =
-    {
-        "/sys/class/hwmon/hwmon0/fan0_input",
-        "/sys/class/hwmon/hwmon0/fan4_input"
-    };
+    std::vector<std::string> fans = {"/sys/class/hwmon/hwmon0/fan0_input",
+                                     "/sys/class/hwmon/hwmon0/fan4_input"};
 
-    std::vector<std::string> pwms =
-    {
-        "/sys/class/hwmon/hwmon0/pwm0",
-        "/sys/class/hwmon/hwmon0/pwm4"
-    };
+    std::vector<std::string> pwms = {"/sys/class/hwmon/hwmon0/pwm0",
+                                     "/sys/class/hwmon/hwmon0/pwm4"};
 
     std::vector<std::unique_ptr<Sensor>> fanSensors;
 
@@ -261,8 +249,9 @@ int driveMain(void)
         int64_t n0 = std::get<1>(t);
         int64_t n1 = std::get<2>(t);
 
-        auto duration = std::chrono::duration_cast<std::chrono::microseconds>
-                        (ts - tp).count();
+        auto duration =
+            std::chrono::duration_cast<std::chrono::microseconds>(ts - tp)
+                .count();
         std::cout << duration << "us, " << n0 << ", " << n1 << "\n";
 
         tp = ts;
@@ -270,4 +259,3 @@ int driveMain(void)
 
     return 0;
 }
-

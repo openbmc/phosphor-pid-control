@@ -20,14 +20,11 @@
 
 #include "dbuspassive.hpp"
 
-DbusPassive::DbusPassive(
-    sdbusplus::bus::bus& bus,
-    const std::string& type,
-    const std::string& id)
-    : ReadInterface(),
-      _bus(bus),
-      _signal(bus, GetMatch(type, id).c_str(), DbusHandleSignal, this),
-      _id(id)
+DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
+                         const std::string& id) :
+    ReadInterface(),
+    _bus(bus), _signal(bus, GetMatch(type, id).c_str(), DbusHandleSignal, this),
+    _id(id)
 {
     /* Need to get the scale and initial value */
     auto tempBus = sdbusplus::bus::new_default();
@@ -47,10 +44,7 @@ ReadReturn DbusPassive::read(void)
 {
     std::lock_guard<std::mutex> guard(_lock);
 
-    struct ReadReturn r = {
-        _value,
-        _updated
-    };
+    struct ReadReturn r = {_value, _updated};
 
     return r;
 }
@@ -88,8 +82,8 @@ int DbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
         auto valPropMap = msgData.find("Value");
         if (valPropMap != msgData.end())
         {
-            int64_t rawValue = sdm::variant_ns::get<int64_t>
-                               (valPropMap->second);
+            int64_t rawValue =
+                sdm::variant_ns::get<int64_t>(valPropMap->second);
 
             double value = rawValue * pow(10, obj->getScale());
 
