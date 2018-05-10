@@ -27,8 +27,6 @@ static constexpr auto sysfs = "/sys/";
 
 IOInterfaceType GetWriteInterfaceType(const std::string& path)
 {
-    std::string::size_type n;
-
     if (path.empty() || "None" == path)
     {
         return IOInterfaceType::NONE;
@@ -45,8 +43,6 @@ IOInterfaceType GetWriteInterfaceType(const std::string& path)
 
 IOInterfaceType GetReadInterfaceType(const std::string& path)
 {
-    std::string::size_type n;
-
     if (path.empty() || "None" == path)
     {
         return IOInterfaceType::NONE;
