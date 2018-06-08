@@ -15,6 +15,8 @@
  */
 
 #include <iostream>
+#include <map>
+#include <string>
 
 /* Configuration. */
 #include "conf.hpp"
@@ -33,12 +35,12 @@
 
 static constexpr bool deferSignals = true;
 
-std::shared_ptr<SensorManager> BuildSensors(
+SensorManager BuildSensors(
     const std::map<std::string, struct sensor>& config)
 {
-    auto mgmr = std::make_shared<SensorManager>();
-    auto& HostSensorBus = mgmr->getHostBus();
-    auto& PassiveListeningBus = mgmr->getPassiveBus();
+    SensorManager mgmr;
+    auto& HostSensorBus = mgmr.getHostBus();
+    auto& PassiveListeningBus = mgmr.getPassiveBus();
 
     for (auto& it : config)
     {
@@ -110,7 +112,7 @@ std::shared_ptr<SensorManager> BuildSensors(
                               info->timeout,
                               std::move(ri),
                               std::move(wi));
-            mgmr->addSensor(info->type, name, std::move(sensor));
+            mgmr.addSensor(info->type, name, std::move(sensor));
         }
         else if (info->type == "temp" || info->type == "margin")
         {
@@ -133,7 +135,7 @@ std::shared_ptr<SensorManager> BuildSensors(
                                   HostSensorBus,
                                   info->readpath.c_str(),
                                   deferSignals);
-                mgmr->addSensor(info->type, name, std::move(sensor));
+                mgmr.addSensor(info->type, name, std::move(sensor));
             }
             else
             {
@@ -143,7 +145,7 @@ std::shared_ptr<SensorManager> BuildSensors(
                                   info->timeout,
                                   std::move(ri),
                                   std::move(wi));
-                mgmr->addSensor(info->type, name, std::move(sensor));
+                mgmr.addSensor(info->type, name, std::move(sensor));
             }
         }
     }

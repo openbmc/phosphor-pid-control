@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
     }
 
     auto ModeControlBus = sdbusplus::bus::new_default();
-    std::shared_ptr<SensorManager> mgmr;
+    SensorManager mgmr;
     std::map<int64_t, std::shared_ptr<PIDZone>> zones;
 
     // Create a manager for the ModeBus because we own it.
@@ -126,8 +126,8 @@ int main(int argc, char* argv[])
      * it.
      */
 
-    auto& HostSensorBus = mgmr->getHostBus();
-    auto& PassiveListeningBus = mgmr->getPassiveBus();
+    auto& HostSensorBus = mgmr.getHostBus();
+    auto& PassiveListeningBus = mgmr.getPassiveBus();
 
     std::cerr << "Starting threads\n";
 
