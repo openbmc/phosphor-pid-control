@@ -33,6 +33,8 @@ PKG_CHECK_MODULES([LIBCONFIGXX], [libconfig++ >= 1.5], ,AC_MSG_ERROR([libconfig+
 LT_INIT # Required for systemd linking
 
 # Check/set gtest specific functions.
+PKG_CHECK_MODULES([GTEST], [gtest], [], [AC_MSG_NOTICE([gtest not found, tests will not build])])
+PKG_CHECK_MODULES([GMOCK], [gmock], [], [AC_MSG_NOTICE([gmock not found, tests will not build])])
 AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
 AC_SUBST(GTEST_CPPFLAGS)
 
@@ -67,5 +69,5 @@ ZONEGEN="$PYTHON ${srcdir}/scripts/zone_gen.py -i $ZONE_YAML_GEN"
 AC_SUBST(ZONEGEN)
 
 # Create configured output
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT

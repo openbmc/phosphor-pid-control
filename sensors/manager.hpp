@@ -17,14 +17,25 @@
 class SensorManager
 {
     public:
-        SensorManager()
-            : _passiveListeningBus(std::move(sdbusplus::bus::new_default())),
-              _hostSensorBus(std::move(sdbusplus::bus::new_default()))
+        SensorManager(sdbusplus::bus::bus&& pass, sdbusplus::bus::bus&& host)
+            : _passiveListeningBus(std::move(pass)),
+              _hostSensorBus(std::move(host))
         {
-            // Create a manger for the sensor root because we own it.
-            static constexpr auto SensorRoot = "/xyz/openbmc_project/extsensors";
+            // manager gets its interface from the bus. :D
             sdbusplus::server::manager::manager(_hostSensorBus, SensorRoot);
         }
+
+        SensorManager()
+            : SensorManager(std::move(sdbusplus::bus::new_default()),
+                            std::move(sdbusplus::bus::new_default()))
+        {
+        }
+
+        ~SensorManager() = default;
+        SensorManager(const SensorManager&) = delete;
+        SensorManager& operator=(const SensorManager&) = delete;
+        SensorManager(SensorManager&&) = default;
+        SensorManager& operator=(SensorManager&&) = default;
 
         /*
          * Add a Sensor to the Manager.
@@ -35,7 +46,7 @@ class SensorManager
             std::unique_ptr<Sensor> sensor);
 
         // TODO(venture): Should implement read/write by name.
-        std::unique_ptr<Sensor>& getSensor(std::string name)
+        const std::unique_ptr<Sensor>& getSensor(std::string name) const
         {
             return _sensorMap.at(name);
         }
@@ -56,5 +67,7 @@ class SensorManager
 
         sdbusplus::bus::bus _passiveListeningBus;
         sdbusplus::bus::bus _hostSensorBus;
+
+        static constexpr auto SensorRoot = "/xyz/openbmc_project/extsensors";
 };
 
