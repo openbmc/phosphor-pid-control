@@ -211,7 +211,7 @@ void PIDZone::updateFanTelemetry(void)
 
     for (auto& f : _fanInputs)
     {
-        auto& sensor = _mgr->getSensor(f);
+        auto& sensor = _mgr.getSensor(f);
         ReadReturn r = sensor->read();
         _cachedValuesByName[f] = r.value;
 
@@ -243,7 +243,7 @@ void PIDZone::updateSensors(void)
 
     for (auto& t : _thermalInputs)
     {
-        auto& sensor = _mgr->getSensor(t);
+        auto& sensor = _mgr.getSensor(t);
         ReadReturn r = sensor->read();
         int64_t timeout = sensor->GetTimeout();
 
@@ -319,9 +319,9 @@ void PIDZone::process_thermals(void)
     }
 }
 
-std::unique_ptr<Sensor>& PIDZone::getSensor(std::string name)
+const std::unique_ptr<Sensor>& PIDZone::getSensor(std::string name)
 {
-    return _mgr->getSensor(name);
+    return _mgr.getSensor(name);
 }
 
 bool PIDZone::manual(bool value)
@@ -344,7 +344,7 @@ static std::string GetControlPath(int64_t zone)
 std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
             std::map<int64_t, PIDConf>& ZonePids,
             std::map<int64_t, struct zone>& ZoneConfigs,
-            std::shared_ptr<SensorManager> mgr,
+            SensorManager& mgr,
             sdbusplus::bus::bus& ModeControlBus)
 {
     std::map<int64_t, std::shared_ptr<PIDZone>> zones;
@@ -446,7 +446,7 @@ std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
 
 std::map<int64_t, std::shared_ptr<PIDZone>> BuildZonesFromConfig(
             std::string& path,
-            std::shared_ptr<SensorManager> mgr,
+            SensorManager& mgr,
             sdbusplus::bus::bus& ModeControlBus)
 {
     using namespace libconfig;
