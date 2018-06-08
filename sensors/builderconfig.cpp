@@ -16,6 +16,8 @@
 
 #include <iostream>
 #include <libconfig.h++>
+#include <string>
+#include <unordered_map>
 
 /* Configuration. */
 #include "conf.hpp"
@@ -28,7 +30,7 @@
  * parsing.  I should just ditch the compile-time version to reduce the
  * probability of sync bugs.
  */
-std::shared_ptr<SensorManager> BuildSensorsFromConfig(const std::string& path)
+SensorManager BuildSensorsFromConfig(const std::string& path)
 {
     using namespace libconfig;
 

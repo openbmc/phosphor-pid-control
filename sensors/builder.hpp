@@ -1,7 +1,6 @@
 #pragma once
 
 #include <map>
-#include <memory>
 #include <string>
 
 #include "sensors/manager.hpp"
@@ -10,6 +9,6 @@
 /**
  * Build the sensors and associate them with a SensorManager.
  */
-std::shared_ptr<SensorManager> BuildSensors(
+SensorManager BuildSensors(
     const std::map<std::string, struct sensor>& config);
 
