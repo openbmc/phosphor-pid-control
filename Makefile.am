@@ -46,6 +46,8 @@ libswampd_la_SOURCES = \
 	sysfs/util.cpp \
 	sensors/pluggable.cpp \
 	sensors/host.cpp \
+	sensors/builder.cpp \
+	sensors/builderconfig.cpp \
 	sensors/manager.cpp \
 	pid/ec/pid.cpp \
 	pid/controller.cpp \
