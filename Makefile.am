@@ -74,4 +74,4 @@ libswampd_la_SOURCES = \
 #                             $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
 #                             $(PHOSPHOR_LOGGING_CFLAGS)
 
-SUBDIRS = .
+SUBDIRS = . test
