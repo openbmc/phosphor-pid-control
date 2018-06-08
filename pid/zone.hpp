@@ -34,7 +34,7 @@ class PIDZone : public ModeObject
         PIDZone(int64_t zone,
                 float minThermalRpm,
                 float failSafePercent,
-                std::shared_ptr<SensorManager> mgr,
+                const SensorManager& mgr,
                 sdbusplus::bus::bus& bus,
                 const char* objPath,
                 bool defer)
@@ -64,7 +64,7 @@ class PIDZone : public ModeObject
         float getFailSafePercent(void) const;
         float getMinThermalRpmSetPt(void) const;
 
-        std::unique_ptr<Sensor>& getSensor(std::string name);
+        const std::unique_ptr<Sensor>& getSensor(std::string name);
         void determineMaxRPMRequest(void);
         void updateFanTelemetry(void);
         void updateSensors(void);
@@ -106,7 +106,7 @@ class PIDZone : public ModeObject
         std::vector<std::string> _fanInputs;
         std::vector<std::string> _thermalInputs;
         std::map<std::string, double> _cachedValuesByName;
-        std::shared_ptr<SensorManager> _mgr;
+        const SensorManager& _mgr;
 
         std::vector<std::unique_ptr<PIDController>> _fans;
         std::vector<std::unique_ptr<PIDController>> _thermals;
@@ -115,10 +115,10 @@ class PIDZone : public ModeObject
 std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
             std::map<int64_t, PIDConf>& ZonePids,
             std::map<int64_t, struct zone>& ZoneConfigs,
-            std::shared_ptr<SensorManager> mgmr,
+            SensorManager& mgmr,
             sdbusplus::bus::bus& ModeControlBus);
 
 std::map<int64_t, std::shared_ptr<PIDZone>> BuildZonesFromConfig(
             std::string& path,
-            std::shared_ptr<SensorManager> mgmr,
+            SensorManager& mgmr,
             sdbusplus::bus::bus& ModeControlBus);
