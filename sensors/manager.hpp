@@ -32,18 +32,7 @@ class SensorManager
         void addSensor(
             std::string type,
             std::string name,
-            std::unique_ptr<Sensor> sensor)
-        {
-            _sensorMap[name] = std::move(sensor);
-
-            auto entry = _sensorTypeList.find(type);
-            if (entry == _sensorTypeList.end())
-            {
-                _sensorTypeList[type] = {};
-            }
-
-            _sensorTypeList[type].push_back(name);
-        }
+            std::unique_ptr<Sensor> sensor);
 
         // TODO(venture): Should implement read/write by name.
         std::unique_ptr<Sensor>& getSensor(std::string name)
@@ -69,7 +58,3 @@ class SensorManager
         sdbusplus::bus::bus _hostSensorBus;
 };
 
-std::shared_ptr<SensorManager> BuildSensors(
-    std::map<std::string, struct sensor>& Config);
-
-std::shared_ptr<SensorManager> BuildSensorsFromConfig(std::string& path);
