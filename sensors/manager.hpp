@@ -17,13 +17,18 @@
 class SensorManager
 {
     public:
-        SensorManager()
-            : _passiveListeningBus(std::move(sdbusplus::bus::new_default())),
-              _hostSensorBus(std::move(sdbusplus::bus::new_default()))
+        SensorManager(sdbusplus::bus::bus&& pass, sdbusplus::bus::bus&& host)
+            : _passiveListeningBus(std::move(pass)),
+              _hostSensorBus(std::move(host))
         {
-            // Create a manger for the sensor root because we own it.
-            static constexpr auto SensorRoot = "/xyz/openbmc_project/extsensors";
+            // manager gets its interface from the bus. :D
             sdbusplus::server::manager::manager(_hostSensorBus, SensorRoot);
+        }
+
+        SensorManager()
+            : SensorManager(std::move(sdbusplus::bus::new_default()),
+                            std::move(sdbusplus::bus::new_default()))
+        {
         }
 
         /*
@@ -56,5 +61,7 @@ class SensorManager
 
         sdbusplus::bus::bus _passiveListeningBus;
         sdbusplus::bus::bus _hostSensorBus;
+
+        static constexpr auto SensorRoot = "/xyz/openbmc_project/extsensors";
 };
 
