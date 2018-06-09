@@ -12,9 +12,12 @@ AM_LDFLAGS = $(GTEST_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS)
 
 # Run all 'check' test programs
-check_PROGRAMS = sensor_manager_unittest
+check_PROGRAMS = sensor_manager_unittest sensor_pluggable_unittest
 TESTS = $(check_PROGRAMS)
 
 # Until libconfig is mocked out or replaced, include it.
 sensor_manager_unittest_SOURCES = sensor_manager_unittest.cpp
 sensor_manager_unittest_LDADD = $(top_builddir)/sensors/manager.o
+
+sensor_pluggable_unittest_SOURCES = sensor_pluggable_unittest.cpp
+sensor_pluggable_unittest_LDADD = $(top_builddir)/sensors/pluggable.o
