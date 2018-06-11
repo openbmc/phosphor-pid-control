@@ -18,14 +18,14 @@ class FanController : public PIDController
 {
     public:
         static std::unique_ptr<PIDController> CreateFanPid(
-            std::shared_ptr<PIDZone> owner,
+            PIDZone* owner,
             const std::string& id,
             std::vector<std::string>& inputs,
             ec::pidinfo initial);
 
         FanController(const std::string& id,
                       std::vector<std::string>& inputs,
-                      std::shared_ptr<PIDZone> owner)
+                      PIDZone* owner)
             : PIDController(id, owner),
               _inputs(inputs),
               _direction(FanSpeedDirection::NEUTRAL)
