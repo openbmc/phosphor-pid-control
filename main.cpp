@@ -22,6 +22,7 @@
 #include <memory>
 #include <mutex> /* not yet used. */
 #include <thread>
+#include <unordered_map>
 #include <vector>
 
 #include <sdbusplus/bus.hpp>
@@ -34,6 +35,8 @@
 
 /* Controllers & Sensors. */
 #include "interfaces.hpp"
+#include "pid/builder.hpp"
+#include "pid/builderconfig.hpp"
 #include "pid/zone.hpp"
 #include "sensors/builder.hpp"
 #include "sensors/builderconfig.hpp"
@@ -86,7 +89,7 @@ int main(int argc, char* argv[])
 
     auto ModeControlBus = sdbusplus::bus::new_default();
     SensorManager mgmr;
-    std::map<int64_t, std::shared_ptr<PIDZone>> zones;
+    std::unordered_map<int64_t, std::shared_ptr<PIDZone>> zones;
 
     // Create a manger for the ModeBus because we own it.
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
