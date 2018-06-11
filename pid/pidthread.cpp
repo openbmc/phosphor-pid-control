@@ -26,7 +26,7 @@
 #include "sensors/sensor.hpp"
 
 
-static void ProcessThermals(std::shared_ptr<PIDZone> zone)
+static void ProcessThermals(PIDZone* zone)
 {
     // Get the latest margins.
     zone->updateSensors();
@@ -39,7 +39,7 @@ static void ProcessThermals(std::shared_ptr<PIDZone> zone)
 }
 
 
-void PIDControlThread(std::shared_ptr<PIDZone> zone)
+void PIDControlThread(PIDZone* zone)
 {
     int ms100cnt = 0;
     /*

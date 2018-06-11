@@ -20,7 +20,7 @@
 
 
 std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
-    std::shared_ptr<PIDZone> owner,
+    PIDZone* owner,
     const std::string& id,
     std::vector<std::string>& inputs,
     float setpoint,
