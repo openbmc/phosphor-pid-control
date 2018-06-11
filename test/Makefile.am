@@ -12,7 +12,7 @@ AM_LDFLAGS = \
 
 # Run all 'check' test programs
 check_PROGRAMS = sensor_manager_unittest sensor_pluggable_unittest \
- sensor_host_unittest util_unittest
+ sensor_host_unittest util_unittest pid_zone_unittest
 TESTS = $(check_PROGRAMS)
 
 # Until libconfig is mocked out or replaced, include it.
@@ -27,3 +27,8 @@ sensor_host_unittest_LDADD = $(top_builddir)/sensors/host.o
 
 util_unittest_SOURCES = util_unittest.cpp
 util_unittest_LDADD = $(top_builddir)/util.o
+
+pid_zone_unittest_SOURCES = pid_zone_unittest.cpp
+pid_zone_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
+ $(top_builddir)/sensors/manager.o $(top_builddir)/pid/controller.o \
+ $(top_builddir)/pid/zone.o
