@@ -49,17 +49,7 @@ void SetupDbusObject(sdbusplus::SdBusMock *sdbus_mock, bool defer,
             .WillOnce(Return(0));
     }
 
-    if (properties.empty())
-    {
-        // We always expect one, but in this case we're not concerned with the
-        // output.  If there is more than one property update, we should care
-        // and the test writer can add the code to trigger the below case.
-        EXPECT_CALL(*sdbus_mock,
-                    sd_bus_emit_properties_changed_strv(IsNull(), StrEq(path),
-                                                        StrEq(intf), NotNull()))
-            .WillOnce(Return(0));
-    }
-    else
+    if (!properties.empty())
     {
         (*index) = 0;
         EXPECT_CALL(*sdbus_mock,
