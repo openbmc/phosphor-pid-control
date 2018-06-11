@@ -15,7 +15,7 @@ class PIDZone;
 class PIDController
 {
     public:
-        PIDController(const std::string& id, std::shared_ptr<PIDZone> owner)
+        PIDController(const std::string& id, PIDZone* owner)
             : _owner(owner),
               _id(id)
         { }
@@ -47,7 +47,7 @@ class PIDController
         }
 
     protected:
-        std::shared_ptr<PIDZone> _owner;
+        PIDZone* _owner;
 
     private:
         // parameters
