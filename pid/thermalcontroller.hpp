@@ -16,7 +16,7 @@ class ThermalController : public PIDController
 {
     public:
         static std::unique_ptr<PIDController> CreateThermalPid(
-            std::shared_ptr<PIDZone> owner,
+            PIDZone* owner,
             const std::string& id,
             std::vector<std::string>& inputs,
             float setpoint,
@@ -24,7 +24,7 @@ class ThermalController : public PIDController
 
         ThermalController(const std::string& id,
                           std::vector<std::string>& inputs,
-                          std::shared_ptr<PIDZone> owner)
+                          PIDZone* owner)
             : PIDController(id, owner),
               _inputs(inputs)
         { }
