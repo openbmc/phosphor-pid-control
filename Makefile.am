@@ -53,6 +53,8 @@ libswampd_la_SOURCES = \
 	pid/controller.cpp \
 	pid/fancontroller.cpp \
 	pid/thermalcontroller.cpp \
+	pid/builder.cpp \
+	pid/builderconfig.cpp \
 	pid/zone.cpp \
 	pid/util.cpp \
 	pid/pidthread.cpp \

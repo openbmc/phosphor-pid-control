@@ -34,6 +34,8 @@
 
 /* Controllers & Sensors. */
 #include "interfaces.hpp"
+#include "pid/builder.hpp"
+#include "pid/builderconfig.hpp"
 #include "pid/zone.hpp"
 #include "sensors/builder.hpp"
 #include "sensors/builderconfig.hpp"
