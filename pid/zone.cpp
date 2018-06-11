@@ -208,7 +208,7 @@ void PIDZone::updateFanTelemetry(void)
 
     for (auto& f : _fanInputs)
     {
-        auto& sensor = _mgr.getSensor(f);
+        auto sensor = _mgr.getSensor(f);
         ReadReturn r = sensor->read();
         _cachedValuesByName[f] = r.value;
 
@@ -240,7 +240,7 @@ void PIDZone::updateSensors(void)
 
     for (auto& t : _thermalInputs)
     {
-        auto& sensor = _mgr.getSensor(t);
+        auto sensor = _mgr.getSensor(t);
         ReadReturn r = sensor->read();
         int64_t timeout = sensor->GetTimeout();
 
@@ -316,7 +316,7 @@ void PIDZone::process_thermals(void)
     }
 }
 
-const std::unique_ptr<Sensor>& PIDZone::getSensor(std::string name)
+Sensor* PIDZone::getSensor(std::string name)
 {
     return _mgr.getSensor(name);
 }
