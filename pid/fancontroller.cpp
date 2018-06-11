@@ -22,7 +22,7 @@
 #include "zone.hpp"
 
 std::unique_ptr<PIDController> FanController::CreateFanPid(
-    PIDZone* owner,
+    ZoneInterface* owner,
     const std::string& id,
     std::vector<std::string>& inputs,
     ec::pidinfo initial)
@@ -133,7 +133,7 @@ void FanController::output_proc(float value)
     // PidSensorMap for writing.
     for (auto& it : _inputs)
     {
-        auto& sensor = _owner->getSensor(it);
+        auto sensor = _owner->getSensor(it);
         sensor->write(static_cast<double>(percent));
     }
 
