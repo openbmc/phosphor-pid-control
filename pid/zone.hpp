@@ -111,14 +111,3 @@ class PIDZone : public ModeObject
         std::vector<std::unique_ptr<PIDController>> _fans;
         std::vector<std::unique_ptr<PIDController>> _thermals;
 };
-
-std::map<int64_t, std::shared_ptr<PIDZone>> BuildZones(
-            std::map<int64_t, PIDConf>& ZonePids,
-            std::map<int64_t, struct zone>& ZoneConfigs,
-            SensorManager& mgmr,
-            sdbusplus::bus::bus& ModeControlBus);
-
-std::map<int64_t, std::shared_ptr<PIDZone>> BuildZonesFromConfig(
-            std::string& path,
-            SensorManager& mgmr,
-            sdbusplus::bus::bus& ModeControlBus);
