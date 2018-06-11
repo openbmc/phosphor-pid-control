@@ -31,11 +31,18 @@ std::unique_ptr<Sensor> HostSensor::CreateTemp(
     auto sensor = std::make_unique<HostSensor>(name, timeout, bus, objPath, defer);
     sensor->value(0);
 
+    // DegreesC and value of 0 are the defaults at present, therefore testing
+    // this code only sees scale get updated as a property.
+
     // TODO(venture): Need to not hard-code that this is DegreesC and scale
     // 10x-3 unless it is! :D
     sensor->unit(ValueInterface::Unit::DegreesC);
     sensor->scale(-3);
     sensor->emit_object_added();
+    // emit_object_added() can be called twice, harmlessly, the second time it
+    // doesn't actually happen, but we don't want to call it before we set up
+    // the initial values, so we should not let someone call this with
+    // defer=false.
 
     /* TODO(venture): Need to set that _updated is set to epoch or something
      * else.  what is the default value?
