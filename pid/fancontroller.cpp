@@ -27,6 +27,10 @@ std::unique_ptr<PIDController> FanController::CreateFanPid(
     std::vector<std::string>& inputs,
     ec::pidinfo initial)
 {
+    if (inputs.size() == 0)
+    {
+        return nullptr;
+    }
     auto fan = std::make_unique<FanController>(id, inputs, owner);
     ec::pid_info_t* info = fan->get_pid_info();
 
@@ -92,6 +96,8 @@ float FanController::setpt_proc(void)
 
     // store for reference, and check if more or less.
     float prev = get_setpoint();
+
+    fprintf(stderr, "max: %f, prev: %f\n", maxRPM, prev);
 
     if (maxRPM > prev)
     {
