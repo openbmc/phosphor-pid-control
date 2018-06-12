@@ -35,6 +35,11 @@ class FanController : public PIDController
         float setpt_proc(void) override;
         void output_proc(float value) override;
 
+        FanSpeedDirection getFanDirection(void) const
+        {
+            return _direction;
+        }
+
         void setFanDirection(FanSpeedDirection direction)
         {
             _direction = direction;
