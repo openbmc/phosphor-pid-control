@@ -46,9 +46,9 @@ class SensorManager
             std::unique_ptr<Sensor> sensor);
 
         // TODO(venture): Should implement read/write by name.
-        const std::unique_ptr<Sensor>& getSensor(const std::string& name) const
+        Sensor* getSensor(const std::string& name) const
         {
-            return _sensorMap.at(name);
+            return _sensorMap.at(name).get();
         }
 
         sdbusplus::bus::bus& getPassiveBus(void)
