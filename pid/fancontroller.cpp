@@ -22,7 +22,7 @@
 #include "zone.hpp"
 
 std::unique_ptr<PIDController> FanController::CreateFanPid(
-    PIDZone* owner,
+    ZoneInterface* owner,
     const std::string& id,
     std::vector<std::string>& inputs,
     ec::pidinfo initial)
