@@ -27,6 +27,10 @@ std::unique_ptr<PIDController> FanController::CreateFanPid(
     std::vector<std::string>& inputs,
     ec::pidinfo initial)
 {
+    if (inputs.size() == 0)
+    {
+        return nullptr;
+    }
     auto fan = std::make_unique<FanController>(id, inputs, owner);
     ec::pid_info_t* info = fan->get_pid_info();
 
