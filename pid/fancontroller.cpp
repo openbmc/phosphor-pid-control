@@ -27,6 +27,10 @@ std::unique_ptr<PIDController> FanController::CreateFanPid(
     std::vector<std::string>& inputs,
     ec::pidinfo initial)
 {
+    if (inputs.size() == 0)
+    {
+        return nullptr;
+    }
     auto fan = std::make_unique<FanController>(id, inputs, owner);
     ec::pid_info_t* info = fan->get_pid_info();
 
@@ -68,6 +72,8 @@ float FanController::input_proc(void)
         throw;
     }
 
+    /* Reset the value from the above loop. */
+    value = 0;
     if (values.size() > 0)
     {
         /* When this is a configuration option in a later update, this code

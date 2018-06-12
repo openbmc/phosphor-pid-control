@@ -17,6 +17,7 @@ class PIDController
     public:
         PIDController(const std::string& id, ZoneInterface* owner)
             : _owner(owner),
+              _setpoint(0),
               _id(id)
         { }
 
