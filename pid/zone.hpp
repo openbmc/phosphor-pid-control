@@ -23,12 +23,21 @@ using ModeInterface =
     sdbusplus::xyz::openbmc_project::Control::server::Mode;
 using ModeObject = ServerObject<ModeInterface>;
 
+class ZoneInterface
+{
+    public:
+        virtual ~ZoneInterface() = default;
+
+        virtual double getCachedValue(const std::string& name) = 0;
+        virtual void addRPMSetPoint(float setpoint) = 0;
+};
+
 /*
  * The PIDZone inherits from the Mode object so that it can listen for control
  * mode changes.  It primarily holds all PID loops and holds the sensor value
  * cache that's used per iteration of the PID loops.
  */
-class PIDZone : public ModeObject
+class PIDZone : public ZoneInterface, public ModeObject
 {
     public:
         PIDZone(int64_t zone,
@@ -59,7 +68,7 @@ class PIDZone : public ModeObject
         void setManualMode(bool mode);
         bool getFailSafeMode(void) const;
         int64_t getZoneId(void) const;
-        void addRPMSetPoint(float setpoint);
+        void addRPMSetPoint(float setpoint) override;
         void clearRPMSetPoints(void);
         float getFailSafePercent(void) const;
         float getMinThermalRpmSetPt(void) const;
@@ -75,7 +84,7 @@ class PIDZone : public ModeObject
 
         void addFanPID(std::unique_ptr<PIDController> pid);
         void addThermalPID(std::unique_ptr<PIDController> pid);
-        double getCachedValue(const std::string& name);
+        double getCachedValue(const std::string& name) override;
         void addFanInput(std::string fan);
         void addThermalInput(std::string therm);
 
