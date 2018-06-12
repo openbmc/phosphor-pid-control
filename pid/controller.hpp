@@ -6,7 +6,7 @@
 #include "fan.hpp"
 #include "ec/pid.hpp"
 
-class PIDZone;
+class ZoneInterface;
 
 /*
  * Base class for PID controllers.  Each PID that implements this needs to
@@ -15,7 +15,7 @@ class PIDZone;
 class PIDController
 {
     public:
-        PIDController(const std::string& id, PIDZone* owner)
+        PIDController(const std::string& id, ZoneInterface* owner)
             : _owner(owner),
               _id(id)
         { }
@@ -47,7 +47,7 @@ class PIDController
         }
 
     protected:
-        PIDZone* _owner;
+        ZoneInterface* _owner;
 
     private:
         // parameters
