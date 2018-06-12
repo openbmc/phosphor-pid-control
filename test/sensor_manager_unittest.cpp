@@ -55,5 +55,5 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest) {
     Sensor *sensor_ptr = sensor.get();
 
     s.addSensor(type, name, std::move(sensor));
-    EXPECT_EQ(s.getSensor(name).get(), sensor_ptr);
+    EXPECT_EQ(s.getSensor(name), sensor_ptr);
 }
