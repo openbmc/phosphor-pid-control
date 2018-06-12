@@ -23,7 +23,7 @@ TEST(SensorManagerTest, BoringConstructorTest) {
                     IsNull(),
                     _,
                     StrEq("/xyz/openbmc_project/extsensors")))
-    .WillOnce(Return(0));
+        .WillOnce(Return(0));
 
     SensorManager s(std::move(bus_mock_passive), std::move(bus_mock_host));
     // Success
@@ -43,7 +43,7 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest) {
                     IsNull(),
                     _,
                     StrEq("/xyz/openbmc_project/extsensors")))
-    .WillOnce(Return(0));
+        .WillOnce(Return(0));
 
     SensorManager s(std::move(bus_mock_passive), std::move(bus_mock_host));
 
@@ -55,5 +55,5 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest) {
     Sensor *sensor_ptr = sensor.get();
 
     s.addSensor(type, name, std::move(sensor));
-    EXPECT_EQ(s.getSensor(name).get(), sensor_ptr);
+    EXPECT_EQ(s.getSensor(name), sensor_ptr);
 }
