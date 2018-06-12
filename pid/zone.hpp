@@ -23,12 +23,25 @@ using ModeInterface =
     sdbusplus::xyz::openbmc_project::Control::server::Mode;
 using ModeObject = ServerObject<ModeInterface>;
 
+class ZoneInterface
+{
+    public:
+        virtual ~ZoneInterface() = default;
+
+        virtual double getCachedValue(const std::string& name) = 0;
+        virtual void addRPMSetPoint(float setpoint) = 0;
+        virtual float getMaxRPMRequest() const = 0;
+        virtual bool getFailSafeMode() const = 0;
+        virtual float getFailSafePercent() const = 0;
+        virtual Sensor* getSensor(std::string name) = 0;
+};
+
 /*
  * The PIDZone inherits from the Mode object so that it can listen for control
  * mode changes.  It primarily holds all PID loops and holds the sensor value
  * cache that's used per iteration of the PID loops.
  */
-class PIDZone : public ModeObject
+class PIDZone : public ZoneInterface, public ModeObject
 {
     public:
         PIDZone(int64_t zone,
@@ -50,21 +63,21 @@ class PIDZone : public ModeObject
 #endif
         }
 
-        float getMaxRPMRequest(void) const;
+        float getMaxRPMRequest(void) const override;
         bool getManualMode(void) const;
 
         /* Could put lock around this since it's accessed from two threads, but
          * only one reader/one writer.
          */
         void setManualMode(bool mode);
-        bool getFailSafeMode(void) const;
+        bool getFailSafeMode(void) const override;
         int64_t getZoneId(void) const;
-        void addRPMSetPoint(float setpoint);
+        void addRPMSetPoint(float setpoint) override;
         void clearRPMSetPoints(void);
-        float getFailSafePercent(void) const;
+        float getFailSafePercent(void) const override;
         float getMinThermalRpmSetPt(void) const;
 
-        const std::unique_ptr<Sensor>& getSensor(std::string name);
+        Sensor* getSensor(std::string name) override;
         void determineMaxRPMRequest(void);
         void updateFanTelemetry(void);
         void updateSensors(void);
@@ -75,7 +88,7 @@ class PIDZone : public ModeObject
 
         void addFanPID(std::unique_ptr<PIDController> pid);
         void addThermalPID(std::unique_ptr<PIDController> pid);
-        double getCachedValue(const std::string& name);
+        double getCachedValue(const std::string& name) override;
         void addFanInput(std::string fan);
         void addThermalInput(std::string therm);
 
