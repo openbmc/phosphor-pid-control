@@ -26,6 +26,12 @@ std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
     float setpoint,
     ec::pidinfo initial)
 {
+    // ThermalController currently only supports precisely one input.
+    if (inputs.size() != 1)
+    {
+        return nullptr;
+    }
+
     auto thermal = std::make_unique<ThermalController>(id, inputs, owner);
 
     ec::pid_info_t* info = thermal->get_pid_info();
