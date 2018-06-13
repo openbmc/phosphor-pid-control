@@ -31,4 +31,6 @@ zoneinfo-gen.cpp
 setsensor
 swampd
 x86_64-libtool
-
+*_unittest
+*_unittest.log
+*_unittest.trs
