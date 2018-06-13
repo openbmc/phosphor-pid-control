@@ -23,20 +23,22 @@
 DbusPassive::DbusPassive(
     sdbusplus::bus::bus& bus,
     const std::string& type,
-    const std::string& id)
+    const std::string& id,
+    DbusHelperInterface *helper)
     : ReadInterface(),
       _bus(bus),
       _signal(bus, GetMatch(type, id).c_str(), DbusHandleSignal, this),
-      _id(id)
+      _id(id),
+      _helper(helper)
 {
     /* Need to get the scale and initial value */
     auto tempBus = sdbusplus::bus::new_default();
     /* service == busname */
     std::string path = GetSensorPath(type, id);
-    std::string service = GetService(tempBus, sensorintf, path);
+    std::string service = _helper->GetService(tempBus, sensorintf, path);
 
     struct SensorProperties settings;
-    GetProperties(tempBus, service, path, &settings);
+    _helper->GetProperties(tempBus, service, path, &settings);
 
     _scale = settings.scale;
     _value = settings.value * pow(10, _scale);
