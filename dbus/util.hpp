@@ -58,3 +58,4 @@ class DbusHelper : public DbusHelperInterface
 
 std::string GetSensorPath(const std::string& type, const std::string& id);
 std::string GetMatch(const std::string& type, const std::string& id);
+bool ValidType(const std::string& type);
