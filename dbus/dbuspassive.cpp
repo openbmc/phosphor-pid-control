@@ -13,12 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <chrono>
 #include <cmath>
+#include <memory>
 #include <mutex>
+#include <sdbusplus/bus.hpp>
+#include <string>
 
 #include "dbuspassive.hpp"
+#include "dbus/util.hpp"
+
+std::unique_ptr<ReadInterface> DbusPassive::CreateDbusPassive(
+    sdbusplus::bus::bus& bus, const std::string& type,
+    const std::string& id, DbusHelperInterface *helper)
+{
+    if (helper == nullptr)
+    {
+        return nullptr;
+    }
+    if (!ValidType(type))
+    {
+        return nullptr;
+    }
+
+    return std::make_unique<DbusPassive>(bus, type, id, helper);
+}
 
 DbusPassive::DbusPassive(
     sdbusplus::bus::bus& bus,

@@ -66,11 +66,11 @@ SensorManager BuildSensors(
         switch (rtype)
         {
             case IOInterfaceType::DBUSPASSIVE:
-                ri = std::make_unique<DbusPassive>(
-                         PassiveListeningBus,
-                         info->type,
-                         name,
-                         &helper);
+                ri = DbusPassive::CreateDbusPassive(PassiveListeningBus,
+                                                    info->type,
+                                                    name,
+                                                    &helper);
+                /* TODO(venture): if this returns nullptr */
                 break;
             case IOInterfaceType::EXTERNAL:
                 // These are a special case for read-only.
