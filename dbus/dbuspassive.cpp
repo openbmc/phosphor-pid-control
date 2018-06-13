@@ -73,35 +73,34 @@ std::string DbusPassive::getId(void)
     return _id;
 }
 
-int DbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
+int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 {
-    namespace sdm = sdbusplus::message;
-    auto sdbpMsg = sdm::message(msg);
-    DbusPassive* obj = static_cast<DbusPassive*>(usrData);
-
     std::string msgSensor;
-    std::map<std::string, sdm::variant<int64_t>> msgData;
-    sdbpMsg.read(msgSensor, msgData);
+    std::map<std::string, sdbusplus::message::variant<int64_t>> msgData;
+
+    msg.read(msgSensor, msgData);
 
     if (msgSensor == "xyz.openbmc_project.Sensor.Value")
     {
         auto valPropMap = msgData.find("Value");
         if (valPropMap != msgData.end())
         {
-            int64_t rawValue = sdm::variant_ns::get<int64_t>
-                               (valPropMap->second);
+            int64_t rawValue = sdbusplus::message::variant_ns::get<int64_t>(
+                valPropMap->second);
 
-            double value = rawValue * pow(10, obj->getScale());
+            double value = rawValue * std::pow(10, owner->getScale());
 
-#if 0
-            std::cerr << "received update: " << value
-                      << " for: " << obj->getId()
-                      << std::endl;
-#endif
-
-            obj->setValue(value);
+            owner->setValue(value);
         }
     }
 
     return 0;
+}
+
+int DbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
+{
+    auto sdbpMsg = sdbusplus::message::message(msg);
+    DbusPassive* obj = static_cast<DbusPassive*>(usrData);
+
+    return HandleSensorValue(sdbpMsg, obj);
 }
