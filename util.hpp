@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 /* This program assumes sensors use the Sensor.Value interface
  * and for sensor->write() I only implemented sysfs as a type,
  * but -- how would it know whether to use Control.FanSpeed or Control.FanPwm?
