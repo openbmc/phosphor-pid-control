@@ -24,3 +24,11 @@ ltmain.sh
 missing
 stamp-h1
 test-driver
+.dirstamp
+pidlist-gen.cpp
+sensorlist-gen.cpp
+zoneinfo-gen.cpp
+setsensor
+swampd
+x86_64-libtool
+
