@@ -9,9 +9,9 @@ using PropertyMap = std::map<Property, Value>;
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
  * part of sdbusplus.  There is an old version in libmapper.
  */
-std::string GetService(sdbusplus::bus::bus& bus,
-                       const std::string& intf,
-                       const std::string& path)
+std::string DbusHelper::GetService(sdbusplus::bus::bus& bus,
+                                   const std::string& intf,
+                                   const std::string& path)
 {
     auto mapper = bus.new_method_call(
                       "xyz.openbmc_project.ObjectMapper",
@@ -39,12 +39,11 @@ std::string GetService(sdbusplus::bus::bus& bus,
     return response.begin()->first;
 }
 
-void GetProperties(sdbusplus::bus::bus& bus,
-                   const std::string& service,
-                   const std::string& path,
-                   struct SensorProperties* prop)
+void DbusHelper::GetProperties(sdbusplus::bus::bus& bus,
+                               const std::string& service,
+                               const std::string& path,
+                               struct SensorProperties* prop)
 {
-
     auto pimMsg = bus.new_method_call(service.c_str(),
                                       path.c_str(),
                                       propertiesintf.c_str(),
