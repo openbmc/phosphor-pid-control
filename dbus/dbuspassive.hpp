@@ -36,7 +36,8 @@ class DbusPassive : public ReadInterface
     public:
         DbusPassive(sdbusplus::bus::bus& bus,
                     const std::string& type,
-                    const std::string& id);
+                    const std::string& id,
+                    DbusHelperInterface *helper);
 
         ReadReturn read(void) override;
 
@@ -49,6 +50,7 @@ class DbusPassive : public ReadInterface
         sdbusplus::server::match::match _signal;
         int64_t _scale;
         std::string _id; // for debug identification
+        DbusHelperInterface *_helper;
 
         std::mutex _lock;
         double _value = 0;
