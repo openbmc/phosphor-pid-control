@@ -34,6 +34,7 @@
 #include "util.hpp"
 
 static constexpr bool deferSignals = true;
+static DbusHelper helper;
 
 SensorManager BuildSensors(
     const std::map<std::string, struct sensor>& config)
@@ -68,7 +69,8 @@ SensorManager BuildSensors(
                 ri = std::make_unique<DbusPassive>(
                          PassiveListeningBus,
                          info->type,
-                         name);
+                         name,
+                         &helper);
                 break;
             case IOInterfaceType::EXTERNAL:
                 // These are a special case for read-only.
