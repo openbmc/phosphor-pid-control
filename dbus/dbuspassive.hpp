@@ -4,6 +4,7 @@
 #include <cmath>
 #include <iostream>
 #include <map>
+#include <memory>
 #include <mutex>
 #include <set>
 #include <string>
@@ -34,6 +35,10 @@ int DbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
 class DbusPassive : public ReadInterface
 {
     public:
+        static std::unique_ptr<ReadInterface> CreateDbusPassive(
+            sdbusplus::bus::bus& bus, const std::string& type,
+            const std::string& id, DbusHelperInterface *helper);
+
         DbusPassive(sdbusplus::bus::bus& bus,
                     const std::string& type,
                     const std::string& id,

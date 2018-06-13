@@ -1,4 +1,5 @@
 #include <iostream>
+#include <set>
 
 #include "dbus/util.hpp"
 
@@ -102,3 +103,8 @@ std::string GetMatch(const std::string& type, const std::string& id)
                        "path='" + GetSensorPath(type, id) + "'");
 }
 
+bool ValidType(const std::string& type)
+{
+    std::set<std::string> valid = {"fan", "temp"};
+    return (valid.find(type) != valid.end());
+}
