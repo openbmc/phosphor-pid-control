@@ -9,21 +9,52 @@ struct SensorProperties
     std::string unit;
 };
 
-/*
- * Retrieve the dbus bus (or service) for the given object and interface.
- */
-std::string GetService(sdbusplus::bus::bus& bus,
-                       const std::string& intf,
-                       const std::string& path);
-
-void GetProperties(sdbusplus::bus::bus& bus,
-                   const std::string& service,
-                   const std::string& path,
-                   struct SensorProperties* prop);
-
-std::string GetSensorPath(const std::string& type, const std::string& id);
-std::string GetMatch(const std::string& type, const std::string& id);
-
 const std::string sensorintf = "xyz.openbmc_project.Sensor.Value";
 const std::string propertiesintf = "org.freedesktop.DBus.Properties";
 
+class DbusHelperInterface
+{
+    public:
+        virtual ~DbusHelperInterface() = default;
+
+        /** @brief Get the service providing the interface for the path.
+         */
+        virtual std::string GetService(sdbusplus::bus::bus& bus,
+                                       const std::string& intf,
+                                       const std::string& path) = 0;
+
+        /** @brief Get all Sensor.Value properties for a service and path.
+         *
+         * @param[in] bus - A bus to use for the call.
+         * @param[in] service - The service providing the interface.
+         * @param[in] path - The dbus path.
+         * @param[out] prop - A pointer to a properties struct to fill out.
+         */
+        virtual void GetProperties(sdbusplus::bus::bus& bus,
+                                   const std::string& service,
+                                   const std::string& path,
+                                   struct SensorProperties* prop) = 0;
+};
+
+class DbusHelper : public DbusHelperInterface
+{
+    public:
+        DbusHelper() = default;
+        ~DbusHelper() = default;
+        DbusHelper(const DbusHelper&) = default;
+        DbusHelper& operator=(const DbusHelper&) = default;
+        DbusHelper(DbusHelper&&) = default;
+        DbusHelper& operator=(DbusHelper&&) = default;
+
+        std::string GetService(sdbusplus::bus::bus& bus,
+                               const std::string& intf,
+                               const std::string& path) override;
+
+        void GetProperties(sdbusplus::bus::bus& bus,
+                           const std::string& service,
+                           const std::string& path,
+                           struct SensorProperties* prop) override;
+};
+
+std::string GetSensorPath(const std::string& type, const std::string& id);
+std::string GetMatch(const std::string& type, const std::string& id);
