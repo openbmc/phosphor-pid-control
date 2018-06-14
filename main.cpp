@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
     std::shared_ptr<SensorManager> mgmr;
     std::map<int64_t, std::shared_ptr<PIDZone>> zones;
 
-    // Create a manger for the ModeBus because we own it.
+    // Create a manager for the ModeBus because we own it.
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     sdbusplus::server::manager::manager(ModeControlBus, modeRoot);
 

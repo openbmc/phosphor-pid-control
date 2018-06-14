@@ -3,7 +3,7 @@ Controller object.  The design implemented in this structure is a facsimile of
 what was published in the Chrome OS source.
 
 One has any number of ThermalControllers that run through a PID step to
-generate a set-point RPM to reach its thermal set-point.  The maximum ouput
+generate a set-point RPM to reach its thermal set-point.  The maximum output
 from the set of ThermalControllers is taken as the input to all the
 FanController PID loops.
 

@@ -15,7 +15,7 @@ onto swampd.
 * `notimpl` - These are read-only and write-only interface implementations that
 can be dropped into a pluggable sensor to make it complete.
 * `pid` - This contains all the PID associated code, including the zone
-defintion, controller definition, and the PID computational code.
+definition, controller definition, and the PID computational code.
 * `scripts` - This contains the scripts that convert YAML into C++.
 * `sensors` - This contains a couple of sensor types including the pluggable
 sensor's definition.  It also holds the sensor manager.

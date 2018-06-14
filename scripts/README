@@ -21,5 +21,5 @@ The sensor names are unique across all zones.
 
 # PID Config
 
-The PID configuation is a list of PIDs per zone.
+The PID configuration is a list of PIDs per zone.
 
