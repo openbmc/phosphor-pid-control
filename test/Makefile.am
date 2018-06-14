@@ -15,7 +15,7 @@ AM_LDFLAGS = $(GTEST_LIBS) \
 check_PROGRAMS = sensor_manager_unittest sensor_pluggable_unittest \
  sensor_host_unittest util_unittest pid_zone_unittest \
  pid_thermalcontroller_unittest pid_fancontroller_unittest \
- dbus_passive_unittest
+ dbus_passive_unittest dbus_active_unittest
 TESTS = $(check_PROGRAMS)
 
 # Until libconfig is mocked out or replaced, include it.
@@ -49,3 +49,6 @@ pid_fancontroller_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
 dbus_passive_unittest_SOURCES = dbus_passive_unittest.cpp
 dbus_passive_unittest_LDADD = $(top_builddir)/dbus/util.o \
  $(top_builddir)/dbus/dbuspassive.o
+
+dbus_active_unittest_SOURCES = dbus_active_unittest.cpp
+dbus_active_unittest_LDADD = $(top_builddir)/dbus/dbusactiveread.o
