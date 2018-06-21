@@ -18,7 +18,7 @@ AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])],
 
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX_14([noext])
-AX_APPEND_COMPILE_FLAGS([-Wall -Werror], [CXXFLAGS])
+AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
 # Checks for libraries.
 # AC_CHECK_LIB([mapper], [mapper_get_service], ,[AC_MSG_ERROR([Could not find libmapper...openbmc/phosphor-objmgr package required])])
