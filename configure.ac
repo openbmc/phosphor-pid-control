@@ -28,6 +28,7 @@ PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging], ,[AC_MSG_ERROR([The op
 PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
 AC_CHECK_HEADER(experimental/any, ,[AC_MSG_ERROR([Could not find experimental/any...libstdc++fs development package required])])
 PKG_CHECK_MODULES([LIBCONFIGXX], [libconfig++ >= 1.5], ,AC_MSG_ERROR([libconfig++ 1.5 or newer not found.]))
+AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
 
 # Checks for library functions.
 LT_INIT # Required for systemd linking
@@ -35,8 +36,7 @@ LT_INIT # Required for systemd linking
 # Check/set gtest specific functions.
 PKG_CHECK_MODULES([GTEST], [gtest], [], [AC_MSG_NOTICE([gtest not found, tests will not build])])
 PKG_CHECK_MODULES([GMOCK], [gmock], [], [AC_MSG_NOTICE([gmock not found, tests will not build])])
-AX_PTHREAD([GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=1"],[GTEST_CPPFLAGS="-DGTEST_HAS_PTHREAD=0"])
-AC_SUBST(GTEST_CPPFLAGS)
+PKG_CHECK_MODULES([GTEST_MAIN], [gtest_main], [], [AC_MSG_NOTICE([gtest_main not found, tests will not build])])
 
 AC_ARG_ENABLE([oe-sdk],
     AS_HELP_STRING([--enable-oe-sdk], [Link testcases absolutely against OE SDK so they can be ran within it.])
