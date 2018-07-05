@@ -97,7 +97,7 @@ std::string DbusPassive::getId(void)
 int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 {
     std::string msgSensor;
-    std::map<std::string, sdbusplus::message::variant<int64_t>> msgData;
+    std::map<std::string, sdbusplus::message::variant<int64_t, double>> msgData;
 
     msg.read(msgSensor, msgData);
 
@@ -106,10 +106,10 @@ int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
         auto valPropMap = msgData.find("Value");
         if (valPropMap != msgData.end())
         {
-            int64_t rawValue = sdbusplus::message::variant_ns::get<int64_t>(
-                valPropMap->second);
+            double value = mapbox::util::apply_visitor(VariantToDoubleVisitor(),
+                                                       valPropMap->second);
 
-            double value = rawValue * std::pow(10, owner->getScale());
+            value *= std::pow(10, owner->getScale());
 
             owner->setValue(value);
         }
