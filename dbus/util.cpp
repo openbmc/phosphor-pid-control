@@ -4,7 +4,7 @@
 #include "dbus/util.hpp"
 
 using Property = std::string;
-using Value = sdbusplus::message::variant<int64_t, std::string>;
+using Value = sdbusplus::message::variant<int64_t, double, std::string>;
 using PropertyMap = std::map<Property, Value>;
 
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
@@ -69,12 +69,25 @@ void DbusHelper::GetProperties(sdbusplus::bus::bus& bus,
     valueResponseMsg.read(propMap);
 
     // If no error was set, the values should all be there.
-    prop->unit = sdbusplus::message::variant_ns::get<std::string>(
-        propMap["Unit"]);
-    prop->scale = sdbusplus::message::variant_ns::get<int64_t>(
-        propMap["Scale"]);
-    prop->value = sdbusplus::message::variant_ns::get<int64_t>(
-        propMap["Value"]);
+    auto findUnit = propMap.find("Unit");
+    if (findUnit != propMap.end())
+    {
+        prop->unit =
+            sdbusplus::message::variant_ns::get<std::string>(findUnit->second);
+    }
+    auto findScale = propMap.find("Scale");
+    if (findScale != propMap.end())
+    {
+        prop->scale =
+            sdbusplus::message::variant_ns::get<int64_t>(findScale->second);
+    }
+    else
+    {
+        prop->scale = 0;
+    }
+
+    prop->value =
+        mapbox::util::apply_visitor(VariantToDoubleVisitor(), propMap["Value"]);
 
     return;
 }
