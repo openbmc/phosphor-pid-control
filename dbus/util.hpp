@@ -5,7 +5,7 @@
 struct SensorProperties
 {
     int64_t scale;
-    int64_t value;
+    double value;
     std::string unit;
 };
 
