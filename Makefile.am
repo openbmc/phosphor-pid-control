@@ -2,7 +2,9 @@ AM_DEFAULT_SOURCE_EXT = .cpp
 
 sbin_PROGRAMS = swampd setsensor
 
-BUILT_SOURCES = sensorlist-gen.cpp pidlist-gen.cpp zoneinfo-gen.cpp
+if !CONFIGURE_DBUS
+	BUILT_SOURCES = sensorlist-gen.cpp pidlist-gen.cpp zoneinfo-gen.cpp
+endif
 CLEANFILES = $(BUILT_SOURCES)
 
 sensorlist-gen.cpp:
@@ -41,6 +43,8 @@ libswampd_la_SOURCES = \
 	dbus/util.cpp \
 	dbus/dbuspassive.cpp \
 	dbus/dbusactiveread.cpp \
+	dbus/dbusconfiguration.cpp \
+	dbus/dbuswrite.cpp \
 	sysfs/sysfsread.cpp \
 	sysfs/sysfswrite.cpp \
 	sysfs/util.cpp \
