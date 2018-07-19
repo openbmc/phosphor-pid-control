@@ -22,6 +22,7 @@
 #include "conf.hpp"
 
 #include "dbus/dbuspassive.hpp"
+#include "dbus/dbuswrite.hpp"
 #include "interfaces.hpp"
 #include "notimpl/readonly.hpp"
 #include "notimpl/writeonly.hpp"
@@ -101,6 +102,23 @@ SensorManager BuildSensors(
                                  info->writepath,
                                  info->min,
                                  info->max);
+                    }
+
+                    break;
+                case IOInterfaceType::DBUSPASSIVE:
+                    if (info->max > 0)
+                    {
+                        wi = std::make_unique<DbusWritePercent>(info->writepath,
+                                                                info->min,
+                                                                info->max,
+                                                                helper);
+                    }
+                    else
+                    {
+                        wi = std::make_unique<DbusWrite>(info->writepath,
+                                                        info->min,
+                                                        info->max,
+                                                        helper);
                     }
 
                     break;

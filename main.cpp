@@ -29,6 +29,7 @@
 
 /* Configuration. */
 #include "conf.hpp"
+#include <dbus/dbusconfiguration.hpp>
 
 /* Misc. */
 #include "util.hpp"
@@ -88,6 +89,7 @@ int main(int argc, char* argv[])
     }
 
     auto ModeControlBus = sdbusplus::bus::new_default();
+    dbusConfiguration::init(ModeControlBus);
     SensorManager mgmr;
     std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones;
 
