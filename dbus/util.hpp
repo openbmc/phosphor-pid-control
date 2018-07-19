@@ -59,3 +59,20 @@ class DbusHelper : public DbusHelperInterface
 std::string GetSensorPath(const std::string& type, const std::string& id);
 std::string GetMatch(const std::string& type, const std::string& id);
 bool ValidType(const std::string& type);
+
+struct VariantToFloatVisitor
+{
+    template <typename T>
+    std::enable_if_t<std::is_arithmetic<T>::value, float>
+    operator()(const T &t) const
+    {
+        return static_cast<float>(t);
+    }
+
+    template <typename T>
+    std::enable_if_t<!std::is_arithmetic<T>::value, float>
+    operator()(const T &t) const
+    {
+        throw std::invalid_argument("Cannot translate type to float");
+    }
+};

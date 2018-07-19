@@ -2,8 +2,8 @@ AM_DEFAULT_SOURCE_EXT = .cpp
 
 sbin_PROGRAMS = swampd setsensor
 
-BUILT_SOURCES = sensorlist-gen.cpp pidlist-gen.cpp zoneinfo-gen.cpp
-CLEANFILES = $(BUILT_SOURCES)
+#BUILT_SOURCES = sensorlist-gen.cpp pidlist-gen.cpp zoneinfo-gen.cpp
+#CLEANFILES = $(BUILT_SOURCES)
 
 sensorlist-gen.cpp:
 	$(AM_V_GEN)@SENSORGEN@ -o $(top_builddir) generate-cpp
@@ -41,6 +41,8 @@ libswampd_la_SOURCES = \
 	dbus/util.cpp \
 	dbus/dbuspassive.cpp \
 	dbus/dbusactiveread.cpp \
+	dbus/dbusconfiguration.cpp \
+	dbus/dbuswrite.cpp \
 	sysfs/sysfsread.cpp \
 	sysfs/sysfswrite.cpp \
 	sysfs/util.cpp \
@@ -59,8 +61,8 @@ libswampd_la_SOURCES = \
 	pid/util.cpp \
 	pid/pidthread.cpp \
 	threads/busthread.cpp \
-	experiments/drive.cpp \
-	$(BUILT_SOURCES)
+	experiments/drive.cpp
+#	$(BUILT_SOURCES)
 
 #libmanualcmdsdir = ${libdir}/ipmid-providers
 #libmanualcmds_LTLIBRARIES = libmanualcmds.la

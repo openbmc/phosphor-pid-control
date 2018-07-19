@@ -56,17 +56,17 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
 
-AS_IF([test "x$SENSOR_YAML_GEN" == "x"], [SENSOR_YAML_GEN="sensor-example.yaml"])
-SENSORGEN="$PYTHON ${srcdir}/scripts/sensor_gen.py -i $SENSOR_YAML_GEN"
-AC_SUBST(SENSORGEN)
+#AS_IF([test "x$SENSOR_YAML_GEN" == "x"], [SENSOR_YAML_GEN="sensor-example.yaml"])
+#SENSORGEN="$PYTHON ${srcdir}/scripts/sensor_gen.py -i $SENSOR_YAML_GEN"
+#AC_SUBST(SENSORGEN)
 
-AS_IF([test "x$PID_YAML_GEN" == "x"], [PID_YAML_GEN="pid-example.yaml"])
-PIDGEN="$PYTHON ${srcdir}/scripts/pid_gen.py -i $PID_YAML_GEN"
-AC_SUBST(PIDGEN)
+#AS_IF([test "x$PID_YAML_GEN" == "x"], [PID_YAML_GEN="pid-example.yaml"])
+#PIDGEN="$PYTHON ${srcdir}/scripts/pid_gen.py -i $PID_YAML_GEN"
+#AC_SUBST(PIDGEN)
 
-AS_IF([test "x$ZONE_YAML_GEN" == "x"], [ZONE_YAML_GEN="zone-example.yaml"])
-ZONEGEN="$PYTHON ${srcdir}/scripts/zone_gen.py -i $ZONE_YAML_GEN"
-AC_SUBST(ZONEGEN)
+#AS_IF([test "x$ZONE_YAML_GEN" == "x"], [ZONE_YAML_GEN="zone-example.yaml"])
+#ZONEGEN="$PYTHON ${srcdir}/scripts/zone_gen.py -i $ZONE_YAML_GEN"
+#AC_SUBST(ZONEGEN)
 
 # Create configured output
 AC_CONFIG_FILES([Makefile test/Makefile])
