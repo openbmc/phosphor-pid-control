@@ -68,6 +68,14 @@ AS_IF([test "x$ZONE_YAML_GEN" == "x"], [ZONE_YAML_GEN="zone-example.yaml"])
 ZONEGEN="$PYTHON ${srcdir}/scripts/zone_gen.py -i $ZONE_YAML_GEN"
 AC_SUBST(ZONEGEN)
 
+AC_ARG_ENABLE([configure-dbus],
+    AS_HELP_STRING([--enable-configure-dbus], [Enable configuring pid from D-Bus.]))
+AM_CONDITIONAL(CONFIGURE_DBUS, [test "x$enable_configure_dbus" = "xyes"])
+AS_IF([test "x$enable_configure_dbus" = "xyes"],
+    [AC_DEFINE(configureDbus, [1], [Read configuration from D-Bus.])],
+    [AC_DEFINE(configureDbus, [0], [Do not read configuration from D-Bus.])]
+)
+
 # Create configured output
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_OUTPUT
