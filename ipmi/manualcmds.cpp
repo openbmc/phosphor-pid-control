@@ -242,15 +242,15 @@ void setupGlobalOemFanControl() __attribute__((constructor));
 
 void setupGlobalOemFanControl()
 {
-    ipmid::OemRouter* oemRouter = ipmid::mutableOemRouter();
+    oem::Router* router = oem::mutableRouter();
 
     fprintf(stderr,
             "Registering OEM:[%#08X], Cmd:[%#04X] for Manual Zone Control\n",
-            ipmid::oem::openbmc::obmcOemNumber,
-            ipmid::oem::openbmc::OemCmd::fanManualCmd);
+            oem::obmcOemNumber,
+            oem::Cmd::fanManualCmd);
 
-    oemRouter->registerHandler(
-        ipmid::oem::openbmc::obmcOemNumber,
-        ipmid::oem::openbmc::OemCmd::fanManualCmd,
+    router->registerHandler(
+        oem::obmcOemNumber,
+        oem::Cmd::fanManualCmd,
         ManualModeControl);
 }
