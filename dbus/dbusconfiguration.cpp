@@ -234,12 +234,7 @@ void init(sdbusplus::bus::bus &bus)
         {
             continue;
         }
-        // if the base configuration is found, these are required
         const auto &base = configuration.second.at(pidConfigurationInterface);
-        const auto &iLim = configuration.second.at(pidConfigurationInterface +
-                                                   std::string(".ILimit"));
-        const auto &outLim = configuration.second.at(pidConfigurationInterface +
-                                                     std::string(".OutLimit"));
         PIDConf &conf =
             ZoneConfig[sdbusplus::message::variant_ns::get<uint64_t>(
                 base.at("Index"))];
@@ -268,30 +263,38 @@ void init(sdbusplus::bus::bus &bus)
             VariantToFloatVisitor(), base.at("FFOffCoefficient"));
         info.info.ff_gain = mapbox::util::apply_visitor(
             VariantToFloatVisitor(), base.at("FFGainCoefficient"));
-        auto value = mapbox::util::apply_visitor(VariantToFloatVisitor(),
-                                                 iLim.at("Max"));
-        info.info.i_lim.max = value;
+        info.info.i_lim.max = mapbox::util::apply_visitor(
+            VariantToFloatVisitor(), base.at("ILimitMax"));
         info.info.i_lim.min = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), iLim.at("Min"));
+            VariantToFloatVisitor(), base.at("ILimitMin"));
         info.info.out_lim.max = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), outLim.at("Max"));
+            VariantToFloatVisitor(), base.at("OutLimitMax"));
         info.info.out_lim.min = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), outLim.at("Min"));
+            VariantToFloatVisitor(), base.at("OutLimitMin"));
         info.info.slew_neg = mapbox::util::apply_visitor(
             VariantToFloatVisitor(), base.at("SlewNeg"));
         info.info.slew_pos = mapbox::util::apply_visitor(
             VariantToFloatVisitor(), base.at("SlewPos"));
 
-        std::pair<std::string, std::string> sensorPathIfacePair;
         std::vector<std::string> sensorNames =
             sdbusplus::message::variant_ns::get<std::vector<std::string>>(
                 base.at("Inputs"));
-
+        auto findOutputs =
+            base.find("Outputs"); // currently only fans have outputs
+        if (findOutputs != base.end())
+        {
+            std::vector<std::string> outputs =
+                sdbusplus::message::variant_ns::get<std::vector<std::string>>(
+                    findOutputs->second);
+            sensorNames.insert(sensorNames.end(), outputs.begin(),
+                               outputs.end());
+        }
         for (const std::string &sensorName : sensorNames)
         {
             std::string name = sensorName;
             // replace spaces with underscores to be legal on dbus
             std::replace(name.begin(), name.end(), ' ', '_');
+            std::pair<std::string, std::string> sensorPathIfacePair;
 
             if (!findSensor(sensors, name, sensorPathIfacePair))
             {
