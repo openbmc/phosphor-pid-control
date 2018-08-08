@@ -214,6 +214,10 @@ void init(sdbusplus::bus::bus &bus)
             }
         }
     }
+
+    // on dbus having an index field is a bit strange, so randomly
+    // assign index based on name property
+    std::vector<std::string> zoneIndex;
     for (const auto &configuration : configurations)
     {
         auto findZone =
@@ -221,9 +225,22 @@ void init(sdbusplus::bus::bus &bus)
         if (findZone != configuration.second.end())
         {
             const auto &zone = findZone->second;
-            auto &details =
-                ZoneDetailsConfig[sdbusplus::message::variant_ns::get<uint64_t>(
-                    zone.at("Index"))];
+            size_t index = 1;
+            const std::string &name =
+                sdbusplus::message::variant_ns::get<std::string>(
+                    zone.at("Name"));
+            auto it = std::find(zoneIndex.begin(), zoneIndex.end(), name);
+            if (it == zoneIndex.end())
+            {
+                zoneIndex.emplace_back(name);
+                index = zoneIndex.size();
+            }
+            else
+            {
+                index = zoneIndex.end() - it;
+            }
+
+            auto &details = ZoneDetailsConfig[index];
             details.minthermalrpm = mapbox::util::apply_visitor(
                 VariantToFloatVisitor(), zone.at("MinThermalRpm"));
             details.failsafepercent = mapbox::util::apply_visitor(
@@ -234,101 +251,121 @@ void init(sdbusplus::bus::bus &bus)
         {
             continue;
         }
-        // if the base configuration is found, these are required
+
         const auto &base = configuration.second.at(pidConfigurationInterface);
-        const auto &iLim = configuration.second.at(pidConfigurationInterface +
-                                                   std::string(".ILimit"));
-        const auto &outLim = configuration.second.at(pidConfigurationInterface +
-                                                     std::string(".OutLimit"));
-        PIDConf &conf =
-            ZoneConfig[sdbusplus::message::variant_ns::get<uint64_t>(
-                base.at("Index"))];
-        struct controller_info &info =
-            conf[sdbusplus::message::variant_ns::get<std::string>(
-                base.at("Name"))];
-        info.type =
-            sdbusplus::message::variant_ns::get<std::string>(base.at("Class"));
-        // todo: auto generation yaml -> c script seems to discard this value
-        // for fans, verify this is okay
-        if (info.type == "fan")
-        {
-            info.setpoint = 0;
-        }
-        else
-        {
-            info.setpoint = mapbox::util::apply_visitor(VariantToFloatVisitor(),
-                                                        base.at("SetPoint"));
-        }
-        info.info.ts = 1.0; // currently unused
-        info.info.p_c = mapbox::util::apply_visitor(VariantToFloatVisitor(),
-                                                    base.at("PCoefficient"));
-        info.info.i_c = mapbox::util::apply_visitor(VariantToFloatVisitor(),
-                                                    base.at("ICoefficient"));
-        info.info.ff_off = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), base.at("FFOffCoefficient"));
-        info.info.ff_gain = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), base.at("FFGainCoefficient"));
-        auto value = mapbox::util::apply_visitor(VariantToFloatVisitor(),
-                                                 iLim.at("Max"));
-        info.info.i_lim.max = value;
-        info.info.i_lim.min = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), iLim.at("Min"));
-        info.info.out_lim.max = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), outLim.at("Max"));
-        info.info.out_lim.min = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), outLim.at("Min"));
-        info.info.slew_neg = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), base.at("SlewNeg"));
-        info.info.slew_pos = mapbox::util::apply_visitor(
-            VariantToFloatVisitor(), base.at("SlewPos"));
-
-        std::pair<std::string, std::string> sensorPathIfacePair;
-        std::vector<std::string> sensorNames =
+        const std::vector<std::string> &zones =
             sdbusplus::message::variant_ns::get<std::vector<std::string>>(
-                base.at("Inputs"));
-
-        for (const std::string &sensorName : sensorNames)
+                base.at("Zones"));
+        for (const std::string &zone : zones)
         {
-            std::string name = sensorName;
-            // replace spaces with underscores to be legal on dbus
-            std::replace(name.begin(), name.end(), ' ', '_');
+            auto it = std::find(zoneIndex.begin(), zoneIndex.end(), zone);
+            size_t index = 1;
+            if (it == zoneIndex.end())
+            {
+                zoneIndex.emplace_back(zone);
+                index = zoneIndex.size();
+            }
+            else
+            {
+                index = zoneIndex.end() - it;
+            }
+            PIDConf &conf = ZoneConfig[index];
+            struct controller_info &info =
+                conf[sdbusplus::message::variant_ns::get<std::string>(
+                    base.at("Name"))];
+            info.type = sdbusplus::message::variant_ns::get<std::string>(
+                base.at("Class"));
+            // todo: auto generation yaml -> c script seems to discard this
+            // value for fans, verify this is okay
+            if (info.type == "fan")
+            {
+                info.setpoint = 0;
+            }
+            else
+            {
+                info.setpoint = mapbox::util::apply_visitor(
+                    VariantToFloatVisitor(), base.at("SetPoint"));
+            }
+            info.info.ts = 1.0; // currently unused
+            info.info.p_c = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("PCoefficient"));
+            info.info.i_c = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("ICoefficient"));
+            info.info.ff_off = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("FFOffCoefficient"));
+            info.info.ff_gain = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("FFGainCoefficient"));
+            info.info.i_lim.max = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("ILimitMax"));
+            info.info.i_lim.min = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("ILimitMin"));
+            info.info.out_lim.max = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("OutLimitMax"));
+            info.info.out_lim.min = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("OutLimitMin"));
+            info.info.slew_neg = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("SlewNeg"));
+            info.info.slew_pos = mapbox::util::apply_visitor(
+                VariantToFloatVisitor(), base.at("SlewPos"));
 
-            if (!findSensor(sensors, name, sensorPathIfacePair))
+            std::vector<std::string> sensorNames =
+                sdbusplus::message::variant_ns::get<std::vector<std::string>>(
+                    base.at("Inputs"));
+            auto findOutputs =
+                base.find("Outputs"); // currently only fans have outputs
+            if (findOutputs != base.end())
             {
-                throw std::runtime_error(
-                    "Could not map configuration to sensor " + name);
+                std::vector<std::string> outputs =
+                    sdbusplus::message::variant_ns::get<
+                        std::vector<std::string>>(findOutputs->second);
+                sensorNames.insert(sensorNames.end(), outputs.begin(),
+                                   outputs.end());
             }
-            if (sensorPathIfacePair.second == sensorInterface)
+            for (const std::string &sensorName : sensorNames)
             {
-                info.inputs.push_back(name);
-                auto &config = SensorConfig[name];
-                config.type = sdbusplus::message::variant_ns::get<std::string>(
-                    base.at("Class"));
-                config.readpath = sensorPathIfacePair.first;
-                // todo: maybe un-hardcode this if we run into slower timeouts
-                // with sensors
-                if (config.type == "temp")
+                std::string name = sensorName;
+                // replace spaces with underscores to be legal on dbus
+                std::replace(name.begin(), name.end(), ' ', '_');
+                std::pair<std::string, std::string> sensorPathIfacePair;
+
+                if (!findSensor(sensors, name, sensorPathIfacePair))
                 {
-                    config.timeout = 500;
+                    throw std::runtime_error(
+                        "Could not map configuration to sensor " + name);
                 }
-            }
-            if (sensorPathIfacePair.second == pwmInterface)
-            {
-                // copy so we can modify it
-                for (std::string otherSensor : sensorNames)
+                if (sensorPathIfacePair.second == sensorInterface)
                 {
-                    if (otherSensor == sensorName)
+                    info.inputs.push_back(name);
+                    auto &config = SensorConfig[name];
+                    config.type =
+                        sdbusplus::message::variant_ns::get<std::string>(
+                            base.at("Class"));
+                    config.readpath = sensorPathIfacePair.first;
+                    // todo: maybe un-hardcode this if we run into slower
+                    // timeouts with sensors
+                    if (config.type == "temp")
                     {
-                        continue;
+                        config.timeout = 500;
                     }
-                    std::replace(otherSensor.begin(), otherSensor.end(), ' ',
-                                 '_');
-                    auto &config = SensorConfig[otherSensor];
-                    config.writepath = sensorPathIfacePair.first;
-                    // todo: un-hardcode this if there are fans with different
-                    // ranges
-                    config.max = 255;
-                    config.min = 0;
+                }
+                if (sensorPathIfacePair.second == pwmInterface)
+                {
+                    // copy so we can modify it
+                    for (std::string otherSensor : sensorNames)
+                    {
+                        if (otherSensor == sensorName)
+                        {
+                            continue;
+                        }
+                        std::replace(otherSensor.begin(), otherSensor.end(),
+                                     ' ', '_');
+                        auto &config = SensorConfig[otherSensor];
+                        config.writepath = sensorPathIfacePair.first;
+                        // todo: un-hardcode this if there are fans with
+                        // different ranges
+                        config.max = 255;
+                        config.min = 0;
+                    }
                 }
             }
         }
