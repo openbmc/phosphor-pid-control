@@ -14,11 +14,15 @@
 // limitations under the License.
 */
 
+#include <chrono>
 #include <conf.hpp>
 #include <dbus/util.hpp>
+#include <functional>
 #include <iostream>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/bus/match.hpp>
 #include <set>
+#include <thread>
 #include <unordered_map>
 
 static constexpr bool DEBUG = false; // enable to print found configuration
@@ -127,6 +131,23 @@ void init(sdbusplus::bus::bus &bus)
                                sdbusplus::message::variant<
                                    uint64_t, int64_t, double, std::string,
                                    std::vector<std::string>>>>>;
+
+    // install watch for properties changed
+    std::function<void(sdbusplus::message::message & message)> eventHandler =
+        [](const sdbusplus::message::message &) {
+            // do a brief sleep as we tend to get a bunch of these events at
+            // once
+            std::this_thread::sleep_for(std::chrono::seconds(5));
+            std::cout << "New configuration detected, restarting\n.";
+            std::exit(EXIT_SUCCESS); // service file should make us restart
+        };
+
+    static sdbusplus::bus::match::match match(
+        bus,
+        "type='signal',member='PropertiesChanged',arg0namespace='" +
+            std::string(pidConfigurationInterface) + "'",
+        eventHandler);
+
     auto mapper =
         bus.new_method_call("xyz.openbmc_project.ObjectMapper",
                             "/xyz/openbmc_project/object_mapper",
