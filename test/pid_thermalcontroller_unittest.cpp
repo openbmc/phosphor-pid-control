@@ -1,17 +1,18 @@
+#include "pid/ec/pid.hpp"
 #include "pid/thermalcontroller.hpp"
+#include "test/zone_mock.hpp"
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 #include <string>
 #include <vector>
 
-#include "pid/ec/pid.hpp"
-#include "test/zone_mock.hpp"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
 using ::testing::Return;
 using ::testing::StrEq;
 
-TEST(ThermalControllerTest, BoringFactoryTest) {
+TEST(ThermalControllerTest, BoringFactoryTest)
+{
     // Verifies building a ThermalPIDController with the factory works as
     // expected in the boring (uninteresting) case.
 
@@ -21,14 +22,14 @@ TEST(ThermalControllerTest, BoringFactoryTest) {
     float setpoint = 10.0;
     ec::pidinfo initial;
 
-    std::unique_ptr<PIDController> p =
-        ThermalController::CreateThermalPid(&z, "therm1", inputs, setpoint,
-                                            initial);
+    std::unique_ptr<PIDController> p = ThermalController::CreateThermalPid(
+        &z, "therm1", inputs, setpoint, initial);
     // Success
     EXPECT_FALSE(p == nullptr);
 }
 
-TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs) {
+TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs)
+{
     // A thermal controller needs at least one input.
 
     ZoneMock z;
@@ -37,13 +38,13 @@ TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs) {
     float setpoint = 10.0;
     ec::pidinfo initial;
 
-    std::unique_ptr<PIDController> p =
-        ThermalController::CreateThermalPid(&z, "therm1", inputs, setpoint,
-                                            initial);
+    std::unique_ptr<PIDController> p = ThermalController::CreateThermalPid(
+        &z, "therm1", inputs, setpoint, initial);
     EXPECT_TRUE(p == nullptr);
 }
 
-TEST(ThermalControllerTest, VerifyFactoryFailsForMoreThanOneInput) {
+TEST(ThermalControllerTest, VerifyFactoryFailsForMoreThanOneInput)
+{
     // ThermalControllers currently only support one input, so don't let
     // someone accidentally specify more.
 
@@ -53,13 +54,13 @@ TEST(ThermalControllerTest, VerifyFactoryFailsForMoreThanOneInput) {
     float setpoint = 10.0;
     ec::pidinfo initial;
 
-    std::unique_ptr<PIDController> p =
-        ThermalController::CreateThermalPid(&z, "therm1", inputs, setpoint,
-                                            initial);
+    std::unique_ptr<PIDController> p = ThermalController::CreateThermalPid(
+        &z, "therm1", inputs, setpoint, initial);
     EXPECT_TRUE(p == nullptr);
 }
 
-TEST(ThermalControllerTest, InputProc_BehavesAsExpected) {
+TEST(ThermalControllerTest, InputProc_BehavesAsExpected)
+{
     // This test just verifies input_proc behaves as expected.
 
     ZoneMock z;
@@ -68,9 +69,8 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected) {
     float setpoint = 10.0;
     ec::pidinfo initial;
 
-    std::unique_ptr<PIDController> p =
-        ThermalController::CreateThermalPid(&z, "therm1", inputs, setpoint,
-                                            initial);
+    std::unique_ptr<PIDController> p = ThermalController::CreateThermalPid(
+        &z, "therm1", inputs, setpoint, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
@@ -78,7 +78,8 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected) {
     EXPECT_EQ(5.0, p->input_proc());
 }
 
-TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected) {
+TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected)
+{
     // This test just verifies input_proc behaves as expected.
 
     ZoneMock z;
@@ -87,15 +88,15 @@ TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected) {
     float setpoint = 10.0;
     ec::pidinfo initial;
 
-    std::unique_ptr<PIDController> p =
-        ThermalController::CreateThermalPid(&z, "therm1", inputs, setpoint,
-                                            initial);
+    std::unique_ptr<PIDController> p = ThermalController::CreateThermalPid(
+        &z, "therm1", inputs, setpoint, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_EQ(setpoint, p->setpt_proc());
 }
 
-TEST(ThermalControllerTest, OutputProc_BehavesAsExpected) {
+TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
+{
     // This test just verifies input_proc behaves as expected.
 
     ZoneMock z;
@@ -104,9 +105,8 @@ TEST(ThermalControllerTest, OutputProc_BehavesAsExpected) {
     float setpoint = 10.0;
     ec::pidinfo initial;
 
-    std::unique_ptr<PIDController> p =
-        ThermalController::CreateThermalPid(&z, "therm1", inputs, setpoint,
-                                            initial);
+    std::unique_ptr<PIDController> p = ThermalController::CreateThermalPid(
+        &z, "therm1", inputs, setpoint, initial);
     EXPECT_FALSE(p == nullptr);
 
     float value = 90.0;

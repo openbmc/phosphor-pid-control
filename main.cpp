@@ -14,22 +14,24 @@
  * limitations under the License.
  */
 
+#include <getopt.h>
+
 #include <chrono>
 #include <experimental/any>
-#include <getopt.h>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <mutex> /* not yet used. */
+#include <sdbusplus/bus.hpp>
 #include <thread>
 #include <unordered_map>
 #include <vector>
 
-#include <sdbusplus/bus.hpp>
-
 /* Configuration. */
-#include "conf.hpp"
 #include "config.h"
+
+#include "conf.hpp"
+
 #include <dbus/dbusconfiguration.hpp>
 
 /* Misc. */
@@ -48,7 +50,6 @@
 #include "pid/pidthread.hpp"
 #include "threads/busthread.hpp"
 
-
 /* The YAML converted sensor list. */
 extern std::map<std::string, struct sensor> SensorConfig;
 /* The YAML converted PID list. */
@@ -64,11 +65,12 @@ int main(int argc, char* argv[])
 
     while (1)
     {
-        static struct option long_options[] =
-        {
+        // clang-format off
+        static struct option long_options[] = {
             {"conf", required_argument, 0, 'c'},
             {0, 0, 0, 0}
         };
+        // clang-format on
 
         int option_index = 0;
         c = getopt_long(argc, argv, "c:", long_options, &option_index);
@@ -81,7 +83,7 @@ int main(int argc, char* argv[])
         switch (c)
         {
             case 'c':
-                configPath = std::string {optarg};
+                configPath = std::string{optarg};
                 break;
             default:
                 /* skip garbage. */
@@ -141,28 +143,16 @@ int main(int argc, char* argv[])
     std::cerr << "Starting threads\n";
 
     /* TODO(venture): Ask SensorManager if we have any passive sensors. */
-    struct ThreadParams p =
-    {
-        std::ref(PassiveListeningBus),
-        ""
-    };
+    struct ThreadParams p = {std::ref(PassiveListeningBus), ""};
     std::thread l(BusThread, std::ref(p));
 
     /* TODO(venture): Ask SensorManager if we have any host sensors. */
     static constexpr auto hostBus = "xyz.openbmc_project.Hwmon.external";
-    struct ThreadParams e =
-    {
-        std::ref(HostSensorBus),
-        hostBus
-    };
+    struct ThreadParams e = {std::ref(HostSensorBus), hostBus};
     std::thread te(BusThread, std::ref(e));
 
     static constexpr auto modeBus = "xyz.openbmc_project.State.FanCtrl";
-    struct ThreadParams m =
-    {
-        std::ref(ModeControlBus),
-        modeBus
-    };
+    struct ThreadParams m = {std::ref(ModeControlBus), modeBus};
     std::thread tm(BusThread, std::ref(m));
 
     std::vector<std::thread> zoneThreads;
@@ -189,4 +179,3 @@ int main(int argc, char* argv[])
 
     return rc;
 }
-

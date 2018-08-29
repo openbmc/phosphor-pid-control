@@ -14,17 +14,16 @@
  * limitations under the License.
  */
 
-#include <chrono>
-#include <map>
-#include <memory>
-#include <thread>
-#include <vector>
-
 #include "pidthread.hpp"
 
 #include "pid/controller.hpp"
 #include "sensors/sensor.hpp"
 
+#include <chrono>
+#include <map>
+#include <memory>
+#include <thread>
+#include <vector>
 
 static void ProcessThermals(PIDZone* zone)
 {
@@ -37,7 +36,6 @@ static void ProcessThermals(PIDZone* zone)
     // Get the maximum RPM set-point.
     zone->determineMaxRPMRequest();
 }
-
 
 void PIDControlThread(PIDZone* zone)
 {
@@ -104,5 +102,3 @@ void PIDControlThread(PIDZone* zone)
 
     return;
 }
-
-

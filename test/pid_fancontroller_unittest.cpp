@@ -1,21 +1,22 @@
-#include "pid/fancontroller.hpp"
-
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-#include <string>
-#include <vector>
-
 #include "pid/ec/pid.hpp"
+#include "pid/fancontroller.hpp"
 #include "test/sensor_mock.hpp"
 #include "test/zone_mock.hpp"
 
+#include <string>
+#include <vector>
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+using ::testing::_;
 using ::testing::DoubleEq;
 using ::testing::Invoke;
 using ::testing::Return;
 using ::testing::StrEq;
-using ::testing::_;
 
-TEST(FanControllerTest, BoringFactoryTest) {
+TEST(FanControllerTest, BoringFactoryTest)
+{
     // Verify the factory will properly build the FanPIDController in the
     // boring (uninteresting) case.
     ZoneMock z;
@@ -29,7 +30,8 @@ TEST(FanControllerTest, BoringFactoryTest) {
     EXPECT_FALSE(p == nullptr);
 }
 
-TEST(FanControllerTest, VerifyFactoryFailsWithZeroInputs) {
+TEST(FanControllerTest, VerifyFactoryFailsWithZeroInputs)
+{
     // A fan controller needs at least one input.
 
     ZoneMock z;
@@ -42,7 +44,8 @@ TEST(FanControllerTest, VerifyFactoryFailsWithZeroInputs) {
     EXPECT_TRUE(p == nullptr);
 }
 
-TEST(FanControllerTest, InputProc_AllSensorsReturnZero) {
+TEST(FanControllerTest, InputProc_AllSensorsReturnZero)
+{
     // If all your inputs are 0, return 0.
 
     ZoneMock z;
@@ -60,7 +63,8 @@ TEST(FanControllerTest, InputProc_AllSensorsReturnZero) {
     EXPECT_EQ(0.0, p->input_proc());
 }
 
-TEST(FanControllerTest, InputProc_IfSensorNegativeIsIgnored) {
+TEST(FanControllerTest, InputProc_IfSensorNegativeIsIgnored)
+{
     // A sensor value returning sub-zero is ignored as an error.
     ZoneMock z;
 
@@ -77,7 +81,8 @@ TEST(FanControllerTest, InputProc_IfSensorNegativeIsIgnored) {
     EXPECT_EQ(0.0, p->input_proc());
 }
 
-TEST(FanControllerTest, InputProc_ChoosesMinimumValue) {
+TEST(FanControllerTest, InputProc_ChoosesMinimumValue)
+{
     // Verify it selects the minimum value from its inputs.
 
     ZoneMock z;
@@ -97,7 +102,8 @@ TEST(FanControllerTest, InputProc_ChoosesMinimumValue) {
 }
 
 // The direction is unused presently, but these tests validate the logic.
-TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection) {
+TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection)
+{
     // The fan direction defaults to neutral, because we have no data.  Verify
     // that after this point it appropriately will indicate speeding up or
     // slowing down based on the RPM values specified.
@@ -111,7 +117,7 @@ TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection) {
         FanController::CreateFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
     // Grab pointer for mocking.
-    FanController *fp = reinterpret_cast<FanController*>(p.get());
+    FanController *fp = reinterpret_cast<FanController *>(p.get());
 
     // Fanspeed starts are Neutral.
     EXPECT_EQ(FanSpeedDirection::NEUTRAL, fp->getFanDirection());
@@ -135,7 +141,8 @@ TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection) {
     EXPECT_EQ(FanSpeedDirection::NEUTRAL, fp->getFanDirection());
 }
 
-TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored) {
+TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
+{
     // Verify that if failsafe mode is enabled and the input value for the fans
     // is below the failsafe minimum value, the input is not used and the fans
     // are driven at failsafe RPM.
@@ -156,8 +163,8 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored) {
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
     std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
     // Grab pointers for mocking.
-    SensorMock *sm1 = reinterpret_cast<SensorMock*>(s1.get());
-    SensorMock *sm2 = reinterpret_cast<SensorMock*>(s2.get());
+    SensorMock *sm1 = reinterpret_cast<SensorMock *>(s1.get());
+    SensorMock *sm2 = reinterpret_cast<SensorMock *>(s2.get());
 
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
     EXPECT_CALL(*sm1, write(0.75));
@@ -167,11 +174,13 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored) {
     // This is a fan PID, so calling output_proc will try to write this value
     // to the sensors.
 
-    // Setting 50%, will end up being 75% because the sensors are in failsafe mode.
+    // Setting 50%, will end up being 75% because the sensors are in failsafe
+    // mode.
     p->output_proc(50.0);
 }
 
-TEST(FanControllerTest, OutputProc_BehavesAsExpected) {
+TEST(FanControllerTest, OutputProc_BehavesAsExpected)
+{
     // Verifies that when the system is not in failsafe mode, the input value
     // to output_proc is used to drive the sensors (fans).
 
@@ -190,8 +199,8 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected) {
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
     std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
     // Grab pointers for mocking.
-    SensorMock *sm1 = reinterpret_cast<SensorMock*>(s1.get());
-    SensorMock *sm2 = reinterpret_cast<SensorMock*>(s2.get());
+    SensorMock *sm1 = reinterpret_cast<SensorMock *>(s1.get());
+    SensorMock *sm2 = reinterpret_cast<SensorMock *>(s2.get());
 
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
     EXPECT_CALL(*sm1, write(0.5));
@@ -203,7 +212,8 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected) {
     p->output_proc(50.0);
 }
 
-TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher) {
+TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
+{
     // If the requested output is higher than the failsafe value, then use the
     // value provided to output_proc.
 
@@ -222,7 +232,7 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher) {
     int64_t timeout = 0;
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
     // Grab pointer for mocking.
-    SensorMock *sm1 = reinterpret_cast<SensorMock*>(s1.get());
+    SensorMock *sm1 = reinterpret_cast<SensorMock *>(s1.get());
 
     // Converting from float to double for expectation.
     float percent = 80;

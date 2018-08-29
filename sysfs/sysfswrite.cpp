@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-#include <fstream>
-#include <iostream>
-
 #include "sysfswrite.hpp"
 
+#include <fstream>
+#include <iostream>
 
 void SysFsWritePercent::write(double value)
 {

@@ -14,13 +14,11 @@
  * limitations under the License.
  */
 
-#include <stdexcept>
-
 #include "writeonly.hpp"
 
+#include <stdexcept>
 
 ReadReturn WriteOnly::read(void)
 {
     throw std::runtime_error("Not supported.");
 }
-

@@ -16,14 +16,14 @@
 
 #include "pid/builder.hpp"
 
+#include "conf.hpp"
+#include "pid/fancontroller.hpp"
+#include "pid/thermalcontroller.hpp"
+
 #include <iostream>
 #include <memory>
 #include <sdbusplus/bus.hpp>
 #include <unordered_map>
-
-#include "conf.hpp"
-#include "pid/fancontroller.hpp"
-#include "pid/thermalcontroller.hpp"
 
 static constexpr bool deferSignals = true;
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
@@ -33,11 +33,10 @@ static std::string GetControlPath(int64_t zone)
     return std::string(objectPath) + std::to_string(zone);
 }
 
-std::unordered_map<int64_t, std::unique_ptr<PIDZone>> BuildZones(
-        std::map<int64_t, PIDConf>& zonePids,
-        std::map<int64_t, struct zone>& zoneConfigs,
-        SensorManager& mgr,
-        sdbusplus::bus::bus& modeControlBus)
+std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
+    BuildZones(std::map<int64_t, PIDConf>& zonePids,
+               std::map<int64_t, struct zone>& zoneConfigs, SensorManager& mgr,
+               sdbusplus::bus::bus& modeControlBus)
 {
     std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones;
 
@@ -62,13 +61,9 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>> BuildZones(
         PIDConf& PIDConfig = zi.second;
 
         auto zone = std::make_unique<PIDZone>(
-                        zoneId,
-                        zoneConf->second.minthermalrpm,
-                        zoneConf->second.failsafepercent,
-                        mgr,
-                        modeControlBus,
-                        GetControlPath(zi.first).c_str(),
-                        deferSignals);
+            zoneId, zoneConf->second.minthermalrpm,
+            zoneConf->second.failsafepercent, mgr, modeControlBus,
+            GetControlPath(zi.first).c_str(), deferSignals);
 
         std::cerr << "Zone Id: " << zone->getZoneId() << "\n";
 
@@ -93,11 +88,8 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>> BuildZones(
                     zone->addFanInput(i);
                 }
 
-                auto pid = FanController::CreateFanPid(
-                               zone.get(),
-                               name,
-                               inputs,
-                               info->info);
+                auto pid = FanController::CreateFanPid(zone.get(), name, inputs,
+                                                       info->info);
                 zone->addFanPID(std::move(pid));
             }
             else if (info->type == "temp" || info->type == "margin")
@@ -109,11 +101,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>> BuildZones(
                 }
 
                 auto pid = ThermalController::CreateThermalPid(
-                               zone.get(),
-                               name,
-                               inputs,
-                               info->setpoint,
-                               info->info);
+                    zone.get(), name, inputs, info->setpoint, info->info);
                 zone->addThermalPID(std::move(pid));
             }
 

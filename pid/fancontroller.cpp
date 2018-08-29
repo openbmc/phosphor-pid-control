@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-#include <algorithm>
-#include <iostream>
-
 #include "fancontroller.hpp"
+
 #include "util.hpp"
 #include "zone.hpp"
 
-std::unique_ptr<PIDController> FanController::CreateFanPid(
-    ZoneInterface* owner,
-    const std::string& id,
-    std::vector<std::string>& inputs,
-    ec::pidinfo initial)
+#include <algorithm>
+#include <iostream>
+
+std::unique_ptr<PIDController>
+    FanController::CreateFanPid(ZoneInterface* owner, const std::string& id,
+                                std::vector<std::string>& inputs,
+                                ec::pidinfo initial)
 {
     if (inputs.size() == 0)
     {
@@ -79,7 +79,7 @@ float FanController::input_proc(void)
         /* When this is a configuration option in a later update, this code
          * will be updated.
          */
-        //value = sum / _inputs.size();
+        // value = sum / _inputs.size();
 
         /* the fan PID algorithm was unstable with average, and seemed to work
          * better with minimum.  I had considered making this choice a variable
@@ -145,4 +145,3 @@ void FanController::output_proc(float value)
 
     return;
 }
-

@@ -1,7 +1,7 @@
+#include "dbus/util.hpp"
+
 #include <iostream>
 #include <set>
-
-#include "dbus/util.hpp"
 
 using Property = std::string;
 using Value = sdbusplus::message::variant<int64_t, double, std::string>;
@@ -14,11 +14,10 @@ std::string DbusHelper::GetService(sdbusplus::bus::bus& bus,
                                    const std::string& intf,
                                    const std::string& path)
 {
-    auto mapper = bus.new_method_call(
-                      "xyz.openbmc_project.ObjectMapper",
-                      "/xyz/openbmc_project/object_mapper",
-                      "xyz.openbmc_project.ObjectMapper",
-                      "GetObject");
+    auto mapper =
+        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                            "/xyz/openbmc_project/object_mapper",
+                            "xyz.openbmc_project.ObjectMapper", "GetObject");
 
     mapper.append(path);
     mapper.append(std::vector<std::string>({intf}));
@@ -45,10 +44,8 @@ void DbusHelper::GetProperties(sdbusplus::bus::bus& bus,
                                const std::string& path,
                                struct SensorProperties* prop)
 {
-    auto pimMsg = bus.new_method_call(service.c_str(),
-                                      path.c_str(),
-                                      propertiesintf.c_str(),
-                                      "GetAll");
+    auto pimMsg = bus.new_method_call(service.c_str(), path.c_str(),
+                                      propertiesintf.c_str(), "GetAll");
 
     pimMsg.append(sensorintf);
     auto valueResponseMsg = bus.call(pimMsg);
@@ -116,7 +113,8 @@ std::string GetMatch(const std::string& type, const std::string& id)
     return std::string("type='signal',"
                        "interface='org.freedesktop.DBus.Properties',"
                        "member='PropertiesChanged',"
-                       "path='" + GetSensorPath(type, id) + "'");
+                       "path='" +
+                       GetSensorPath(type, id) + "'");
 }
 
 bool ValidType(const std::string& type)

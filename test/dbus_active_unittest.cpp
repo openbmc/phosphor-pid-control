@@ -1,17 +1,18 @@
 #include "dbus/dbusactiveread.hpp"
+#include "test/dbushelper_mock.hpp"
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <string>
 
-#include "test/dbushelper_mock.hpp"
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
 
+using ::testing::_;
 using ::testing::Invoke;
 using ::testing::NotNull;
-using ::testing::_;
 
-TEST(DbusActiveReadTest, BoringConstructorTest) {
+TEST(DbusActiveReadTest, BoringConstructorTest)
+{
     // Verify we can construct it.
 
     sdbusplus::SdBusMock sdbus_mock;
@@ -23,7 +24,8 @@ TEST(DbusActiveReadTest, BoringConstructorTest) {
     DbusActiveRead ar(bus_mock, path, service, &helper);
 }
 
-TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue) {
+TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
+{
     // Verify it calls to get the value from dbus when requested.
 
     sdbusplus::SdBusMock sdbus_mock;
@@ -35,14 +37,13 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue) {
     DbusActiveRead ar(bus_mock, path, service, &helper);
 
     EXPECT_CALL(helper, GetProperties(_, service, path, NotNull()))
-        .WillOnce(Invoke([&](sdbusplus::bus::bus& bus,
-                             const std::string& service,
-                             const std::string& path,
-                             struct SensorProperties* prop) {
-            prop->scale = -3;
-            prop->value = 10000;
-            prop->unit = "x";
-        }));
+        .WillOnce(
+            Invoke([&](sdbusplus::bus::bus& bus, const std::string& service,
+                       const std::string& path, struct SensorProperties* prop) {
+                prop->scale = -3;
+                prop->value = 10000;
+                prop->unit = "x";
+            }));
 
     ReadReturn r = ar.read();
     EXPECT_EQ(10, r.value);
