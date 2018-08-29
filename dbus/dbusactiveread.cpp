@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+#include "dbusactiveread.hpp"
+
+#include "dbus/util.hpp"
+
 #include <chrono>
 #include <cmath>
 #include <iostream>
-
-#include "dbusactiveread.hpp"
-#include "dbus/util.hpp"
-
 
 ReadReturn DbusActiveRead::read(void)
 {
@@ -35,11 +35,7 @@ ReadReturn DbusActiveRead::read(void)
      * Technically it might not be a value from now, but there's no timestamp
      * on Sensor.Value yet.
      */
-    struct ReadReturn r = {
-        value,
-        std::chrono::high_resolution_clock::now()
-    };
+    struct ReadReturn r = {value, std::chrono::high_resolution_clock::now()};
 
     return r;
 }
-

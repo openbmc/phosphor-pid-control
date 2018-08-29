@@ -20,15 +20,14 @@
 
 /* Configuration. */
 #include "conf.hpp"
-
 #include "dbus/dbuspassive.hpp"
 #include "dbus/dbuswrite.hpp"
 #include "interfaces.hpp"
 #include "notimpl/readonly.hpp"
 #include "notimpl/writeonly.hpp"
 #include "sensors/builder.hpp"
-#include "sensors/manager.hpp"
 #include "sensors/host.hpp"
+#include "sensors/manager.hpp"
 #include "sensors/pluggable.hpp"
 #include "sysfs/sysfsread.hpp"
 #include "sysfs/sysfswrite.hpp"
@@ -37,8 +36,7 @@
 static constexpr bool deferSignals = true;
 static DbusHelper helper;
 
-SensorManager BuildSensors(
-    const std::map<std::string, struct sensor>& config)
+SensorManager BuildSensors(const std::map<std::string, struct sensor>& config)
 {
     SensorManager mgmr;
     auto& HostSensorBus = mgmr.getHostBus();
@@ -60,17 +58,15 @@ SensorManager BuildSensors(
 
         // fan sensors can be ready any way and written others.
         // fan sensors are the only sensors this is designed to write.
-        // Nothing here should be write-only, although, in theory a fan could be.
-        // I'm just not sure how that would fit together.
+        // Nothing here should be write-only, although, in theory a fan could
+        // be. I'm just not sure how that would fit together.
         // TODO(venture): It should check with the ObjectMapper to check if
         // that sensor exists on the Dbus.
         switch (rtype)
         {
             case IOInterfaceType::DBUSPASSIVE:
                 ri = DbusPassive::CreateDbusPassive(PassiveListeningBus,
-                                                    info->type,
-                                                    name,
-                                                    &helper);
+                                                    info->type, name, &helper);
                 /* TODO(venture): if this returns nullptr */
                 break;
             case IOInterfaceType::EXTERNAL:
@@ -92,33 +88,25 @@ SensorManager BuildSensors(
                     if (info->max > 0)
                     {
                         wi = std::make_unique<SysFsWritePercent>(
-                                 info->writepath,
-                                 info->min,
-                                 info->max);
+                            info->writepath, info->min, info->max);
                     }
                     else
                     {
-                        wi = std::make_unique<SysFsWrite>(
-                                 info->writepath,
-                                 info->min,
-                                 info->max);
+                        wi = std::make_unique<SysFsWrite>(info->writepath,
+                                                          info->min, info->max);
                     }
 
                     break;
                 case IOInterfaceType::DBUSACTIVE:
                     if (info->max > 0)
                     {
-                        wi = std::make_unique<DbusWritePercent>(info->writepath,
-                                                                info->min,
-                                                                info->max,
-                                                                helper);
+                        wi = std::make_unique<DbusWritePercent>(
+                            info->writepath, info->min, info->max, helper);
                     }
                     else
                     {
-                        wi = std::make_unique<DbusWrite>(info->writepath,
-                                                        info->min,
-                                                        info->max,
-                                                        helper);
+                        wi = std::make_unique<DbusWrite>(
+                            info->writepath, info->min, info->max, helper);
                     }
 
                     break;
@@ -128,10 +116,7 @@ SensorManager BuildSensors(
             }
 
             auto sensor = std::make_unique<PluggableSensor>(
-                              name,
-                              info->timeout,
-                              std::move(ri),
-                              std::move(wi));
+                name, info->timeout, std::move(ri), std::move(wi));
             mgmr.addSensor(info->type, name, std::move(sensor));
         }
         else if (info->type == "temp" || info->type == "margin")
@@ -150,21 +135,15 @@ SensorManager BuildSensors(
                  * not quite pluggable; but maybe it could be.
                  */
                 auto sensor = HostSensor::CreateTemp(
-                                  name,
-                                  info->timeout,
-                                  HostSensorBus,
-                                  info->readpath.c_str(),
-                                  deferSignals);
+                    name, info->timeout, HostSensorBus, info->readpath.c_str(),
+                    deferSignals);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
             else
             {
                 wi = std::make_unique<ReadOnlyNoExcept>();
                 auto sensor = std::make_unique<PluggableSensor>(
-                                  name,
-                                  info->timeout,
-                                  std::move(ri),
-                                  std::move(wi));
+                    name, info->timeout, std::move(ri), std::move(wi));
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
         }
@@ -172,4 +151,3 @@ SensorManager BuildSensors(
 
     return mgmr;
 }
-

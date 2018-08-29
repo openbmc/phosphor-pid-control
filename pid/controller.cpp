@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+#include "controller.hpp"
+
+#include "ec/pid.hpp"
+
 #include <algorithm>
 #include <chrono>
 #include <iostream>
@@ -21,10 +25,6 @@
 #include <memory>
 #include <thread>
 #include <vector>
-
-#include "controller.hpp"
-#include "ec/pid.hpp"
-
 
 void PIDController::pid_process(void)
 {

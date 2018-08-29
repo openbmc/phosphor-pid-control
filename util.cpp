@@ -14,17 +14,15 @@
  * limitations under the License.
  */
 
-#include <string>
-
 #include "util.hpp"
 
+#include <string>
 
 static constexpr auto external_sensor =
-    "/xyz/openbmc_project/extsensors/"; // type/
+    "/xyz/openbmc_project/extsensors/";                         // type/
 static constexpr auto openbmc_sensor = "/xyz/openbmc_project/"; // type/
 static constexpr auto dbus_pwm = "/xyz/openbmc_project/control/fanpwm/";
 static constexpr auto sysfs = "/sys/";
-
 
 IOInterfaceType GetWriteInterfaceType(const std::string& path)
 {
@@ -71,4 +69,3 @@ IOInterfaceType GetReadInterfaceType(const std::string& path)
 
     return IOInterfaceType::UNKNOWN;
 }
-

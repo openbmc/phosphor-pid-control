@@ -4,23 +4,22 @@
 
 #include "interfaces.hpp"
 
-
-class ReadOnly: public WriteInterface
+class ReadOnly : public WriteInterface
 {
-    public:
-        ReadOnly()
-            : WriteInterface(0, 0)
-        { }
+  public:
+    ReadOnly() : WriteInterface(0, 0)
+    {
+    }
 
-        void write(double value) override;
+    void write(double value) override;
 };
 
-class ReadOnlyNoExcept: public WriteInterface
+class ReadOnlyNoExcept : public WriteInterface
 {
-    public:
-        ReadOnlyNoExcept()
-            : WriteInterface(0, 0)
-        { }
+  public:
+    ReadOnlyNoExcept() : WriteInterface(0, 0)
+    {
+    }
 
-        void write(double value) override;
+    void write(double value) override;
 };

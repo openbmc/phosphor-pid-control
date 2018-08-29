@@ -16,6 +16,9 @@
 
 #include "pid/builderconfig.hpp"
 
+#include "conf.hpp"
+#include "pid/builder.hpp"
+
 #include <fstream>
 #include <iostream>
 #include <libconfig.h++>
@@ -24,13 +27,9 @@
 #include <string>
 #include <unordered_map>
 
-#include "conf.hpp"
-#include "pid/builder.hpp"
-
-std::unordered_map<int64_t, std::unique_ptr<PIDZone>> BuildZonesFromConfig(
-        const std::string& path,
-        SensorManager& mgr,
-        sdbusplus::bus::bus& modeControlBus)
+std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
+    BuildZonesFromConfig(const std::string& path, SensorManager& mgr,
+                         sdbusplus::bus::bus& modeControlBus)
 {
     using namespace libconfig;
     // zone -> pids
@@ -77,10 +76,9 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>> BuildZonesFromConfig(
 
             zoneSettings.lookupValue("id", id);
 
-            thisZoneConfig.minthermalrpm =
-                    zoneSettings.lookup("minthermalrpm");
+            thisZoneConfig.minthermalrpm = zoneSettings.lookup("minthermalrpm");
             thisZoneConfig.failsafepercent =
-                    zoneSettings.lookup("failsafepercent");
+                zoneSettings.lookup("failsafepercent");
 
             const Setting& pids = zoneSettings["pids"];
             int pidCount = pids.getLength();
@@ -136,7 +134,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>> BuildZonesFromConfig(
             zoneConfig[static_cast<int64_t>(id)] = thisZoneConfig;
         }
     }
-    catch (const SettingTypeException &setex)
+    catch (const SettingTypeException& setex)
     {
         std::cerr << "Setting '" << setex.getPath() << "' type exception!"
                   << std::endl;

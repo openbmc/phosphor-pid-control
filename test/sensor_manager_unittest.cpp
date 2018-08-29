@@ -1,17 +1,18 @@
 #include "sensors/manager.hpp"
+#include "test/sensor_mock.hpp"
+
+#include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <sdbusplus/test/sdbus_mock.hpp>
-
-#include "test/sensor_mock.hpp"
 
 using ::testing::_;
 using ::testing::IsNull;
 using ::testing::Return;
 using ::testing::StrEq;
 
-TEST(SensorManagerTest, BoringConstructorTest) {
+TEST(SensorManagerTest, BoringConstructorTest)
+{
     // Build a boring SensorManager.
 
     sdbusplus::SdBusMock sdbus_mock_passive, sdbus_mock_host;
@@ -20,16 +21,15 @@ TEST(SensorManagerTest, BoringConstructorTest) {
 
     EXPECT_CALL(sdbus_mock_host,
                 sd_bus_add_object_manager(
-                    IsNull(),
-                    _,
-                    StrEq("/xyz/openbmc_project/extsensors")))
+                    IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
         .WillOnce(Return(0));
 
     SensorManager s(std::move(bus_mock_passive), std::move(bus_mock_host));
     // Success
 }
 
-TEST(SensorManagerTest, AddSensorInvalidTypeTest) {
+TEST(SensorManagerTest, AddSensorInvalidTypeTest)
+{
     // AddSensor doesn't validate the type of sensor you're adding, because
     // ultimately it doesn't care -- but if we decide to change that this
     // test will start failing :D
@@ -40,9 +40,7 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest) {
 
     EXPECT_CALL(sdbus_mock_host,
                 sd_bus_add_object_manager(
-                    IsNull(),
-                    _,
-                    StrEq("/xyz/openbmc_project/extsensors")))
+                    IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
         .WillOnce(Return(0));
 
     SensorManager s(std::move(bus_mock_passive), std::move(bus_mock_host));
