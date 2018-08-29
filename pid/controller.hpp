@@ -1,10 +1,10 @@
 #pragma once
 
+#include "ec/pid.hpp"
+#include "fan.hpp"
+
 #include <memory>
 #include <vector>
-
-#include "fan.hpp"
-#include "ec/pid.hpp"
 
 class ZoneInterface;
 
@@ -14,46 +14,46 @@ class ZoneInterface;
  */
 class PIDController
 {
-    public:
-        PIDController(const std::string& id, ZoneInterface* owner)
-            : _owner(owner),
-              _setpoint(0),
-              _id(id)
-        { }
+  public:
+    PIDController(const std::string& id, ZoneInterface* owner) :
+        _owner(owner), _setpoint(0), _id(id)
+    {
+    }
 
-        virtual ~PIDController() { }
+    virtual ~PIDController()
+    {
+    }
 
-        virtual float input_proc(void) = 0;
-        virtual float setpt_proc(void) = 0;
-        virtual void output_proc(float value) = 0;
+    virtual float input_proc(void) = 0;
+    virtual float setpt_proc(void) = 0;
+    virtual void output_proc(float value) = 0;
 
-        void pid_process(void);
+    void pid_process(void);
 
-        std::string get_id(void)
-        {
-            return _id;
-        }
-        float get_setpoint(void)
-        {
-            return _setpoint;
-        }
-        void set_setpoint(float setpoint)
-        {
-            _setpoint = setpoint;
-        }
+    std::string get_id(void)
+    {
+        return _id;
+    }
+    float get_setpoint(void)
+    {
+        return _setpoint;
+    }
+    void set_setpoint(float setpoint)
+    {
+        _setpoint = setpoint;
+    }
 
-        ec::pid_info_t* get_pid_info(void)
-        {
-            return &_pid_info;
-        }
+    ec::pid_info_t* get_pid_info(void)
+    {
+        return &_pid_info;
+    }
 
-    protected:
-        ZoneInterface* _owner;
+  protected:
+    ZoneInterface* _owner;
 
-    private:
-        // parameters
-        ec::pid_info_t  _pid_info;
-        float           _setpoint;
-        std::string     _id;
+  private:
+    // parameters
+    ec::pid_info_t _pid_info;
+    float _setpoint;
+    std::string _id;
 };
-

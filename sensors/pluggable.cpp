@@ -16,13 +16,12 @@
 
 #include "pluggable.hpp"
 
+#include "dbus/dbuspassive.hpp"
+#include "sysfs/sysfswrite.hpp"
+
 #include <iostream>
 #include <memory>
 #include <string>
-
-#include "sysfs/sysfswrite.hpp"
-#include "dbus/dbuspassive.hpp"
-
 
 ReadReturn PluggableSensor::read(void)
 {
@@ -33,4 +32,3 @@ void PluggableSensor::write(double value)
 {
     _writer->write(value);
 }
-

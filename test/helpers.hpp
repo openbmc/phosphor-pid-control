@@ -1,18 +1,19 @@
 // THIS EXISTS AS A COPY OF SDBUSPLUS/TEST/HELPERS.HPP until that is merged.
 #pragma once
 
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <string>
 #include <vector>
 
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+using ::testing::_;
 using ::testing::Invoke;
 using ::testing::IsNull;
 using ::testing::NotNull;
 using ::testing::Return;
 using ::testing::StrEq;
-using ::testing::_;
 
 /** @brief Setup the expectations for sdbus-based object creation.
  *

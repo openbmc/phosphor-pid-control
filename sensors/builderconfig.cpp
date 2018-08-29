@@ -21,7 +21,6 @@
 
 /* Configuration. */
 #include "conf.hpp"
-
 #include "sensors/builder.hpp"
 #include "sensors/manager.hpp"
 
@@ -46,7 +45,8 @@ SensorManager BuildSensorsFromConfig(const std::string& path)
     }
     catch (const FileIOException& fioex)
     {
-        std::cerr << "I/O error while reading file: " << fioex.what() << std::endl;
+        std::cerr << "I/O error while reading file: " << fioex.what()
+                  << std::endl;
         throw;
     }
     catch (const ParseException& pex)
@@ -71,7 +71,8 @@ SensorManager BuildSensorsFromConfig(const std::string& path)
             std::string name;
             struct sensor thisOne;
 
-            /* Not a super fan of using this library for run-time configuration. */
+            /* Not a super fan of using this library for run-time configuration.
+             */
             name = sensor.lookup("name").c_str();
             thisOne.type = sensor.lookup("type").c_str();
             thisOne.readpath = sensor.lookup("readpath").c_str();
@@ -89,20 +90,18 @@ SensorManager BuildSensorsFromConfig(const std::string& path)
 
             // leaving for verification for now.  and yea the above is
             // necessary.
-            std::cerr << "min: " << min
-                    << " max: " << max
-                    << " savedmin: " << thisOne.min
-                    << " savedmax: " << thisOne.max
-                    << " timeout: " << thisOne.timeout
-                    << std::endl;
+            std::cerr << "min: " << min << " max: " << max
+                      << " savedmin: " << thisOne.min
+                      << " savedmax: " << thisOne.max
+                      << " timeout: " << thisOne.timeout << std::endl;
 
             config[name] = thisOne;
         }
     }
-    catch (const SettingTypeException &setex)
+    catch (const SettingTypeException& setex)
     {
-        std::cerr << "Setting '" << setex.getPath()
-                  << "' type exception!" << std::endl;
+        std::cerr << "Setting '" << setex.getPath() << "' type exception!"
+                  << std::endl;
         throw;
     }
     catch (const SettingNotFoundException& snex)
@@ -113,4 +112,3 @@ SensorManager BuildSensorsFromConfig(const std::string& path)
 
     return BuildSensors(config);
 }
-

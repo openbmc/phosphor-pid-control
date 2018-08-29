@@ -15,9 +15,13 @@
  */
 
 /* Configuration. */
-#include "conf.hpp"
-
 #include "zone.hpp"
+
+#include "conf.hpp"
+#include "pid/controller.hpp"
+#include "pid/ec/pid.hpp"
+#include "pid/fancontroller.hpp"
+#include "pid/thermalcontroller.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -26,12 +30,6 @@
 #include <iostream>
 #include <libconfig.h++>
 #include <memory>
-
-#include "pid/controller.hpp"
-#include "pid/fancontroller.hpp"
-#include "pid/thermalcontroller.hpp"
-#include "pid/ec/pid.hpp"
-
 
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
@@ -136,7 +134,8 @@ void PIDZone::determineMaxRPMRequest(void)
         int value;
         std::ifstream ifs;
         ifs.open(setpointpath);
-        if (ifs.good()) {
+        if (ifs.good())
+        {
             ifs >> value;
             max = value; // expecting RPM set-point, not pwm%
         }
@@ -202,7 +201,9 @@ void PIDZone::updateFanTelemetry(void)
      */
 #ifdef __TUNING_LOGGING__
     tstamp now = std::chrono::high_resolution_clock::now();
-    _log << std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count();
+    _log << std::chrono::duration_cast<std::chrono::milliseconds>(
+                now.time_since_epoch())
+                .count();
     _log << "," << _maximumRPMSetPt;
 #endif
 
@@ -252,12 +253,12 @@ void PIDZone::updateSensors(void)
          */
         if (timeout > 0)
         {
-            auto duration = duration_cast<std::chrono::seconds>
-                    (now - then).count();
+            auto duration =
+                duration_cast<std::chrono::seconds>(now - then).count();
             auto period = std::chrono::seconds(timeout).count();
             if (duration >= period)
             {
-                //std::cerr << "Entering fail safe mode.\n";
+                // std::cerr << "Entering fail safe mode.\n";
                 _failSafeSensors.insert(t);
             }
             else

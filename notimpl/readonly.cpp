@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#include <stdexcept>
-
 #include "readonly.hpp"
 
+#include <stdexcept>
 
 void ReadOnly::write(double value)
 {

@@ -15,16 +15,13 @@
  */
 
 #include "thermalcontroller.hpp"
+
 #include "util.hpp"
 #include "zone.hpp"
 
-
 std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
-    ZoneInterface* owner,
-    const std::string& id,
-    std::vector<std::string>& inputs,
-    float setpoint,
-    ec::pidinfo initial)
+    ZoneInterface* owner, const std::string& id,
+    std::vector<std::string>& inputs, float setpoint, ec::pidinfo initial)
 {
     // ThermalController currently only supports precisely one input.
     if (inputs.size() != 1)
@@ -42,7 +39,7 @@ std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
     return thermal;
 }
 
-//bmc_host_sensor_value_float
+// bmc_host_sensor_value_float
 float ThermalController::input_proc(void)
 {
     /*
@@ -79,4 +76,3 @@ void ThermalController::output_proc(float value)
 
     return;
 }
-
