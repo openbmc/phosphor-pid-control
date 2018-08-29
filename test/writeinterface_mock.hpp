@@ -2,6 +2,8 @@
 
 #include "interfaces.hpp"
 
+#include <gmock/gmock.h>
+
 class WriteInterfaceMock : public WriteInterface
 {
     public:
