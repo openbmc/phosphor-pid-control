@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "controller.hpp"
+#include "pidcontroller.hpp"
 
 #include "ec/pid.hpp"
 
@@ -26,7 +26,7 @@
 #include <thread>
 #include <vector>
 
-void PIDController::pid_process(void)
+void PIDController::process(void)
 {
     float input;
     float setpt;

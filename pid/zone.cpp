@@ -21,6 +21,7 @@
 #include "pid/controller.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/fancontroller.hpp"
+#include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 
 #include <algorithm>
@@ -80,12 +81,12 @@ float PIDZone::getMinThermalRpmSetPt(void) const
     return _minThermalRpmSetPt;
 }
 
-void PIDZone::addFanPID(std::unique_ptr<PIDController> pid)
+void PIDZone::addFanPID(std::unique_ptr<Controller> pid)
 {
     _fans.push_back(std::move(pid));
 }
 
-void PIDZone::addThermalPID(std::unique_ptr<PIDController> pid)
+void PIDZone::addThermalPID(std::unique_ptr<Controller> pid)
 {
     _thermals.push_back(std::move(pid));
 }
@@ -305,7 +306,7 @@ void PIDZone::process_fans(void)
 {
     for (auto& p : _fans)
     {
-        p->pid_process();
+        p->process();
     }
 }
 
@@ -313,7 +314,7 @@ void PIDZone::process_thermals(void)
 {
     for (auto& p : _thermals)
     {
-        p->pid_process();
+        p->process();
     }
 }
 
