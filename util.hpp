@@ -7,8 +7,8 @@
  * but -- how would it know whether to use Control.FanSpeed or Control.FanPwm?
  *
  * One could get the interface list for the object and search for Control.*
- * but, it needs to know the maximum, minimum.  The only sensors it wants to write
- * in this code base are Fans...
+ * but, it needs to know the maximum, minimum.  The only sensors it wants to
+ * write in this code base are Fans...
  */
 enum class IOInterfaceType
 {
@@ -24,4 +24,3 @@ enum class IOInterfaceType
 IOInterfaceType GetWriteInterfaceType(const std::string& path);
 
 IOInterfaceType GetReadInterfaceType(const std::string& path);
-

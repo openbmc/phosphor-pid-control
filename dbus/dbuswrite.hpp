@@ -16,11 +16,10 @@
 
 #pragma once
 
-#include <string>
-
 #include <dbus/util.hpp>
 #include <interfaces.hpp>
 #include <sdbusplus/bus.hpp>
+#include <string>
 
 constexpr const char *pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 

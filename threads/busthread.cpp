@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#include <string>
-
 #include "busthread.hpp"
 
+#include <string>
 
 void BusThread(struct ThreadParams& params)
 {

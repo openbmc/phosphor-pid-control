@@ -1,8 +1,7 @@
 #include <iostream>
-#include <string>
-
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
+#include <string>
 
 /* Fan Control */
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
@@ -19,23 +18,19 @@ static constexpr auto sintf = "xyz.openbmc_project.Sensor.Value";
 static constexpr auto sproperty = "Value";
 using sValue = sdbusplus::message::variant<int64_t>;
 
-
 static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
 
 static void SetHostSensor(void)
 {
     int64_t value = 300;
-    sValue v {value};
+    sValue v{value};
 
-    std::string busname {sbusName};
+    std::string busname{sbusName};
     auto PropertyWriteBus = sdbusplus::bus::new_default();
-    std::string path {sobjectPath};
+    std::string path{sobjectPath};
 
     auto pimMsg = PropertyWriteBus.new_method_call(
-                      busname.c_str(),
-                      path.c_str(),
-                      propertiesintf,
-                      "Set");
+        busname.c_str(), path.c_str(), propertiesintf, "Set");
 
     pimMsg.append(sintf);
     pimMsg.append(sproperty);
@@ -61,17 +56,14 @@ static void SetManualMode(int8_t zone)
 {
     bool setValue = (bool)0x01;
 
-    Value v {setValue};
+    Value v{setValue};
 
-    std::string busname {busName};
+    std::string busname{busName};
     auto PropertyWriteBus = sdbusplus::bus::new_default();
     std::string path = GetControlPath(zone);
 
     auto pimMsg = PropertyWriteBus.new_method_call(
-                      busname.c_str(),
-                      path.c_str(),
-                      propertiesintf,
-                      "Set");
+        busname.c_str(), path.c_str(), propertiesintf, "Set");
 
     pimMsg.append(intf);
     pimMsg.append(property);
