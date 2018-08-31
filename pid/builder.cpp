@@ -17,14 +17,15 @@
 #include "pid/builder.hpp"
 
 #include "conf.hpp"
+#include "pid/controller.hpp"
 #include "pid/fancontroller.hpp"
+#include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 
 #include <iostream>
 #include <memory>
 #include <sdbusplus/bus.hpp>
 #include <unordered_map>
-
 static constexpr bool deferSignals = true;
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 
@@ -89,7 +90,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                 }
 
                 auto pid = FanController::CreateFanPid(zone.get(), name, inputs,
-                                                       info->info);
+                                                       info->pidInfo);
                 zone->addFanPID(std::move(pid));
             }
             else if (info->type == "temp" || info->type == "margin")
@@ -101,8 +102,20 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                 }
 
                 auto pid = ThermalController::CreateThermalPid(
-                    zone.get(), name, inputs, info->setpoint, info->info);
+                    zone.get(), name, inputs, info->setpoint, info->pidInfo);
+
                 zone->addThermalPID(std::move(pid));
+            }
+            else if (info->type == "stepwise")
+            {
+                for (auto& i : info->inputs)
+                {
+                    inputs.push_back(i);
+                    zone->addThermalInput(i);
+                }
+                auto stepwise = StepwiseController::CreateStepwiseController(
+                    zone.get(), name, inputs, info->stepwiseInfo);
+                zone->addThermalPID(std::move(stepwise));
             }
 
             std::cerr << "inputs: ";

@@ -54,9 +54,11 @@ libswampd_la_SOURCES = \
 	sensors/builderconfig.cpp \
 	sensors/manager.cpp \
 	pid/ec/pid.cpp \
-	pid/controller.cpp \
+	pid/ec/stepwise.cpp \
 	pid/fancontroller.cpp \
 	pid/thermalcontroller.cpp \
+	pid/pidcontroller.cpp \
+	pid/stepwisecontroller.cpp \
 	pid/builder.cpp \
 	pid/builderconfig.cpp \
 	pid/zone.cpp \
