@@ -2,6 +2,7 @@
 
 #include "conf.hpp"
 #include "controller.hpp"
+#include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
 #include "xyz/openbmc_project/Control/Mode/server.hpp"
@@ -76,8 +77,8 @@ class PIDZone : public ZoneInterface, public ModeObject
     void process_fans(void);
     void process_thermals(void);
 
-    void addFanPID(std::unique_ptr<PIDController> pid);
-    void addThermalPID(std::unique_ptr<PIDController> pid);
+    void addFanPID(std::unique_ptr<Controller> pid);
+    void addThermalPID(std::unique_ptr<Controller> pid);
     double getCachedValue(const std::string& name) override;
     void addFanInput(std::string fan);
     void addThermalInput(std::string therm);
@@ -111,6 +112,6 @@ class PIDZone : public ZoneInterface, public ModeObject
     std::map<std::string, double> _cachedValuesByName;
     const SensorManager& _mgr;
 
-    std::vector<std::unique_ptr<PIDController>> _fans;
-    std::vector<std::unique_ptr<PIDController>> _thermals;
+    std::vector<std::unique_ptr<Controller>> _fans;
+    std::vector<std::unique_ptr<Controller>> _thermals;
 };
