@@ -21,6 +21,7 @@
 #include "pid/controller.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/fancontroller.hpp"
+#include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 
 #include <algorithm>
@@ -30,7 +31,6 @@
 #include <iostream>
 #include <libconfig.h++>
 #include <memory>
-
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
 
@@ -85,7 +85,7 @@ void PIDZone::addFanPID(std::unique_ptr<PIDController> pid)
     _fans.push_back(std::move(pid));
 }
 
-void PIDZone::addThermalPID(std::unique_ptr<PIDController> pid)
+void PIDZone::addThermalPID(std::unique_ptr<Controller> pid)
 {
     _thermals.push_back(std::move(pid));
 }
@@ -305,7 +305,7 @@ void PIDZone::process_fans(void)
 {
     for (auto& p : _fans)
     {
-        p->pid_process();
+        p->process();
     }
 }
 
@@ -313,7 +313,7 @@ void PIDZone::process_thermals(void)
 {
     for (auto& p : _thermals)
     {
-        p->pid_process();
+        p->process();
     }
 }
 

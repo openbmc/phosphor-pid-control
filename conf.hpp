@@ -1,11 +1,11 @@
 #pragma once
 
 #include "pid/ec/pid.hpp"
+#include "pid/ec/stepwise.hpp"
 
 #include <map>
 #include <string>
 #include <vector>
-
 /*
  * General sensor structure used for configuration.
  */
@@ -30,7 +30,11 @@ struct controller_info
     std::string type;                // fan or margin or temp?
     std::vector<std::string> inputs; // one or more sensors.
     float setpoint;                  // initial setpoint for thermal.
-    ec::pidinfo info;                // pid details
+    union
+    {
+        ec::pidinfo pidInfo; // pid details
+        ec::StepwiseInfo stepwiseInfo;
+    };
 };
 
 /*

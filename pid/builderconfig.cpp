@@ -102,20 +102,22 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                 /* set-point is only required to be set for thermal. */
                 /* TODO(venture): Verify this works optionally here. */
                 info.setpoint = pid.lookup("set-point");
-                info.info.ts = pid.lookup("pid.sampleperiod");
-                info.info.p_c = pid.lookup("pid.p_coefficient");
-                info.info.i_c = pid.lookup("pid.i_coefficient");
-                info.info.ff_off = pid.lookup("pid.ff_off_coefficient");
-                info.info.ff_gain = pid.lookup("pid.ff_gain_coefficient");
-                info.info.i_lim.min = pid.lookup("pid.i_limit.min");
-                info.info.i_lim.max = pid.lookup("pid.i_limit.max");
-                info.info.out_lim.min = pid.lookup("pid.out_limit.min");
-                info.info.out_lim.max = pid.lookup("pid.out_limit.max");
-                info.info.slew_neg = pid.lookup("pid.slew_neg");
-                info.info.slew_pos = pid.lookup("pid.slew_pos");
+                info.pidInfo.ts = pid.lookup("pid.sampleperiod");
+                info.pidInfo.p_c = pid.lookup("pid.p_coefficient");
+                info.pidInfo.i_c = pid.lookup("pid.i_coefficient");
+                info.pidInfo.ff_off = pid.lookup("pid.ff_off_coefficient");
+                info.pidInfo.ff_gain = pid.lookup("pid.ff_gain_coefficient");
+                info.pidInfo.i_lim.min = pid.lookup("pid.i_limit.min");
+                info.pidInfo.i_lim.max = pid.lookup("pid.i_limit.max");
+                info.pidInfo.out_lim.min = pid.lookup("pid.out_limit.min");
+                info.pidInfo.out_lim.max = pid.lookup("pid.out_limit.max");
+                info.pidInfo.slew_neg = pid.lookup("pid.slew_neg");
+                info.pidInfo.slew_pos = pid.lookup("pid.slew_pos");
 
-                std::cerr << "out_lim.min: " << info.info.out_lim.min << "\n";
-                std::cerr << "out_lim.max: " << info.info.out_lim.max << "\n";
+                std::cerr << "out_lim.min: " << info.pidInfo.out_lim.min
+                          << "\n";
+                std::cerr << "out_lim.max: " << info.pidInfo.out_lim.max
+                          << "\n";
 
                 const Setting& inputs = pid["inputs"];
                 int icount = inputs.getLength();
