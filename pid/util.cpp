@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include "ec/pid.hpp"
+
 #include <cstring>
 #include <iostream>
-
-#include "ec/pid.hpp"
 
 void InitializePIDStruct(ec::pid_info_t* info, ec::pidinfo* initial)
 {
@@ -36,12 +36,10 @@ void InitializePIDStruct(ec::pid_info_t* info, ec::pidinfo* initial)
     info->slew_pos = initial->slew_pos;
 }
 
-void DumpPIDStruct(ec::pid_info_t *info)
+void DumpPIDStruct(ec::pid_info_t* info)
 {
-    std::cerr << " ts: " << info->ts
-              << " p_c: " << info->p_c
-              << " i_c: " << info->i_c
-              << " ff_off: " << info->ff_off
+    std::cerr << " ts: " << info->ts << " p_c: " << info->p_c
+              << " i_c: " << info->i_c << " ff_off: " << info->ff_off
               << " ff_gain: " << info->ff_gain
               << " i_lim.min: " << info->i_lim.min
               << " i_lim.max: " << info->i_lim.max
@@ -50,8 +48,7 @@ void DumpPIDStruct(ec::pid_info_t *info)
               << " slew_neg: " << info->slew_neg
               << " slew_pos: " << info->slew_pos
               << " last_output: " << info->last_output
-              << " integral: " << info->integral
-              << std::endl;
+              << " integral: " << info->integral << std::endl;
 
     return;
 }

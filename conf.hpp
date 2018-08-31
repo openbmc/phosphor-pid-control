@@ -1,11 +1,10 @@
 #pragma once
 
+#include "pid/ec/pid.hpp"
+
 #include <map>
 #include <string>
 #include <vector>
-
-#include "pid/ec/pid.hpp"
-
 
 /*
  * General sensor structure used for configuration.

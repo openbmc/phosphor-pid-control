@@ -1,15 +1,16 @@
 #include "sensors/pluggable.hpp"
-
-#include <chrono>
-#include <gmock/gmock.h>
-#include <gtest/gtest.h>
-
 #include "test/readinterface_mock.hpp"
 #include "test/writeinterface_mock.hpp"
 
+#include <chrono>
+
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
 using ::testing::Invoke;
 
-TEST(PluggableSensorTest, BoringConstructorTest) {
+TEST(PluggableSensorTest, BoringConstructorTest)
+{
     // Build a boring Pluggable Sensor.
 
     int64_t min = 0;
@@ -26,7 +27,8 @@ TEST(PluggableSensorTest, BoringConstructorTest) {
     // Successfully created it.
 }
 
-TEST(PluggableSensorTest, TryReadingTest) {
+TEST(PluggableSensorTest, TryReadingTest)
+{
     // Verify calling read, calls the ReadInterface.
 
     int64_t min = 0;
@@ -47,12 +49,7 @@ TEST(PluggableSensorTest, TryReadingTest) {
     r.value = 0.1;
     r.updated = std::chrono::high_resolution_clock::now();
 
-    EXPECT_CALL(*rip, read())
-    .WillOnce(
-        Invoke([&](void) {
-            return r;
-        })
-    );
+    EXPECT_CALL(*rip, read()).WillOnce(Invoke([&](void) { return r; }));
 
     // TODO(venture): Implement comparison operator for ReadReturn.
     ReadReturn v = p.read();
@@ -60,7 +57,8 @@ TEST(PluggableSensorTest, TryReadingTest) {
     EXPECT_EQ(r.updated, v.updated);
 }
 
-TEST(PluggableSensorTest, TryWritingTest) {
+TEST(PluggableSensorTest, TryWritingTest)
+{
     // Verify calling write, calls the WriteInterface.
 
     int64_t min = 0;

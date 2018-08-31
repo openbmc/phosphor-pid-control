@@ -15,14 +15,12 @@
  */
 
 /* Configuration. */
-#include "conf.hpp"
-
 #include "sensors/manager.hpp"
 
-void SensorManager::addSensor(
-        std::string type,
-        std::string name,
-        std::unique_ptr<Sensor> sensor)
+#include "conf.hpp"
+
+void SensorManager::addSensor(std::string type, std::string name,
+                              std::unique_ptr<Sensor> sensor)
 {
     _sensorMap[name] = std::move(sensor);
 
