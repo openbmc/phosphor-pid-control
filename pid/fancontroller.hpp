@@ -1,8 +1,8 @@
 #pragma once
 
-#include "controller.hpp"
 #include "ec/pid.hpp"
 #include "fan.hpp"
+#include "pidcontroller.hpp"
 
 #include <memory>
 #include <string>
