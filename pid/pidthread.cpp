@@ -16,7 +16,7 @@
 
 #include "pidthread.hpp"
 
-#include "pid/controller.hpp"
+#include "pid/pidcontroller.hpp"
 #include "sensors/sensor.hpp"
 
 #include <chrono>
