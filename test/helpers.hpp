@@ -34,9 +34,9 @@ using ::testing::StrEq;
  * @param[in] properties - an ordered list of expected property updates.
  * @param[in] index - a pointer to a valid integer in a surviving scope.
  */
-void SetupDbusObject(sdbusplus::SdBusMock *sdbus_mock, bool defer,
-                     const std::string &path, const std::string &intf,
-                     const std::vector<std::string> &properties, int *index)
+void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
+                     const std::string& path, const std::string& intf,
+                     const std::vector<std::string>& properties, int* index)
 {
     EXPECT_CALL(*sdbus_mock,
                 sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),
@@ -57,8 +57,8 @@ void SetupDbusObject(sdbusplus::SdBusMock *sdbus_mock, bool defer,
                     sd_bus_emit_properties_changed_strv(IsNull(), StrEq(path),
                                                         StrEq(intf), NotNull()))
             .Times(properties.size())
-            .WillRepeatedly(Invoke([=](sd_bus *bus, const char *path,
-                                       const char *interface, char **names) {
+            .WillRepeatedly(Invoke([=](sd_bus* bus, const char* path,
+                                       const char* interface, char** names) {
                 EXPECT_STREQ(properties[(*index)++].c_str(), names[0]);
                 return 0;
             }));

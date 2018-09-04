@@ -22,13 +22,13 @@
 #include <sdbusplus/bus.hpp>
 #include <string>
 
-constexpr const char *pwmInterface = "xyz.openbmc_project.Control.FanPwm";
+constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 class DbusWritePercent : public WriteInterface
 {
   public:
-    DbusWritePercent(const std::string &path, int64_t min, int64_t max,
-                     DbusHelperInterface &helper) :
+    DbusWritePercent(const std::string& path, int64_t min, int64_t max,
+                     DbusHelperInterface& helper) :
         WriteInterface(min, max),
         path(path)
     {
@@ -46,8 +46,8 @@ class DbusWritePercent : public WriteInterface
 class DbusWrite : public WriteInterface
 {
   public:
-    DbusWrite(const std::string &path, int64_t min, int64_t max,
-              DbusHelperInterface &helper) :
+    DbusWrite(const std::string& path, int64_t min, int64_t max,
+              DbusHelperInterface& helper) :
         WriteInterface(min, max),
         path(path)
     {

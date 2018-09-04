@@ -41,7 +41,7 @@ TEST(PluggableSensorTest, TryReadingTest)
     std::string name = "name";
     int64_t timeout = 1;
 
-    ReadInterfaceMock *rip = reinterpret_cast<ReadInterfaceMock *>(ri.get());
+    ReadInterfaceMock* rip = reinterpret_cast<ReadInterfaceMock*>(ri.get());
 
     PluggableSensor p(name, timeout, std::move(ri), std::move(wi));
 
@@ -71,7 +71,7 @@ TEST(PluggableSensorTest, TryWritingTest)
     std::string name = "name";
     int64_t timeout = 1;
 
-    WriteInterfaceMock *wip = reinterpret_cast<WriteInterfaceMock *>(wi.get());
+    WriteInterfaceMock* wip = reinterpret_cast<WriteInterfaceMock*>(wi.get());
 
     PluggableSensor p(name, timeout, std::move(ri), std::move(wi));
 

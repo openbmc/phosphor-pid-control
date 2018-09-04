@@ -7,7 +7,7 @@ struct ReadReturn
     double value;
     std::chrono::high_resolution_clock::time_point updated;
 
-    bool operator==(const ReadReturn &rhs) const
+    bool operator==(const ReadReturn& rhs) const
     {
         return (this->value == rhs.value && this->updated == rhs.updated);
     }

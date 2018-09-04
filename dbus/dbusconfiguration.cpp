@@ -31,23 +31,23 @@ std::map<std::string, struct sensor> SensorConfig = {};
 std::map<int64_t, PIDConf> ZoneConfig = {};
 std::map<int64_t, struct zone> ZoneDetailsConfig = {};
 
-constexpr const char *pidConfigurationInterface =
+constexpr const char* pidConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid";
-constexpr const char *objectManagerInterface =
+constexpr const char* objectManagerInterface =
     "org.freedesktop.DBus.ObjectManager";
-constexpr const char *pidZoneConfigurationInterface =
+constexpr const char* pidZoneConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid.Zone";
-constexpr const char *sensorInterface = "xyz.openbmc_project.Sensor.Value";
-constexpr const char *pwmInterface = "xyz.openbmc_project.Control.FanPwm";
+constexpr const char* sensorInterface = "xyz.openbmc_project.Sensor.Value";
+constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 namespace dbus_configuration
 {
 
-bool findSensor(const std::unordered_map<std::string, std::string> &sensors,
-                const std::string &search,
-                std::pair<std::string, std::string> &sensor)
+bool findSensor(const std::unordered_map<std::string, std::string>& sensors,
+                const std::string& search,
+                std::pair<std::string, std::string>& sensor)
 {
-    for (const auto &s : sensors)
+    for (const auto& s : sensors)
     {
         if (s.first.find(search) != std::string::npos)
         {
@@ -66,7 +66,7 @@ void debugPrint(void)
     // print sensor config
     std::cout << "sensor config:\n";
     std::cout << "{\n";
-    for (auto &pair : SensorConfig)
+    for (auto& pair : SensorConfig)
     {
 
         std::cout << "\t{" << pair.first << ",\n\t\t{";
@@ -80,7 +80,7 @@ void debugPrint(void)
     std::cout << "}\n\n";
     std::cout << "ZoneDetailsConfig\n";
     std::cout << "{\n";
-    for (auto &zone : ZoneDetailsConfig)
+    for (auto& zone : ZoneDetailsConfig)
     {
         std::cout << "\t{" << zone.first << ",\n";
         std::cout << "\t\t{" << zone.second.minthermalrpm << ", ";
@@ -89,15 +89,15 @@ void debugPrint(void)
     std::cout << "}\n\n";
     std::cout << "ZoneConfig\n";
     std::cout << "{\n";
-    for (auto &zone : ZoneConfig)
+    for (auto& zone : ZoneConfig)
     {
         std::cout << "\t{" << zone.first << "\n";
-        for (auto &pidconf : zone.second)
+        for (auto& pidconf : zone.second)
         {
             std::cout << "\t\t{" << pidconf.first << ",\n";
             std::cout << "\t\t\t{" << pidconf.second.type << ",\n";
             std::cout << "\t\t\t{";
-            for (auto &input : pidconf.second.inputs)
+            for (auto& input : pidconf.second.inputs)
             {
                 std::cout << "\n\t\t\t" << input << ",\n";
             }
@@ -121,7 +121,7 @@ void debugPrint(void)
     std::cout << "}\n\n";
 }
 
-void init(sdbusplus::bus::bus &bus)
+void init(sdbusplus::bus::bus& bus)
 {
     using ManagedObjectType = std::unordered_map<
         sdbusplus::message::object_path,
@@ -134,7 +134,7 @@ void init(sdbusplus::bus::bus &bus)
 
     // install watch for properties changed
     std::function<void(sdbusplus::message::message & message)> eventHandler =
-        [](const sdbusplus::message::message &) {
+        [](const sdbusplus::message::message&) {
             // do a brief sleep as we tend to get a bunch of these events at
             // once
             std::this_thread::sleep_for(std::chrono::seconds(5));
@@ -153,10 +153,10 @@ void init(sdbusplus::bus::bus &bus)
                             "/xyz/openbmc_project/object_mapper",
                             "xyz.openbmc_project.ObjectMapper", "GetSubTree");
     mapper.append("", 0,
-                  std::array<const char *, 5>{objectManagerInterface,
-                                              pidConfigurationInterface,
-                                              pidZoneConfigurationInterface,
-                                              sensorInterface, pwmInterface});
+                  std::array<const char*, 5>{objectManagerInterface,
+                                             pidConfigurationInterface,
+                                             pidZoneConfigurationInterface,
+                                             sensorInterface, pwmInterface});
     auto resp = bus.call(mapper);
     if (resp.is_method_error())
     {
@@ -175,12 +175,12 @@ void init(sdbusplus::bus::bus &bus)
     std::unordered_map<std::string, std::pair<bool, std::string>> owners;
     // and a map of <path, interface> for sensors
     std::unordered_map<std::string, std::string> sensors;
-    for (const auto &objectPair : respData)
+    for (const auto& objectPair : respData)
     {
-        for (const auto &ownerPair : objectPair.second)
+        for (const auto& ownerPair : objectPair.second)
         {
-            auto &owner = owners[ownerPair.first];
-            for (const std::string &interface : ownerPair.second)
+            auto& owner = owners[ownerPair.first];
+            for (const std::string& interface : ownerPair.second)
             {
 
                 if (interface == objectManagerInterface)
@@ -206,7 +206,7 @@ void init(sdbusplus::bus::bus &bus)
         }
     }
     ManagedObjectType configurations;
-    for (const auto &owner : owners)
+    for (const auto& owner : owners)
     {
         // skip if no pid configuration (means probably a sensor)
         if (!owner.second.first)
@@ -224,7 +224,7 @@ void init(sdbusplus::bus::bus &bus)
         }
         ManagedObjectType configuration;
         responce.read(configuration);
-        for (auto &pathPair : configuration)
+        for (auto& pathPair : configuration)
         {
             if (pathPair.second.find(pidConfigurationInterface) !=
                     pathPair.second.end() ||
@@ -235,14 +235,14 @@ void init(sdbusplus::bus::bus &bus)
             }
         }
     }
-    for (const auto &configuration : configurations)
+    for (const auto& configuration : configurations)
     {
         auto findZone =
             configuration.second.find(pidZoneConfigurationInterface);
         if (findZone != configuration.second.end())
         {
-            const auto &zone = findZone->second;
-            auto &details =
+            const auto& zone = findZone->second;
+            auto& details =
                 ZoneDetailsConfig[sdbusplus::message::variant_ns::get<uint64_t>(
                     zone.at("Index"))];
             details.minthermalrpm = mapbox::util::apply_visitor(
@@ -256,15 +256,15 @@ void init(sdbusplus::bus::bus &bus)
             continue;
         }
         // if the base configuration is found, these are required
-        const auto &base = configuration.second.at(pidConfigurationInterface);
-        const auto &iLim = configuration.second.at(pidConfigurationInterface +
+        const auto& base = configuration.second.at(pidConfigurationInterface);
+        const auto& iLim = configuration.second.at(pidConfigurationInterface +
                                                    std::string(".ILimit"));
-        const auto &outLim = configuration.second.at(pidConfigurationInterface +
+        const auto& outLim = configuration.second.at(pidConfigurationInterface +
                                                      std::string(".OutLimit"));
-        PIDConf &conf =
+        PIDConf& conf =
             ZoneConfig[sdbusplus::message::variant_ns::get<uint64_t>(
                 base.at("Index"))];
-        struct controller_info &info =
+        struct controller_info& info =
             conf[sdbusplus::message::variant_ns::get<std::string>(
                 base.at("Name"))];
         info.type =
@@ -308,7 +308,7 @@ void init(sdbusplus::bus::bus &bus)
             sdbusplus::message::variant_ns::get<std::vector<std::string>>(
                 base.at("Inputs"));
 
-        for (const std::string &sensorName : sensorNames)
+        for (const std::string& sensorName : sensorNames)
         {
             std::string name = sensorName;
             // replace spaces with underscores to be legal on dbus
@@ -322,7 +322,7 @@ void init(sdbusplus::bus::bus &bus)
             if (sensorPathIfacePair.second == sensorInterface)
             {
                 info.inputs.push_back(name);
-                auto &config = SensorConfig[name];
+                auto& config = SensorConfig[name];
                 config.type = sdbusplus::message::variant_ns::get<std::string>(
                     base.at("Class"));
                 config.readpath = sensorPathIfacePair.first;
@@ -344,7 +344,7 @@ void init(sdbusplus::bus::bus &bus)
                     }
                     std::replace(otherSensor.begin(), otherSensor.end(), ' ',
                                  '_');
-                    auto &config = SensorConfig[otherSensor];
+                    auto& config = SensorConfig[otherSensor];
                     config.writepath = sensorPathIfacePair.first;
                     // todo: un-hardcode this if there are fans with different
                     // ranges

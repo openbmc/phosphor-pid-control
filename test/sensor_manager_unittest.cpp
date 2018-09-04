@@ -50,7 +50,7 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest)
     int64_t timeout = 1;
     std::unique_ptr<Sensor> sensor =
         std::make_unique<SensorMock>(name, timeout);
-    Sensor *sensor_ptr = sensor.get();
+    Sensor* sensor_ptr = sensor.get();
 
     s.addSensor(type, name, std::move(sensor));
     EXPECT_EQ(s.getSensor(name), sensor_ptr);

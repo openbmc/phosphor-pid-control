@@ -40,7 +40,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SensorManager m(std::move(bus_mock_passive), std::move(bus_mock_host));
 
     bool defer = true;
-    const char *objPath = "/path/";
+    const char* objPath = "/path/";
     int64_t zone = 1;
     float minThermalRpm = 1000.0;
     float failSafePercent = 0.75;
@@ -95,7 +95,7 @@ class PidZoneTest : public ::testing::Test
     float minThermalRpm = 1000.0;
     float failSafePercent = 0.75;
     bool defer = true;
-    const char *objPath = "/path/";
+    const char* objPath = "/path/";
     SensorManager mgr;
 
     std::unique_ptr<PIDZone> zone;
@@ -177,12 +177,12 @@ TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
 
     std::unique_ptr<Sensor> sensor1 =
         std::make_unique<SensorMock>(name1, timeout);
-    SensorMock *sensor_ptr1 = reinterpret_cast<SensorMock *>(sensor1.get());
+    SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "temp2";
     std::unique_ptr<Sensor> sensor2 =
         std::make_unique<SensorMock>(name2, timeout);
-    SensorMock *sensor_ptr2 = reinterpret_cast<SensorMock *>(sensor2.get());
+    SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
     mgr.addSensor(type, name1, std::move(sensor1));
@@ -229,12 +229,12 @@ TEST_F(PidZoneTest, FanInputTest_VerifiesFanValuesCached)
 
     std::unique_ptr<Sensor> sensor1 =
         std::make_unique<SensorMock>(name1, timeout);
-    SensorMock *sensor_ptr1 = reinterpret_cast<SensorMock *>(sensor1.get());
+    SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "fan2";
     std::unique_ptr<Sensor> sensor2 =
         std::make_unique<SensorMock>(name2, timeout);
-    SensorMock *sensor_ptr2 = reinterpret_cast<SensorMock *>(sensor2.get());
+    SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
     mgr.addSensor(type, name1, std::move(sensor1));
@@ -277,12 +277,12 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
     std::string name1 = "temp1";
     std::unique_ptr<Sensor> sensor1 =
         std::make_unique<SensorMock>(name1, timeout);
-    SensorMock *sensor_ptr1 = reinterpret_cast<SensorMock *>(sensor1.get());
+    SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "temp2";
     std::unique_ptr<Sensor> sensor2 =
         std::make_unique<SensorMock>(name2, timeout);
-    SensorMock *sensor_ptr2 = reinterpret_cast<SensorMock *>(sensor2.get());
+    SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
     mgr.addSensor(type, name1, std::move(sensor1));
@@ -336,7 +336,7 @@ TEST_F(PidZoneTest, GetSensorTest_ReturnsExpected)
     std::string name1 = "temp1";
     std::unique_ptr<Sensor> sensor1 =
         std::make_unique<SensorMock>(name1, timeout);
-    SensorMock *sensor_ptr1 = reinterpret_cast<SensorMock *>(sensor1.get());
+    SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string type = "unchecked";
     mgr.addSensor(type, name1, std::move(sensor1));
@@ -355,11 +355,11 @@ TEST_F(PidZoneTest, AddThermalPIDTest_VerifiesThermalPIDsProcessed)
 
     std::unique_ptr<PIDController> tpid =
         std::make_unique<ControllerMock>("thermal1", zone.get());
-    ControllerMock *tmock = reinterpret_cast<ControllerMock *>(tpid.get());
+    ControllerMock* tmock = reinterpret_cast<ControllerMock*>(tpid.get());
 
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
-    ec::pid_info_t *info = tpid->get_pid_info();
+    ec::pid_info_t* info = tpid->get_pid_info();
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
     zone->addThermalPID(std::move(tpid));
@@ -380,11 +380,11 @@ TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
 
     std::unique_ptr<PIDController> tpid =
         std::make_unique<ControllerMock>("fan1", zone.get());
-    ControllerMock *tmock = reinterpret_cast<ControllerMock *>(tpid.get());
+    ControllerMock* tmock = reinterpret_cast<ControllerMock*>(tpid.get());
 
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
-    ec::pid_info_t *info = tpid->get_pid_info();
+    ec::pid_info_t* info = tpid->get_pid_info();
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
     zone->addFanPID(std::move(tpid));
@@ -406,8 +406,8 @@ TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)
     EXPECT_CALL(sdbus_mock_mode,
                 sd_bus_emit_properties_changed_strv(
                     IsNull(), StrEq(objPath), StrEq(modeInterface), NotNull()))
-        .WillOnce(Invoke([&](sd_bus *bus, const char *path,
-                             const char *interface, char **names) {
+        .WillOnce(Invoke([&](sd_bus* bus, const char* path,
+                             const char* interface, char** names) {
             EXPECT_STREQ("Manual", names[0]);
             return 0;
         }));

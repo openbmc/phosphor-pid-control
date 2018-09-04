@@ -20,5 +20,5 @@
 
 namespace dbus_configuration
 {
-void init(sdbusplus::bus::bus &bus);
+void init(sdbusplus::bus::bus& bus);
 } // namespace dbus_configuration

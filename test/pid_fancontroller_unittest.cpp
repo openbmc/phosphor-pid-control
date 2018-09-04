@@ -117,7 +117,7 @@ TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection)
         FanController::CreateFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
     // Grab pointer for mocking.
-    FanController *fp = reinterpret_cast<FanController *>(p.get());
+    FanController* fp = reinterpret_cast<FanController*>(p.get());
 
     // Fanspeed starts are Neutral.
     EXPECT_EQ(FanSpeedDirection::NEUTRAL, fp->getFanDirection());
@@ -163,8 +163,8 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
     std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
     // Grab pointers for mocking.
-    SensorMock *sm1 = reinterpret_cast<SensorMock *>(s1.get());
-    SensorMock *sm2 = reinterpret_cast<SensorMock *>(s2.get());
+    SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
+    SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
 
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
     EXPECT_CALL(*sm1, write(0.75));
@@ -199,8 +199,8 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected)
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
     std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
     // Grab pointers for mocking.
-    SensorMock *sm1 = reinterpret_cast<SensorMock *>(s1.get());
-    SensorMock *sm2 = reinterpret_cast<SensorMock *>(s2.get());
+    SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
+    SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
 
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
     EXPECT_CALL(*sm1, write(0.5));
@@ -232,7 +232,7 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     int64_t timeout = 0;
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
     // Grab pointer for mocking.
-    SensorMock *sm1 = reinterpret_cast<SensorMock *>(s1.get());
+    SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
 
     // Converting from float to double for expectation.
     float percent = 80;

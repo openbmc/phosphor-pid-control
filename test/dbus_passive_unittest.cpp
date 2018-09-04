@@ -51,8 +51,8 @@ TEST(DbusPassiveTest, BoringConstructorTest)
 
     EXPECT_CALL(helper, GetProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
         .WillOnce(
-            Invoke([&](sdbusplus::bus::bus &bus, const std::string &service,
-                       const std::string &path, struct SensorProperties *prop) {
+            Invoke([&](sdbusplus::bus::bus& bus, const std::string& service,
+                       const std::string& path, struct SensorProperties* prop) {
                 prop->scale = -3;
                 prop->value = 10;
                 prop->unit = "x";
@@ -75,15 +75,15 @@ class DbusPassiveTestObj : public ::testing::Test
         EXPECT_CALL(helper,
                     GetProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(Invoke(
-                [&](sdbusplus::bus::bus &bus, const std::string &service,
-                    const std::string &path, struct SensorProperties *prop) {
+                [&](sdbusplus::bus::bus& bus, const std::string& service,
+                    const std::string& path, struct SensorProperties* prop) {
                     prop->scale = _scale;
                     prop->value = _value;
                     prop->unit = "x";
                 }));
 
         ri = DbusPassive::CreateDbusPassive(bus_mock, type, id, &helper);
-        passive = reinterpret_cast<DbusPassive *>(ri.get());
+        passive = reinterpret_cast<DbusPassive*>(ri.get());
         EXPECT_FALSE(passive == nullptr);
     }
 
@@ -97,7 +97,7 @@ class DbusPassiveTestObj : public ::testing::Test
     int64_t _value = 10;
 
     std::unique_ptr<ReadInterface> ri;
-    DbusPassive *passive;
+    DbusPassive* passive;
 };
 
 TEST_F(DbusPassiveTestObj, ReadReturnsExpectedValues)
@@ -144,21 +144,21 @@ TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
         .WillOnce(Return(nullptr));
     sdbusplus::message::message msg(nullptr, &sdbus_mock);
 
-    const char *Value = "Value";
+    const char* Value = "Value";
     int64_t xValue = 10000;
-    const char *intf = "xyz.openbmc_project.Sensor.Value";
+    const char* intf = "xyz.openbmc_project.Sensor.Value";
     // string, std::map<std::string, sdbusplus::message::variant<int64_t>>
     // msg.read(msgSensor, msgData);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message *m, char type, void *p) {
-            const char **s = static_cast<const char **>(p);
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message *m, char type, void *p) {
-            const char **s = static_cast<const char **>(p);
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
             *s = Value;
             // Read the string in the pair (dictionary).
             return 0;
@@ -187,8 +187,8 @@ TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'x', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message *m, char type, void *p) {
-            int64_t *s = static_cast<int64_t *>(p);
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            int64_t* s = static_cast<int64_t*>(p);
             *s = xValue;
             return 0;
         }));
@@ -214,21 +214,21 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
         .WillOnce(Return(nullptr));
     sdbusplus::message::message msg(nullptr, &sdbus_mock);
 
-    const char *Scale = "Scale";
+    const char* Scale = "Scale";
     int64_t xScale = -6;
-    const char *intf = "xyz.openbmc_project.Sensor.Value";
+    const char* intf = "xyz.openbmc_project.Sensor.Value";
     // string, std::map<std::string, sdbusplus::message::variant<int64_t>>
     // msg.read(msgSensor, msgData);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message *m, char type, void *p) {
-            const char **s = static_cast<const char **>(p);
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message *m, char type, void *p) {
-            const char **s = static_cast<const char **>(p);
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
             *s = Scale;
             // Read the string in the pair (dictionary).
             return 0;
@@ -257,8 +257,8 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'x', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message *m, char type, void *p) {
-            int64_t *s = static_cast<int64_t *>(p);
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            int64_t* s = static_cast<int64_t*>(p);
             *s = xScale;
             return 0;
         }));

@@ -29,7 +29,7 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
-    const char *objPath = "/asdf/asdf0";
+    const char* objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
@@ -62,7 +62,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
-    const char *objPath = "/asdf/asdf0";
+    const char* objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
@@ -83,7 +83,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
         HostSensor::CreateTemp(name, timeout, bus_mock, objPath, defer);
 
     // Value is updated from dbus calls only (normally).
-    HostSensor *hs = static_cast<HostSensor *>(s.get());
+    HostSensor* hs = static_cast<HostSensor*>(s.get());
     int64_t new_value = 2;
 
     ReadReturn r = hs->read();
@@ -92,8 +92,8 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     EXPECT_CALL(sdbus_mock,
                 sd_bus_emit_properties_changed_strv(
                     IsNull(), StrEq(objPath), StrEq(interface), NotNull()))
-        .WillOnce(Invoke([=](sd_bus *bus, const char *path,
-                             const char *interface, char **names) {
+        .WillOnce(Invoke([=](sd_bus* bus, const char* path,
+                             const char* interface, char** names) {
             EXPECT_STREQ("Value", names[0]);
             return 0;
         }));
