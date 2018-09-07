@@ -84,21 +84,19 @@ static ipmi_ret_t GetFanCtrlProperty(uint8_t zoneId, bool* value,
                                                   propertiesintf, "GetAll");
     pimMsg.append(intf);
 
-    auto valueResponseMsg = propertyReadBus.call(pimMsg);
-    if (valueResponseMsg.is_method_error())
+    try
+    {
+        auto valueResponseMsg = propertyReadBus.call(pimMsg);
+
+        PropertyMap propMap;
+        valueResponseMsg.read(propMap);
+
+        *value = sdbusplus::message::variant_ns::get<bool>(propMap[property]);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
     {
         return IPMI_CC_INVALID;
     }
-
-    PropertyMap propMap;
-    valueResponseMsg.read(propMap);
-
-    if (propMap.size() != 2)
-    {
-        return IPMI_CC_INVALID;
-    }
-
-    *value = sdbusplus::message::variant_ns::get<bool>(propMap[property]);
 
     return IPMI_CC_OK;
 }
@@ -193,8 +191,12 @@ static ipmi_ret_t SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     pimMsg.append(intf);
     pimMsg.append(manualProperty);
     pimMsg.append(v);
-    auto responseMsg = PropertyWriteBus.call(pimMsg);
-    if (responseMsg.is_method_error())
+
+    try
+    {
+        PropertyWriteBus.call_noreply(pimMsg);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
     {
         rc = IPMI_CC_INVALID;
     }
