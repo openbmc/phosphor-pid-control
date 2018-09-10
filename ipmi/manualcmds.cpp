@@ -86,9 +86,15 @@ static ipmi_ret_t GetFanCtrlProperty(uint8_t zoneId, bool* value,
 
     try
     {
-        auto valueResponseMsg = propertyReadBus.call(pimMsg);
-
         PropertyMap propMap;
+
+        /* a method could error but the call not error. */
+        auto valueResponseMsg = propertyReadBus.call(pimMsg);
+        if (valueResponseMsg.is_method_error())
+        {
+            return IPMI_CC_INVALID;
+        }
+
         valueResponseMsg.read(propMap);
 
         *value = sdbusplus::message::variant_ns::get<bool>(propMap[property]);
