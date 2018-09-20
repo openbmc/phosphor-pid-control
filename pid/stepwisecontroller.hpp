@@ -4,6 +4,7 @@
 #include "ec/stepwise.hpp"
 #include "fan.hpp"
 
+#include <limits>
 #include <memory>
 #include <vector>
 
@@ -49,4 +50,6 @@ class StepwiseController : public Controller
     ec::StepwiseInfo _stepwise_info;
     std::string _id;
     std::vector<std::string> _inputs;
+    float lastInput = std::numeric_limits<float>::quiet_NaN();
+    float lastOutput = std::numeric_limits<float>::quiet_NaN();
 };

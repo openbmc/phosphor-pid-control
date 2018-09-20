@@ -22,6 +22,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -33,9 +34,28 @@ void StepwiseController::process(void)
     // Get input value
     float input = input_proc();
 
-    // Calculate new output
-    float output = ec::stepwise(get_stepwise_info(), input);
+    ec::StepwiseInfo info = get_stepwise_info();
 
+    float output = lastOutput;
+
+    // Calculate new output if hysteresis allows
+    if (std::isnan(output))
+    {
+        output = ec::stepwise(info, input);
+        lastInput = input;
+    }
+    else if ((input - lastInput) > info.positiveHysteresis)
+    {
+        output = ec::stepwise(info, input);
+        lastInput = input;
+    }
+    else if ((lastInput - input) > info.negativeHysteresis)
+    {
+        output = ec::stepwise(info, input);
+        lastInput = input;
+    }
+
+    lastOutput = output;
     // Output new value
     output_proc(output);
 
