@@ -444,6 +444,22 @@ void init(sdbusplus::bus::bus& bus)
                         base.at("Name"))];
                 info.type = "stepwise";
                 info.stepwiseInfo.ts = 1.0; // currently unused
+                info.stepwiseInfo.positiveHysteresis = 0.0;
+                info.stepwiseInfo.negativeHysteresis = 0.0;
+                auto findPosHyst = base.find("PositiveHysteresis");
+                auto findNegHyst = base.find("NegativeHysteresis");
+                if (findPosHyst != base.end())
+                {
+                    info.stepwiseInfo.positiveHysteresis =
+                        mapbox::util::apply_visitor(VariantToFloatVisitor(),
+                                                    findPosHyst->second);
+                }
+                if (findNegHyst != base.end())
+                {
+                    info.stepwiseInfo.positiveHysteresis =
+                        mapbox::util::apply_visitor(VariantToFloatVisitor(),
+                                                    findNegHyst->second);
+                }
                 std::vector<double> readings =
                     sdbusplus::message::variant_ns::get<std::vector<double>>(
                         base.at("Reading"));

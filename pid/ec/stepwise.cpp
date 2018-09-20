@@ -16,6 +16,7 @@
 
 #include "stepwise.hpp"
 
+#include <cmath>
 #include <cstddef>
 #include <limits>
 
@@ -29,7 +30,7 @@ float stepwise(const ec::StepwiseInfo& info, float input)
     for (size_t ii = 1; ii < ec::maxStepwisePoints; ii++)
     {
 
-        if (info.reading[ii] == std::numeric_limits<float>::quiet_NaN())
+        if (std::isnan(info.reading[ii]))
         {
             break;
         }

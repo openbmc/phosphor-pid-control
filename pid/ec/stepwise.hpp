@@ -29,6 +29,8 @@ struct StepwiseInfo
     float ts; // sample time in seconds
     float reading[maxStepwisePoints];
     float output[maxStepwisePoints];
+    float positiveHysteresis;
+    float negativeHysteresis;
 };
 
 float stepwise(const ec::StepwiseInfo& info, float value);
