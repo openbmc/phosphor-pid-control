@@ -3,7 +3,7 @@ AM_DEFAULT_SOURCE_EXT = .cpp
 sbin_PROGRAMS = swampd setsensor
 
 if !CONFIGURE_DBUS
-	BUILT_SOURCES = sensorlist-gen.cpp pidlist-gen.cpp zoneinfo-gen.cpp
+BUILT_SOURCES = sensorlist-gen.cpp pidlist-gen.cpp zoneinfo-gen.cpp
 endif
 CLEANFILES = $(BUILT_SOURCES)
 
