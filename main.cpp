@@ -17,7 +17,6 @@
 #include "config.h"
 
 #include "conf.hpp"
-#include "dbus/dbusconfiguration.hpp"
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/builderconfig.hpp"
@@ -41,6 +40,10 @@
 #include <thread>
 #include <unordered_map>
 #include <vector>
+
+#if CONFIGURE_DBUS
+#include "dbus/dbusconfiguration.hpp"
+#endif
 
 /* The YAML converted sensor list. */
 extern std::map<std::string, struct sensor> SensorConfig;
@@ -84,10 +87,11 @@ int main(int argc, char* argv[])
     }
 
     auto ModeControlBus = sdbusplus::bus::new_default();
-    if (configureDbus)
+#if CONFIGURE_DBUS
     {
         dbus_configuration::init(ModeControlBus);
     }
+#endif
     SensorManager mgmr;
     std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones;
 

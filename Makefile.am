@@ -43,7 +43,6 @@ libswampd_la_SOURCES = \
 	dbus/util.cpp \
 	dbus/dbuspassive.cpp \
 	dbus/dbusactiveread.cpp \
-	dbus/dbusconfiguration.cpp \
 	dbus/dbuswrite.cpp \
 	sysfs/sysfsread.cpp \
 	sysfs/sysfswrite.cpp \
@@ -67,6 +66,10 @@ libswampd_la_SOURCES = \
 	threads/busthread.cpp \
 	experiments/drive.cpp \
 	$(BUILT_SOURCES)
+
+if CONFIGURE_DBUS
+libswampd_la_SOURCES += dbus/dbusconfiguration.cpp
+endif
 
 libmanualcmdsdir = ${libdir}/ipmid-providers
 libmanualcmds_LTLIBRARIES = libmanualcmds.la
