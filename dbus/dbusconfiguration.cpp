@@ -46,6 +46,8 @@ constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 namespace dbus_configuration
 {
 
+namespace variant_ns = sdbusplus::message::variant_ns;
+
 bool findSensor(const std::unordered_map<std::string, std::string>& sensors,
                 const std::string& search,
                 std::pair<std::string, std::string>& sensor)
@@ -124,6 +126,16 @@ void debugPrint(void)
     std::cout << "}\n\n";
 }
 
+int eventHandler(sd_bus_message*, void*, sd_bus_error*)
+{
+    // do a brief sleep as we tend to get a bunch of these events at
+    // once
+    std::this_thread::sleep_for(std::chrono::seconds(5));
+    std::cout << "New configuration detected, restarting\n.";
+    std::exit(EXIT_SUCCESS); // service file should make us restart
+    return 1;
+}
+
 void init(sdbusplus::bus::bus& bus)
 {
     using DbusVariantType =
@@ -136,20 +148,18 @@ void init(sdbusplus::bus::bus& bus)
         std::unordered_map<std::string,
                            std::unordered_map<std::string, DbusVariantType>>>;
 
-    // install watch for properties changed
-    std::function<void(sdbusplus::message::message & message)> eventHandler =
-        [](const sdbusplus::message::message&) {
-            // do a brief sleep as we tend to get a bunch of these events at
-            // once
-            std::this_thread::sleep_for(std::chrono::seconds(5));
-            std::cout << "New configuration detected, restarting\n.";
-            std::exit(EXIT_SUCCESS); // service file should make us restart
-        };
-
-    static sdbusplus::bus::match::match match(
+    // restart on configuration properties changed
+    static sdbusplus::bus::match::match configMatch(
         bus,
         "type='signal',member='PropertiesChanged',arg0namespace='" +
             std::string(pidConfigurationInterface) + "'",
+        eventHandler);
+
+    // restart on sensors changed
+    static sdbusplus::bus::match::match sensorAdded(
+        bus,
+        "type='signal',member='InterfacesAdded',arg0path='/xyz/openbmc_project/"
+        "sensors/'",
         eventHandler);
 
     auto mapper =
@@ -275,8 +285,7 @@ void init(sdbusplus::bus::bus& bus)
             const auto& zone = findZone->second;
             size_t index = 1;
             const std::string& name =
-                sdbusplus::message::variant_ns::get<std::string>(
-                    zone.at("Name"));
+                variant_ns::get<std::string>(zone.at("Name"));
             auto it = std::find(zoneIndex.begin(), zoneIndex.end(), name);
             if (it == zoneIndex.end())
             {
@@ -301,8 +310,7 @@ void init(sdbusplus::bus::bus& bus)
             const auto& base =
                 configuration.second.at(pidConfigurationInterface);
             const std::vector<std::string>& zones =
-                sdbusplus::message::variant_ns::get<std::vector<std::string>>(
-                    base.at("Zones"));
+                variant_ns::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
                 auto it = std::find(zoneIndex.begin(), zoneIndex.end(), zone);
@@ -317,11 +325,79 @@ void init(sdbusplus::bus::bus& bus)
                     index = zoneIndex.end() - it;
                 }
                 PIDConf& conf = ZoneConfig[index];
+
+                std::vector<std::string> sensorNames =
+                    variant_ns::get<std::vector<std::string>>(
+                        base.at("Inputs"));
+                auto findOutputs =
+                    base.find("Outputs"); // currently only fans have outputs
+                if (findOutputs != base.end())
+                {
+                    std::vector<std::string> outputs =
+                        variant_ns::get<std::vector<std::string>>(
+                            findOutputs->second);
+                    sensorNames.insert(sensorNames.end(), outputs.begin(),
+                                       outputs.end());
+                }
+                bool sensorsAvailable = sensorNames.size();
+                std::vector<std::string> inputs;
+                for (const std::string& sensorName : sensorNames)
+                {
+                    std::string name = sensorName;
+                    // replace spaces with underscores to be legal on dbus
+                    std::replace(name.begin(), name.end(), ' ', '_');
+                    std::pair<std::string, std::string> sensorPathIfacePair;
+
+                    if (!findSensor(sensors, name, sensorPathIfacePair))
+                    {
+                        sensorsAvailable = false;
+                        break;
+                    }
+                    if (sensorPathIfacePair.second == sensorInterface)
+                    {
+                        inputs.push_back(name);
+                        auto& config = SensorConfig[name];
+                        config.type =
+                            variant_ns::get<std::string>(base.at("Class"));
+                        config.readpath = sensorPathIfacePair.first;
+                        // todo: maybe un-hardcode this if we run into slower
+                        // timeouts with sensors
+                        if (config.type == "temp")
+                        {
+                            config.timeout = 500;
+                        }
+                    }
+                    else if (sensorPathIfacePair.second == pwmInterface)
+                    {
+                        // copy so we can modify it
+                        for (std::string otherSensor : sensorNames)
+                        {
+                            if (otherSensor == sensorName)
+                            {
+                                continue;
+                            }
+                            std::replace(otherSensor.begin(), otherSensor.end(),
+                                         ' ', '_');
+                            auto& config = SensorConfig[otherSensor];
+                            config.writepath = sensorPathIfacePair.first;
+                            // todo: un-hardcode this if there are fans with
+                            // different ranges
+                            config.max = 255;
+                            config.min = 0;
+                        }
+                    }
+                }
+                // if the sensors aren't available in the current state, don't
+                // add them to the configuration.
+                if (!sensorsAvailable)
+                {
+                    continue;
+                }
                 struct controller_info& info =
-                    conf[sdbusplus::message::variant_ns::get<std::string>(
-                        base.at("Name"))];
-                info.type = sdbusplus::message::variant_ns::get<std::string>(
-                    base.at("Class"));
+                    conf[variant_ns::get<std::string>(base.at("Name"))];
+                info.inputs = std::move(inputs);
+
+                info.type = variant_ns::get<std::string>(base.at("Class"));
                 // todo: auto generation yaml -> c script seems to discard this
                 // value for fans, verify this is okay
                 if (info.type == "fan")
@@ -354,67 +430,6 @@ void init(sdbusplus::bus::bus& bus)
                     VariantToFloatVisitor(), base.at("SlewNeg"));
                 info.pidInfo.slew_pos = mapbox::util::apply_visitor(
                     VariantToFloatVisitor(), base.at("SlewPos"));
-
-                std::vector<std::string> sensorNames =
-                    sdbusplus::message::variant_ns::get<
-                        std::vector<std::string>>(base.at("Inputs"));
-                auto findOutputs =
-                    base.find("Outputs"); // currently only fans have outputs
-                if (findOutputs != base.end())
-                {
-                    std::vector<std::string> outputs =
-                        sdbusplus::message::variant_ns::get<
-                            std::vector<std::string>>(findOutputs->second);
-                    sensorNames.insert(sensorNames.end(), outputs.begin(),
-                                       outputs.end());
-                }
-                for (const std::string& sensorName : sensorNames)
-                {
-                    std::string name = sensorName;
-                    // replace spaces with underscores to be legal on dbus
-                    std::replace(name.begin(), name.end(), ' ', '_');
-                    std::pair<std::string, std::string> sensorPathIfacePair;
-
-                    if (!findSensor(sensors, name, sensorPathIfacePair))
-                    {
-                        throw std::runtime_error(
-                            "Could not map configuration to sensor " + name);
-                    }
-                    if (sensorPathIfacePair.second == sensorInterface)
-                    {
-                        info.inputs.push_back(name);
-                        auto& config = SensorConfig[name];
-                        config.type =
-                            sdbusplus::message::variant_ns::get<std::string>(
-                                base.at("Class"));
-                        config.readpath = sensorPathIfacePair.first;
-                        // todo: maybe un-hardcode this if we run into slower
-                        // timeouts with sensors
-                        if (config.type == "temp")
-                        {
-                            config.timeout = 500;
-                        }
-                    }
-                    if (sensorPathIfacePair.second == pwmInterface)
-                    {
-                        // copy so we can modify it
-                        for (std::string otherSensor : sensorNames)
-                        {
-                            if (otherSensor == sensorName)
-                            {
-                                continue;
-                            }
-                            std::replace(otherSensor.begin(), otherSensor.end(),
-                                         ' ', '_');
-                            auto& config = SensorConfig[otherSensor];
-                            config.writepath = sensorPathIfacePair.first;
-                            // todo: un-hardcode this if there are fans with
-                            // different ranges
-                            config.max = 255;
-                            config.min = 0;
-                        }
-                    }
-                }
             }
         }
         auto findStepwise =
@@ -423,8 +438,7 @@ void init(sdbusplus::bus::bus& bus)
         {
             const auto& base = findStepwise->second;
             const std::vector<std::string>& zones =
-                sdbusplus::message::variant_ns::get<std::vector<std::string>>(
-                    base.at("Zones"));
+                variant_ns::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
                 auto it = std::find(zoneIndex.begin(), zoneIndex.end(), zone);
@@ -439,9 +453,43 @@ void init(sdbusplus::bus::bus& bus)
                     index = zoneIndex.end() - it;
                 }
                 PIDConf& conf = ZoneConfig[index];
+
+                std::vector<std::string> inputs;
+                std::vector<std::string> sensorNames =
+                    variant_ns::get<std::vector<std::string>>(
+                        base.at("Inputs"));
+
+                bool sensorFound = sensorNames.size();
+                for (const std::string& sensorName : sensorNames)
+                {
+                    std::string name = sensorName;
+                    // replace spaces with underscores to be legal on dbus
+                    std::replace(name.begin(), name.end(), ' ', '_');
+                    std::pair<std::string, std::string> sensorPathIfacePair;
+
+                    if (!findSensor(sensors, name, sensorPathIfacePair))
+                    {
+                        sensorFound = false;
+                        break;
+                    }
+
+                    inputs.push_back(name);
+                    auto& config = SensorConfig[name];
+                    config.readpath = sensorPathIfacePair.first;
+                    config.type = "temp";
+                    // todo: maybe un-hardcode this if we run into slower
+                    // timeouts with sensors
+
+                    config.timeout = 500;
+                }
+                if (!sensorFound)
+                {
+                    continue;
+                }
                 struct controller_info& info =
-                    conf[sdbusplus::message::variant_ns::get<std::string>(
-                        base.at("Name"))];
+                    conf[variant_ns::get<std::string>(base.at("Name"))];
+                info.inputs = std::move(inputs);
+
                 info.type = "stepwise";
                 info.stepwiseInfo.ts = 1.0; // currently unused
                 info.stepwiseInfo.positiveHysteresis = 0.0;
@@ -461,8 +509,7 @@ void init(sdbusplus::bus::bus& bus)
                                                     findNegHyst->second);
                 }
                 std::vector<double> readings =
-                    sdbusplus::message::variant_ns::get<std::vector<double>>(
-                        base.at("Reading"));
+                    variant_ns::get<std::vector<double>>(base.at("Reading"));
                 if (readings.size() > ec::maxStepwisePoints)
                 {
                     throw std::invalid_argument("Too many stepwise points.");
@@ -480,8 +527,7 @@ void init(sdbusplus::bus::bus& bus)
                         std::numeric_limits<float>::quiet_NaN();
                 }
                 std::vector<double> outputs =
-                    sdbusplus::message::variant_ns::get<std::vector<double>>(
-                        base.at("Output"));
+                    variant_ns::get<std::vector<double>>(base.at("Output"));
                 if (readings.size() != outputs.size())
                 {
                     throw std::invalid_argument(
@@ -494,41 +540,20 @@ void init(sdbusplus::bus::bus& bus)
                     info.stepwiseInfo.output[outputs.size()] =
                         std::numeric_limits<float>::quiet_NaN();
                 }
-
-                std::vector<std::string> sensorNames =
-                    sdbusplus::message::variant_ns::get<
-                        std::vector<std::string>>(base.at("Inputs"));
-
-                for (const std::string& sensorName : sensorNames)
-                {
-                    std::string name = sensorName;
-                    // replace spaces with underscores to be legal on dbus
-                    std::replace(name.begin(), name.end(), ' ', '_');
-                    std::pair<std::string, std::string> sensorPathIfacePair;
-
-                    if (!findSensor(sensors, name, sensorPathIfacePair))
-                    {
-                        // todo(james): if we can't find a sensor, delete it
-                        // from config, we'll find it on rescan
-                        throw std::runtime_error(
-                            "Could not map configuration to sensor " + name);
-                    }
-
-                    info.inputs.push_back(name);
-                    auto& config = SensorConfig[name];
-                    config.readpath = sensorPathIfacePair.first;
-                    config.type = "temp";
-                    // todo: maybe un-hardcode this if we run into slower
-                    // timeouts with sensors
-
-                    config.timeout = 500;
-                }
             }
         }
     }
     if (DEBUG)
     {
         debugPrint();
+    }
+    if (ZoneConfig.empty())
+    {
+        std::cerr << "No fan zones, application pausing until reboot\n";
+        while (1)
+        {
+            bus.process_discard();
+        }
     }
 }
 } // namespace dbus_configuration
