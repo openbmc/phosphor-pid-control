@@ -73,8 +73,8 @@ AC_ARG_ENABLE([configure-dbus],
     AS_HELP_STRING([--enable-configure-dbus], [Enable configuring pid from D-Bus.]))
 AM_CONDITIONAL(CONFIGURE_DBUS, [test "x$enable_configure_dbus" = "xyes"])
 AS_IF([test "x$enable_configure_dbus" = "xyes"],
-    [AC_DEFINE(configureDbus, [1], [Read configuration from D-Bus.])],
-    [AC_DEFINE(configureDbus, [0], [Do not read configuration from D-Bus.])]
+    [AC_DEFINE(CONFIGURE_DBUS, [1], [Read configuration from D-Bus.])],
+    [AC_DEFINE(CONFIGURE_DBUS, [0], [Do not read configuration from D-Bus.])]
 )
 
 # Create configured output
