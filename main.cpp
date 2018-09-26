@@ -41,7 +41,7 @@
 #include <unordered_map>
 #include <vector>
 
-#if CONFIGURE_DBUS
+#if configureDbus
 #include "dbus/dbusconfiguration.hpp"
 #endif
 
@@ -87,7 +87,7 @@ int main(int argc, char* argv[])
     }
 
     auto ModeControlBus = sdbusplus::bus::new_default();
-#if CONFIGURE_DBUS
+#if configureDbus
     {
         dbus_configuration::init(ModeControlBus);
     }
