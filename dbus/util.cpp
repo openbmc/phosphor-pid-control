@@ -1,10 +1,11 @@
 #include "dbus/util.hpp"
 
+#include <cmath>
 #include <iostream>
 #include <set>
 
 using Property = std::string;
-using Value = sdbusplus::message::variant<int64_t, double, std::string>;
+using Value = sdbusplus::message::variant<int64_t, double, std::string, bool>;
 using PropertyMap = std::map<Property, Value>;
 
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
@@ -87,6 +88,50 @@ void DbusHelper::GetProperties(sdbusplus::bus::bus& bus,
         mapbox::util::apply_visitor(VariantToDoubleVisitor(), propMap["Value"]);
 
     return;
+}
+
+bool DbusHelper::ThresholdsAsserted(sdbusplus::bus::bus& bus,
+                                    const std::string& service,
+                                    const std::string& path)
+{
+
+    auto critical = bus.new_method_call(service.c_str(), path.c_str(),
+                                        propertiesintf.c_str(), "GetAll");
+    critical.append(criticalThreshInf);
+    PropertyMap criticalMap;
+
+    try
+    {
+        auto msg = bus.call(critical);
+        if (!msg.is_method_error())
+        {
+            msg.read(criticalMap);
+        }
+    }
+    catch (sdbusplus::exception_t&)
+    {
+        // do nothing, sensors don't have to expose critical thresholds
+        return false;
+    }
+
+    auto findCriticalLow = criticalMap.find("CriticalAlarmLow");
+    auto findCriticalHigh = criticalMap.find("CriticalAlarmHigh");
+
+    bool asserted = false;
+    if (findCriticalLow != criticalMap.end())
+    {
+        asserted =
+            sdbusplus::message::variant_ns::get<bool>(findCriticalLow->second);
+    }
+
+    // as we are catching properties changed, a sensor could theoretically jump
+    // from one threshold to the other in one event, so check both thresholds
+    if (!asserted && findCriticalHigh != criticalMap.end())
+    {
+        asserted =
+            sdbusplus::message::variant_ns::get<bool>(findCriticalHigh->second);
+    }
+    return asserted;
 }
 
 std::string GetSensorPath(const std::string& type, const std::string& id)

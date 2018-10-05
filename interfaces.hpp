@@ -29,6 +29,11 @@ class ReadInterface
     }
 
     virtual ReadReturn read(void) = 0;
+
+    virtual bool getFailed(void) const
+    {
+        return false;
+    }
 };
 
 /*

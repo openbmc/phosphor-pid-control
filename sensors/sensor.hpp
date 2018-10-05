@@ -21,6 +21,10 @@ class Sensor
 
     virtual ReadReturn read(void) = 0;
     virtual void write(double value) = 0;
+    virtual bool getFailed(void)
+    {
+        return false;
+    };
 
     std::string GetName(void) const
     {
