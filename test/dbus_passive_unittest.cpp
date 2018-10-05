@@ -57,6 +57,8 @@ TEST(DbusPassiveTest, BoringConstructorTest)
                 prop->value = 10;
                 prop->unit = "x";
             }));
+    EXPECT_CALL(helper, ThresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        .WillOnce(Return(false));
 
     DbusPassive(bus_mock, type, id, &helper);
     // Success
@@ -81,6 +83,8 @@ class DbusPassiveTestObj : public ::testing::Test
                     prop->value = _value;
                     prop->unit = "x";
                 }));
+        EXPECT_CALL(helper, ThresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+            .WillOnce(Return(false));
 
         ri = DbusPassive::CreateDbusPassive(bus_mock, type, id, &helper);
         passive = reinterpret_cast<DbusPassive*>(ri.get());
@@ -273,4 +277,152 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
 
     ReadReturn r = passive->read();
     EXPECT_EQ(0.01, r.value);
+}
+TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdAssert)
+{
+
+    // Verifies when a threshold is crossed the sensor goes into error state
+    EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
+        .WillOnce(Return(nullptr));
+    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+
+    const char* criticalAlarm = "CriticalAlarmHigh";
+    bool alarm = true;
+    const char* intf = "xyz.openbmc_project.Sensor.Threshold.Critical";
+
+    passive->setFailed(false);
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            // Read the first parameter, the string.
+            *s = intf;
+            return 0;
+        }))
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            *s = criticalAlarm;
+            // Read the string in the pair (dictionary).
+            return 0;
+        }));
+
+    // std::map
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'a', StrEq("{sv}")))
+        .WillOnce(Return(0));
+
+    // while !at_end()
+    EXPECT_CALL(sdbus_mock, sd_bus_message_at_end(IsNull(), 0))
+        .WillOnce(Return(0))
+        .WillOnce(Return(1)); // So it exits the loop after reading one pair.
+
+    // std::pair
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'e', StrEq("sv")))
+        .WillOnce(Return(0));
+
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("x")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("d")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(1));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(0));
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            bool* s = static_cast<bool*>(p);
+            *s = alarm;
+            return 0;
+        }));
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_exit_container(IsNull()))
+        .WillOnce(Return(0))  /* variant. */
+        .WillOnce(Return(0))  /* std::pair */
+        .WillOnce(Return(0)); /* std::map */
+
+    int rv = HandleSensorValue(msg, passive);
+    EXPECT_EQ(rv, 0); // It's always 0.
+    bool failed = passive->getFailed();
+    EXPECT_EQ(failed, true);
+}
+
+TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
+{
+
+    // Verifies when a threshold is deasserted a failed sensor goes back into
+    // the normal state
+    EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
+        .WillOnce(Return(nullptr));
+    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+
+    const char* criticalAlarm = "CriticalAlarmHigh";
+    bool alarm = false;
+    const char* intf = "xyz.openbmc_project.Sensor.Threshold.Critical";
+
+    passive->setFailed(true);
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            // Read the first parameter, the string.
+            *s = intf;
+            return 0;
+        }))
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            *s = criticalAlarm;
+            // Read the string in the pair (dictionary).
+            return 0;
+        }));
+
+    // std::map
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'a', StrEq("{sv}")))
+        .WillOnce(Return(0));
+
+    // while !at_end()
+    EXPECT_CALL(sdbus_mock, sd_bus_message_at_end(IsNull(), 0))
+        .WillOnce(Return(0))
+        .WillOnce(Return(1)); // So it exits the loop after reading one pair.
+
+    // std::pair
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'e', StrEq("sv")))
+        .WillOnce(Return(0));
+
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("x")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("d")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(1));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(0));
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
+        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+            bool* s = static_cast<bool*>(p);
+            *s = alarm;
+            return 0;
+        }));
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_exit_container(IsNull()))
+        .WillOnce(Return(0))  /* variant. */
+        .WillOnce(Return(0))  /* std::pair */
+        .WillOnce(Return(0)); /* std::map */
+
+    int rv = HandleSensorValue(msg, passive);
+    EXPECT_EQ(rv, 0); // It's always 0.
+    bool failed = passive->getFailed();
+    EXPECT_EQ(failed, false);
 }

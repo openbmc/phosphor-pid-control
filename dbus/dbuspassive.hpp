@@ -41,8 +41,10 @@ class DbusPassive : public ReadInterface
                 const std::string& id, DbusHelperInterface* helper);
 
     ReadReturn read(void) override;
+    bool getFailed(void) const override;
 
     void setValue(double value);
+    void setFailed(bool value);
     int64_t getScale(void);
     std::string getId(void);
 
@@ -55,6 +57,7 @@ class DbusPassive : public ReadInterface
 
     std::mutex _lock;
     double _value = 0;
+    bool _failed = false;
     /* The last time the value was refreshed, not necessarily changed. */
     std::chrono::high_resolution_clock::time_point _updated;
 };
