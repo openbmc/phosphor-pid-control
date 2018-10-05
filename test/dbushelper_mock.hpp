@@ -18,4 +18,8 @@ class DbusHelperMock : public DbusHelperInterface
     MOCK_METHOD4(GetProperties,
                  void(sdbusplus::bus::bus&, const std::string&,
                       const std::string&, struct SensorProperties*));
+
+    MOCK_METHOD3(ThresholdsAsserted,
+                 bool(sdbusplus::bus::bus& bus, const std::string& service,
+                      const std::string& path));
 };

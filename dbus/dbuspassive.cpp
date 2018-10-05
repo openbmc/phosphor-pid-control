@@ -58,6 +58,7 @@ DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
     _scale = settings.scale;
     _value = settings.value * pow(10, _scale);
     _updated = std::chrono::high_resolution_clock::now();
+    _failed = _helper->ThresholdsAsserted(tempBus, service, path);
 }
 
 ReadReturn DbusPassive::read(void)
@@ -77,6 +78,16 @@ void DbusPassive::setValue(double value)
     _updated = std::chrono::high_resolution_clock::now();
 }
 
+bool DbusPassive::getFailed(void) const
+{
+    return _failed;
+}
+
+void DbusPassive::setFailed(bool value)
+{
+    _failed = value;
+}
+
 int64_t DbusPassive::getScale(void)
 {
     return _scale;
@@ -90,7 +101,8 @@ std::string DbusPassive::getId(void)
 int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 {
     std::string msgSensor;
-    std::map<std::string, sdbusplus::message::variant<int64_t, double>> msgData;
+    std::map<std::string, sdbusplus::message::variant<int64_t, double, bool>>
+        msgData;
 
     msg.read(msgSensor, msgData);
 
@@ -106,6 +118,32 @@ int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 
             owner->setValue(value);
         }
+    }
+    else if (msgSensor == "xyz.openbmc_project.Sensor.Threshold.Critical")
+    {
+        auto criticalAlarmLow = msgData.find("CriticalAlarmLow");
+        auto criticalAlarmHigh = msgData.find("CriticalAlarmHigh");
+        if (criticalAlarmHigh == msgData.end() &&
+            criticalAlarmLow == msgData.end())
+        {
+            return 0;
+        }
+
+        bool asserted = false;
+        if (criticalAlarmLow != msgData.end())
+        {
+            asserted = sdbusplus::message::variant_ns::get<bool>(
+                criticalAlarmLow->second);
+        }
+
+        // checking both as in theory you could de-assert one threshold and
+        // assert the other at the same moment
+        if (!asserted && criticalAlarmHigh != msgData.end())
+        {
+            asserted = sdbusplus::message::variant_ns::get<bool>(
+                criticalAlarmHigh->second);
+        }
+        owner->setFailed(asserted);
     }
 
     return 0;
