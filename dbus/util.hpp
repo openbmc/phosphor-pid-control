@@ -1,5 +1,6 @@
 #pragma once
 
+#include <limits>
 #include <sdbusplus/bus.hpp>
 
 struct SensorProperties
@@ -9,7 +10,15 @@ struct SensorProperties
     std::string unit;
 };
 
+struct SensorThresholds
+{
+    double lowerThreshold = std::numeric_limits<double>::quiet_NaN();
+    double upperThreshold = std::numeric_limits<double>::quiet_NaN();
+};
+
 const std::string sensorintf = "xyz.openbmc_project.Sensor.Value";
+const std::string criticalThreshInf =
+    "xyz.openbmc_project.Sensor.Threshold.Critical";
 const std::string propertiesintf = "org.freedesktop.DBus.Properties";
 
 class DbusHelperInterface
@@ -34,6 +43,16 @@ class DbusHelperInterface
                                const std::string& service,
                                const std::string& path,
                                struct SensorProperties* prop) = 0;
+
+    /** @brief Get Critical Threshold current assert status
+     *
+     * @param[in] bus - A bus to use for the call.
+     * @param[in] service - The service providing the interface.
+     * @param[in] path - The dbus path.
+     */
+    virtual bool ThresholdsAsserted(sdbusplus::bus::bus& bus,
+                                    const std::string& service,
+                                    const std::string& path) = 0;
 };
 
 class DbusHelper : public DbusHelperInterface
@@ -52,6 +71,10 @@ class DbusHelper : public DbusHelperInterface
     void GetProperties(sdbusplus::bus::bus& bus, const std::string& service,
                        const std::string& path,
                        struct SensorProperties* prop) override;
+
+    bool ThresholdsAsserted(sdbusplus::bus::bus& bus,
+                            const std::string& service,
+                            const std::string& path) override;
 };
 
 std::string GetSensorPath(const std::string& type, const std::string& id);

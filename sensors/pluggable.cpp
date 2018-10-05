@@ -32,3 +32,8 @@ void PluggableSensor::write(double value)
 {
     _writer->write(value);
 }
+
+bool PluggableSensor::getFailed(void)
+{
+    return _reader->getFailed();
+}
