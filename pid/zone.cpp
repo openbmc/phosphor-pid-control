@@ -245,14 +245,19 @@ void PIDZone::updateSensors(void)
         auto sensor = _mgr.getSensor(t);
         ReadReturn r = sensor->read();
         int64_t timeout = sensor->GetTimeout();
+        bool failed = sensor->getFailed();
 
         _cachedValuesByName[t] = r.value;
         tstamp then = r.updated;
 
+        if (failed)
+        {
+            _failSafeSensors.insert(t);
+        }
         /* Only go into failsafe if the timeout is set for
          * the sensor.
          */
-        if (timeout > 0)
+        else if (timeout > 0)
         {
             auto duration =
                 duration_cast<std::chrono::seconds>(now - then).count();
