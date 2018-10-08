@@ -41,6 +41,11 @@ void DbusWritePercent::write(double value)
     float range = maximum - minimum;
     float offset = range * value;
     float ovalue = offset + minimum;
+
+    if (oldValue == static_cast<int64_t>(ovalue))
+    {
+        return;
+    }
     initBus();
     auto mesg =
         writeBus->new_method_call(connectionName.c_str(), path.c_str(),
@@ -52,11 +57,16 @@ void DbusWritePercent::write(double value)
     {
         std::cerr << "Error sending message to " << path << "\n";
     }
+    oldValue = static_cast<int64_t>(ovalue);
     return;
 }
 
 void DbusWrite::write(double value)
 {
+    if (oldValue == static_cast<int64_t>(value))
+    {
+        return;
+    }
     initBus();
     auto mesg =
         writeBus->new_method_call(connectionName.c_str(), path.c_str(),
@@ -68,6 +78,6 @@ void DbusWrite::write(double value)
     {
         std::cerr << "Error sending message to " << path << "\n";
     }
-
+    oldValue = static_cast<int64_t>(value);
     return;
 }
