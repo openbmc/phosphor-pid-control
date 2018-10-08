@@ -41,6 +41,7 @@ class DbusWritePercent : public WriteInterface
   private:
     std::string path;
     std::string connectionName;
+    int64_t oldValue = -1;
 };
 
 class DbusWrite : public WriteInterface
@@ -60,4 +61,5 @@ class DbusWrite : public WriteInterface
   private:
     std::string path;
     std::string connectionName;
+    int64_t oldValue = -1;
 };
