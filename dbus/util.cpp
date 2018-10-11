@@ -83,8 +83,8 @@ void DbusHelper::GetProperties(sdbusplus::bus::bus& bus,
         prop->scale = 0;
     }
 
-    prop->value =
-        mapbox::util::apply_visitor(VariantToDoubleVisitor(), propMap["Value"]);
+    prop->value = sdbusplus::message::variant_ns::apply_visitor(
+        VariantToDoubleVisitor(), propMap["Value"]);
 
     return;
 }
