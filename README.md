@@ -2,7 +2,7 @@
 
 [TOC]
 
-## Objective {#objective}
+## Objective
 
 Develop a tray level fan control system that will use exhaust temperature and
 other machine temperature information to control fan speeds in order to keep
@@ -11,7 +11,7 @@ machines within acceptable operating conditions.
 Effectively porting the Chromium EC thermal code to run on the BMC and use the
 OpenBMC dbus namespace and IPMI commands.
 
-## Background {#background}
+## Background
 
 Recent server systems come with a general secondary processing system attached
 for the purpose of monitoring and control, generally referred to as a BMC[^2].
@@ -33,7 +33,7 @@ IPMI allows for OEM commands to provide custom information flow or system
 control with a BMC. OEM commands are already lined up for certain other accesses
 routed through the BMC, and can be upstreamed for others to use.
 
-## Overview {#overview}
+## Overview
 
 The BMC will run a daemon that controls the fans by pre-defined zones. The
 application will use thermal control, such that each defined zone is kept
@@ -50,7 +50,7 @@ should be provided in case of failure or other unknown situation.
 The system will run a control loop for each zone with the attempt to maintain
 the temperature within that zone within the margin for the devices specified.
 
-## Detailed Design {#detailed-design}
+## Detailed Design
 
 The software will run as a multi-threaded daemon that runs a control loop for
 each zone, and has a master thread which listens for dbus messages.  Each zone
@@ -62,7 +62,7 @@ will require at least one fan that it exclusively controls, however, zones can
 In this figure the communications channels between swampd and ipmid and
 phosphor-hwmon are laid out.
 
-### OpenBMC Upstream {#openbmc-upstream}
+### OpenBMC Upstream
 
 To be upstreamed to OpenBMC for use on open-power systems, we need to follow the
 OpenBMC code style specification[^9] and leverage the dbus framework for reading
@@ -79,7 +79,7 @@ controlling the fans only via specifying the RPM target, whereas the driver
 we're using for Quanta-Q71l (the first system) only allows writing PWM.  This
 can be controlled either directly or via dbus.
 
-### Zone Specification {#zone-specification}
+### Zone Specification
 
 A configuration file will need to exist for each board, likely in YAML[^12].
 Similar information will also be necessary for gsys, such that it knows what
@@ -96,7 +96,7 @@ factor and described in the configuration.
 
 The internal thermometers specified will be read via sysfs.
 
-#### A proposed configuration file: {#a-proposed-configuration-file}
+#### A proposed configuration file:
 
 ```
 {ZONEID}:
@@ -140,12 +140,12 @@ The internal thermometers specified will be read via sysfs.
       slew_positive: 0
 ```
 
-### Chassis Delta {#chassis-delta}
+### Chassis Delta
 
 Due to data center requirements, the delta between the outgoing air temperature
 and the environmental air temperature must be no greater than 15C.
 
-### IPMI Command Specification {#ipmi-command-specification}
+### IPMI Command Specification
 
 Gsys needs the ability to send to the BMC, the margin information on the devices
 that it knows how to read that the BMC cannot. There is no command in IPMI that
@@ -154,7 +154,7 @@ currently supports this use-case, therefore it will be added as an OEM command.
 The state of the BMC readable temperature sensors can be read through normal
 IPMI commands and is already supported.
 
-#### OEM Set Control {#oem-set-control}
+#### OEM Set Control
 
 Gsys needs to be able to set the control of the thermal system to either
 automatic or manual. When manual, the daemon will effectively wait to be told to
@@ -185,7 +185,7 @@ Byte | Purpose   | Value
 `04` | `padding` | `0x00`
 `07` | `Mode`    | `If Set, Value 1 == Manual Mode, 0 == Automatic Mode`
 
-#### OEM Get Failsafe Mode {#oem-get-failsafe-mode}
+#### OEM Get Failsafe Mode
 
 Gbmctool needs to be able to read back whether a zone is in failsafe mode. This
 setting is read-only because it's dynamically determined within Swampd per zone.
@@ -209,7 +209,7 @@ Byte | Purpose    | Value
 `04` | `padding`  | `0x00`
 `07` | `failsafe` | `1 == in Failsafe Mode, 0 not in failsafe mode`
 
-#### Set Sensor Value {#set-sensor-value}
+#### Set Sensor Value
 
 Gsys needs to update the thermal controller with information not necessarily
 available to the BMC. This will comprise of a list of temperature (or margin?)
@@ -217,17 +217,17 @@ sensors that are updated by the set sensor command. Because they don't represent
 real sensors in the system, the set sensor handler can simply broadcast the
 update as a properties update on dbus when it receives the command over IPMI.
 
-#### Set Fan PWM {#set-fan-pwm}
+#### Set Fan PWM
 
 Gsys can override a specific fan's PWM when we implement the set sensor IPMI
 command pathway.
 
-#### Get Fan Tach {#get-fan-tach}
+#### Get Fan Tach
 
 Gsys can read fan_tach through the normal IPMI interface presently exported for
 sensors.
 
-### Sensor Update Loop {#sensor-update-loop}
+### Sensor Update Loop
 
 The plan is to listen for fan_tach updates for each fan in a background thread.
 This will receive an update from phosphor-hwmon each time it updates any sensor
@@ -238,7 +238,7 @@ second. We'll be updating phosphor-hwmon to sleep for a shorter period -- how
 short though is still TBD. We'll also be updating phosphor-hwmon to support pwm
 as a target.
 
-### Thermal Control Loops {#thermal-control-loops}
+### Thermal Control Loops
 
 Each zone will require a control loop that monitors the associated thermals and
 controls the fan(s). The EC PID loop is designed to hit the fans 10 times per
@@ -249,7 +249,7 @@ the system to its knees -- in that all CPU cycles would be spent reading the
 fans. TBD on how frequently we'll be reading the fan sensors and the impact this
 will have.
 
-### Main Thread {#main-thread}
+### Main Thread
 
 The main thread will manage the other threads, and process the initial
 configuration files. It will also register a dbus handler for the OEM message.
@@ -265,7 +265,7 @@ EXTRA_OEMAKE_append_YOUR_MACHINE = " CXXFLAGS='${CXXFLAGS} -D__TUNING_LOGGING__'
 
 To the recipe.
 
-## Project Information {#project-information}
+## Project Information
 
 This project is designed to be a daemon running within the OpenBMC environment.
 It will use a well-defined configuration file to control the temperature of the
@@ -273,18 +273,18 @@ tray components to keep them within operating conditions. It will require
 coordinate with gsys and OpenBMC. Providing a host-side service upstream to talk
 to the BMC is beyond the scope of this project.
 
-## Security Considerations {#security-considerations}
+## Security Considerations
 
 A rogue client on the host could send invalid thermal information causing
 physical damage to the system. There will be an effort to sanity check all input
 from gsys to alleviate this concern.
 
-## Privacy Considerations {#privacy-considerations}
+## Privacy Considerations
 
 This device holds no user data, however, you could profile the types of jobs
 executed on the server by watching its temperatures.
 
-## Testing Plan {#testing-plan}
+## Testing Plan
 
 Testing individual code logic will be handled through unit-tests, however some
 pieces of code rely on abstractions such that we can swap out dbus with
