@@ -298,9 +298,9 @@ void init(sdbusplus::bus::bus& bus)
             }
 
             auto& details = ZoneDetailsConfig[index];
-            details.minthermalrpm = mapbox::util::apply_visitor(
+            details.minthermalrpm = variant_ns::apply_visitor(
                 VariantToFloatVisitor(), zone.at("MinThermalRpm"));
-            details.failsafepercent = mapbox::util::apply_visitor(
+            details.failsafepercent = variant_ns::apply_visitor(
                 VariantToFloatVisitor(), zone.at("FailSafePercent"));
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
@@ -406,29 +406,29 @@ void init(sdbusplus::bus::bus& bus)
                 }
                 else
                 {
-                    info.setpoint = mapbox::util::apply_visitor(
+                    info.setpoint = variant_ns::apply_visitor(
                         VariantToFloatVisitor(), base.at("SetPoint"));
                 }
                 info.pidInfo.ts = 1.0; // currently unused
-                info.pidInfo.p_c = mapbox::util::apply_visitor(
+                info.pidInfo.p_c = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("PCoefficient"));
-                info.pidInfo.i_c = mapbox::util::apply_visitor(
+                info.pidInfo.i_c = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("ICoefficient"));
-                info.pidInfo.ff_off = mapbox::util::apply_visitor(
+                info.pidInfo.ff_off = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("FFOffCoefficient"));
-                info.pidInfo.ff_gain = mapbox::util::apply_visitor(
+                info.pidInfo.ff_gain = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("FFGainCoefficient"));
-                info.pidInfo.i_lim.max = mapbox::util::apply_visitor(
+                info.pidInfo.i_lim.max = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("ILimitMax"));
-                info.pidInfo.i_lim.min = mapbox::util::apply_visitor(
+                info.pidInfo.i_lim.min = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("ILimitMin"));
-                info.pidInfo.out_lim.max = mapbox::util::apply_visitor(
+                info.pidInfo.out_lim.max = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("OutLimitMax"));
-                info.pidInfo.out_lim.min = mapbox::util::apply_visitor(
+                info.pidInfo.out_lim.min = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("OutLimitMin"));
-                info.pidInfo.slew_neg = mapbox::util::apply_visitor(
+                info.pidInfo.slew_neg = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("SlewNeg"));
-                info.pidInfo.slew_pos = mapbox::util::apply_visitor(
+                info.pidInfo.slew_pos = variant_ns::apply_visitor(
                     VariantToFloatVisitor(), base.at("SlewPos"));
             }
         }
@@ -499,14 +499,14 @@ void init(sdbusplus::bus::bus& bus)
                 if (findPosHyst != base.end())
                 {
                     info.stepwiseInfo.positiveHysteresis =
-                        mapbox::util::apply_visitor(VariantToFloatVisitor(),
-                                                    findPosHyst->second);
+                        variant_ns::apply_visitor(VariantToFloatVisitor(),
+                                                  findPosHyst->second);
                 }
                 if (findNegHyst != base.end())
                 {
                     info.stepwiseInfo.positiveHysteresis =
-                        mapbox::util::apply_visitor(VariantToFloatVisitor(),
-                                                    findNegHyst->second);
+                        variant_ns::apply_visitor(VariantToFloatVisitor(),
+                                                  findNegHyst->second);
                 }
                 std::vector<double> readings =
                     variant_ns::get<std::vector<double>>(base.at("Reading"));
