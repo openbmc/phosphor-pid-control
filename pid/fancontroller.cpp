@@ -41,7 +41,6 @@ std::unique_ptr<PIDController>
 
 float FanController::input_proc(void)
 {
-    float sum = 0;
     double value = 0;
     std::vector<int64_t> values;
     std::vector<int64_t>::iterator result;
@@ -62,7 +61,6 @@ float FanController::input_proc(void)
             if (value > 0)
             {
                 values.push_back(value);
-                sum += value;
             }
         }
     }
@@ -76,14 +74,9 @@ float FanController::input_proc(void)
     value = 0;
     if (values.size() > 0)
     {
-        /* When this is a configuration option in a later update, this code
-         * will be updated.
-         */
-        // value = sum / _inputs.size();
-
         /* the fan PID algorithm was unstable with average, and seemed to work
          * better with minimum.  I had considered making this choice a variable
-         * in the configuration, and I will.
+         * in the configuration, and it's a nice-to-have..
          */
         result = std::min_element(values.begin(), values.end());
         value = *result;

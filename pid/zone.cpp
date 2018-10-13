@@ -132,13 +132,15 @@ void PIDZone::determineMaxRPMRequest(void)
     static constexpr auto setpointpath = "/etc/thermal.d/set-point";
     try
     {
-        int value;
         std::ifstream ifs;
         ifs.open(setpointpath);
         if (ifs.good())
         {
+            int value;
             ifs >> value;
-            max = value; // expecting RPM set-point, not pwm%
+
+            /* expecting RPM set-point, not pwm% */
+            max = static_cast<float>(value);
         }
     }
     catch (const std::exception& e)

@@ -44,7 +44,7 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
 {
     float error;
 
-    float p_term = 0.0f;
+    float p_term;
     float i_term = 0.0f;
     float ff_term = 0.0f;
 

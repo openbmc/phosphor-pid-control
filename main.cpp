@@ -55,7 +55,6 @@ extern std::map<int64_t, struct zone> ZoneDetailsConfig;
 int main(int argc, char* argv[])
 {
     int rc = 0;
-    int c;
     std::string configPath = "";
 
     while (1)
@@ -68,7 +67,7 @@ int main(int argc, char* argv[])
         // clang-format on
 
         int option_index = 0;
-        c = getopt_long(argc, argv, "c:", long_options, &option_index);
+        int c = getopt_long(argc, argv, "c:", long_options, &option_index);
 
         if (c == -1)
         {

@@ -11,7 +11,8 @@
 class Sensor
 {
   public:
-    Sensor(std::string name, int64_t timeout) : _name(name), _timeout(timeout)
+    Sensor(const std::string& name, int64_t timeout) :
+        _name(name), _timeout(timeout)
     {
     }
 
