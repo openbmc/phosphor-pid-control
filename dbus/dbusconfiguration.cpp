@@ -14,6 +14,7 @@
 // limitations under the License.
 */
 
+#include <algorithm>
 #include <chrono>
 #include <conf.hpp>
 #include <dbus/util.hpp>
@@ -52,14 +53,16 @@ bool findSensor(const std::unordered_map<std::string, std::string>& sensors,
                 const std::string& search,
                 std::pair<std::string, std::string>& sensor)
 {
-    for (const auto& s : sensors)
+    auto found =
+        std::find_if(sensors.begin(), sensors.end(), [&search](const auto& s) {
+            return (s.first.find(search) != std::string::npos);
+        });
+    if (found != sensors.end())
     {
-        if (s.first.find(search) != std::string::npos)
-        {
-            sensor = s;
-            return true;
-        }
+        sensor = *found;
+        return true;
     }
+
     return false;
 }
 
