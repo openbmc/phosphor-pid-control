@@ -14,10 +14,11 @@
 // limitations under the License.
 */
 
+#include "conf.hpp"
+#include "dbus/util.hpp"
+
 #include <algorithm>
 #include <chrono>
-#include <conf.hpp>
-#include <dbus/util.hpp>
 #include <functional>
 #include <iostream>
 #include <sdbusplus/bus.hpp>

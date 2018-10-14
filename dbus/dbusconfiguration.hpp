@@ -15,7 +15,8 @@
 */
 
 #pragma once
-#include <conf.hpp>
+#include "conf.hpp"
+
 #include <sdbusplus/bus.hpp>
 
 namespace dbus_configuration
