@@ -19,21 +19,21 @@
 #include <cstring>
 #include <iostream>
 
-void InitializePIDStruct(ec::pid_info_t* info, ec::pidinfo* initial)
+void InitializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
 {
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
-    info->ts = initial->ts;
-    info->p_c = initial->p_c;
-    info->i_c = initial->i_c;
-    info->ff_off = initial->ff_off;
-    info->ff_gain = initial->ff_gain;
-    info->i_lim.min = initial->i_lim.min;
-    info->i_lim.max = initial->i_lim.max;
-    info->out_lim.min = initial->out_lim.min;
-    info->out_lim.max = initial->out_lim.max;
-    info->slew_neg = initial->slew_neg;
-    info->slew_pos = initial->slew_pos;
+    info->ts = initial.ts;
+    info->p_c = initial.p_c;
+    info->i_c = initial.i_c;
+    info->ff_off = initial.ff_off;
+    info->ff_gain = initial.ff_gain;
+    info->i_lim.min = initial.i_lim.min;
+    info->i_lim.max = initial.i_lim.max;
+    info->out_lim.min = initial.out_lim.min;
+    info->out_lim.max = initial.out_lim.max;
+    info->slew_neg = initial.slew_neg;
+    info->slew_pos = initial.slew_pos;
 }
 
 void DumpPIDStruct(ec::pid_info_t* info)

@@ -17,7 +17,7 @@ class ThermalController : public PIDController
     static std::unique_ptr<PIDController>
         CreateThermalPid(ZoneInterface* owner, const std::string& id,
                          const std::vector<std::string>& inputs, float setpoint,
-                         ec::pidinfo initial);
+                         const ec::pidinfo& initial);
 
     ThermalController(const std::string& id,
                       const std::vector<std::string>& inputs,

@@ -25,7 +25,7 @@
 std::unique_ptr<PIDController>
     FanController::CreateFanPid(ZoneInterface* owner, const std::string& id,
                                 const std::vector<std::string>& inputs,
-                                ec::pidinfo initial)
+                                const ec::pidinfo& initial)
 {
     if (inputs.size() == 0)
     {
@@ -34,7 +34,7 @@ std::unique_ptr<PIDController>
     auto fan = std::make_unique<FanController>(id, inputs, owner);
     ec::pid_info_t* info = fan->get_pid_info();
 
-    InitializePIDStruct(info, &initial);
+    InitializePIDStruct(info, initial);
 
     return fan;
 }
