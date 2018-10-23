@@ -24,7 +24,7 @@
 
 std::unique_ptr<PIDController>
     FanController::CreateFanPid(ZoneInterface* owner, const std::string& id,
-                                std::vector<std::string>& inputs,
+                                const std::vector<std::string>& inputs,
                                 ec::pidinfo initial)
 {
     if (inputs.size() == 0)
@@ -130,7 +130,7 @@ void FanController::output_proc(float value)
     percent /= 100;
 
     // PidSensorMap for writing.
-    for (auto& it : _inputs)
+    for (const auto& it : _inputs)
     {
         auto sensor = _owner->getSensor(it);
         sensor->write(static_cast<double>(percent));

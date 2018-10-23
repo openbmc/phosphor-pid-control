@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
      * however, a system isn't likely going to have more than a couple zones.
      * If it only has a couple zones, then this is fine.
      */
-    for (auto& i : zones)
+    for (const auto& i : zones)
     {
         std::cerr << "pushing zone" << std::endl;
         zoneThreads.push_back(std::thread(PIDControlThread, i.second.get()));

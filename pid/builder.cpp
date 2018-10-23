@@ -42,7 +42,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
 {
     std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones;
 
-    for (auto& zi : zonePids)
+    for (const auto& zi : zonePids)
     {
         auto zoneId = static_cast<int64_t>(zi.first);
         /* The above shouldn't be necessary but is, and I am having trouble
@@ -60,7 +60,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             throw std::runtime_error(err);
         }
 
-        PIDConf& PIDConfig = zi.second;
+        const PIDConf& PIDConfig = zi.second;
 
         auto zone = std::make_unique<PIDZone>(
             zoneId, zoneConf->second.minthermalrpm,
@@ -70,11 +70,11 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
         std::cerr << "Zone Id: " << zone->getZoneId() << "\n";
 
         // For each PID create a Controller and a Sensor.
-        for (auto& pit : PIDConfig)
+        for (const auto& pit : PIDConfig)
         {
             std::vector<std::string> inputs;
             std::string name = pit.first;
-            struct controller_info* info = &pit.second;
+            const struct controller_info* info = &pit.second;
 
             std::cerr << "PID name: " << name << "\n";
 
@@ -84,7 +84,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
              */
             if (info->type == "fan")
             {
-                for (auto i : info->inputs)
+                for (const auto& i : info->inputs)
                 {
                     inputs.push_back(i);
                     zone->addFanInput(i);
@@ -96,7 +96,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             }
             else if (info->type == "temp" || info->type == "margin")
             {
-                for (auto i : info->inputs)
+                for (const auto& i : info->inputs)
                 {
                     inputs.push_back(i);
                     zone->addThermalInput(i);
@@ -109,7 +109,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             }
             else if (info->type == "stepwise")
             {
-                for (auto& i : info->inputs)
+                for (const auto& i : info->inputs)
                 {
                     inputs.push_back(i);
                     zone->addThermalInput(i);
@@ -120,7 +120,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             }
 
             std::cerr << "inputs: ";
-            for (auto& i : inputs)
+            for (const auto& i : inputs)
             {
                 std::cerr << i << ", ";
             }

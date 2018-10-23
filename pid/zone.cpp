@@ -163,11 +163,11 @@ void PIDZone::initializeLog(void)
 
     _log << "epoch_ms,setpt";
 
-    for (auto& f : _fanInputs)
+    for (const auto& f : _fanInputs)
     {
         _log << "," << f;
     }
-    for (auto& t : _thermalInputs)
+    for (const auto& t : _thermalInputs)
     {
         _log << "," << t;
     }
@@ -210,7 +210,7 @@ void PIDZone::updateFanTelemetry(void)
     _log << "," << _maximumRPMSetPt;
 #endif
 
-    for (auto& f : _fanInputs)
+    for (const auto& f : _fanInputs)
     {
         auto sensor = _mgr.getSensor(f);
         ReadReturn r = sensor->read();
@@ -227,7 +227,7 @@ void PIDZone::updateFanTelemetry(void)
     }
 
 #ifdef __TUNING_LOGGING__
-    for (auto& t : _thermalInputs)
+    for (const auto& t : _thermalInputs)
     {
         _log << "," << _cachedValuesByName[t];
     }
@@ -242,7 +242,7 @@ void PIDZone::updateSensors(void)
     /* margin and temp are stored as temp */
     tstamp now = high_resolution_clock::now();
 
-    for (auto& t : _thermalInputs)
+    for (const auto& t : _thermalInputs)
     {
         auto sensor = _mgr.getSensor(t);
         ReadReturn r = sensor->read();
@@ -285,12 +285,12 @@ void PIDZone::updateSensors(void)
 
 void PIDZone::initializeCache(void)
 {
-    for (auto& f : _fanInputs)
+    for (const auto& f : _fanInputs)
     {
         _cachedValuesByName[f] = 0;
     }
 
-    for (auto& t : _thermalInputs)
+    for (const auto& t : _thermalInputs)
     {
         _cachedValuesByName[t] = 0;
 
@@ -302,7 +302,7 @@ void PIDZone::initializeCache(void)
 void PIDZone::dumpCache(void)
 {
     std::cerr << "Cache values now: \n";
-    for (auto& k : _cachedValuesByName)
+    for (const auto& k : _cachedValuesByName)
     {
         std::cerr << k.first << ": " << k.second << "\n";
     }

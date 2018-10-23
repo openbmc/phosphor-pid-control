@@ -75,7 +75,7 @@ void debugPrint(void)
     // print sensor config
     std::cout << "sensor config:\n";
     std::cout << "{\n";
-    for (auto& pair : SensorConfig)
+    for (const auto& pair : SensorConfig)
     {
 
         std::cout << "\t{" << pair.first << ",\n\t\t{";
@@ -89,7 +89,7 @@ void debugPrint(void)
     std::cout << "}\n\n";
     std::cout << "ZoneDetailsConfig\n";
     std::cout << "{\n";
-    for (auto& zone : ZoneDetailsConfig)
+    for (const auto& zone : ZoneDetailsConfig)
     {
         std::cout << "\t{" << zone.first << ",\n";
         std::cout << "\t\t{" << zone.second.minthermalrpm << ", ";
@@ -98,15 +98,15 @@ void debugPrint(void)
     std::cout << "}\n\n";
     std::cout << "ZoneConfig\n";
     std::cout << "{\n";
-    for (auto& zone : ZoneConfig)
+    for (const auto& zone : ZoneConfig)
     {
         std::cout << "\t{" << zone.first << "\n";
-        for (auto& pidconf : zone.second)
+        for (const auto& pidconf : zone.second)
         {
             std::cout << "\t\t{" << pidconf.first << ",\n";
             std::cout << "\t\t\t{" << pidconf.second.type << ",\n";
             std::cout << "\t\t\t{";
-            for (auto& input : pidconf.second.inputs)
+            for (const auto& input : pidconf.second.inputs)
             {
                 std::cout << "\n\t\t\t" << input << ",\n";
             }

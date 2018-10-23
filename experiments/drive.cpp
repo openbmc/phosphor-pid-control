@@ -243,7 +243,7 @@ int driveMain(void)
     tstamp tp = t1;
 
     /* Output the values and the timepoints as a time series for review. */
-    for (auto& t : series)
+    for (const auto& t : series)
     {
         tstamp ts = std::get<0>(t);
         int64_t n0 = std::get<1>(t);

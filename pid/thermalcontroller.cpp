@@ -21,7 +21,7 @@
 
 std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
     ZoneInterface* owner, const std::string& id,
-    std::vector<std::string>& inputs, float setpoint, ec::pidinfo initial)
+    const std::vector<std::string>& inputs, float setpoint, ec::pidinfo initial)
 {
     // ThermalController currently only supports precisely one input.
     if (inputs.size() != 1)

@@ -42,7 +42,7 @@ SensorManager BuildSensors(const std::map<std::string, struct sensor>& config)
     auto& HostSensorBus = mgmr.getHostBus();
     auto& PassiveListeningBus = mgmr.getPassiveBus();
 
-    for (auto& it : config)
+    for (const auto& it : config)
     {
         std::unique_ptr<ReadInterface> ri;
         std::unique_ptr<WriteInterface> wi;
