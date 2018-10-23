@@ -60,7 +60,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             throw std::runtime_error(err);
         }
 
-        const PIDConf& PIDConfig = zi.second;
+        const PIDConf& pidConfig = zi.second;
 
         auto zone = std::make_unique<PIDZone>(
             zoneId, zoneConf->second.minthermalrpm,
@@ -70,7 +70,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
         std::cerr << "Zone Id: " << zone->getZoneId() << "\n";
 
         // For each PID create a Controller and a Sensor.
-        for (const auto& pit : PIDConfig)
+        for (const auto& pit : pidConfig)
         {
             std::vector<std::string> inputs;
             std::string name = pit.first;
