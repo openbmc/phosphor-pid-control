@@ -27,22 +27,22 @@
 
 enum ManualSubCmd
 {
-    GET_CONTROL_STATE = 0,
-    SET_CONTROL_STATE = 1,
-    GET_FAILSAFE_STATE = 2,
+    getControlState = 0,
+    setControlState = 1,
+    getFailsafeState = 2,
 };
 
 struct FanCtrlRequest
 {
-    uint8_t command;
-    uint8_t zone;
+    uint8_t _command;
+    uint8_t _zone;
 } __attribute__((packed));
 
 struct FanCtrlRequestSet
 {
-    uint8_t command;
-    uint8_t zone;
-    uint8_t value;
+    uint8_t _command;
+    uint8_t _zone;
+    uint8_t _value;
 } __attribute__((packed));
 
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
@@ -57,7 +57,7 @@ using Value = sdbusplus::message::variant<bool>;
 using PropertyMap = std::map<Property, Value>;
 
 /* The following was copied directly from my manual thread handler. */
-static std::string GetControlPath(int8_t zone)
+static std::string getControlPath(int8_t zone)
 {
     return std::string(objectPath) + std::to_string(zone);
 }
@@ -72,10 +72,10 @@ static std::string GetControlPath(int8_t zone)
  * a{sv} 2 "Manual" b false "FailSafe" b false
  */
 
-static ipmi_ret_t GetFanCtrlProperty(uint8_t zoneId, bool* value,
+static ipmi_ret_t getFanCtrlProperty(uint8_t zoneId, bool* value,
                                      const std::string& property)
 {
-    std::string path = GetControlPath(zoneId);
+    std::string path = getControlPath(zoneId);
 
     auto propertyReadBus = sdbusplus::bus::new_default();
     auto pimMsg = propertyReadBus.new_method_call(busName, path.c_str(),
@@ -101,7 +101,7 @@ static ipmi_ret_t GetFanCtrlProperty(uint8_t zoneId, bool* value,
     return IPMI_CC_OK;
 }
 
-static ipmi_ret_t GetFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                        size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
@@ -132,7 +132,7 @@ static ipmi_ret_t GetFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
  *   <arg name="properties" direction="out" type="a{sv}"/>
  * </method>
  */
-static ipmi_ret_t GetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+static ipmi_ret_t getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                      size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
@@ -164,7 +164,7 @@ static ipmi_ret_t GetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
  *   <arg name="value" direction="in" type="v"/>
  * </method>
  */
-static ipmi_ret_t SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                      size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
@@ -182,9 +182,9 @@ static ipmi_ret_t SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     bool setValue = static_cast<bool>(request->value);
     Value v{setValue};
 
-    auto PropertyWriteBus = sdbusplus::bus::new_default();
+    auto propertyWriteBus = sdbusplus::bus::new_default();
 
-    std::string path = GetControlPath(request->zone);
+    std::string path = getControlPath(request->zone);
 
     auto pimMsg = PropertyWriteBus.new_method_call(busName, path.c_str(),
                                                    propertiesintf, "Set");
@@ -206,7 +206,7 @@ static ipmi_ret_t SetManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
 }
 
 /* Three command packages: get, set true, set false */
-static ipmi_ret_t ManualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
+static ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
                                     uint8_t* replyCmdBuf, size_t* dataLen)
 {
     ipmi_ret_t rc = IPMI_CC_OK;
@@ -221,11 +221,11 @@ static ipmi_ret_t ManualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
 
     switch (request->command)
     {
-        case GET_CONTROL_STATE:
+        case getControlState:
             return GetManualModeState(reqBuf, replyCmdBuf, dataLen);
-        case SET_CONTROL_STATE:
+        case setControlState:
             return SetManualModeState(reqBuf, replyCmdBuf, dataLen);
-        case GET_FAILSAFE_STATE:
+        case getFailsafeState:
             return GetFailsafeModeState(reqBuf, replyCmdBuf, dataLen);
         default:
             rc = IPMI_CC_INVALID;

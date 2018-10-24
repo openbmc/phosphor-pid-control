@@ -3,4 +3,4 @@
 /*
  * Given a path that optionally has a glob portion, fill it out.
  */
-std::string FixupPath(std::string original);
+std::string fixupPath(std::string original);

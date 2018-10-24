@@ -14,7 +14,7 @@ class StepwiseController : public Controller
 {
   public:
     static std::unique_ptr<Controller>
-        CreateStepwiseController(ZoneInterface* owner, const std::string& id,
+        createStepwiseController(ZoneInterface* owner, const std::string& id,
                                  const std::vector<std::string>& inputs,
                                  const ec::StepwiseInfo& initial);
 
@@ -37,7 +37,7 @@ class StepwiseController : public Controller
         return _id;
     }
 
-    ec::StepwiseInfo& get_stepwise_info(void)
+    ec::StepwiseInfo& getStepwiseInfo(void)
     {
         return _stepwise_info;
     }
@@ -47,9 +47,9 @@ class StepwiseController : public Controller
 
   private:
     // parameters
-    ec::StepwiseInfo _stepwise_info;
+    ec::StepwiseInfo _stepwiseInfo;
     std::string _id;
     std::vector<std::string> _inputs;
-    float lastInput = std::numeric_limits<float>::quiet_NaN();
-    float lastOutput = std::numeric_limits<float>::quiet_NaN();
+    float _lastInput = std::numeric_limits<float>::quiet_NaN();
+    float _lastOutput = std::numeric_limits<float>::quiet_NaN();
 };

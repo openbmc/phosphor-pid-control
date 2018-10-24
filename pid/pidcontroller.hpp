@@ -26,7 +26,7 @@ class PIDController : public Controller
     }
 
     virtual float input_proc(void) = 0;
-    virtual float setpt_proc(void) = 0;
+    virtual float setptProc(void) = 0;
     virtual void output_proc(float value) = 0;
 
     void process(void);
@@ -35,16 +35,16 @@ class PIDController : public Controller
     {
         return _id;
     }
-    float get_setpoint(void)
+    float getSetpoint(void)
     {
         return _setpoint;
     }
-    void set_setpoint(float setpoint)
+    void setSetpoint(float setpoint)
     {
         _setpoint = setpoint;
     }
 
-    ec::pid_info_t* get_pid_info(void)
+    ec::pid_info_t* getPidInfo(void)
     {
         return &_pid_info;
     }
@@ -54,7 +54,7 @@ class PIDController : public Controller
 
   private:
     // parameters
-    ec::pid_info_t _pid_info;
+    ec::pid_info_t _pidInfo;
     float _setpoint;
     std::string _id;
 };

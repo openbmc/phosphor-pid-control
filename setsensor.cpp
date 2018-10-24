@@ -20,13 +20,13 @@ using sValue = sdbusplus::message::variant<int64_t>;
 
 static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
 
-static void SetHostSensor(void)
+static void setHostSensor(void)
 {
     int64_t value = 300;
     sValue v{value};
 
     std::string busname{sbusName};
-    auto PropertyWriteBus = sdbusplus::bus::new_default();
+    auto propertyWriteBus = sdbusplus::bus::new_default();
     std::string path{sobjectPath};
 
     auto pimMsg = PropertyWriteBus.new_method_call(
@@ -47,19 +47,19 @@ static void SetHostSensor(void)
     }
 }
 
-static std::string GetControlPath(int8_t zone)
+static std::string getControlPath(int8_t zone)
 {
     return std::string(objectPath) + std::to_string(zone);
 }
 
-static void SetManualMode(int8_t zone)
+static void setManualMode(int8_t zone)
 {
     bool setValue = (bool)0x01;
 
     Value v{setValue};
 
     std::string busname{busName};
-    auto PropertyWriteBus = sdbusplus::bus::new_default();
+    auto propertyWriteBus = sdbusplus::bus::new_default();
     std::string path = GetControlPath(zone);
 
     auto pimMsg = PropertyWriteBus.new_method_call(
@@ -86,7 +86,7 @@ int main(int argc, char* argv[])
 
     int64_t zone = 0x01;
 
-    SetManualMode(zone);
-    SetHostSensor();
+    setManualMode(zone);
+    setHostSensor();
     return rc;
 }

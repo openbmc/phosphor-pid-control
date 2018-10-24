@@ -36,11 +36,11 @@
 static constexpr bool deferSignals = true;
 static DbusHelper helper;
 
-SensorManager BuildSensors(const std::map<std::string, struct sensor>& config)
+SensorManager buildSensors(const std::map<std::string, struct sensor>& config)
 {
     SensorManager mgmr;
-    auto& HostSensorBus = mgmr.getHostBus();
-    auto& PassiveListeningBus = mgmr.getPassiveBus();
+    auto& hostSensorBus = mgmr.getHostBus();
+    auto& passiveListeningBus = mgmr.getPassiveBus();
 
     for (const auto& it : config)
     {

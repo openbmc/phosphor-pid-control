@@ -81,7 +81,7 @@ float PIDZone::getMinThermalRpmSetPt(void) const
     return _minThermalRpmSetPt;
 }
 
-void PIDZone::addFanPID(std::unique_ptr<Controller> pid)
+void PIDZone::_addFanPid(std::unique_ptr<Controller> pid)
 {
     _fans.push_back(std::move(pid));
 }

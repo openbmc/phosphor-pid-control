@@ -28,11 +28,11 @@
 #include <thread>
 #include <unordered_map>
 
-static constexpr bool DEBUG = false; // enable to print found configuration
+static constexpr bool debug = false; // enable to print found configuration
 
-std::map<std::string, struct sensor> SensorConfig = {};
-std::map<int64_t, PIDConf> ZoneConfig = {};
-std::map<int64_t, struct zone> ZoneDetailsConfig = {};
+std::map<std::string, struct sensor> sensorConfig = {};
+std::map<int64_t, PIDConf> zoneConfig = {};
+std::map<int64_t, struct zone> zoneDetailsConfig = {};
 
 constexpr const char* pidConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid";
@@ -547,7 +547,7 @@ void init(sdbusplus::bus::bus& bus)
             }
         }
     }
-    if (DEBUG)
+    if (debug)
     {
         debugPrint();
     }

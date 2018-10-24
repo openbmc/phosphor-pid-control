@@ -32,7 +32,7 @@ using tstamp = std::chrono::high_resolution_clock::time_point;
 #define DRIVE DRIVE_TIME
 #define MAX_PWM 255
 
-static std::unique_ptr<Sensor> Create(std::string readpath,
+static std::unique_ptr<Sensor> create(std::string readpath,
                                       std::string writepath)
 {
     return std::make_unique<PluggableSensor>(

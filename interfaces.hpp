@@ -4,8 +4,8 @@
 
 struct ReadReturn
 {
-    double value;
-    std::chrono::high_resolution_clock::time_point updated;
+    double _value;
+    std::chrono::high_resolution_clock::time_point _updated;
 
     bool operator==(const ReadReturn& rhs) const
     {

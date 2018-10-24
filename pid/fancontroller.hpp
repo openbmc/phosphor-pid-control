@@ -17,7 +17,7 @@ class FanController : public PIDController
 {
   public:
     static std::unique_ptr<PIDController>
-        CreateFanPid(ZoneInterface* owner, const std::string& id,
+        createFanPid(ZoneInterface* owner, const std::string& id,
                      const std::vector<std::string>& inputs,
                      const ec::pidinfo& initial);
 

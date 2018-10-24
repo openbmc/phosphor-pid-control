@@ -44,9 +44,9 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
 {
     float error;
 
-    float p_term;
-    float i_term = 0.0f;
-    float ff_term = 0.0f;
+    float pTerm;
+    float iTerm = 0.0f;
+    float ffTerm = 0.0f;
 
     float output;
 
@@ -54,20 +54,20 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
 
     // Pid
     error = setpoint - input;
-    p_term = pidinfoptr->p_c * error;
+    pTerm = pidinfoptr->p_c * error;
 
     // pId
     if (0.0f != pidinfoptr->i_c)
     {
-        i_term = pidinfoptr->integral;
-        i_term += error * pidinfoptr->i_c * pidinfoptr->ts;
-        i_term = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
+        iTerm = pidinfoptr->integral;
+        iTerm += error * pidinfoptr->i_c * pidinfoptr->ts;
+        iTerm = clamp(iTerm, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
     }
 
     // FF
-    ff_term = (setpoint + pidinfoptr->ff_off) * pidinfoptr->ff_gain;
+    ffTerm = (setpoint + pidinfoptr->ff_off) * pidinfoptr->ff_gain;
 
-    output = p_term + i_term + ff_term;
+    output = pTerm + iTerm + ffTerm;
     output = clamp(output, pidinfoptr->out_lim.min, pidinfoptr->out_lim.max);
 
     // slew rate
@@ -79,21 +79,21 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
         if (pidinfoptr->slew_neg != 0.0f)
         {
             // Don't decrease too fast
-            float min_out =
+            float minOut =
                 pidinfoptr->last_output + pidinfoptr->slew_neg * pidinfoptr->ts;
-            if (output < min_out)
+            if (output < minOut)
             {
-                output = min_out;
+                output = minOut;
             }
         }
         if (pidinfoptr->slew_pos != 0.0f)
         {
             // Don't increase too fast
-            float max_out =
+            float maxOut =
                 pidinfoptr->last_output + pidinfoptr->slew_pos * pidinfoptr->ts;
-            if (output > max_out)
+            if (output > maxOut)
             {
-                output = max_out;
+                output = maxOut;
             }
         }
 
@@ -101,14 +101,14 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
         {
             // Back calculate integral term for the cases where we limited the
             // output
-            i_term = output - p_term;
+            iTerm = output - pTerm;
         }
     }
 
     // Clamp again because having limited the output may result in a
     // larger integral term
-    i_term = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
-    pidinfoptr->integral = i_term;
+    iTerm = clamp(iTerm, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
+    pidinfoptr->integral = iTerm;
     pidinfoptr->initialized = true;
     pidinfoptr->last_output = output;
 

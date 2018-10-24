@@ -7,46 +7,46 @@ namespace ec
 
 typedef struct
 {
-    float min;
-    float max;
-} limits_t;
+    float _min;
+    float _max;
+} LimitsT;
 
 /* Note: If you update these structs you need to update the copy code in
  * pid/util.cpp.
  */
 typedef struct
 {
-    bool initialized; // has pid been initialized
+    bool _initialized; // has pid been initialized
 
-    float ts;          // sample time in seconds
-    float integral;    // intergal of error
-    float last_output; // value of last output
+    float _ts;         // sample time in seconds
+    float _integral;   // intergal of error
+    float _lastOutput; // value of last output
 
-    float p_c;     // coeff for P
-    float i_c;     // coeff for I
-    float ff_off;  // offset coeff for feed-forward term
-    float ff_gain; // gain for feed-forward term
+    float _pC;     // coeff for P
+    float _iC;     // coeff for I
+    float _ffOff;  // offset coeff for feed-forward term
+    float _ffGain; // gain for feed-forward term
 
-    limits_t i_lim;   // clamp of integral
-    limits_t out_lim; // clamp of output
-    float slew_neg;
-    float slew_pos;
-} pid_info_t;
+    LimitsT _iLim;   // clamp of integral
+    LimitsT _outLim; // clamp of output
+    float _slewNeg;
+    float _slewPos;
+} PidInfoT;
 
 float pid(pid_info_t* pidinfoptr, float input, float setpoint);
 
 /* Condensed version for use by the configuration. */
-struct pidinfo
+struct Pidinfo
 {
-    float ts;             // sample time in seconds
-    float p_c;            // coeff for P
-    float i_c;            // coeff for I
-    float ff_off;         // offset coeff for feed-forward term
-    float ff_gain;        // gain for feed-forward term
-    ec::limits_t i_lim;   // clamp of integral
-    ec::limits_t out_lim; // clamp of output
-    float slew_neg;
-    float slew_pos;
+    float _ts;                 // sample time in seconds
+    float _pC;                 // coeff for P
+    float _iC;                 // coeff for I
+    float _ffOff;              // offset coeff for feed-forward term
+    float _ffGain;             // gain for feed-forward term
+    LimitsT::limits_t _iLim;   // clamp of integral
+    LimitsT::limits_t _outLim; // clamp of output
+    float _slewNeg;
+    float _slewPos;
 };
 
 } // namespace ec

@@ -6,7 +6,7 @@
 #include <map>
 #include "conf.hpp"
 
-std::map<int64_t, PIDConf> ZoneConfig = {
+std::map<int64_t, PIDConf> zoneConfig = {
 % for zone in PIDDict.iterkeys():
     % if zone:
     {${zone},

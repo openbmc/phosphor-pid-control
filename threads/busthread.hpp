@@ -4,8 +4,8 @@
 
 struct ThreadParams
 {
-    sdbusplus::bus::bus& bus;
-    std::string name;
+    sdbusplus::bus::bus& _bus;
+    std::string _name;
 };
 
-void BusThread(struct ThreadParams& params);
+void busThread(struct ThreadParams& params);

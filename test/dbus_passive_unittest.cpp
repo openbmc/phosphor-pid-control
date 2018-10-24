@@ -15,7 +15,7 @@ using ::testing::NotNull;
 using ::testing::Return;
 using ::testing::StrEq;
 
-std::string SensorIntf = "xyz.openbmc_project.Sensor.Value";
+std::string sensorIntf = "xyz.openbmc_project.Sensor.Value";
 
 TEST(DbusPassiveTest, FactoryFailsWithInvalidType)
 {

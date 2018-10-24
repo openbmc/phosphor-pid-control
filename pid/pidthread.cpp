@@ -25,7 +25,7 @@
 #include <thread>
 #include <vector>
 
-static void ProcessThermals(PIDZone* zone)
+static void processThermals(PIDZone* zone)
 {
     // Get the latest margins.
     zone->updateSensors();
@@ -37,7 +37,7 @@ static void ProcessThermals(PIDZone* zone)
     zone->determineMaxRPMRequest();
 }
 
-void PIDControlThread(PIDZone* zone)
+void pidControlThread(PIDZone* zone)
 {
     int ms100cnt = 0;
     /*

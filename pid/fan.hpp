@@ -3,7 +3,7 @@
 
 enum class FanSpeedDirection
 {
-    DOWN,
-    UP,
-    NEUTRAL, /* not sure this will ever happen, but for completeness. */
+    down,
+    up,
+    neutral, /* not sure this will ever happen, but for completeness. */
 };

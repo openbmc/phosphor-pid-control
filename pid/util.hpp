@@ -6,6 +6,6 @@
  * Given a configuration structure, fill out the information we use within the
  * PID loop.
  */
-void InitializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial);
+void initializePidStruct(ec::pid_info_t* info, const ec::pidinfo& initial);
 
-void DumpPIDStruct(ec::pid_info_t* info);
+void dumpPidStruct(ec::pid_info_t* info);

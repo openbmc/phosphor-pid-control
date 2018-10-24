@@ -134,7 +134,7 @@ bool DbusHelper::ThresholdsAsserted(sdbusplus::bus::bus& bus,
     return asserted;
 }
 
-std::string GetSensorPath(const std::string& type, const std::string& id)
+std::string getSensorPath(const std::string& type, const std::string& id)
 {
     std::string layer = type;
     if (type == "fan")
@@ -153,7 +153,7 @@ std::string GetSensorPath(const std::string& type, const std::string& id)
     return std::string("/xyz/openbmc_project/sensors/" + layer + "/" + id);
 }
 
-std::string GetMatch(const std::string& type, const std::string& id)
+std::string getMatch(const std::string& type, const std::string& id)
 {
     return std::string("type='signal',"
                        "interface='org.freedesktop.DBus.Properties',"
@@ -162,7 +162,7 @@ std::string GetMatch(const std::string& type, const std::string& id)
                        GetSensorPath(type, id) + "'");
 }
 
-bool ValidType(const std::string& type)
+bool validType(const std::string& type)
 {
     static std::set<std::string> valid = {"fan", "temp"};
     return (valid.find(type) != valid.end());

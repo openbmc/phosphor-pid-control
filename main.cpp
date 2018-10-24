@@ -46,11 +46,11 @@
 #endif
 
 /* The YAML converted sensor list. */
-extern std::map<std::string, struct sensor> SensorConfig;
+extern std::map<std::string, struct sensor> sensorConfig;
 /* The YAML converted PID list. */
-extern std::map<int64_t, PIDConf> ZoneConfig;
+extern std::map<int64_t, PIDConf> zoneConfig;
 /* The YAML converted Zone configuration. */
-extern std::map<int64_t, struct zone> ZoneDetailsConfig;
+extern std::map<int64_t, struct zone> zoneDetailsConfig;
 
 int main(int argc, char* argv[])
 {
@@ -60,14 +60,14 @@ int main(int argc, char* argv[])
     while (1)
     {
         // clang-format off
-        static struct option long_options[] = {
+        static struct option longOptions[] = {
             {"conf", required_argument, 0, 'c'},
             {0, 0, 0, 0}
         };
         // clang-format on
 
-        int option_index = 0;
-        int c = getopt_long(argc, argv, "c:", long_options, &option_index);
+        int optionIndex = 0;
+        int c = getopt_long(argc, argv, "c:", longOptions, &optionIndex);
 
         if (c == -1)
         {
@@ -85,7 +85,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    auto ModeControlBus = sdbusplus::bus::new_default();
+    auto modeControlBus = sdbusplus::bus::new_default();
 #if CONFIGURE_DBUS
     {
         dbus_configuration::init(ModeControlBus);
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 
     // Create a manager for the ModeBus because we own it.
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
-    sdbusplus::server::manager::manager(ModeControlBus, modeRoot);
+    sdbusplus::server::manager::manager(modeControlBus, modeRoot);
 
     /*
      * When building the sensors, if any of the dbus passive ones aren't on the
@@ -132,8 +132,8 @@ int main(int argc, char* argv[])
      * it.
      */
 
-    auto& HostSensorBus = mgmr.getHostBus();
-    auto& PassiveListeningBus = mgmr.getPassiveBus();
+    auto& hostSensorBus = mgmr.getHostBus();
+    auto& passiveListeningBus = mgmr.getPassiveBus();
 
     std::cerr << "Starting threads\n";
 

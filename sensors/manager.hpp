@@ -63,5 +63,5 @@ class SensorManager
     sdbusplus::bus::bus _passiveListeningBus;
     sdbusplus::bus::bus _hostSensorBus;
 
-    static constexpr auto SensorRoot = "/xyz/openbmc_project/extsensors";
+    static constexpr auto sensorRoot = "/xyz/openbmc_project/extsensors";
 };

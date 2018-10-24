@@ -33,7 +33,7 @@
 static constexpr auto platform = "/sys/devices/platform/";
 namespace fs = std::experimental::filesystem;
 
-std::string FixupPath(std::string original)
+std::string fixupPath(std::string original)
 {
     std::string::size_type n, x;
 

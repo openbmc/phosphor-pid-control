@@ -30,7 +30,7 @@
 static constexpr bool deferSignals = true;
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 
-static std::string GetControlPath(int64_t zone)
+static std::string getControlPath(int64_t zone)
 {
     return std::string(objectPath) + std::to_string(zone);
 }

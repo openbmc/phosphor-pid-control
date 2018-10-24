@@ -18,13 +18,13 @@
 
 #include <string>
 
-static constexpr auto external_sensor =
-    "/xyz/openbmc_project/extsensors/";                         // type/
-static constexpr auto openbmc_sensor = "/xyz/openbmc_project/"; // type/
-static constexpr auto dbus_pwm = "/xyz/openbmc_project/control/fanpwm/";
+static constexpr auto externalSensor =
+    "/xyz/openbmc_project/extsensors/";                        // type/
+static constexpr auto openbmcSensor = "/xyz/openbmc_project/"; // type/
+static constexpr auto dbusPwm = "/xyz/openbmc_project/control/fanpwm/";
 static constexpr auto sysfs = "/sys/";
 
-IOInterfaceType GetWriteInterfaceType(const std::string& path)
+IOInterfaceType getWriteInterfaceType(const std::string& path)
 {
     if (path.empty() || "None" == path)
     {
@@ -45,7 +45,7 @@ IOInterfaceType GetWriteInterfaceType(const std::string& path)
     return IOInterfaceType::UNKNOWN;
 }
 
-IOInterfaceType GetReadInterfaceType(const std::string& path)
+IOInterfaceType getReadInterfaceType(const std::string& path)
 {
     if (path.empty() || "None" == path)
     {

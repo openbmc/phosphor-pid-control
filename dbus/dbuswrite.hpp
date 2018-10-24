@@ -30,7 +30,7 @@ class DbusWritePercent : public WriteInterface
     DbusWritePercent(const std::string& path, int64_t min, int64_t max,
                      DbusHelperInterface& helper) :
         WriteInterface(min, max),
-        path(path)
+        _path(path)
     {
         auto tempBus = sdbusplus::bus::new_default();
         connectionName = helper.GetService(tempBus, pwmInterface, path);
@@ -39,9 +39,9 @@ class DbusWritePercent : public WriteInterface
     void write(double value) override;
 
   private:
-    std::string path;
-    std::string connectionName;
-    int64_t oldValue = -1;
+    std::string _path;
+    std::string _connectionName;
+    int64_t _oldValue = -1;
 };
 
 class DbusWrite : public WriteInterface
@@ -50,7 +50,7 @@ class DbusWrite : public WriteInterface
     DbusWrite(const std::string& path, int64_t min, int64_t max,
               DbusHelperInterface& helper) :
         WriteInterface(min, max),
-        path(path)
+        _path(path)
     {
         auto tempBus = sdbusplus::bus::new_default();
         connectionName = helper.GetService(tempBus, pwmInterface, path);
@@ -59,7 +59,7 @@ class DbusWrite : public WriteInterface
     void write(double value) override;
 
   private:
-    std::string path;
-    std::string connectionName;
-    int64_t oldValue = -1;
+    std::string _path;
+    std::string _connectionName;
+    int64_t _oldValue = -1;
 };

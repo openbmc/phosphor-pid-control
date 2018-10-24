@@ -34,7 +34,7 @@ using ::testing::StrEq;
  * @param[in] properties - an ordered list of expected property updates.
  * @param[in] index - a pointer to a valid integer in a surviving scope.
  */
-void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
+void setupDbusObject(sdbusplus::SdBusMock* sdbusMock, bool defer,
                      const std::string& path, const std::string& intf,
                      const std::vector<std::string>& properties, int* index)
 {

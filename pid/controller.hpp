@@ -15,11 +15,11 @@ struct Controller
 {
     virtual ~Controller() = default;
 
-    virtual float input_proc(void) = 0;
+    virtual float inputProc(void) = 0;
 
-    virtual void output_proc(float value) = 0;
+    virtual void outputProc(float value) = 0;
 
     virtual void process(void) = 0;
 
-    virtual std::string get_id(void) = 0;
+    virtual std::string getId(void) = 0;
 };

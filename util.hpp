@@ -12,15 +12,15 @@
  */
 enum class IOInterfaceType
 {
-    NONE, // There is no interface.
-    EXTERNAL,
-    DBUSPASSIVE,
-    DBUSACTIVE, // This means for write that it needs to look up the interface.
-    SYSFS,
-    UNKNOWN
+    none, // There is no interface.
+    external,
+    dbuspassive,
+    dbusactive, // This means for write that it needs to look up the interface.
+    sysfs,
+    unknown
 };
 
 /* WriteInterfaceType is different because Dbusactive/passive. how to know... */
-IOInterfaceType GetWriteInterfaceType(const std::string& path);
+IOInterfaceType getWriteInterfaceType(const std::string& path);
 
-IOInterfaceType GetReadInterfaceType(const std::string& path);
+IOInterfaceType getReadInterfaceType(const std::string& path);
