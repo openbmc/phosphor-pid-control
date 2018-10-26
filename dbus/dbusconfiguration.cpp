@@ -557,6 +557,7 @@ void init(sdbusplus::bus::bus& bus)
         while (1)
         {
             bus.process_discard();
+            bus.wait();
         }
     }
 }
