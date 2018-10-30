@@ -101,13 +101,15 @@ SensorManager
                 case IOInterfaceType::DBUSACTIVE:
                     if (info->max > 0)
                     {
-                        wi = std::make_unique<DbusWritePercent>(
+                        wi = DbusWritePercent::createDbusWrite(
                             info->writepath, info->min, info->max, helper);
+                        /* TODO: handle this being nullptr. */
                     }
                     else
                     {
-                        wi = std::make_unique<DbusWrite>(
+                        wi = DbusWrite::createDbusWrite(
                             info->writepath, info->min, info->max, helper);
+                        /* TODO: handle this being nullptr. */
                     }
 
                     break;
