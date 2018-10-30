@@ -17,16 +17,34 @@
 #include "dbus/dbuswrite.hpp"
 
 #include <iostream>
+#include <memory>
 #include <sdbusplus/bus.hpp>
+#include <string>
+
+constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 // this bus object is treated as a singleton because the class is constructed in
 // a different thread than it is used, and as bus objects are relatively
 // expensive we'd prefer to only have one
 std::unique_ptr<sdbusplus::bus::bus> writeBus = nullptr;
 
-std::unique_ptr<WriteInterface> DbusWritePercent::createDbusWrite(const std::string& path, int64_t min, int64_t max, DbusHelperInterface& helper)
+std::unique_ptr<WriteInterface>
+    DbusWritePercent::createDbusWrite(const std::string& path, int64_t min,
+                                      int64_t max, DbusHelperInterface& helper)
 {
-    return nullptr;
+    auto tempBus = sdbusplus::bus::new_default();
+    std::string connectionName;
+
+    try
+    {
+        connectionName = helper.getService(tempBus, pwmInterface, path);
+    }
+    catch (const std::exception& e)
+    {
+        return nullptr;
+    }
+
+    return std::make_unique<DbusWritePercent>(path, min, max, connectionName);
 }
 
 void initBus()
@@ -66,9 +84,23 @@ void DbusWritePercent::write(double value)
     return;
 }
 
-std::unique_ptr<WriteInterface> DbusWrite::createDbusWrite(const std::string& path, int64_t min, int64_t max, DbusHelperInterface& helper)
+std::unique_ptr<WriteInterface>
+    DbusWrite::createDbusWrite(const std::string& path, int64_t min,
+                               int64_t max, DbusHelperInterface& helper)
 {
-    return nullptr;
+    auto tempBus = sdbusplus::bus::new_default();
+    std::string connectionName;
+
+    try
+    {
+        connectionName = helper.getService(tempBus, pwmInterface, path);
+    }
+    catch (const std::exception& e)
+    {
+        return nullptr;
+    }
+
+    return std::make_unique<DbusWrite>(path, min, max, connectionName);
 }
 
 void DbusWrite::write(double value)
