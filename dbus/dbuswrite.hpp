@@ -19,6 +19,7 @@
 #include "dbus/util.hpp"
 #include "interfaces.hpp"
 
+#include <memory>
 #include <sdbusplus/bus.hpp>
 #include <string>
 
@@ -27,6 +28,8 @@ constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 class DbusWritePercent : public WriteInterface
 {
   public:
+    static std::unique_ptr<WriteInterface> createDbusWrite(const std::string& path, int64_t min, int64_t max, DbusHelperInterface& helper);
+
     DbusWritePercent(const std::string& path, int64_t min, int64_t max,
                      DbusHelperInterface& helper) :
         WriteInterface(min, max),
@@ -48,6 +51,8 @@ class DbusWritePercent : public WriteInterface
 class DbusWrite : public WriteInterface
 {
   public:
+    static std::unique_ptr<WriteInterface> createDbusWrite(const std::string& path, int64_t min, int64_t max, DbusHelperInterface& helper);
+
     DbusWrite(const std::string& path, int64_t min, int64_t max,
               DbusHelperInterface& helper) :
         WriteInterface(min, max),

@@ -24,6 +24,11 @@
 // expensive we'd prefer to only have one
 std::unique_ptr<sdbusplus::bus::bus> writeBus = nullptr;
 
+std::unique_ptr<WriteInterface> DbusWritePercent::createDbusWrite(const std::string& path, int64_t min, int64_t max, DbusHelperInterface& helper)
+{
+    return nullptr;
+}
+
 void initBus()
 {
     if (writeBus == nullptr)
@@ -59,6 +64,11 @@ void DbusWritePercent::write(double value)
     }
     oldValue = static_cast<int64_t>(ovalue);
     return;
+}
+
+std::unique_ptr<WriteInterface> DbusWrite::createDbusWrite(const std::string& path, int64_t min, int64_t max, DbusHelperInterface& helper)
+{
+    return nullptr;
 }
 
 void DbusWrite::write(double value)
