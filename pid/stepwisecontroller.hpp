@@ -32,7 +32,7 @@ class StepwiseController : public Controller
 
     void process(void) override;
 
-    std::string getID(void)
+    std::string getID(void) override
     {
         return _id;
     }
