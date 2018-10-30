@@ -25,13 +25,13 @@ class PIDController : public Controller
     {
     }
 
-    virtual float inputProc(void) = 0;
+    virtual float inputProc(void) override = 0;
     virtual float setptProc(void) = 0;
-    virtual void outputProc(float value) = 0;
+    virtual void outputProc(float value) override = 0;
 
-    void process(void);
+    void process(void) override;
 
-    std::string getID(void)
+    std::string getID(void) override
     {
         return _id;
     }
