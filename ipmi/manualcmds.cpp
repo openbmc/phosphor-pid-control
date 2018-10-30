@@ -20,6 +20,7 @@
 #include <host-ipmid/oemopenbmc.hpp>
 #include <host-ipmid/oemrouter.hpp>
 #include <map>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
 #include <string>
@@ -55,6 +56,8 @@ static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
 using Property = std::string;
 using Value = sdbusplus::message::variant<bool>;
 using PropertyMap = std::map<Property, Value>;
+
+using namespace phosphor::logging;
 
 /* The following was copied directly from my manual thread handler. */
 static std::string getControlPath(int8_t zone)
@@ -240,9 +243,7 @@ void setupGlobalOemFanControl()
 {
     oem::Router* router = oem::mutableRouter();
 
-    fprintf(stderr,
-            "Registering OEM:[%#08X], Cmd:[%#04X] for Manual Zone Control\n",
-            oem::obmcOemNumber, oem::Cmd::fanManualCmd);
+    log<level::DEBUG>("Registering OEM Cmd for Manual Zone Control");
 
     router->registerHandler(oem::obmcOemNumber, oem::Cmd::fanManualCmd,
                             manualModeControl);
