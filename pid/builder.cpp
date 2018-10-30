@@ -24,11 +24,14 @@
 
 #include <iostream>
 #include <memory>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <unordered_map>
 
 static constexpr bool deferSignals = true;
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
+
+using namespace phosphor::logging;
 
 static std::string getControlPath(int64_t zone)
 {
@@ -56,7 +59,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             /* The Zone doesn't have a configuration, bail. */
             static constexpr auto err =
                 "Bailing during load, missing Zone Configuration";
-            std::cerr << err << std::endl;
+            log<level::ERR>(err);
             throw std::runtime_error(err);
         }
 
