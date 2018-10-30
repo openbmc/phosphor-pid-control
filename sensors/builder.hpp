@@ -9,4 +9,5 @@
 /**
  * Build the sensors and associate them with a SensorManager.
  */
-SensorManager BuildSensors(const std::map<std::string, struct sensor>& config);
+SensorManager
+    BuildSensors(const std::map<std::string, struct SensorConfig>& config);

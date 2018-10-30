@@ -10,7 +10,7 @@
 /*
  * General sensor structure used for configuration.
  */
-struct sensor
+struct SensorConfig
 {
     /* Used for listen if readpath is passive. */
     std::string type;
@@ -26,7 +26,7 @@ struct sensor
 /*
  * Structure for holding the configuration of a PID.
  */
-struct controller_info
+struct ControllerInfo
 {
     std::string type;                // fan or margin or temp?
     std::vector<std::string> inputs; // one or more sensors.
@@ -43,7 +43,7 @@ struct controller_info
  * and a set of configuration settings.  This structure gets filled out with
  * the zone configuration settings and not the PID details.
  */
-struct zone
+struct ZoneConfig
 {
     /* The minimum RPM value we would ever want. */
     float minthermalrpm;
@@ -52,4 +52,4 @@ struct zone
     float failsafepercent;
 };
 
-using PIDConf = std::map<std::string, struct controller_info>;
+using PIDConf = std::map<std::string, struct ControllerInfo>;

@@ -30,9 +30,9 @@
 
 static constexpr bool DEBUG = false; // enable to print found configuration
 
-std::map<std::string, struct sensor> SensorConfig = {};
+std::map<std::string, struct SensorConfig> SensorConfig = {};
 std::map<int64_t, PIDConf> ZoneConfig = {};
-std::map<int64_t, struct zone> ZoneDetailsConfig = {};
+std::map<int64_t, struct ZoneConfig> ZoneDetailsConfig = {};
 
 constexpr const char* pidConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid";
@@ -397,7 +397,7 @@ void init(sdbusplus::bus::bus& bus)
                 {
                     continue;
                 }
-                struct controller_info& info =
+                struct ControllerInfo& info =
                     conf[variant_ns::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
 
@@ -490,7 +490,7 @@ void init(sdbusplus::bus::bus& bus)
                 {
                     continue;
                 }
-                struct controller_info& info =
+                struct ControllerInfo& info =
                     conf[variant_ns::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
 

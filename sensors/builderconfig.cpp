@@ -33,7 +33,7 @@ SensorManager BuildSensorsFromConfig(const std::string& path)
 {
     using namespace libconfig;
 
-    std::map<std::string, struct sensor> config;
+    std::map<std::string, struct SensorConfig> config;
     Config cfg;
 
     std::cerr << "entered BuildSensorsFromConfig\n";
@@ -69,7 +69,7 @@ SensorManager BuildSensorsFromConfig(const std::string& path)
             const Setting& sensor = sensors[i];
 
             std::string name;
-            struct sensor thisOne;
+            struct SensorConfig thisOne;
 
             /* Not a super fan of using this library for run-time configuration.
              */

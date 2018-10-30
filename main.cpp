@@ -46,11 +46,11 @@
 #endif
 
 /* The YAML converted sensor list. */
-extern std::map<std::string, struct sensor> SensorConfig;
+extern std::map<std::string, struct SensorConfig> SensorConfig;
 /* The YAML converted PID list. */
 extern std::map<int64_t, PIDConf> ZoneConfig;
 /* The YAML converted Zone configuration. */
-extern std::map<int64_t, struct zone> ZoneDetailsConfig;
+extern std::map<int64_t, struct ZoneConfig> ZoneDetailsConfig;
 
 int main(int argc, char* argv[])
 {

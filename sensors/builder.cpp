@@ -36,7 +36,8 @@
 static constexpr bool deferSignals = true;
 static DbusHelper helper;
 
-SensorManager BuildSensors(const std::map<std::string, struct sensor>& config)
+SensorManager
+    BuildSensors(const std::map<std::string, struct SensorConfig>& config)
 {
     SensorManager mgmr;
     auto& HostSensorBus = mgmr.getHostBus();
@@ -48,7 +49,7 @@ SensorManager BuildSensors(const std::map<std::string, struct sensor>& config)
         std::unique_ptr<WriteInterface> wi;
 
         std::string name = it.first;
-        const struct sensor* info = &it.second;
+        const struct SensorConfig* info = &it.second;
 
         std::cerr << "Sensor: " << name << " " << info->type << " ";
         std::cerr << info->readpath << " " << info->writepath << "\n";

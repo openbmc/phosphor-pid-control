@@ -6,7 +6,7 @@
 #include <map>
 #include "conf.hpp"
 
-std::map<int64_t, struct zone> ZoneDetailsConfig = {
+std::map<int64_t, struct ZoneConfig> ZoneDetailsConfig = {
 % for zone in ZoneDict.iterkeys():
    % if zone:
    <%

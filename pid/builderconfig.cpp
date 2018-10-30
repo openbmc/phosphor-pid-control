@@ -35,7 +35,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
     // zone -> pids
     std::map<int64_t, PIDConf> pidConfig;
     // zone -> configs
-    std::map<int64_t, struct zone> zoneConfig;
+    std::map<int64_t, struct ZoneConfig> zoneConfig;
 
     std::cerr << "entered BuildZonesFromConfig\n";
 
@@ -72,7 +72,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
 
             int id;
             PIDConf thisZone;
-            struct zone thisZoneConfig;
+            struct ZoneConfig thisZoneConfig;
 
             zoneSettings.lookupValue("id", id);
 
@@ -88,7 +88,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                 const Setting& pid = pids[j];
 
                 std::string name;
-                controller_info info;
+                struct ControllerInfo info;
 
                 /*
                  * Mysteriously if you use lookupValue on these, and the type
