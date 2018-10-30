@@ -22,6 +22,7 @@
 #include "conf.hpp"
 #include "dbus/dbuspassive.hpp"
 #include "dbus/dbuswrite.hpp"
+#include "errors/exception.hpp"
 #include "interfaces.hpp"
 #include "notimpl/readonly.hpp"
 #include "notimpl/writeonly.hpp"
