@@ -69,7 +69,12 @@ SensorManager
             case IOInterfaceType::DBUSPASSIVE:
                 ri = DbusPassive::createDbusPassive(PassiveListeningBus,
                                                     info->type, name, &helper);
-                /* TODO(venture): if this returns nullptr */
+                if (ri == nullptr)
+                {
+                    throw SensorBuildException(
+                        "Failed to create dbus passive sensor: " + name +
+                        " of type: " + info->type);
+                }
                 break;
             case IOInterfaceType::EXTERNAL:
                 // These are a special case for read-only.
@@ -104,13 +109,18 @@ SensorManager
                     {
                         wi = DbusWritePercent::createDbusWrite(
                             info->writepath, info->min, info->max, helper);
-                        /* TODO: handle this being nullptr. */
                     }
                     else
                     {
                         wi = DbusWrite::createDbusWrite(
                             info->writepath, info->min, info->max, helper);
-                        /* TODO: handle this being nullptr. */
+                    }
+
+                    if (wi == nullptr)
+                    {
+                        throw SensorBuildException(
+                            "Unable to create write dbus interface for path: " +
+                            info->writepath);
                     }
 
                     break;
