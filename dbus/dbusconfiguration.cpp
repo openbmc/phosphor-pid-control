@@ -21,6 +21,7 @@
 #include <chrono>
 #include <functional>
 #include <iostream>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/exception.hpp>
@@ -47,6 +48,7 @@ constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 namespace dbus_configuration
 {
+using namespace phosphor::logging;
 
 namespace variant_ns = sdbusplus::message::variant_ns;
 
@@ -553,7 +555,7 @@ void init(sdbusplus::bus::bus& bus)
     }
     if (ZoneConfig.empty())
     {
-        std::cerr << "No fan zones, application pausing until reboot\n";
+        log<level::DEBUG>("No fan zones, application pausing until reboot");
         while (1)
         {
             bus.process_discard();
