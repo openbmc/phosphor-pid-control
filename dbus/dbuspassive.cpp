@@ -37,30 +37,41 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         return nullptr;
     }
 
-    return std::make_unique<DbusPassive>(bus, type, id, helper);
-}
-
-DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
-                         const std::string& id, DbusHelperInterface* helper) :
-    ReadInterface(),
-    _bus(bus), _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
-    _id(id), _helper(helper)
-{
     /* Need to get the scale and initial value */
     auto tempBus = sdbusplus::bus::new_default();
+
     /* service == busname */
     std::string path = getSensorPath(type, id);
 
-    /* getService can except, should this be in the factory? */
-    std::string service = _helper->getService(tempBus, sensorintf, path);
-
     struct SensorProperties settings;
-    _helper->getProperties(tempBus, service, path, &settings);
+    bool failed;
 
+    try
+    {
+        std::string service = helper->getService(tempBus, sensorintf, path);
+
+        helper->getProperties(tempBus, service, path, &settings);
+        failed = helper->thresholdsAsserted(tempBus, service, path);
+    }
+    catch (const std::exception& e)
+    {
+        return nullptr;
+    }
+
+    return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
+                                         failed);
+}
+
+DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
+                         const std::string& id, DbusHelperInterface* helper,
+                         const struct SensorProperties& settings, bool failed) :
+    ReadInterface(),
+    _bus(bus), _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
+    _id(id), _helper(helper), _failed(failed)
+{
     _scale = settings.scale;
     _value = settings.value * pow(10, _scale);
     _updated = std::chrono::high_resolution_clock::now();
-    _failed = _helper->thresholdsAsserted(tempBus, service, path);
 }
 
 ReadReturn DbusPassive::read(void)

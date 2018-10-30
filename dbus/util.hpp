@@ -27,6 +27,8 @@ class DbusHelperInterface
     virtual ~DbusHelperInterface() = default;
 
     /** @brief Get the service providing the interface for the path.
+     *
+     * @warning Throws exception on dbus failure.
      */
     virtual std::string getService(sdbusplus::bus::bus& bus,
                                    const std::string& intf,
@@ -38,6 +40,8 @@ class DbusHelperInterface
      * @param[in] service - The service providing the interface.
      * @param[in] path - The dbus path.
      * @param[out] prop - A pointer to a properties struct to fill out.
+     *
+     * @warning Throws exception on dbus failure.
      */
     virtual void getProperties(sdbusplus::bus::bus& bus,
                                const std::string& service,

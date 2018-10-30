@@ -38,7 +38,8 @@ class DbusPassive : public ReadInterface
                           const std::string& id, DbusHelperInterface* helper);
 
     DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
-                const std::string& id, DbusHelperInterface* helper);
+                const std::string& id, DbusHelperInterface* helper,
+                const struct SensorProperties& settings, bool failed);
 
     ReadReturn read(void) override;
     bool getFailed(void) const override;

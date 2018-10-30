@@ -31,7 +31,6 @@ std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
     try
     {
         auto responseMsg = bus.call(mapper);
-
         responseMsg.read(response);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
@@ -58,12 +57,19 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
                                       propertiesintf.c_str(), "GetAll");
 
     pimMsg.append(sensorintf);
-    auto valueResponseMsg = bus.call(pimMsg);
 
-    if (valueResponseMsg.is_method_error())
+    PropertyMap propMap;
+
+    try
     {
-        std::cerr << "Error in value call\n";
-        throw std::runtime_error("ERROR in value call.");
+        auto valueResponseMsg = bus.call(pimMsg);
+        valueResponseMsg.read(propMap);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        log<level::ERR>("GetAll Properties Failed",
+                        entry("WHAT=%s", ex.what()));
+        throw;
     }
 
     // The PropertyMap returned will look like this because it's always
@@ -72,8 +78,6 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
     // "Value" x 24875
     // "Unit" s "xyz.openbmc_project.Sensor.Value.Unit.DegreesC"
     // "Scale" x -3
-    PropertyMap propMap;
-    valueResponseMsg.read(propMap);
 
     // If no error was set, the values should all be there.
     auto findUnit = propMap.find("Unit");
