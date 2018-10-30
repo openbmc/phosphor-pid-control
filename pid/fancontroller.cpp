@@ -34,7 +34,7 @@ std::unique_ptr<PIDController>
     auto fan = std::make_unique<FanController>(id, inputs, owner);
     ec::pid_info_t* info = fan->getPIDInfo();
 
-    InitializePIDStruct(info, initial);
+    initializePIDStruct(info, initial);
 
     return fan;
 }

@@ -17,7 +17,7 @@
 #include <tuple>
 #include <vector>
 
-int DbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
+int dbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
 
 /*
  * This ReadInterface will passively listen for Value updates from whomever
@@ -62,4 +62,4 @@ class DbusPassive : public ReadInterface
     std::chrono::high_resolution_clock::time_point _updated;
 };
 
-int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner);
+int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner);

@@ -77,9 +77,9 @@ class DbusHelper : public DbusHelperInterface
                             const std::string& path) override;
 };
 
-std::string GetSensorPath(const std::string& type, const std::string& id);
-std::string GetMatch(const std::string& type, const std::string& id);
-bool ValidType(const std::string& type);
+std::string getSensorPath(const std::string& type, const std::string& id);
+std::string getMatch(const std::string& type, const std::string& id);
+bool validType(const std::string& type);
 
 struct VariantToFloatVisitor
 {

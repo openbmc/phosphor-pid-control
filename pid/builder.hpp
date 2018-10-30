@@ -8,6 +8,6 @@
 #include <unordered_map>
 
 std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
-    BuildZones(std::map<int64_t, PIDConf>& zonePids,
+    buildZones(std::map<int64_t, PIDConf>& zonePids,
                std::map<int64_t, struct ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus);

@@ -202,7 +202,7 @@ TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
         .WillOnce(Return(0))  /* std::pair */
         .WillOnce(Return(0)); /* std::map */
 
-    int rv = HandleSensorValue(msg, passive);
+    int rv = handleSensorValue(msg, passive);
     EXPECT_EQ(rv, 0); // It's always 0.
 
     ReadReturn r = passive->read();
@@ -272,7 +272,7 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
         .WillOnce(Return(0))  /* std::pair */
         .WillOnce(Return(0)); /* std::map */
 
-    int rv = HandleSensorValue(msg, passive);
+    int rv = handleSensorValue(msg, passive);
     EXPECT_EQ(rv, 0); // It's always 0.
 
     ReadReturn r = passive->read();
@@ -346,7 +346,7 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdAssert)
         .WillOnce(Return(0))  /* std::pair */
         .WillOnce(Return(0)); /* std::map */
 
-    int rv = HandleSensorValue(msg, passive);
+    int rv = handleSensorValue(msg, passive);
     EXPECT_EQ(rv, 0); // It's always 0.
     bool failed = passive->getFailed();
     EXPECT_EQ(failed, true);
@@ -421,7 +421,7 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
         .WillOnce(Return(0))  /* std::pair */
         .WillOnce(Return(0)); /* std::map */
 
-    int rv = HandleSensorValue(msg, passive);
+    int rv = handleSensorValue(msg, passive);
     EXPECT_EQ(rv, 0); // It's always 0.
     bool failed = passive->getFailed();
     EXPECT_EQ(failed, false);

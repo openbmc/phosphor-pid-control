@@ -19,7 +19,7 @@
 #include <cstring>
 #include <iostream>
 
-void InitializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
+void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
 {
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
@@ -36,7 +36,7 @@ void InitializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
     info->slew_pos = initial.slew_pos;
 }
 
-void DumpPIDStruct(ec::pid_info_t* info)
+void dumpPIDStruct(ec::pid_info_t* info)
 {
     std::cerr << " ts: " << info->ts << " p_c: " << info->p_c
               << " i_c: " << info->i_c << " ff_off: " << info->ff_off

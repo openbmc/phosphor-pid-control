@@ -21,6 +21,6 @@ enum class IOInterfaceType
 };
 
 /* WriteInterfaceType is different because Dbusactive/passive. how to know... */
-IOInterfaceType GetWriteInterfaceType(const std::string& path);
+IOInterfaceType getWriteInterfaceType(const std::string& path);
 
-IOInterfaceType GetReadInterfaceType(const std::string& path);
+IOInterfaceType getReadInterfaceType(const std::string& path);

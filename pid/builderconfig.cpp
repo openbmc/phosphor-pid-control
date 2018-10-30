@@ -28,7 +28,7 @@
 #include <unordered_map>
 
 std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
-    BuildZonesFromConfig(const std::string& path, SensorManager& mgr,
+    buildZonesFromConfig(const std::string& path, SensorManager& mgr,
                          sdbusplus::bus::bus& modeControlBus)
 {
     using namespace libconfig;
@@ -149,5 +149,5 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
         throw;
     }
 
-    return BuildZones(pidConfig, zoneConfig, mgr, modeControlBus);
+    return buildZones(pidConfig, zoneConfig, mgr, modeControlBus);
 }

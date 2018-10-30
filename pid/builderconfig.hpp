@@ -9,5 +9,5 @@
 #include <unordered_map>
 
 std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
-    BuildZonesFromConfig(const std::string& path, SensorManager& mgr,
+    buildZonesFromConfig(const std::string& path, SensorManager& mgr,
                          sdbusplus::bus::bus& modeControlBus);

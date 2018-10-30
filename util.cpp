@@ -24,7 +24,7 @@ static constexpr auto openbmc_sensor = "/xyz/openbmc_project/"; // type/
 static constexpr auto dbus_pwm = "/xyz/openbmc_project/control/fanpwm/";
 static constexpr auto sysfs = "/sys/";
 
-IOInterfaceType GetWriteInterfaceType(const std::string& path)
+IOInterfaceType getWriteInterfaceType(const std::string& path)
 {
     if (path.empty() || "None" == path)
     {
@@ -45,7 +45,7 @@ IOInterfaceType GetWriteInterfaceType(const std::string& path)
     return IOInterfaceType::UNKNOWN;
 }
 
-IOInterfaceType GetReadInterfaceType(const std::string& path)
+IOInterfaceType getReadInterfaceType(const std::string& path)
 {
     if (path.empty() || "None" == path)
     {

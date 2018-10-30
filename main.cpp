@@ -106,8 +106,8 @@ int main(int argc, char* argv[])
     {
         try
         {
-            mgmr = BuildSensorsFromConfig(configPath);
-            zones = BuildZonesFromConfig(configPath, mgmr, ModeControlBus);
+            mgmr = buildSensorsFromConfig(configPath);
+            zones = buildZonesFromConfig(configPath, mgmr, ModeControlBus);
         }
         catch (const std::exception& e)
         {
@@ -117,8 +117,8 @@ int main(int argc, char* argv[])
     }
     else
     {
-        mgmr = BuildSensors(SensorConfig);
-        zones = BuildZones(ZoneConfig, ZoneDetailsConfig, mgmr, ModeControlBus);
+        mgmr = buildSensors(SensorConfig);
+        zones = buildZones(ZoneConfig, ZoneDetailsConfig, mgmr, ModeControlBus);
     }
 
     if (0 == zones.size())
@@ -161,7 +161,7 @@ int main(int argc, char* argv[])
     for (const auto& i : zones)
     {
         std::cerr << "pushing zone" << std::endl;
-        zoneThreads.push_back(std::thread(PIDControlThread, i.second.get()));
+        zoneThreads.push_back(std::thread(pidControlThread, i.second.get()));
     }
 
     l.join();

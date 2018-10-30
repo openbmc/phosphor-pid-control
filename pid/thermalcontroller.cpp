@@ -35,7 +35,7 @@ std::unique_ptr<PIDController> ThermalController::createThermalPid(
     ec::pid_info_t* info = thermal->getPIDInfo();
     thermal->setSetpoint(setpoint);
 
-    InitializePIDStruct(info, initial);
+    initializePIDStruct(info, initial);
 
     return thermal;
 }

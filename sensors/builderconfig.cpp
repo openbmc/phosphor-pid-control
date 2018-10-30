@@ -29,7 +29,7 @@
  * parsing.  I should just ditch the compile-time version to reduce the
  * probability of sync bugs.
  */
-SensorManager BuildSensorsFromConfig(const std::string& path)
+SensorManager buildSensorsFromConfig(const std::string& path)
 {
     using namespace libconfig;
 
@@ -110,5 +110,5 @@ SensorManager BuildSensorsFromConfig(const std::string& path)
         throw;
     }
 
-    return BuildSensors(config);
+    return buildSensors(config);
 }

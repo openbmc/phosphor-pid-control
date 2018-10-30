@@ -37,7 +37,7 @@ static constexpr bool deferSignals = true;
 static DbusHelper helper;
 
 SensorManager
-    BuildSensors(const std::map<std::string, struct SensorConfig>& config)
+    buildSensors(const std::map<std::string, struct SensorConfig>& config)
 {
     SensorManager mgmr;
     auto& HostSensorBus = mgmr.getHostBus();
@@ -54,8 +54,8 @@ SensorManager
         std::cerr << "Sensor: " << name << " " << info->type << " ";
         std::cerr << info->readpath << " " << info->writepath << "\n";
 
-        IOInterfaceType rtype = GetReadInterfaceType(info->readpath);
-        IOInterfaceType wtype = GetWriteInterfaceType(info->writepath);
+        IOInterfaceType rtype = getReadInterfaceType(info->readpath);
+        IOInterfaceType wtype = getWriteInterfaceType(info->writepath);
 
         // fan sensors can be ready any way and written others.
         // fan sensors are the only sensors this is designed to write.

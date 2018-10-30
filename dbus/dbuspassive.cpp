@@ -32,7 +32,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     {
         return nullptr;
     }
-    if (!ValidType(type))
+    if (!validType(type))
     {
         return nullptr;
     }
@@ -43,13 +43,13 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
                          const std::string& id, DbusHelperInterface* helper) :
     ReadInterface(),
-    _bus(bus), _signal(bus, GetMatch(type, id).c_str(), DbusHandleSignal, this),
+    _bus(bus), _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
     _id(id), _helper(helper)
 {
     /* Need to get the scale and initial value */
     auto tempBus = sdbusplus::bus::new_default();
     /* service == busname */
-    std::string path = GetSensorPath(type, id);
+    std::string path = getSensorPath(type, id);
 
     /* getService can except, should this be in the factory? */
     std::string service = _helper->getService(tempBus, sensorintf, path);
@@ -100,7 +100,7 @@ std::string DbusPassive::getID(void)
     return _id;
 }
 
-int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
+int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 {
     std::string msgSensor;
     std::map<std::string, sdbusplus::message::variant<int64_t, double, bool>>
@@ -151,10 +151,10 @@ int HandleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
     return 0;
 }
 
-int DbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
+int dbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
 {
     auto sdbpMsg = sdbusplus::message::message(msg);
     DbusPassive* obj = static_cast<DbusPassive*>(usrData);
 
-    return HandleSensorValue(sdbpMsg, obj);
+    return handleSensorValue(sdbpMsg, obj);
 }

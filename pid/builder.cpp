@@ -30,13 +30,13 @@
 static constexpr bool deferSignals = true;
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 
-static std::string GetControlPath(int64_t zone)
+static std::string getControlPath(int64_t zone)
 {
     return std::string(objectPath) + std::to_string(zone);
 }
 
 std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
-    BuildZones(std::map<int64_t, PIDConf>& zonePids,
+    buildZones(std::map<int64_t, PIDConf>& zonePids,
                std::map<int64_t, struct ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus)
 {
@@ -65,7 +65,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
         auto zone = std::make_unique<PIDZone>(
             zoneId, zoneConf->second.minthermalrpm,
             zoneConf->second.failsafepercent, mgr, modeControlBus,
-            GetControlPath(zi.first).c_str(), deferSignals);
+            getControlPath(zi.first).c_str(), deferSignals);
 
         std::cerr << "Zone Id: " << zone->getZoneId() << "\n";
 
