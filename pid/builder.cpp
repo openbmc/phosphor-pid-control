@@ -56,7 +56,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             /* The Zone doesn't have a configuration, bail. */
             static constexpr auto err =
                 "Bailing during load, missing Zone Configuration";
-            std::cerr << err << std::endl;
+            log<level::ERR>(err);
             throw std::runtime_error(err);
         }
 
