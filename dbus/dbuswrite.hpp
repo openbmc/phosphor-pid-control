@@ -33,6 +33,7 @@ class DbusWritePercent : public WriteInterface
         path(path)
     {
         auto tempBus = sdbusplus::bus::new_default();
+        // getService can except, does it make more sense to use a factory?
         connectionName = helper.getService(tempBus, pwmInterface, path);
     }
 
@@ -53,6 +54,7 @@ class DbusWrite : public WriteInterface
         path(path)
     {
         auto tempBus = sdbusplus::bus::new_default();
+        // getService can except, does it make more sense to use a factory?
         connectionName = helper.getService(tempBus, pwmInterface, path);
     }
 

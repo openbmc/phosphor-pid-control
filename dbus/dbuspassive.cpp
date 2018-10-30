@@ -50,6 +50,8 @@ DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
     auto tempBus = sdbusplus::bus::new_default();
     /* service == busname */
     std::string path = GetSensorPath(type, id);
+
+    /* getService can except, should this be in the factory? */
     std::string service = _helper->getService(tempBus, sensorintf, path);
 
     struct SensorProperties settings;
