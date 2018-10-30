@@ -2,11 +2,14 @@
 
 #include <cmath>
 #include <iostream>
+#include <phosphor-logging/log.hpp>
 #include <set>
 
 using Property = std::string;
 using Value = sdbusplus::message::variant<int64_t, double, std::string, bool>;
 using PropertyMap = std::map<Property, Value>;
+
+using namespace phosphor::logging;
 
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
  * part of sdbusplus.  There is an old version in libmapper.
@@ -23,14 +26,19 @@ std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
     mapper.append(path);
     mapper.append(std::vector<std::string>({intf}));
 
-    auto responseMsg = bus.call(mapper);
-    if (responseMsg.is_method_error())
-    {
-        throw std::runtime_error("ObjectMapper Call Failure");
-    }
-
     std::map<std::string, std::vector<std::string>> response;
-    responseMsg.read(response);
+
+    try
+    {
+        auto responseMsg = bus.call(mapper);
+
+        responseMsg.read(response);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        log<level::ERR>("ObjectMapper call failure",
+                        entry("WHAT=%s", ex.what()));
+    }
 
     if (response.begin() == response.end())
     {
