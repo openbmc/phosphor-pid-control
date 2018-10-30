@@ -21,7 +21,7 @@
 #include <memory>
 #include <mutex>
 
-std::unique_ptr<Sensor> HostSensor::CreateTemp(const std::string& name,
+std::unique_ptr<Sensor> HostSensor::createTemp(const std::string& name,
                                                int64_t timeout,
                                                sdbusplus::bus::bus& bus,
                                                const char* objPath, bool defer)

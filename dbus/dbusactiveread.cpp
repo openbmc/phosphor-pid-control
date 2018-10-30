@@ -27,7 +27,7 @@ ReadReturn DbusActiveRead::read(void)
     struct SensorProperties settings;
     double value;
 
-    _helper->GetProperties(_bus, _service, _path, &settings);
+    _helper->getProperties(_bus, _service, _path, &settings);
 
     value = settings.value * pow(10, settings.scale);
 

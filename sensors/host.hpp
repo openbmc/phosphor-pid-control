@@ -21,7 +21,7 @@ using ValueObject = ServerObject<ValueInterface>;
 class HostSensor : public Sensor, public ValueObject
 {
   public:
-    static std::unique_ptr<Sensor> CreateTemp(const std::string& name,
+    static std::unique_ptr<Sensor> createTemp(const std::string& name,
                                               int64_t timeout,
                                               sdbusplus::bus::bus& bus,
                                               const char* objPath, bool defer);

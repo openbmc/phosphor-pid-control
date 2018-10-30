@@ -33,16 +33,16 @@ void PIDController::process(void)
     float output;
 
     // Get setpt value
-    setpt = setpt_proc();
+    setpt = setptProc();
 
     // Get input value
-    input = input_proc();
+    input = inputProc();
 
     // Calculate new output
-    output = ec::pid(get_pid_info(), input, setpt);
+    output = ec::pid(getPIDInfo(), input, setpt);
 
     // Output new value
-    output_proc(output);
+    outputProc(output);
 
     return;
 }

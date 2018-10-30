@@ -34,7 +34,7 @@ class DbusPassive : public ReadInterface
 {
   public:
     static std::unique_ptr<ReadInterface>
-        CreateDbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
+        createDbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
                           const std::string& id, DbusHelperInterface* helper);
 
     DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
@@ -46,7 +46,7 @@ class DbusPassive : public ReadInterface
     void setValue(double value);
     void setFailed(bool value);
     int64_t getScale(void);
-    std::string getId(void);
+    std::string getID(void);
 
   private:
     sdbusplus::bus::bus& _bus;

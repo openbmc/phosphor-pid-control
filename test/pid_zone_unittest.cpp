@@ -359,18 +359,18 @@ TEST_F(PidZoneTest, AddThermalPIDTest_VerifiesThermalPIDsProcessed)
 
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
-    ec::pid_info_t* info = tpid->get_pid_info();
+    ec::pid_info_t* info = tpid->getPIDInfo();
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
     zone->addThermalPID(std::move(tpid));
 
-    EXPECT_CALL(*tmock, setpt_proc()).WillOnce(Return(10.0));
-    EXPECT_CALL(*tmock, input_proc()).WillOnce(Return(11.0));
-    EXPECT_CALL(*tmock, output_proc(_));
+    EXPECT_CALL(*tmock, setptProc()).WillOnce(Return(10.0));
+    EXPECT_CALL(*tmock, inputProc()).WillOnce(Return(11.0));
+    EXPECT_CALL(*tmock, outputProc(_));
 
     // Method under test will, for each thermal PID, call setpt, input, and
     // output.
-    zone->process_thermals();
+    zone->processThermals();
 }
 
 TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
@@ -384,17 +384,17 @@ TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
 
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
-    ec::pid_info_t* info = tpid->get_pid_info();
+    ec::pid_info_t* info = tpid->getPIDInfo();
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
     zone->addFanPID(std::move(tpid));
 
-    EXPECT_CALL(*tmock, setpt_proc()).WillOnce(Return(10.0));
-    EXPECT_CALL(*tmock, input_proc()).WillOnce(Return(11.0));
-    EXPECT_CALL(*tmock, output_proc(_));
+    EXPECT_CALL(*tmock, setptProc()).WillOnce(Return(10.0));
+    EXPECT_CALL(*tmock, inputProc()).WillOnce(Return(11.0));
+    EXPECT_CALL(*tmock, outputProc(_));
 
     // Method under test will, for each fan PID, call setpt, input, and output.
-    zone->process_fans();
+    zone->processFans();
 }
 
 TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)

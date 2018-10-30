@@ -28,7 +28,7 @@ class DbusHelperInterface
 
     /** @brief Get the service providing the interface for the path.
      */
-    virtual std::string GetService(sdbusplus::bus::bus& bus,
+    virtual std::string getService(sdbusplus::bus::bus& bus,
                                    const std::string& intf,
                                    const std::string& path) = 0;
 
@@ -39,7 +39,7 @@ class DbusHelperInterface
      * @param[in] path - The dbus path.
      * @param[out] prop - A pointer to a properties struct to fill out.
      */
-    virtual void GetProperties(sdbusplus::bus::bus& bus,
+    virtual void getProperties(sdbusplus::bus::bus& bus,
                                const std::string& service,
                                const std::string& path,
                                struct SensorProperties* prop) = 0;
@@ -50,7 +50,7 @@ class DbusHelperInterface
      * @param[in] service - The service providing the interface.
      * @param[in] path - The dbus path.
      */
-    virtual bool ThresholdsAsserted(sdbusplus::bus::bus& bus,
+    virtual bool thresholdsAsserted(sdbusplus::bus::bus& bus,
                                     const std::string& service,
                                     const std::string& path) = 0;
 };
@@ -65,14 +65,14 @@ class DbusHelper : public DbusHelperInterface
     DbusHelper(DbusHelper&&) = default;
     DbusHelper& operator=(DbusHelper&&) = default;
 
-    std::string GetService(sdbusplus::bus::bus& bus, const std::string& intf,
+    std::string getService(sdbusplus::bus::bus& bus, const std::string& intf,
                            const std::string& path) override;
 
-    void GetProperties(sdbusplus::bus::bus& bus, const std::string& service,
+    void getProperties(sdbusplus::bus::bus& bus, const std::string& service,
                        const std::string& path,
                        struct SensorProperties* prop) override;
 
-    bool ThresholdsAsserted(sdbusplus::bus::bus& bus,
+    bool thresholdsAsserted(sdbusplus::bus::bus& bus,
                             const std::string& service,
                             const std::string& path) override;
 };

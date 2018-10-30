@@ -246,7 +246,7 @@ void PIDZone::updateSensors(void)
     {
         auto sensor = _mgr.getSensor(t);
         ReadReturn r = sensor->read();
-        int64_t timeout = sensor->GetTimeout();
+        int64_t timeout = sensor->getTimeout();
 
         _cachedValuesByName[t] = r.value;
         tstamp then = r.updated;
@@ -308,7 +308,7 @@ void PIDZone::dumpCache(void)
     }
 }
 
-void PIDZone::process_fans(void)
+void PIDZone::processFans(void)
 {
     for (auto& p : _fans)
     {
@@ -316,7 +316,7 @@ void PIDZone::process_fans(void)
     }
 }
 
-void PIDZone::process_thermals(void)
+void PIDZone::processThermals(void)
 {
     for (auto& p : _thermals)
     {

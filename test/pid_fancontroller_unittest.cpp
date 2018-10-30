@@ -25,7 +25,7 @@ TEST(FanControllerTest, BoringFactoryTest)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     // Success
     EXPECT_FALSE(p == nullptr);
 }
@@ -40,7 +40,7 @@ TEST(FanControllerTest, VerifyFactoryFailsWithZeroInputs)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_TRUE(p == nullptr);
 }
 
@@ -54,13 +54,13 @@ TEST(FanControllerTest, InputProc_AllSensorsReturnZero)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fan0"))).WillOnce(Return(0));
     EXPECT_CALL(z, getCachedValue(StrEq("fan1"))).WillOnce(Return(0));
 
-    EXPECT_EQ(0.0, p->input_proc());
+    EXPECT_EQ(0.0, p->inputProc());
 }
 
 TEST(FanControllerTest, InputProc_IfSensorNegativeIsIgnored)
@@ -72,13 +72,13 @@ TEST(FanControllerTest, InputProc_IfSensorNegativeIsIgnored)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fan0"))).WillOnce(Return(-1));
     EXPECT_CALL(z, getCachedValue(StrEq("fan1"))).WillOnce(Return(-1));
 
-    EXPECT_EQ(0.0, p->input_proc());
+    EXPECT_EQ(0.0, p->inputProc());
 }
 
 TEST(FanControllerTest, InputProc_ChoosesMinimumValue)
@@ -91,14 +91,14 @@ TEST(FanControllerTest, InputProc_ChoosesMinimumValue)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fan0"))).WillOnce(Return(10.0));
     EXPECT_CALL(z, getCachedValue(StrEq("fan1"))).WillOnce(Return(30.0));
     EXPECT_CALL(z, getCachedValue(StrEq("fan2"))).WillOnce(Return(5.0));
 
-    EXPECT_EQ(5.0, p->input_proc());
+    EXPECT_EQ(5.0, p->inputProc());
 }
 
 // The direction is unused presently, but these tests validate the logic.
@@ -114,7 +114,7 @@ TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
     // Grab pointer for mocking.
     FanController* fp = reinterpret_cast<FanController*>(p.get());
@@ -125,19 +125,19 @@ TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection)
     // getMaxRPMRequest returns a higher value than 0, so the fans should be
     // marked as speeding up.
     EXPECT_CALL(z, getMaxRPMRequest()).WillOnce(Return(10.0));
-    EXPECT_EQ(10.0, p->setpt_proc());
+    EXPECT_EQ(10.0, p->setptProc());
     EXPECT_EQ(FanSpeedDirection::UP, fp->getFanDirection());
 
     // getMaxRPMRequest returns a lower value than 10, so the fans should be
     // marked as slowing down.
     EXPECT_CALL(z, getMaxRPMRequest()).WillOnce(Return(5.0));
-    EXPECT_EQ(5.0, p->setpt_proc());
+    EXPECT_EQ(5.0, p->setptProc());
     EXPECT_EQ(FanSpeedDirection::DOWN, fp->getFanDirection());
 
     // getMaxRPMRequest returns the same value, so the fans should be marked as
     // neutral.
     EXPECT_CALL(z, getMaxRPMRequest()).WillOnce(Return(5.0));
-    EXPECT_EQ(5.0, p->setpt_proc());
+    EXPECT_EQ(5.0, p->setptProc());
     EXPECT_EQ(FanSpeedDirection::NEUTRAL, fp->getFanDirection());
 }
 
@@ -153,7 +153,7 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
@@ -171,18 +171,18 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     EXPECT_CALL(z, getSensor(StrEq("fan1"))).WillOnce(Return(s2.get()));
     EXPECT_CALL(*sm2, write(0.75));
 
-    // This is a fan PID, so calling output_proc will try to write this value
+    // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.
 
     // Setting 50%, will end up being 75% because the sensors are in failsafe
     // mode.
-    p->output_proc(50.0);
+    p->outputProc(50.0);
 }
 
 TEST(FanControllerTest, OutputProc_BehavesAsExpected)
 {
     // Verifies that when the system is not in failsafe mode, the input value
-    // to output_proc is used to drive the sensors (fans).
+    // to outputProc is used to drive the sensors (fans).
 
     ZoneMock z;
 
@@ -190,7 +190,7 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(false));
@@ -207,15 +207,15 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected)
     EXPECT_CALL(z, getSensor(StrEq("fan1"))).WillOnce(Return(s2.get()));
     EXPECT_CALL(*sm2, write(0.5));
 
-    // This is a fan PID, so calling output_proc will try to write this value
+    // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.
-    p->output_proc(50.0);
+    p->outputProc(50.0);
 }
 
 TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
 {
     // If the requested output is higher than the failsafe value, then use the
-    // value provided to output_proc.
+    // value provided to outputProc.
 
     ZoneMock z;
 
@@ -223,7 +223,7 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p =
-        FanController::CreateFanPid(&z, "fan1", inputs, initial);
+        FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
@@ -241,7 +241,7 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
     EXPECT_CALL(*sm1, write(value));
 
-    // This is a fan PID, so calling output_proc will try to write this value
+    // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.
-    p->output_proc(percent);
+    p->outputProc(percent);
 }

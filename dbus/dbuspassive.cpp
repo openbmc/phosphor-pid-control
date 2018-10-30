@@ -24,7 +24,7 @@
 #include <sdbusplus/bus.hpp>
 #include <string>
 
-std::unique_ptr<ReadInterface> DbusPassive::CreateDbusPassive(
+std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
     DbusHelperInterface* helper)
 {
@@ -50,15 +50,15 @@ DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
     auto tempBus = sdbusplus::bus::new_default();
     /* service == busname */
     std::string path = GetSensorPath(type, id);
-    std::string service = _helper->GetService(tempBus, sensorintf, path);
+    std::string service = _helper->getService(tempBus, sensorintf, path);
 
     struct SensorProperties settings;
-    _helper->GetProperties(tempBus, service, path, &settings);
+    _helper->getProperties(tempBus, service, path, &settings);
 
     _scale = settings.scale;
     _value = settings.value * pow(10, _scale);
     _updated = std::chrono::high_resolution_clock::now();
-    _failed = _helper->ThresholdsAsserted(tempBus, service, path);
+    _failed = _helper->thresholdsAsserted(tempBus, service, path);
 }
 
 ReadReturn DbusPassive::read(void)
@@ -93,7 +93,7 @@ int64_t DbusPassive::getScale(void)
     return _scale;
 }
 
-std::string DbusPassive::getId(void)
+std::string DbusPassive::getID(void)
 {
     return _id;
 }

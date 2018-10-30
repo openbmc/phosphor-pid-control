@@ -32,7 +32,7 @@
 void StepwiseController::process(void)
 {
     // Get input value
-    float input = input_proc();
+    float input = inputProc();
 
     ec::StepwiseInfo info = get_stepwise_info();
 
@@ -57,12 +57,12 @@ void StepwiseController::process(void)
 
     lastOutput = output;
     // Output new value
-    output_proc(output);
+    outputProc(output);
 
     return;
 }
 
-std::unique_ptr<Controller> StepwiseController::CreateStepwiseController(
+std::unique_ptr<Controller> StepwiseController::createStepwiseController(
     ZoneInterface* owner, const std::string& id,
     const std::vector<std::string>& inputs, const ec::StepwiseInfo& initial)
 {
@@ -81,13 +81,13 @@ std::unique_ptr<Controller> StepwiseController::CreateStepwiseController(
     return thermal;
 }
 
-float StepwiseController::input_proc(void)
+float StepwiseController::inputProc(void)
 {
     double value = _owner->getCachedValue(_inputs.at(0));
     return static_cast<float>(value);
 }
 
-void StepwiseController::output_proc(float value)
+void StepwiseController::outputProc(float value)
 {
     _owner->addRPMSetPoint(value);
 

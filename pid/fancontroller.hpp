@@ -17,7 +17,7 @@ class FanController : public PIDController
 {
   public:
     static std::unique_ptr<PIDController>
-        CreateFanPid(ZoneInterface* owner, const std::string& id,
+        createFanPid(ZoneInterface* owner, const std::string& id,
                      const std::vector<std::string>& inputs,
                      const ec::pidinfo& initial);
 
@@ -28,9 +28,9 @@ class FanController : public PIDController
     {
     }
 
-    float input_proc(void) override;
-    float setpt_proc(void) override;
-    void output_proc(float value) override;
+    float inputProc(void) override;
+    float setptProc(void) override;
+    void outputProc(float value) override;
 
     FanSpeedDirection getFanDirection(void) const
     {

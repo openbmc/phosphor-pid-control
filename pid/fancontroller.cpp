@@ -23,7 +23,7 @@
 #include <iostream>
 
 std::unique_ptr<PIDController>
-    FanController::CreateFanPid(ZoneInterface* owner, const std::string& id,
+    FanController::createFanPid(ZoneInterface* owner, const std::string& id,
                                 const std::vector<std::string>& inputs,
                                 const ec::pidinfo& initial)
 {
@@ -32,14 +32,14 @@ std::unique_ptr<PIDController>
         return nullptr;
     }
     auto fan = std::make_unique<FanController>(id, inputs, owner);
-    ec::pid_info_t* info = fan->get_pid_info();
+    ec::pid_info_t* info = fan->getPIDInfo();
 
     InitializePIDStruct(info, initial);
 
     return fan;
 }
 
-float FanController::input_proc(void)
+float FanController::inputProc(void)
 {
     double value = 0;
     std::vector<int64_t> values;
@@ -66,7 +66,7 @@ float FanController::input_proc(void)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "exception on input_proc.\n";
+        std::cerr << "exception on inputProc.\n";
         throw;
     }
 
@@ -85,12 +85,12 @@ float FanController::input_proc(void)
     return static_cast<float>(value);
 }
 
-float FanController::setpt_proc(void)
+float FanController::setptProc(void)
 {
     float maxRPM = _owner->getMaxRPMRequest();
 
     // store for reference, and check if more or less.
-    float prev = get_setpoint();
+    float prev = getSetpoint();
 
     if (maxRPM > prev)
     {
@@ -105,12 +105,12 @@ float FanController::setpt_proc(void)
         setFanDirection(FanSpeedDirection::NEUTRAL);
     }
 
-    set_setpoint(maxRPM);
+    setSetpoint(maxRPM);
 
     return (maxRPM);
 }
 
-void FanController::output_proc(float value)
+void FanController::outputProc(float value)
 {
     float percent = value;
 

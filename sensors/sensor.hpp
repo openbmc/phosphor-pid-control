@@ -27,7 +27,7 @@ class Sensor
         return false;
     };
 
-    std::string GetName(void) const
+    std::string getName(void) const
     {
         return _name;
     }
@@ -35,7 +35,7 @@ class Sensor
     /* Returns the configurable timeout period
      * for this sensor in seconds (undecorated).
      */
-    int64_t GetTimeout(void) const
+    int64_t getTimeout(void) const
     {
         return _timeout;
     }

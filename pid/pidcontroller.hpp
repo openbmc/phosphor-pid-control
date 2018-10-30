@@ -11,7 +11,7 @@ class ZoneInterface;
 
 /*
  * Base class for PID controllers.  Each PID that implements this needs to
- * provide an input_proc, setpt_proc, and output_proc.
+ * provide an inputProc, setptProc, and outputProc.
  */
 class PIDController : public Controller
 {
@@ -25,26 +25,26 @@ class PIDController : public Controller
     {
     }
 
-    virtual float input_proc(void) = 0;
-    virtual float setpt_proc(void) = 0;
-    virtual void output_proc(float value) = 0;
+    virtual float inputProc(void) = 0;
+    virtual float setptProc(void) = 0;
+    virtual void outputProc(float value) = 0;
 
     void process(void);
 
-    std::string get_id(void)
+    std::string getID(void)
     {
         return _id;
     }
-    float get_setpoint(void)
+    float getSetpoint(void)
     {
         return _setpoint;
     }
-    void set_setpoint(float setpoint)
+    void setSetpoint(float setpoint)
     {
         _setpoint = setpoint;
     }
 
-    ec::pid_info_t* get_pid_info(void)
+    ec::pid_info_t* getPIDInfo(void)
     {
         return &_pid_info;
     }

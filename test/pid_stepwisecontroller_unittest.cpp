@@ -29,7 +29,7 @@ TEST(StepwiseControllerTest, HysteresisTestPositive)
     initial.output[1] = 60.0;
 
     std::unique_ptr<Controller> p =
-        StepwiseController::CreateStepwiseController(&z, "foo", inputs,
+        StepwiseController::createStepwiseController(&z, "foo", inputs,
                                                      initial);
 
     EXPECT_CALL(z, getCachedValue(StrEq("test")))
@@ -64,7 +64,7 @@ TEST(StepwiseControllerTest, HysteresisTestNegative)
     initial.output[1] = 60.0;
 
     std::unique_ptr<Controller> p =
-        StepwiseController::CreateStepwiseController(&z, "foo", inputs,
+        StepwiseController::createStepwiseController(&z, "foo", inputs,
                                                      initial);
 
     EXPECT_CALL(z, getCachedValue(StrEq("test")))

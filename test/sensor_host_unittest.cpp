@@ -40,7 +40,7 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
     std::vector<std::string> properties = {"Scale"};
     int i;
 
-    // The CreateTemp updates all the properties, however, only Scale is set
+    // The createTemp updates all the properties, however, only Scale is set
     // to non-default.
     SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &i);
 
@@ -50,7 +50,7 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
         .WillOnce(Return(0));
 
     std::unique_ptr<Sensor> s =
-        HostSensor::CreateTemp(name, timeout, bus_mock, objPath, defer);
+        HostSensor::createTemp(name, timeout, bus_mock, objPath, defer);
 }
 
 TEST(HostSensorTest, VerifyWriteThenReadMatches)
@@ -80,7 +80,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
         .WillOnce(Return(0));
 
     std::unique_ptr<Sensor> s =
-        HostSensor::CreateTemp(name, timeout, bus_mock, objPath, defer);
+        HostSensor::createTemp(name, timeout, bus_mock, objPath, defer);
 
     // Value is updated from dbus calls only (normally).
     HostSensor* hs = static_cast<HostSensor*>(s.get());

@@ -66,7 +66,7 @@ SensorManager
         switch (rtype)
         {
             case IOInterfaceType::DBUSPASSIVE:
-                ri = DbusPassive::CreateDbusPassive(PassiveListeningBus,
+                ri = DbusPassive::createDbusPassive(PassiveListeningBus,
                                                     info->type, name, &helper);
                 /* TODO(venture): if this returns nullptr */
                 break;
@@ -135,7 +135,7 @@ SensorManager
                  * The reason we handle this as a HostSensor is because it's
                  * not quite pluggable; but maybe it could be.
                  */
-                auto sensor = HostSensor::CreateTemp(
+                auto sensor = HostSensor::createTemp(
                     name, info->timeout, HostSensorBus, info->readpath.c_str(),
                     deferSignals);
                 mgmr.addSensor(info->type, name, std::move(sensor));

@@ -74,8 +74,8 @@ class PIDZone : public ZoneInterface, public ModeObject
     void updateSensors(void);
     void initializeCache(void);
     void dumpCache(void);
-    void process_fans(void);
-    void process_thermals(void);
+    void processFans(void);
+    void processThermals(void);
 
     void addFanPID(std::unique_ptr<Controller> pid);
     void addThermalPID(std::unique_ptr<Controller> pid);

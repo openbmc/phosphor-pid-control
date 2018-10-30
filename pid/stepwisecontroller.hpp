@@ -14,7 +14,7 @@ class StepwiseController : public Controller
 {
   public:
     static std::unique_ptr<Controller>
-        CreateStepwiseController(ZoneInterface* owner, const std::string& id,
+        createStepwiseController(ZoneInterface* owner, const std::string& id,
                                  const std::vector<std::string>& inputs,
                                  const ec::StepwiseInfo& initial);
 
@@ -26,13 +26,13 @@ class StepwiseController : public Controller
     {
     }
 
-    float input_proc(void) override;
+    float inputProc(void) override;
 
-    void output_proc(float value) override;
+    void outputProc(float value) override;
 
     void process(void) override;
 
-    std::string get_id(void)
+    std::string getID(void)
     {
         return _id;
     }

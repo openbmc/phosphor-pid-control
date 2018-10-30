@@ -90,7 +90,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                     zone->addFanInput(i);
                 }
 
-                auto pid = FanController::CreateFanPid(zone.get(), name, inputs,
+                auto pid = FanController::createFanPid(zone.get(), name, inputs,
                                                        info->pidInfo);
                 zone->addFanPID(std::move(pid));
             }
@@ -102,7 +102,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                     zone->addThermalInput(i);
                 }
 
-                auto pid = ThermalController::CreateThermalPid(
+                auto pid = ThermalController::createThermalPid(
                     zone.get(), name, inputs, info->setpoint, info->pidInfo);
 
                 zone->addThermalPID(std::move(pid));
@@ -114,7 +114,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                     inputs.push_back(i);
                     zone->addThermalInput(i);
                 }
-                auto stepwise = StepwiseController::CreateStepwiseController(
+                auto stepwise = StepwiseController::createStepwiseController(
                     zone.get(), name, inputs, info->stepwiseInfo);
                 zone->addThermalPID(std::move(stepwise));
             }

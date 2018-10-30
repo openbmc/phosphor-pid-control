@@ -11,7 +11,7 @@ using PropertyMap = std::map<Property, Value>;
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
  * part of sdbusplus.  There is an old version in libmapper.
  */
-std::string DbusHelper::GetService(sdbusplus::bus::bus& bus,
+std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
                                    const std::string& intf,
                                    const std::string& path)
 {
@@ -40,7 +40,7 @@ std::string DbusHelper::GetService(sdbusplus::bus::bus& bus,
     return response.begin()->first;
 }
 
-void DbusHelper::GetProperties(sdbusplus::bus::bus& bus,
+void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
                                const std::string& service,
                                const std::string& path,
                                struct SensorProperties* prop)
@@ -90,7 +90,7 @@ void DbusHelper::GetProperties(sdbusplus::bus::bus& bus,
     return;
 }
 
-bool DbusHelper::ThresholdsAsserted(sdbusplus::bus::bus& bus,
+bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
                                     const std::string& service,
                                     const std::string& path)
 {

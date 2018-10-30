@@ -32,7 +32,7 @@ static void ProcessThermals(PIDZone* zone)
     // Zero out the RPM set point goals.
     zone->clearRPMSetPoints();
     // Run the margin PIDs.
-    zone->process_thermals();
+    zone->processThermals();
     // Get the maximum RPM set-point.
     zone->determineMaxRPMRequest();
 }
@@ -60,7 +60,7 @@ void PIDControlThread(PIDZone* zone)
      * will happen.
      *
      * TODO(venture): If the fan value is 0 should that loop just be skipped?
-     * Right now, a 0 value is ignored in FanController::input_proc()
+     * Right now, a 0 value is ignored in FanController::inputProc()
      */
 #ifdef __TUNING_LOGGING__
     zone->initializeLog();
@@ -90,7 +90,7 @@ void PIDControlThread(PIDZone* zone)
         }
 
         // Run the fan PIDs every iteration.
-        zone->process_fans();
+        zone->processFans();
 
 #ifdef __TUNING_LOGGING__
         zone->getLogHandle() << "," << zone->getFailSafeMode();

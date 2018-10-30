@@ -29,7 +29,7 @@ TEST(DbusPassiveTest, FactoryFailsWithInvalidType)
     DbusHelperMock helper;
 
     std::unique_ptr<ReadInterface> ri =
-        DbusPassive::CreateDbusPassive(bus_mock, type, id, &helper);
+        DbusPassive::createDbusPassive(bus_mock, type, id, &helper);
 
     EXPECT_EQ(ri, nullptr);
 }
@@ -46,10 +46,10 @@ TEST(DbusPassiveTest, BoringConstructorTest)
     std::string path = "/xyz/openbmc_project/sensors/unknown/id";
 
     DbusHelperMock helper;
-    EXPECT_CALL(helper, GetService(_, StrEq(SensorIntf), StrEq(path)))
+    EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
         .WillOnce(Return("asdf"));
 
-    EXPECT_CALL(helper, GetProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
+    EXPECT_CALL(helper, getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
         .WillOnce(
             Invoke([&](sdbusplus::bus::bus& bus, const std::string& service,
                        const std::string& path, struct SensorProperties* prop) {
@@ -57,7 +57,7 @@ TEST(DbusPassiveTest, BoringConstructorTest)
                 prop->value = 10;
                 prop->unit = "x";
             }));
-    EXPECT_CALL(helper, ThresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+    EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
         .WillOnce(Return(false));
 
     DbusPassive(bus_mock, type, id, &helper);
@@ -71,11 +71,11 @@ class DbusPassiveTestObj : public ::testing::Test
         sdbus_mock(),
         bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))), helper()
     {
-        EXPECT_CALL(helper, GetService(_, StrEq(SensorIntf), StrEq(path)))
+        EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
             .WillOnce(Return("asdf"));
 
         EXPECT_CALL(helper,
-                    GetProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
+                    getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(Invoke(
                 [&](sdbusplus::bus::bus& bus, const std::string& service,
                     const std::string& path, struct SensorProperties* prop) {
@@ -83,10 +83,10 @@ class DbusPassiveTestObj : public ::testing::Test
                     prop->value = _value;
                     prop->unit = "x";
                 }));
-        EXPECT_CALL(helper, ThresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
-        ri = DbusPassive::CreateDbusPassive(bus_mock, type, id, &helper);
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper);
         passive = reinterpret_cast<DbusPassive*>(ri.get());
         EXPECT_FALSE(passive == nullptr);
     }
@@ -133,10 +133,10 @@ TEST_F(DbusPassiveTestObj, GetScaleReturnsExpectedValue)
     EXPECT_EQ(_scale, passive->getScale());
 }
 
-TEST_F(DbusPassiveTestObj, GetIdReturnsExpectedValue)
+TEST_F(DbusPassiveTestObj, getIDReturnsExpectedValue)
 {
-    // Verify getId returns the expected value.
-    EXPECT_EQ(id, passive->getId());
+    // Verify getID returns the expected value.
+    EXPECT_EQ(id, passive->getID());
 }
 
 TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)

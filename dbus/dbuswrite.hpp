@@ -33,7 +33,7 @@ class DbusWritePercent : public WriteInterface
         path(path)
     {
         auto tempBus = sdbusplus::bus::new_default();
-        connectionName = helper.GetService(tempBus, pwmInterface, path);
+        connectionName = helper.getService(tempBus, pwmInterface, path);
     }
 
     void write(double value) override;
@@ -53,7 +53,7 @@ class DbusWrite : public WriteInterface
         path(path)
     {
         auto tempBus = sdbusplus::bus::new_default();
-        connectionName = helper.GetService(tempBus, pwmInterface, path);
+        connectionName = helper.getService(tempBus, pwmInterface, path);
     }
 
     void write(double value) override;

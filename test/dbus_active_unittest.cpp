@@ -36,7 +36,7 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
 
     DbusActiveRead ar(bus_mock, path, service, &helper);
 
-    EXPECT_CALL(helper, GetProperties(_, service, path, NotNull()))
+    EXPECT_CALL(helper, getProperties(_, service, path, NotNull()))
         .WillOnce(
             Invoke([&](sdbusplus::bus::bus& bus, const std::string& service,
                        const std::string& path, struct SensorProperties* prop) {
@@ -49,5 +49,5 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
     EXPECT_EQ(10, r.value);
 }
 
-// WARN: GetProperties will raise an exception on failure
+// WARN: getProperties will raise an exception on failure
 // Instead of just not updating the value.

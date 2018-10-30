@@ -19,7 +19,7 @@
 #include "util.hpp"
 #include "zone.hpp"
 
-std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
+std::unique_ptr<PIDController> ThermalController::createThermalPid(
     ZoneInterface* owner, const std::string& id,
     const std::vector<std::string>& inputs, float setpoint,
     const ec::pidinfo& initial)
@@ -32,8 +32,8 @@ std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
 
     auto thermal = std::make_unique<ThermalController>(id, inputs, owner);
 
-    ec::pid_info_t* info = thermal->get_pid_info();
-    thermal->set_setpoint(setpoint);
+    ec::pid_info_t* info = thermal->getPIDInfo();
+    thermal->setSetpoint(setpoint);
 
     InitializePIDStruct(info, initial);
 
@@ -41,7 +41,7 @@ std::unique_ptr<PIDController> ThermalController::CreateThermalPid(
 }
 
 // bmc_host_sensor_value_float
-float ThermalController::input_proc(void)
+float ThermalController::inputProc(void)
 {
     /*
      * This only supports one thermal input because it doesn't yet know how to
@@ -52,9 +52,9 @@ float ThermalController::input_proc(void)
 }
 
 // bmc_get_setpt
-float ThermalController::setpt_proc(void)
+float ThermalController::setptProc(void)
 {
-    float setpoint = get_setpoint();
+    float setpoint = getSetpoint();
 
     /* TODO(venture): Thermal setpoint invalid? */
 #if 0
@@ -71,7 +71,7 @@ float ThermalController::setpt_proc(void)
 }
 
 // bmc_set_pid_output
-void ThermalController::output_proc(float value)
+void ThermalController::outputProc(float value)
 {
     _owner->addRPMSetPoint(value);
 
