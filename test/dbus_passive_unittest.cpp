@@ -36,8 +36,7 @@ TEST(DbusPassiveTest, FactoryFailsWithInvalidType)
 
 TEST(DbusPassiveTest, BoringConstructorTest)
 {
-    // Just build the object, which should be avoided as this does no error
-    // checking at present.
+    // Simply build the object, does no error checking.
 
     sdbusplus::SdBusMock sdbus_mock;
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
@@ -46,21 +45,9 @@ TEST(DbusPassiveTest, BoringConstructorTest)
     std::string path = "/xyz/openbmc_project/sensors/unknown/id";
 
     DbusHelperMock helper;
-    EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
-        .WillOnce(Return("asdf"));
+    struct SensorProperties properties;
 
-    EXPECT_CALL(helper, getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
-        .WillOnce(
-            Invoke([&](sdbusplus::bus::bus& bus, const std::string& service,
-                       const std::string& path, struct SensorProperties* prop) {
-                prop->scale = -3;
-                prop->value = 10;
-                prop->unit = "x";
-            }));
-    EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
-        .WillOnce(Return(false));
-
-    DbusPassive(bus_mock, type, id, &helper);
+    DbusPassive(bus_mock, type, id, &helper, properties, false);
     // Success
 }
 

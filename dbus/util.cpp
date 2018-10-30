@@ -31,7 +31,6 @@ std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
     try
     {
         auto responseMsg = bus.call(mapper);
-
         responseMsg.read(response);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
