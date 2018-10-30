@@ -19,22 +19,22 @@
 #include "dbus/util.hpp"
 #include "interfaces.hpp"
 
+#include <memory>
 #include <sdbusplus/bus.hpp>
 #include <string>
-
-constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 class DbusWritePercent : public WriteInterface
 {
   public:
+    static std::unique_ptr<WriteInterface>
+        createDbusWrite(const std::string& path, int64_t min, int64_t max,
+                        DbusHelperInterface& helper);
+
     DbusWritePercent(const std::string& path, int64_t min, int64_t max,
-                     DbusHelperInterface& helper) :
+                     const std::string& connectionName) :
         WriteInterface(min, max),
-        path(path)
+        path(path), connectionName(connectionName)
     {
-        auto tempBus = sdbusplus::bus::new_default();
-        // getService can except, does it make more sense to use a factory?
-        connectionName = helper.getService(tempBus, pwmInterface, path);
     }
 
     void write(double value) override;
@@ -48,14 +48,15 @@ class DbusWritePercent : public WriteInterface
 class DbusWrite : public WriteInterface
 {
   public:
+    static std::unique_ptr<WriteInterface>
+        createDbusWrite(const std::string& path, int64_t min, int64_t max,
+                        DbusHelperInterface& helper);
+
     DbusWrite(const std::string& path, int64_t min, int64_t max,
-              DbusHelperInterface& helper) :
+              const std::string& connectionName) :
         WriteInterface(min, max),
-        path(path)
+        path(path), connectionName(connectionName)
     {
-        auto tempBus = sdbusplus::bus::new_default();
-        // getService can except, does it make more sense to use a factory?
-        connectionName = helper.getService(tempBus, pwmInterface, path);
     }
 
     void write(double value) override;
