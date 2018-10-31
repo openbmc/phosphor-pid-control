@@ -46,11 +46,11 @@
 #endif
 
 /* The YAML converted sensor list. */
-extern std::map<std::string, struct SensorConfig> SensorConfig;
+extern std::map<std::string, struct SensorConfig> sensorConfig;
 /* The YAML converted PID list. */
-extern std::map<int64_t, PIDConf> ZoneConfig;
+extern std::map<int64_t, PIDConf> zoneConfig;
 /* The YAML converted Zone configuration. */
-extern std::map<int64_t, struct ZoneConfig> ZoneDetailsConfig;
+extern std::map<int64_t, struct ZoneConfig> zoneDetailsConfig;
 
 int main(int argc, char* argv[])
 {
@@ -117,8 +117,8 @@ int main(int argc, char* argv[])
     }
     else
     {
-        mgmr = buildSensors(SensorConfig);
-        zones = buildZones(ZoneConfig, ZoneDetailsConfig, mgmr, ModeControlBus);
+        mgmr = buildSensors(sensorConfig);
+        zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, ModeControlBus);
     }
 
     if (0 == zones.size())

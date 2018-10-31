@@ -6,7 +6,7 @@
 #include <map>
 #include "conf.hpp"
 
-std::map<std::string, struct SensorConfig> SensorConfig = {
+std::map<std::string, struct SensorConfig> sensorConfig = {
 % for key in sensorDict.iterkeys():
    % if key:
    <%

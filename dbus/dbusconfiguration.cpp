@@ -30,9 +30,9 @@
 
 static constexpr bool DEBUG = false; // enable to print found configuration
 
-std::map<std::string, struct SensorConfig> SensorConfig = {};
-std::map<int64_t, PIDConf> ZoneConfig = {};
-std::map<int64_t, struct ZoneConfig> ZoneDetailsConfig = {};
+std::map<std::string, struct SensorConfig> sensorConfig = {};
+std::map<int64_t, PIDConf> zoneConfig = {};
+std::map<int64_t, struct ZoneConfig> zoneDetailsConfig = {};
 
 constexpr const char* pidConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid";
@@ -75,7 +75,7 @@ void debugPrint(void)
     // print sensor config
     std::cout << "sensor config:\n";
     std::cout << "{\n";
-    for (const auto& pair : SensorConfig)
+    for (const auto& pair : sensorConfig)
     {
 
         std::cout << "\t{" << pair.first << ",\n\t\t{";
@@ -89,7 +89,7 @@ void debugPrint(void)
     std::cout << "}\n\n";
     std::cout << "ZoneDetailsConfig\n";
     std::cout << "{\n";
-    for (const auto& zone : ZoneDetailsConfig)
+    for (const auto& zone : zoneDetailsConfig)
     {
         std::cout << "\t{" << zone.first << ",\n";
         std::cout << "\t\t{" << zone.second.minthermalrpm << ", ";
@@ -98,7 +98,7 @@ void debugPrint(void)
     std::cout << "}\n\n";
     std::cout << "ZoneConfig\n";
     std::cout << "{\n";
-    for (const auto& zone : ZoneConfig)
+    for (const auto& zone : zoneConfig)
     {
         std::cout << "\t{" << zone.first << "\n";
         for (const auto& pidconf : zone.second)
@@ -301,7 +301,7 @@ void init(sdbusplus::bus::bus& bus)
                 index = zoneIndex.end() - it;
             }
 
-            auto& details = ZoneDetailsConfig[index];
+            auto& details = zoneDetailsConfig[index];
             details.minthermalrpm = variant_ns::apply_visitor(
                 VariantToFloatVisitor(), zone.at("MinThermalRpm"));
             details.failsafepercent = variant_ns::apply_visitor(
@@ -328,7 +328,7 @@ void init(sdbusplus::bus::bus& bus)
                 {
                     index = zoneIndex.end() - it;
                 }
-                PIDConf& conf = ZoneConfig[index];
+                PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> sensorNames =
                     variant_ns::get<std::vector<std::string>>(
@@ -360,7 +360,7 @@ void init(sdbusplus::bus::bus& bus)
                     if (sensorPathIfacePair.second == sensorInterface)
                     {
                         inputs.push_back(name);
-                        auto& config = SensorConfig[name];
+                        auto& config = sensorConfig[name];
                         config.type =
                             variant_ns::get<std::string>(base.at("Class"));
                         config.readpath = sensorPathIfacePair.first;
@@ -382,7 +382,7 @@ void init(sdbusplus::bus::bus& bus)
                             }
                             std::replace(otherSensor.begin(), otherSensor.end(),
                                          ' ', '_');
-                            auto& config = SensorConfig[otherSensor];
+                            auto& config = sensorConfig[otherSensor];
                             config.writepath = sensorPathIfacePair.first;
                             // todo: un-hardcode this if there are fans with
                             // different ranges
@@ -456,7 +456,7 @@ void init(sdbusplus::bus::bus& bus)
                 {
                     index = zoneIndex.end() - it;
                 }
-                PIDConf& conf = ZoneConfig[index];
+                PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> inputs;
                 std::vector<std::string> sensorNames =
@@ -478,7 +478,7 @@ void init(sdbusplus::bus::bus& bus)
                     }
 
                     inputs.push_back(name);
-                    auto& config = SensorConfig[name];
+                    auto& config = sensorConfig[name];
                     config.readpath = sensorPathIfacePair.first;
                     config.type = "temp";
                     // todo: maybe un-hardcode this if we run into slower
@@ -551,7 +551,7 @@ void init(sdbusplus::bus::bus& bus)
     {
         debugPrint();
     }
-    if (ZoneConfig.empty())
+    if (zoneConfig.empty())
     {
         std::cerr << "No fan zones, application pausing until reboot\n";
         while (1)
