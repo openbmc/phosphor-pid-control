@@ -117,10 +117,7 @@ bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
     try
     {
         auto msg = bus.call(critical);
-        if (!msg.is_method_error())
-        {
-            msg.read(criticalMap);
-        }
+        msg.read(criticalMap);
     }
     catch (sdbusplus::exception_t&)
     {

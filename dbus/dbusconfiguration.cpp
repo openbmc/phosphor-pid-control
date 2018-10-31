@@ -182,10 +182,6 @@ void init(sdbusplus::bus::bus& bus)
     try
     {
         auto resp = bus.call(mapper);
-        if (resp.is_method_error())
-        {
-            throw std::runtime_error("ObjectMapper Call Failure");
-        }
         resp.read(respData);
     }
     catch (sdbusplus::exception_t&)
@@ -249,11 +245,6 @@ void init(sdbusplus::bus::bus& bus)
         try
         {
             auto responce = bus.call(endpoint);
-            if (responce.is_method_error())
-            {
-                throw std::runtime_error("Error getting managed objects from " +
-                                         owner.first);
-            }
             responce.read(configuration);
         }
         catch (sdbusplus::exception_t&)
