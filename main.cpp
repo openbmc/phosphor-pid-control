@@ -85,10 +85,10 @@ int main(int argc, char* argv[])
         }
     }
 
-    auto ModeControlBus = sdbusplus::bus::new_default();
+    auto modeControlBus = sdbusplus::bus::new_default();
 #if CONFIGURE_DBUS
     {
-        dbus_configuration::init(ModeControlBus);
+        dbus_configuration::init(modeControlBus);
     }
 #endif
     SensorManager mgmr;
@@ -96,7 +96,7 @@ int main(int argc, char* argv[])
 
     // Create a manager for the ModeBus because we own it.
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
-    sdbusplus::server::manager::manager(ModeControlBus, modeRoot);
+    sdbusplus::server::manager::manager(modeControlBus, modeRoot);
 
     /*
      * When building the sensors, if any of the dbus passive ones aren't on the
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
         try
         {
             mgmr = buildSensorsFromConfig(configPath);
-            zones = buildZonesFromConfig(configPath, mgmr, ModeControlBus);
+            zones = buildZonesFromConfig(configPath, mgmr, modeControlBus);
         }
         catch (const std::exception& e)
         {
@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
     else
     {
         mgmr = buildSensors(sensorConfig);
-        zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, ModeControlBus);
+        zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
     }
 
     if (0 == zones.size())
@@ -132,23 +132,23 @@ int main(int argc, char* argv[])
      * it.
      */
 
-    auto& HostSensorBus = mgmr.getHostBus();
-    auto& PassiveListeningBus = mgmr.getPassiveBus();
+    auto& hostSensorBus = mgmr.getHostBus();
+    auto& passiveListeningBus = mgmr.getPassiveBus();
 
     std::cerr << "Starting threads\n";
 
     /* TODO(venture): Ask SensorManager if we have any passive sensors. */
-    struct ThreadParams p = {std::ref(PassiveListeningBus), ""};
-    std::thread l(BusThread, std::ref(p));
+    struct ThreadParams p = {std::ref(passiveListeningBus), ""};
+    std::thread l(busThread, std::ref(p));
 
     /* TODO(venture): Ask SensorManager if we have any host sensors. */
     static constexpr auto hostBus = "xyz.openbmc_project.Hwmon.external";
-    struct ThreadParams e = {std::ref(HostSensorBus), hostBus};
-    std::thread te(BusThread, std::ref(e));
+    struct ThreadParams e = {std::ref(hostSensorBus), hostBus};
+    std::thread te(busThread, std::ref(e));
 
     static constexpr auto modeBus = "xyz.openbmc_project.State.FanCtrl";
-    struct ThreadParams m = {std::ref(ModeControlBus), modeBus};
-    std::thread tm(BusThread, std::ref(m));
+    struct ThreadParams m = {std::ref(modeControlBus), modeBus};
+    std::thread tm(busThread, std::ref(m));
 
     std::vector<std::thread> zoneThreads;
 

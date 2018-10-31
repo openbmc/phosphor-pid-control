@@ -18,7 +18,7 @@
 
 #include <string>
 
-void BusThread(struct ThreadParams& params)
+void busThread(struct ThreadParams& params)
 {
     if (params.name.length() > 0)
     {

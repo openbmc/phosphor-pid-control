@@ -8,4 +8,4 @@ struct ThreadParams
     std::string name;
 };
 
-void BusThread(struct ThreadParams& params);
+void busThread(struct ThreadParams& params);

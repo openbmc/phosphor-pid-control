@@ -41,8 +41,8 @@ SensorManager
     buildSensors(const std::map<std::string, struct SensorConfig>& config)
 {
     SensorManager mgmr;
-    auto& HostSensorBus = mgmr.getHostBus();
-    auto& PassiveListeningBus = mgmr.getPassiveBus();
+    auto& hostSensorBus = mgmr.getHostBus();
+    auto& passiveListeningBus = mgmr.getPassiveBus();
 
     for (const auto& it : config)
     {
@@ -67,7 +67,7 @@ SensorManager
         switch (rtype)
         {
             case IOInterfaceType::DBUSPASSIVE:
-                ri = DbusPassive::createDbusPassive(PassiveListeningBus,
+                ri = DbusPassive::createDbusPassive(passiveListeningBus,
                                                     info->type, name, &helper);
                 if (ri == nullptr)
                 {
@@ -149,7 +149,7 @@ SensorManager
                  * not quite pluggable; but maybe it could be.
                  */
                 auto sensor = HostSensor::createTemp(
-                    name, info->timeout, HostSensorBus, info->readpath.c_str(),
+                    name, info->timeout, hostSensorBus, info->readpath.c_str(),
                     deferSignals);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
