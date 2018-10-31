@@ -76,7 +76,7 @@ float PIDZone::getFailSafePercent(void) const
     return _failSafePercent;
 }
 
-float PIDZone::getMinThermalRpmSetPt(void) const
+float PIDZone::getMinThermalRPMSetpoint(void) const
 {
     return _minThermalRpmSetPt;
 }
@@ -121,7 +121,7 @@ void PIDZone::determineMaxRPMRequest(void)
      * If the maximum RPM set-point output is below the minimum RPM
      * set-point, set it to the minimum.
      */
-    max = std::max(getMinThermalRpmSetPt(), max);
+    max = std::max(getMinThermalRPMSetpoint(), max);
 
 #ifdef __TUNING_LOGGING__
     /*

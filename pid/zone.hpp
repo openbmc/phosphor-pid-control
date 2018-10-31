@@ -66,7 +66,7 @@ class PIDZone : public ZoneInterface, public ModeObject
     void addRPMSetPoint(float setpoint) override;
     void clearRPMSetPoints(void);
     float getFailSafePercent(void) const override;
-    float getMinThermalRpmSetPt(void) const;
+    float getMinThermalRPMSetpoint(void) const;
 
     Sensor* getSensor(const std::string& name) override;
     void determineMaxRPMRequest(void);
