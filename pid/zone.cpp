@@ -96,12 +96,12 @@ double PIDZone::getCachedValue(const std::string& name)
     return _cachedValuesByName.at(name);
 }
 
-void PIDZone::addFanInput(std::string fan)
+void PIDZone::addFanInput(const std::string& fan)
 {
     _fanInputs.push_back(fan);
 }
 
-void PIDZone::addThermalInput(std::string therm)
+void PIDZone::addThermalInput(const std::string& therm)
 {
     _thermalInputs.push_back(therm);
 }

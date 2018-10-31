@@ -80,8 +80,8 @@ class PIDZone : public ZoneInterface, public ModeObject
     void addFanPID(std::unique_ptr<Controller> pid);
     void addThermalPID(std::unique_ptr<Controller> pid);
     double getCachedValue(const std::string& name) override;
-    void addFanInput(std::string fan);
-    void addThermalInput(std::string therm);
+    void addFanInput(const std::string& fan);
+    void addThermalInput(const std::string& therm);
 
 #ifdef __TUNING_LOGGING__
     void initializeLog(void);
