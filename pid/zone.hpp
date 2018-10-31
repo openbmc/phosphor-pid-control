@@ -5,7 +5,6 @@
 #include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
-#include "xyz/openbmc_project/Control/Mode/server.hpp"
 
 #include <fstream>
 #include <map>
@@ -15,6 +14,7 @@
 #include <set>
 #include <string>
 #include <vector>
+#include <xyz/openbmc_project/Control/Mode/server.hpp>
 
 template <typename... T>
 using ServerObject = typename sdbusplus::server::object::object<T...>;

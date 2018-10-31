@@ -1,12 +1,12 @@
 #pragma once
 
 #include "sensor.hpp"
-#include "xyz/openbmc_project/Sensor/Value/server.hpp"
 
 #include <memory>
 #include <mutex>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Sensor/Value/server.hpp>
 
 template <typename... T>
 using ServerObject = typename sdbusplus::server::object::object<T...>;
