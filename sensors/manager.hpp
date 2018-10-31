@@ -37,7 +37,7 @@ class SensorManager
     /*
      * Add a Sensor to the Manager.
      */
-    void addSensor(std::string type, std::string name,
+    void addSensor(const std::string& type, const std::string& name,
                    std::unique_ptr<Sensor> sensor);
 
     // TODO(venture): Should implement read/write by name.
