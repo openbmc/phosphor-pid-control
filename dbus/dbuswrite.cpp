@@ -18,10 +18,13 @@
 
 #include <iostream>
 #include <memory>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <string>
 
 constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
+
+using namespace phosphor::logging;
 
 // this bus object is treated as a singleton because the class is constructed in
 // a different thread than it is used, and as bus objects are relatively
@@ -75,11 +78,18 @@ void DbusWritePercent::write(double value)
                                   "org.freedesktop.DBus.Properties", "Set");
     mesg.append(pwmInterface, "Target",
                 sdbusplus::message::variant<uint64_t>(ovalue));
-    auto resp = writeBus->call(mesg);
-    if (resp.is_method_error())
+
+    try
     {
-        std::cerr << "Error sending message to " << path << "\n";
+        // TODO: if we don't use the reply, call_noreply()
+        auto resp = writeBus->call(mesg);
     }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
+                        entry("WHAT=%s", ex.what()));
+    }
+
     oldValue = static_cast<int64_t>(ovalue);
     return;
 }
@@ -115,11 +125,18 @@ void DbusWrite::write(double value)
                                   "org.freedesktop.DBus.Properties", "Set");
     mesg.append(pwmInterface, "Target",
                 sdbusplus::message::variant<uint64_t>(value));
-    auto resp = writeBus->call(mesg);
-    if (resp.is_method_error())
+
+    try
     {
-        std::cerr << "Error sending message to " << path << "\n";
+        // TODO: consider call_noreplly
+        auto resp = writeBus->call(mesg);
     }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
+                        entry("WHAT=%s", ex.what()));
+    }
+
     oldValue = static_cast<int64_t>(value);
     return;
 }
