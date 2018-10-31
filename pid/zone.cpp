@@ -56,7 +56,7 @@ bool PIDZone::getFailSafeMode(void) const
     return !_failSafeSensors.empty();
 }
 
-int64_t PIDZone::getZoneId(void) const
+int64_t PIDZone::getZoneID(void) const
 {
     return _zoneId;
 }

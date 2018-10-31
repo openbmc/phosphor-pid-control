@@ -105,7 +105,7 @@ TEST_F(PidZoneTest, GetZoneId_ReturnsExpected)
 {
     // Verifies the zoneId returned is what we expect.
 
-    EXPECT_EQ(zoneId, zone->getZoneId());
+    EXPECT_EQ(zoneId, zone->getZoneID());
 }
 
 TEST_F(PidZoneTest, GetAndSetManualModeTest_BehavesAsExpected)

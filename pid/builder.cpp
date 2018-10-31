@@ -67,7 +67,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             zoneConf->second.failsafepercent, mgr, modeControlBus,
             getControlPath(zi.first).c_str(), deferSignals);
 
-        std::cerr << "Zone Id: " << zone->getZoneId() << "\n";
+        std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
 
         // For each PID create a Controller and a Sensor.
         for (const auto& pit : pidConfig)

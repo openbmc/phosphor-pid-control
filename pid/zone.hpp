@@ -62,7 +62,7 @@ class PIDZone : public ZoneInterface, public ModeObject
      */
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
-    int64_t getZoneId(void) const;
+    int64_t getZoneID(void) const;
     void addRPMSetPoint(float setpoint) override;
     void clearRPMSetPoints(void);
     float getFailSafePercent(void) const override;
