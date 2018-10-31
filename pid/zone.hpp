@@ -31,7 +31,7 @@ class ZoneInterface
     virtual float getMaxRPMRequest() const = 0;
     virtual bool getFailSafeMode() const = 0;
     virtual float getFailSafePercent() const = 0;
-    virtual Sensor* getSensor(std::string name) = 0;
+    virtual Sensor* getSensor(const std::string& name) = 0;
 };
 
 /*
@@ -68,7 +68,7 @@ class PIDZone : public ZoneInterface, public ModeObject
     float getFailSafePercent(void) const override;
     float getMinThermalRpmSetPt(void) const;
 
-    Sensor* getSensor(std::string name) override;
+    Sensor* getSensor(const std::string& name) override;
     void determineMaxRPMRequest(void);
     void updateFanTelemetry(void);
     void updateSensors(void);

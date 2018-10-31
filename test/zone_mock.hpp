@@ -16,5 +16,5 @@ class ZoneMock : public ZoneInterface
     MOCK_CONST_METHOD0(getMaxRPMRequest, float());
     MOCK_CONST_METHOD0(getFailSafeMode, bool());
     MOCK_CONST_METHOD0(getFailSafePercent, float());
-    MOCK_METHOD1(getSensor, Sensor*(std::string));
+    MOCK_METHOD1(getSensor, Sensor*(const std::string&));
 };

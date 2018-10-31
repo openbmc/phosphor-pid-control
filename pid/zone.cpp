@@ -324,7 +324,7 @@ void PIDZone::processThermals(void)
     }
 }
 
-Sensor* PIDZone::getSensor(std::string name)
+Sensor* PIDZone::getSensor(const std::string& name)
 {
     return _mgr.getSensor(name);
 }
