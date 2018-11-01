@@ -542,7 +542,7 @@ void init(sdbusplus::bus::bus& bus)
     {
         debugPrint();
     }
-    if (zoneConfig.empty())
+    if (zoneConfig.empty() || zoneDetailsConfig.empty())
     {
         std::cerr << "No fan zones, application pausing until reboot\n";
         while (1)
