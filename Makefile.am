@@ -17,12 +17,23 @@ zoneinfo-gen.cpp:
 	$(AM_V_GEN)@ZONEGEN@ -o $(top_builddir) generate-cpp
 
 setsensor_SOURCES = setsensor.cpp
-setsensor_LDADD = $(SDBUSPLUS_LIBS) $(PHOSPHOR_DBUS_INTERFACES_LIBS) $(PHOSPHOR_LOGGING_LIBS)
-setsensor_CXXFLAGS = $(SDBUSPLUS_CFLAGS) $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) $(PHOSPHOR_LOGGING_CFLAGS)
+setsensor_LDADD = \
+	$(SDBUSPLUS_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+	$(PHOSPHOR_LOGGING_LIBS)
+setsensor_CXXFLAGS = \
+	$(SDBUSPLUS_CFLAGS) \
+	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
+	$(PHOSPHOR_LOGGING_CFLAGS)
 
 swampd_SOURCES = main.cpp util.cpp
-swampd_LDADD = $(SDBUSPLUS_LIBS) $(PTHREAD_LIBS) libswampd.la
-swampd_CXXFLAGS = $(SDBUSPLUS_CFLAGS) $(PTHREAD_CFLAGS)
+swampd_LDADD = \
+	$(SDBUSPLUS_LIBS) \
+	$(PTHREAD_LIBS) \
+	libswampd.la
+swampd_CXXFLAGS = \
+	$(SDBUSPLUS_CFLAGS) \
+	$(PTHREAD_CFLAGS)
 
 noinst_LTLIBRARIES = libswampd.la
 libswampd_la_LDFLAGS = -static
@@ -76,13 +87,15 @@ libmanualcmdsdir = ${libdir}/ipmid-providers
 libmanualcmds_LTLIBRARIES = libmanualcmds.la
 libmanualcmds_la_SOURCES = \
 	ipmi/manualcmds.cpp
-libmanualcmds_la_LDFLAGS = $(SYSTEMD_LIBS) \
-                            $(PHOSPHOR_DBUS_INTERFACES_LIBS) \
-                            $(PHOSPHOR_LOGGING_LIBS) \
-                            -version-info 0:0:0 -shared
-libmanualcmds_la_CXXFLAGS = $(SYSTEMD_CFLAGS) \
-                             $(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
-                             $(PHOSPHOR_LOGGING_CFLAGS) \
-			     -flto
+libmanualcmds_la_LDFLAGS = \
+	$(SYSTEMD_LIBS) \
+	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
+	$(PHOSPHOR_LOGGING_LIBS) \
+	-version-info 0:0:0 -shared
+libmanualcmds_la_CXXFLAGS = \
+	$(SYSTEMD_CFLAGS) \
+	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
+	$(PHOSPHOR_LOGGING_CFLAGS) \
+	-flto
 
 SUBDIRS = . test
