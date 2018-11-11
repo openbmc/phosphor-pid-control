@@ -35,7 +35,7 @@
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
 
-float PIDZone::getMaxRPMRequest(void) const
+double PIDZone::getMaxRPMRequest(void) const
 {
     return _maximumRPMSetPt;
 }
@@ -61,7 +61,7 @@ int64_t PIDZone::getZoneID(void) const
     return _zoneId;
 }
 
-void PIDZone::addRPMSetPoint(float setpoint)
+void PIDZone::addRPMSetPoint(double setpoint)
 {
     _RPMSetPoints.push_back(setpoint);
 }
@@ -71,12 +71,12 @@ void PIDZone::clearRPMSetPoints(void)
     _RPMSetPoints.clear();
 }
 
-float PIDZone::getFailSafePercent(void) const
+double PIDZone::getFailSafePercent(void) const
 {
     return _failSafePercent;
 }
 
-float PIDZone::getMinThermalRPMSetpoint(void) const
+double PIDZone::getMinThermalRPMSetpoint(void) const
 {
     return _minThermalRpmSetPt;
 }
@@ -108,8 +108,8 @@ void PIDZone::addThermalInput(const std::string& therm)
 
 void PIDZone::determineMaxRPMRequest(void)
 {
-    float max = 0;
-    std::vector<float>::iterator result;
+    double max = 0;
+    std::vector<double>::iterator result;
 
     if (_RPMSetPoints.size() > 0)
     {
@@ -140,7 +140,7 @@ void PIDZone::determineMaxRPMRequest(void)
             ifs >> value;
 
             /* expecting RPM set-point, not pwm% */
-            max = static_cast<float>(value);
+            max = static_cast<double>(value);
         }
     }
     catch (const std::exception& e)

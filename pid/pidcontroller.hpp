@@ -25,9 +25,9 @@ class PIDController : public Controller
     {
     }
 
-    virtual float inputProc(void) override = 0;
-    virtual float setptProc(void) = 0;
-    virtual void outputProc(float value) override = 0;
+    virtual double inputProc(void) override = 0;
+    virtual double setptProc(void) = 0;
+    virtual void outputProc(double value) override = 0;
 
     void process(void) override;
 
@@ -35,11 +35,11 @@ class PIDController : public Controller
     {
         return _id;
     }
-    float getSetpoint(void)
+    double getSetpoint(void)
     {
         return _setpoint;
     }
-    void setSetpoint(float setpoint)
+    void setSetpoint(double setpoint)
     {
         _setpoint = setpoint;
     }
@@ -55,6 +55,6 @@ class PIDController : public Controller
   private:
     // parameters
     ec::pid_info_t _pid_info;
-    float _setpoint;
+    double _setpoint;
     std::string _id;
 };

@@ -21,12 +21,12 @@
 
 void SysFsWritePercent::write(double value)
 {
-    float minimum = getMin();
-    float maximum = getMax();
+    double minimum = getMin();
+    double maximum = getMax();
 
-    float range = maximum - minimum;
-    float offset = range * value;
-    float ovalue = offset + minimum;
+    double range = maximum - minimum;
+    double offset = range * value;
+    double ovalue = offset + minimum;
 
     std::ofstream ofs;
     ofs.open(_writepath);

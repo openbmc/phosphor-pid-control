@@ -26,9 +26,9 @@ class StepwiseController : public Controller
     {
     }
 
-    float inputProc(void) override;
+    double inputProc(void) override;
 
-    void outputProc(float value) override;
+    void outputProc(double value) override;
 
     void process(void) override;
 
@@ -50,6 +50,6 @@ class StepwiseController : public Controller
     ec::StepwiseInfo _stepwise_info;
     std::string _id;
     std::vector<std::string> _inputs;
-    float lastInput = std::numeric_limits<float>::quiet_NaN();
-    float lastOutput = std::numeric_limits<float>::quiet_NaN();
+    double lastInput = std::numeric_limits<double>::quiet_NaN();
+    double lastOutput = std::numeric_limits<double>::quiet_NaN();
 };

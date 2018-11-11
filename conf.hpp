@@ -30,7 +30,7 @@ struct ControllerInfo
 {
     std::string type;                // fan or margin or temp?
     std::vector<std::string> inputs; // one or more sensors.
-    float setpoint;                  // initial setpoint for thermal.
+    double setpoint;                 // initial setpoint for thermal.
     union
     {
         ec::pidinfo pidInfo; // pid details
@@ -46,10 +46,10 @@ struct ControllerInfo
 struct ZoneConfig
 {
     /* The minimum RPM value we would ever want. */
-    float minthermalrpm;
+    double minthermalrpm;
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */
-    float failsafepercent;
+    double failsafepercent;
 };
 
 using PIDConf = std::map<std::string, struct ControllerInfo>;

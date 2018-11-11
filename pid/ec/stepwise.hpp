@@ -26,13 +26,13 @@ constexpr size_t maxStepwisePoints = 20;
 
 struct StepwiseInfo
 {
-    float ts; // sample time in seconds
-    float reading[maxStepwisePoints];
-    float output[maxStepwisePoints];
-    float positiveHysteresis;
-    float negativeHysteresis;
+    double ts; // sample time in seconds
+    double reading[maxStepwisePoints];
+    double output[maxStepwisePoints];
+    double positiveHysteresis;
+    double negativeHysteresis;
 };
 
-float stepwise(const ec::StepwiseInfo& info, float value);
+double stepwise(const ec::StepwiseInfo& info, double value);
 
 } // namespace ec

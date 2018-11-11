@@ -92,10 +92,10 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
 
                 /*
                  * Mysteriously if you use lookupValue on these, and the type
-                 * is float.  It won't work right.
+                 * is double.  It won't work right.
                  *
                  * If the configuration file value doesn't look explicitly like
-                 * a float it won't let you assign it to one.
+                 * a double it won't let you assign it to one.
                  */
                 name = pid.lookup("name").c_str();
                 info.type = pid.lookup("type").c_str();

@@ -234,9 +234,9 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     // Grab pointer for mocking.
     SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
 
-    // Converting from float to double for expectation.
-    float percent = 80;
-    double value = static_cast<double>(percent / 100);
+    // Converting from double to double for expectation.
+    double percent = 80;
+    double value = percent / 100;
 
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
     EXPECT_CALL(*sm1, write(value));

@@ -24,7 +24,7 @@ TEST(StepwiseControllerTest, HysteresisTestPositive)
     initial.positiveHysteresis = 2.0;
     initial.reading[0] = 20.0;
     initial.reading[1] = 30.0;
-    initial.reading[2] = std::numeric_limits<float>::quiet_NaN();
+    initial.reading[2] = std::numeric_limits<double>::quiet_NaN();
     initial.output[0] = 40.0;
     initial.output[1] = 60.0;
 
@@ -59,7 +59,7 @@ TEST(StepwiseControllerTest, HysteresisTestNegative)
     initial.positiveHysteresis = 2.0;
     initial.reading[0] = 20.0;
     initial.reading[1] = 30.0;
-    initial.reading[2] = std::numeric_limits<float>::quiet_NaN();
+    initial.reading[2] = std::numeric_limits<double>::quiet_NaN();
     initial.output[0] = 40.0;
     initial.output[1] = 60.0;
 

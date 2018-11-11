@@ -28,9 +28,9 @@ class FanController : public PIDController
     {
     }
 
-    float inputProc(void) override;
-    float setptProc(void) override;
-    void outputProc(float value) override;
+    double inputProc(void) override;
+    double setptProc(void) override;
+    void outputProc(double value) override;
 
     FanSpeedDirection getFanDirection(void) const
     {

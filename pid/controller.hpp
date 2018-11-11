@@ -15,9 +15,9 @@ struct Controller
 {
     virtual ~Controller() = default;
 
-    virtual float inputProc(void) = 0;
+    virtual double inputProc(void) = 0;
 
-    virtual void outputProc(float value) = 0;
+    virtual void outputProc(double value) = 0;
 
     virtual void process(void) = 0;
 

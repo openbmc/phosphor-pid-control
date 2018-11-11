@@ -28,9 +28,9 @@
 
 void PIDController::process(void)
 {
-    float input;
-    float setpt;
-    float output;
+    double input;
+    double setpt;
+    double output;
 
     // Get setpt value
     setpt = setptProc();

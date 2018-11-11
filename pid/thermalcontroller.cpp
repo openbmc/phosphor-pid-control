@@ -21,7 +21,7 @@
 
 std::unique_ptr<PIDController> ThermalController::createThermalPid(
     ZoneInterface* owner, const std::string& id,
-    const std::vector<std::string>& inputs, float setpoint,
+    const std::vector<std::string>& inputs, double setpoint,
     const ec::pidinfo& initial)
 {
     // ThermalController currently only supports precisely one input.
@@ -40,21 +40,21 @@ std::unique_ptr<PIDController> ThermalController::createThermalPid(
     return thermal;
 }
 
-// bmc_host_sensor_value_float
-float ThermalController::inputProc(void)
+// bmc_host_sensor_value_double
+double ThermalController::inputProc(void)
 {
     /*
      * This only supports one thermal input because it doesn't yet know how to
      * handle merging them, probably max?
      */
     double value = _owner->getCachedValue(_inputs.at(0));
-    return static_cast<float>(value);
+    return value;
 }
 
 // bmc_get_setpt
-float ThermalController::setptProc(void)
+double ThermalController::setptProc(void)
 {
-    float setpoint = getSetpoint();
+    double setpoint = getSetpoint();
 
     /* TODO(venture): Thermal setpoint invalid? */
 #if 0
@@ -71,7 +71,7 @@ float ThermalController::setptProc(void)
 }
 
 // bmc_set_pid_output
-void ThermalController::outputProc(float value)
+void ThermalController::outputProc(double value)
 {
     _owner->addRPMSetPoint(value);
 

@@ -42,8 +42,8 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     bool defer = true;
     const char* objPath = "/path/";
     int64_t zone = 1;
-    float minThermalRpm = 1000.0;
-    float failSafePercent = 0.75;
+    double minThermalRpm = 1000.0;
+    double failSafePercent = 0.75;
 
     int i;
     std::vector<std::string> properties;
@@ -92,8 +92,8 @@ class PidZoneTest : public ::testing::Test
     sdbusplus::SdBusMock sdbus_mock_host;
     sdbusplus::SdBusMock sdbus_mock_mode;
     int64_t zoneId = 1;
-    float minThermalRpm = 1000.0;
-    float failSafePercent = 0.75;
+    double minThermalRpm = 1000.0;
+    double failSafePercent = 0.75;
     bool defer = true;
     const char* objPath = "/path/";
     SensorManager mgr;
@@ -125,7 +125,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
 
     // At least one value must be above the minimum thermal setpoint used in
     // the constructor otherwise it'll choose that value
-    std::vector<float> values = {100, 200, 300, 400, 500, 5000};
+    std::vector<double> values = {100, 200, 300, 400, 500, 5000};
     for (auto v : values)
     {
         zone->addRPMSetPoint(v);
@@ -148,7 +148,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
     // Tests adding several RPM setpoints, however, they're all lower than the
     // configured minimal thermal set-point RPM value.
 
-    std::vector<float> values = {100, 200, 300, 400, 500};
+    std::vector<double> values = {100, 200, 300, 400, 500};
     for (auto v : values)
     {
         zone->addRPMSetPoint(v);

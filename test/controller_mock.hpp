@@ -14,7 +14,7 @@ class ControllerMock : public PIDController
     {
     }
 
-    MOCK_METHOD0(inputProc, float());
-    MOCK_METHOD0(setptProc, float());
-    MOCK_METHOD1(outputProc, void(float));
+    MOCK_METHOD0(inputProc, double());
+    MOCK_METHOD0(setptProc, double());
+    MOCK_METHOD1(outputProc, void(double));
 };

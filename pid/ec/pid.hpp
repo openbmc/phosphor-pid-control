@@ -7,8 +7,8 @@ namespace ec
 
 typedef struct
 {
-    float min;
-    float max;
+    double min;
+    double max;
 } limits_t;
 
 /* Note: If you update these structs you need to update the copy code in
@@ -18,35 +18,35 @@ typedef struct
 {
     bool initialized; // has pid been initialized
 
-    float ts;          // sample time in seconds
-    float integral;    // intergal of error
-    float last_output; // value of last output
+    double ts;          // sample time in seconds
+    double integral;    // intergal of error
+    double last_output; // value of last output
 
-    float p_c;     // coeff for P
-    float i_c;     // coeff for I
-    float ff_off;  // offset coeff for feed-forward term
-    float ff_gain; // gain for feed-forward term
+    double p_c;     // coeff for P
+    double i_c;     // coeff for I
+    double ff_off;  // offset coeff for feed-forward term
+    double ff_gain; // gain for feed-forward term
 
     limits_t i_lim;   // clamp of integral
     limits_t out_lim; // clamp of output
-    float slew_neg;
-    float slew_pos;
+    double slew_neg;
+    double slew_pos;
 } pid_info_t;
 
-float pid(pid_info_t* pidinfoptr, float input, float setpoint);
+double pid(pid_info_t* pidinfoptr, double input, double setpoint);
 
 /* Condensed version for use by the configuration. */
 struct pidinfo
 {
-    float ts;             // sample time in seconds
-    float p_c;            // coeff for P
-    float i_c;            // coeff for I
-    float ff_off;         // offset coeff for feed-forward term
-    float ff_gain;        // gain for feed-forward term
+    double ts;            // sample time in seconds
+    double p_c;           // coeff for P
+    double i_c;           // coeff for I
+    double ff_off;        // offset coeff for feed-forward term
+    double ff_gain;       // gain for feed-forward term
     ec::limits_t i_lim;   // clamp of integral
     ec::limits_t out_lim; // clamp of output
-    float slew_neg;
-    float slew_pos;
+    double slew_neg;
+    double slew_pos;
 };
 
 } // namespace ec

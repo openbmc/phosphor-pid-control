@@ -23,7 +23,7 @@ namespace ec
  *  clamp
  *
  */
-static float clamp(float x, float min, float max)
+static double clamp(double x, double min, double max)
 {
     if (x < min)
     {
@@ -40,15 +40,15 @@ static float clamp(float x, float min, float max)
  *  pid code
  *  Note: Codes assumes the ts field is non-zero
  */
-float pid(pid_info_t* pidinfoptr, float input, float setpoint)
+double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 {
-    float error;
+    double error;
 
-    float p_term;
-    float i_term = 0.0f;
-    float ff_term = 0.0f;
+    double p_term;
+    double i_term = 0.0f;
+    double ff_term = 0.0f;
 
-    float output;
+    double output;
 
     // calculate P, I, D, FF
 
@@ -79,7 +79,7 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
         if (pidinfoptr->slew_neg != 0.0f)
         {
             // Don't decrease too fast
-            float min_out =
+            double min_out =
                 pidinfoptr->last_output + pidinfoptr->slew_neg * pidinfoptr->ts;
             if (output < min_out)
             {
@@ -89,7 +89,7 @@ float pid(pid_info_t* pidinfoptr, float input, float setpoint)
         if (pidinfoptr->slew_pos != 0.0f)
         {
             // Don't increase too fast
-            float max_out =
+            double max_out =
                 pidinfoptr->last_output + pidinfoptr->slew_pos * pidinfoptr->ts;
             if (output > max_out)
             {

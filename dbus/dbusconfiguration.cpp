@@ -294,9 +294,9 @@ void init(sdbusplus::bus::bus& bus)
 
             auto& details = zoneDetailsConfig[index];
             details.minthermalrpm = variant_ns::apply_visitor(
-                VariantToFloatVisitor(), zone.at("MinThermalRpm"));
+                VariantToDoubleVisitor(), zone.at("MinThermalRpm"));
             details.failsafepercent = variant_ns::apply_visitor(
-                VariantToFloatVisitor(), zone.at("FailSafePercent"));
+                VariantToDoubleVisitor(), zone.at("FailSafePercent"));
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         if (findBase != configuration.second.end())
@@ -402,29 +402,29 @@ void init(sdbusplus::bus::bus& bus)
                 else
                 {
                     info.setpoint = variant_ns::apply_visitor(
-                        VariantToFloatVisitor(), base.at("SetPoint"));
+                        VariantToDoubleVisitor(), base.at("SetPoint"));
                 }
                 info.pidInfo.ts = 1.0; // currently unused
                 info.pidInfo.p_c = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("PCoefficient"));
+                    VariantToDoubleVisitor(), base.at("PCoefficient"));
                 info.pidInfo.i_c = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("ICoefficient"));
+                    VariantToDoubleVisitor(), base.at("ICoefficient"));
                 info.pidInfo.ff_off = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("FFOffCoefficient"));
+                    VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
                 info.pidInfo.ff_gain = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("FFGainCoefficient"));
+                    VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
                 info.pidInfo.i_lim.max = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("ILimitMax"));
+                    VariantToDoubleVisitor(), base.at("ILimitMax"));
                 info.pidInfo.i_lim.min = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("ILimitMin"));
+                    VariantToDoubleVisitor(), base.at("ILimitMin"));
                 info.pidInfo.out_lim.max = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("OutLimitMax"));
+                    VariantToDoubleVisitor(), base.at("OutLimitMax"));
                 info.pidInfo.out_lim.min = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("OutLimitMin"));
+                    VariantToDoubleVisitor(), base.at("OutLimitMin"));
                 info.pidInfo.slew_neg = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("SlewNeg"));
+                    VariantToDoubleVisitor(), base.at("SlewNeg"));
                 info.pidInfo.slew_pos = variant_ns::apply_visitor(
-                    VariantToFloatVisitor(), base.at("SlewPos"));
+                    VariantToDoubleVisitor(), base.at("SlewPos"));
             }
         }
         auto findStepwise =
@@ -494,13 +494,13 @@ void init(sdbusplus::bus::bus& bus)
                 if (findPosHyst != base.end())
                 {
                     info.stepwiseInfo.positiveHysteresis =
-                        variant_ns::apply_visitor(VariantToFloatVisitor(),
+                        variant_ns::apply_visitor(VariantToDoubleVisitor(),
                                                   findPosHyst->second);
                 }
                 if (findNegHyst != base.end())
                 {
                     info.stepwiseInfo.positiveHysteresis =
-                        variant_ns::apply_visitor(VariantToFloatVisitor(),
+                        variant_ns::apply_visitor(VariantToDoubleVisitor(),
                                                   findNegHyst->second);
                 }
                 std::vector<double> readings =
@@ -519,7 +519,7 @@ void init(sdbusplus::bus::bus& bus)
                 if (readings.size() < ec::maxStepwisePoints)
                 {
                     info.stepwiseInfo.reading[readings.size()] =
-                        std::numeric_limits<float>::quiet_NaN();
+                        std::numeric_limits<double>::quiet_NaN();
                 }
                 std::vector<double> outputs =
                     variant_ns::get<std::vector<double>>(base.at("Output"));
@@ -533,7 +533,7 @@ void init(sdbusplus::bus::bus& bus)
                 if (outputs.size() < ec::maxStepwisePoints)
                 {
                     info.stepwiseInfo.output[outputs.size()] =
-                        std::numeric_limits<float>::quiet_NaN();
+                        std::numeric_limits<double>::quiet_NaN();
                 }
             }
         }

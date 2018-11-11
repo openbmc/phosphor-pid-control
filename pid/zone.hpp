@@ -27,10 +27,10 @@ class ZoneInterface
     virtual ~ZoneInterface() = default;
 
     virtual double getCachedValue(const std::string& name) = 0;
-    virtual void addRPMSetPoint(float setpoint) = 0;
-    virtual float getMaxRPMRequest() const = 0;
+    virtual void addRPMSetPoint(double setpoint) = 0;
+    virtual double getMaxRPMRequest() const = 0;
     virtual bool getFailSafeMode() const = 0;
-    virtual float getFailSafePercent() const = 0;
+    virtual double getFailSafePercent() const = 0;
     virtual Sensor* getSensor(const std::string& name) = 0;
 };
 
@@ -42,7 +42,7 @@ class ZoneInterface
 class PIDZone : public ZoneInterface, public ModeObject
 {
   public:
-    PIDZone(int64_t zone, float minThermalRpm, float failSafePercent,
+    PIDZone(int64_t zone, double minThermalRpm, double failSafePercent,
             const SensorManager& mgr, sdbusplus::bus::bus& bus,
             const char* objPath, bool defer) :
         ModeObject(bus, objPath, defer),
@@ -54,7 +54,7 @@ class PIDZone : public ZoneInterface, public ModeObject
 #endif
     }
 
-    float getMaxRPMRequest(void) const override;
+    double getMaxRPMRequest(void) const override;
     bool getManualMode(void) const;
 
     /* Could put lock around this since it's accessed from two threads, but
@@ -63,10 +63,10 @@ class PIDZone : public ZoneInterface, public ModeObject
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
     int64_t getZoneID(void) const;
-    void addRPMSetPoint(float setpoint) override;
+    void addRPMSetPoint(double setpoint) override;
     void clearRPMSetPoints(void);
-    float getFailSafePercent(void) const override;
-    float getMinThermalRPMSetpoint(void) const;
+    double getFailSafePercent(void) const override;
+    double getMinThermalRPMSetpoint(void) const;
 
     Sensor* getSensor(const std::string& name) override;
     void determineMaxRPMRequest(void);
@@ -99,14 +99,14 @@ class PIDZone : public ZoneInterface, public ModeObject
 #endif
 
     const int64_t _zoneId;
-    float _maximumRPMSetPt = 0;
+    double _maximumRPMSetPt = 0;
     bool _manualMode = false;
-    const float _minThermalRpmSetPt;
-    const float _failSafePercent;
+    const double _minThermalRpmSetPt;
+    const double _failSafePercent;
 
     std::set<std::string> _failSafeSensors;
 
-    std::vector<float> _RPMSetPoints;
+    std::vector<double> _RPMSetPoints;
     std::vector<std::string> _fanInputs;
     std::vector<std::string> _thermalInputs;
     std::map<std::string, double> _cachedValuesByName;

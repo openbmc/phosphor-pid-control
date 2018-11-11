@@ -39,7 +39,7 @@ std::unique_ptr<PIDController>
     return fan;
 }
 
-float FanController::inputProc(void)
+double FanController::inputProc(void)
 {
     double value = 0;
     std::vector<int64_t> values;
@@ -82,15 +82,15 @@ float FanController::inputProc(void)
         value = *result;
     }
 
-    return static_cast<float>(value);
+    return value;
 }
 
-float FanController::setptProc(void)
+double FanController::setptProc(void)
 {
-    float maxRPM = _owner->getMaxRPMRequest();
+    double maxRPM = _owner->getMaxRPMRequest();
 
     // store for reference, and check if more or less.
-    float prev = getSetpoint();
+    double prev = getSetpoint();
 
     if (maxRPM > prev)
     {
@@ -110,9 +110,9 @@ float FanController::setptProc(void)
     return (maxRPM);
 }
 
-void FanController::outputProc(float value)
+void FanController::outputProc(double value)
 {
-    float percent = value;
+    double percent = value;
 
     /* If doing tuning logging, don't go into failsafe mode. */
 #ifndef __TUNING_LOGGING__
@@ -133,7 +133,7 @@ void FanController::outputProc(float value)
     for (const auto& it : _inputs)
     {
         auto sensor = _owner->getSensor(it);
-        sensor->write(static_cast<double>(percent));
+        sensor->write(percent);
     }
 
     return;

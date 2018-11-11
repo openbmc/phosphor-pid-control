@@ -32,11 +32,11 @@
 void StepwiseController::process(void)
 {
     // Get input value
-    float input = inputProc();
+    double input = inputProc();
 
     ec::StepwiseInfo info = get_stepwise_info();
 
-    float output = lastOutput;
+    double output = lastOutput;
 
     // Calculate new output if hysteresis allows
     if (std::isnan(output))
@@ -81,13 +81,13 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
     return thermal;
 }
 
-float StepwiseController::inputProc(void)
+double StepwiseController::inputProc(void)
 {
     double value = _owner->getCachedValue(_inputs.at(0));
-    return static_cast<float>(value);
+    return value;
 }
 
-void StepwiseController::outputProc(float value)
+void StepwiseController::outputProc(double value)
 {
     _owner->addRPMSetPoint(value);
 

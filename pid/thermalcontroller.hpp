@@ -16,8 +16,8 @@ class ThermalController : public PIDController
   public:
     static std::unique_ptr<PIDController>
         createThermalPid(ZoneInterface* owner, const std::string& id,
-                         const std::vector<std::string>& inputs, float setpoint,
-                         const ec::pidinfo& initial);
+                         const std::vector<std::string>& inputs,
+                         double setpoint, const ec::pidinfo& initial);
 
     ThermalController(const std::string& id,
                       const std::vector<std::string>& inputs,
@@ -27,9 +27,9 @@ class ThermalController : public PIDController
     {
     }
 
-    float inputProc(void) override;
-    float setptProc(void) override;
-    void outputProc(float value) override;
+    double inputProc(void) override;
+    double setptProc(void) override;
+    void outputProc(double value) override;
 
   private:
     std::vector<std::string> _inputs;

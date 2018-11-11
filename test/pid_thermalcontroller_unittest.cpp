@@ -19,7 +19,7 @@ TEST(ThermalControllerTest, BoringFactoryTest)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fleeting0"};
-    float setpoint = 10.0;
+    double setpoint = 10.0;
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
@@ -35,7 +35,7 @@ TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs)
     ZoneMock z;
 
     std::vector<std::string> inputs = {};
-    float setpoint = 10.0;
+    double setpoint = 10.0;
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
@@ -51,7 +51,7 @@ TEST(ThermalControllerTest, VerifyFactoryFailsForMoreThanOneInput)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fleeting0", "asdf"};
-    float setpoint = 10.0;
+    double setpoint = 10.0;
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
@@ -66,7 +66,7 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fleeting0"};
-    float setpoint = 10.0;
+    double setpoint = 10.0;
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
@@ -85,7 +85,7 @@ TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fleeting0"};
-    float setpoint = 10.0;
+    double setpoint = 10.0;
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
@@ -102,14 +102,14 @@ TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fleeting0"};
-    float setpoint = 10.0;
+    double setpoint = 10.0;
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial);
     EXPECT_FALSE(p == nullptr);
 
-    float value = 90.0;
+    double value = 90.0;
     EXPECT_CALL(z, addRPMSetPoint(value));
 
     p->outputProc(value);

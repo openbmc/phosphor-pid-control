@@ -22,10 +22,10 @@
 
 namespace ec
 {
-float stepwise(const ec::StepwiseInfo& info, float input)
+double stepwise(const ec::StepwiseInfo& info, double input)
 {
-    float value = info.output[0]; // if we are below the lowest
-                                  // point, we set the lowest value
+    double value = info.output[0]; // if we are below the lowest
+                                   // point, we set the lowest value
 
     for (size_t ii = 1; ii < ec::maxStepwisePoints; ii++)
     {
