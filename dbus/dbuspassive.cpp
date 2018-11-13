@@ -124,7 +124,7 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
         auto valPropMap = msgData.find("Value");
         if (valPropMap != msgData.end())
         {
-            double value = sdbusplus::message::variant_ns::apply_visitor(
+            double value = sdbusplus::message::variant_ns::visit(
                 VariantToDoubleVisitor(), valPropMap->second);
 
             value *= std::pow(10, owner->getScale());
