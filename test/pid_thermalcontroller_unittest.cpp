@@ -37,25 +37,13 @@ TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs)
     std::vector<std::string> inputs = {};
     double setpoint = 10.0;
     ec::pidinfo initial;
-
-    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
-    EXPECT_TRUE(p == nullptr);
-}
-
-TEST(ThermalControllerTest, VerifyFactoryFailsForMoreThanOneInput)
-{
-    // ThermalControllers currently only support one input, so don't let
-    // someone accidentally specify more.
-
-    ZoneMock z;
-
-    std::vector<std::string> inputs = {"fleeting0", "asdf"};
-    double setpoint = 10.0;
-    ec::pidinfo initial;
-
-    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
+    std::unique_ptr<PIDController> p;
+    EXPECT_THROW(
+        {
+            p = ThermalController::createThermalPid(&z, "therm1", inputs,
+                                                    setpoint, initial);
+        },
+        std::exception);
     EXPECT_TRUE(p == nullptr);
 }
 
