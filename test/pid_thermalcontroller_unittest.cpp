@@ -23,7 +23,7 @@ TEST(ThermalControllerTest, BoringFactoryTest)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
     // Success
     EXPECT_FALSE(p == nullptr);
 }
@@ -37,25 +37,13 @@ TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs)
     std::vector<std::string> inputs = {};
     double setpoint = 10.0;
     ec::pidinfo initial;
-
-    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
-    EXPECT_TRUE(p == nullptr);
-}
-
-TEST(ThermalControllerTest, VerifyFactoryFailsForMoreThanOneInput)
-{
-    // ThermalControllers currently only support one input, so don't let
-    // someone accidentally specify more.
-
-    ZoneMock z;
-
-    std::vector<std::string> inputs = {"fleeting0", "asdf"};
-    double setpoint = 10.0;
-    ec::pidinfo initial;
-
-    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
+    std::unique_ptr<PIDController> p;
+    EXPECT_THROW(
+        {
+            p = ThermalController::createThermalPid(
+                &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        },
+        std::exception);
     EXPECT_TRUE(p == nullptr);
 }
 
@@ -70,7 +58,7 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
@@ -89,7 +77,7 @@ TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_EQ(setpoint, p->setptProc());
@@ -97,7 +85,7 @@ TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected)
 
 TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
 {
-    // This test just verifies inputProc behaves as expected.
+    // This test just verifies outputProc behaves as expected.
 
     ZoneMock z;
 
@@ -106,11 +94,53 @@ TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial);
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
     EXPECT_FALSE(p == nullptr);
 
     double value = 90.0;
     EXPECT_CALL(z, addRPMSetPoint(value));
 
     p->outputProc(value);
+}
+
+TEST(ThermalControllerTest, InputProc_MultipleInputsAbsolute)
+{
+    // This test verifies inputProc behaves as expected with multiple absolute
+    // inputs.
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::absolute);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting1"))).WillOnce(Return(10.0));
+
+    EXPECT_EQ(10.0, p->inputProc());
+}
+
+TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
+{
+    // This test verifies inputProc behaves as expected with multiple margin
+    // inputs.
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting1"))).WillOnce(Return(10.0));
+
+    EXPECT_EQ(5.0, p->inputProc());
 }

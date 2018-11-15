@@ -17,6 +17,7 @@
 #include "stepwisecontroller.hpp"
 
 #include "ec/stepwise.hpp"
+#include "errors/exception.hpp"
 #include "util.hpp"
 #include "zone.hpp"
 
@@ -66,9 +67,10 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
     ZoneInterface* owner, const std::string& id,
     const std::vector<std::string>& inputs, const ec::StepwiseInfo& initial)
 {
-    // StepwiseController currently only supports precisely one input.
-    if (inputs.size() != 1)
+    // StepwiseController requires at least 1 input
+    if (inputs.empty())
     {
+        throw ControllerBuildException("Stepwise controller missing inputs");
         return nullptr;
     }
 
@@ -83,7 +85,11 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
 
 double StepwiseController::inputProc(void)
 {
-    double value = _owner->getCachedValue(_inputs.at(0));
+    double value = std::numeric_limits<double>::lowest();
+    for (const auto& in : _inputs)
+    {
+        value = std::max(value, _owner->getCachedValue(in));
+    }
     return value;
 }
 
