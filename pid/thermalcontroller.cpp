@@ -24,9 +24,10 @@ std::unique_ptr<PIDController> ThermalController::createThermalPid(
     const std::vector<std::string>& inputs, double setpoint,
     const ec::pidinfo& initial)
 {
-    // ThermalController currently only supports precisely one input.
-    if (inputs.size() != 1)
+    // ThermalController requires at least 1 input
+    if (inputs.empty())
     {
+        throw std::runtime_error("Thermal controller missing inputs");
         return nullptr;
     }
 
@@ -43,11 +44,11 @@ std::unique_ptr<PIDController> ThermalController::createThermalPid(
 // bmc_host_sensor_value_double
 double ThermalController::inputProc(void)
 {
-    /*
-     * This only supports one thermal input because it doesn't yet know how to
-     * handle merging them, probably max?
-     */
-    double value = _owner->getCachedValue(_inputs.at(0));
+    double value = std::numeric_limits<double>::lowest();
+    for (const auto& in : _inputs)
+    {
+        value = std::max(value, _owner->getCachedValue(in));
+    }
     return value;
 }
 
