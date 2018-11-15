@@ -140,6 +140,18 @@ int eventHandler(sd_bus_message*, void*, sd_bus_error*)
     return 1;
 }
 
+size_t getZoneIndex(const std::string& name, std::vector<std::string>& zones)
+{
+    auto it = std::find(zones.begin(), zones.end(), name);
+    if (it == zones.end())
+    {
+        zones.emplace_back(name);
+        it = zones.end() - 1;
+    }
+
+    return it - zones.begin();
+}
+
 void init(sdbusplus::bus::bus& bus)
 {
     using DbusVariantType =
@@ -270,7 +282,7 @@ void init(sdbusplus::bus::bus& bus)
 
     // on dbus having an index field is a bit strange, so randomly
     // assign index based on name property
-    std::vector<std::string> zoneIndex;
+    std::vector<std::string> foundZones;
     for (const auto& configuration : configurations)
     {
         auto findZone =
@@ -278,19 +290,10 @@ void init(sdbusplus::bus::bus& bus)
         if (findZone != configuration.second.end())
         {
             const auto& zone = findZone->second;
-            size_t index = 1;
+
             const std::string& name =
                 variant_ns::get<std::string>(zone.at("Name"));
-            auto it = std::find(zoneIndex.begin(), zoneIndex.end(), name);
-            if (it == zoneIndex.end())
-            {
-                zoneIndex.emplace_back(name);
-                index = zoneIndex.size();
-            }
-            else
-            {
-                index = zoneIndex.end() - it;
-            }
+            size_t index = getZoneIndex(name, foundZones);
 
             auto& details = zoneDetailsConfig[index];
             details.minthermalrpm = variant_ns::apply_visitor(
@@ -308,17 +311,7 @@ void init(sdbusplus::bus::bus& bus)
                 variant_ns::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
-                auto it = std::find(zoneIndex.begin(), zoneIndex.end(), zone);
-                size_t index = 1;
-                if (it == zoneIndex.end())
-                {
-                    zoneIndex.emplace_back(zone);
-                    index = zoneIndex.size();
-                }
-                else
-                {
-                    index = zoneIndex.end() - it;
-                }
+                size_t index = getZoneIndex(zone, foundZones);
                 PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> sensorNames =
@@ -436,17 +429,7 @@ void init(sdbusplus::bus::bus& bus)
                 variant_ns::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
-                auto it = std::find(zoneIndex.begin(), zoneIndex.end(), zone);
-                size_t index = 1;
-                if (it == zoneIndex.end())
-                {
-                    zoneIndex.emplace_back(zone);
-                    index = zoneIndex.size();
-                }
-                else
-                {
-                    index = zoneIndex.end() - it;
-                }
+                size_t index = getZoneIndex(zone, foundZones);
                 PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> inputs;
