@@ -11,19 +11,26 @@
  * A ThermalController is a PID controller that reads a number of sensors and
  * provides the set-points for the fans.
  */
+enum class ThermalType
+{
+    margin,
+    absolute
+};
+
 class ThermalController : public PIDController
 {
   public:
     static std::unique_ptr<PIDController>
         createThermalPid(ZoneInterface* owner, const std::string& id,
                          const std::vector<std::string>& inputs,
-                         double setpoint, const ec::pidinfo& initial);
+                         double setpoint, const ec::pidinfo& initial,
+                         const ThermalType& type);
 
     ThermalController(const std::string& id,
                       const std::vector<std::string>& inputs,
-                      ZoneInterface* owner) :
+                      const ThermalType& type, ZoneInterface* owner) :
         PIDController(id, owner),
-        _inputs(inputs)
+        _inputs(inputs), type(type)
     {
     }
 
@@ -33,4 +40,5 @@ class ThermalController : public PIDController
 
   private:
     std::vector<std::string> _inputs;
+    ThermalType type;
 };

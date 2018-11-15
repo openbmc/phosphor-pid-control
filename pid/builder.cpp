@@ -102,8 +102,19 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                     zone->addThermalInput(i);
                 }
 
+                ThermalType type;
+                if (info->type == "temp")
+                {
+                    type = ThermalType::absolute;
+                }
+                else if (info->type == "margin")
+                {
+                    type = ThermalType::margin;
+                }
+
                 auto pid = ThermalController::createThermalPid(
-                    zone.get(), name, inputs, info->setpoint, info->pidInfo);
+                    zone.get(), name, inputs, info->setpoint, info->pidInfo,
+                    type);
 
                 zone->addThermalPID(std::move(pid));
             }

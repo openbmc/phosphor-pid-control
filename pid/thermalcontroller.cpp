@@ -16,21 +16,24 @@
 
 #include "thermalcontroller.hpp"
 
+#include "errors/exception.hpp"
 #include "util.hpp"
 #include "zone.hpp"
 
+#include <iostream>
 std::unique_ptr<PIDController> ThermalController::createThermalPid(
     ZoneInterface* owner, const std::string& id,
     const std::vector<std::string>& inputs, double setpoint,
-    const ec::pidinfo& initial)
+    const ec::pidinfo& initial, const ThermalType& type)
 {
-    // ThermalController currently only supports precisely one input.
-    if (inputs.size() != 1)
+    // ThermalController requires at least 1 input
+    if (inputs.empty())
     {
+        throw ControllerBuildException("Thermal controller missing inputs");
         return nullptr;
     }
 
-    auto thermal = std::make_unique<ThermalController>(id, inputs, owner);
+    auto thermal = std::make_unique<ThermalController>(id, inputs, type, owner);
 
     ec::pid_info_t* info = thermal->getPIDInfo();
     thermal->setSetpoint(setpoint);
@@ -43,11 +46,24 @@ std::unique_ptr<PIDController> ThermalController::createThermalPid(
 // bmc_host_sensor_value_double
 double ThermalController::inputProc(void)
 {
-    /*
-     * This only supports one thermal input because it doesn't yet know how to
-     * handle merging them, probably max?
-     */
-    double value = _owner->getCachedValue(_inputs.at(0));
+    double value;
+    const double& (*compare)(const double&, const double&);
+    if (type == ThermalType::margin)
+    {
+        value = std::numeric_limits<double>::max();
+        compare = std::min<double>;
+    }
+    else
+    {
+        value = std::numeric_limits<double>::lowest();
+        compare = std::max<double>;
+    }
+
+    for (const auto& in : _inputs)
+    {
+        value = compare(value, _owner->getCachedValue(in));
+    }
+
     return value;
 }
 
