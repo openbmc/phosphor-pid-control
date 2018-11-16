@@ -20,6 +20,20 @@
 #include "util.hpp"
 #include "zone.hpp"
 
+#include <algorithm>
+
+ThermalType getThermalType(const std::string& typeString)
+{
+    /* Currently it only supports the two types. */
+    return (typeString == "temp") ? ThermalType::absolute : ThermalType::margin;
+}
+
+bool isThermalType(const std::string& typeString)
+{
+    static const std::vector<std::string> thermalTypes = {"temp", "margin"};
+    return std::count(thermalTypes.begin(), thermalTypes.end(), typeString);
+}
+
 std::unique_ptr<PIDController> ThermalController::createThermalPid(
     ZoneInterface* owner, const std::string& id,
     const std::vector<std::string>& inputs, double setpoint,
