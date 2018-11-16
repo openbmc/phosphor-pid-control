@@ -94,7 +94,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                                                        info->pidInfo);
                 zone->addFanPID(std::move(pid));
             }
-            else if (info->type == "temp" || info->type == "margin")
+            else if (isThermalType(info->type))
             {
                 for (const auto& i : info->inputs)
                 {
@@ -102,19 +102,9 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                     zone->addThermalInput(i);
                 }
 
-                ThermalType type;
-                if (info->type == "temp")
-                {
-                    type = ThermalType::absolute;
-                }
-                else
-                {
-                    type = ThermalType::margin;
-                }
-
                 auto pid = ThermalController::createThermalPid(
                     zone.get(), name, inputs, info->setpoint, info->pidInfo,
-                    type);
+                    getThermalType(info->type));
 
                 zone->addThermalPID(std::move(pid));
             }

@@ -18,6 +18,22 @@ enum class ThermalType
     absolute
 };
 
+/**
+ * Get the ThermalType for a given string.
+ *
+ * @param[in] typeString - a string representation of a type.
+ * @return the ThermalType representation.
+ */
+ThermalType getThermalType(const std::string& typeString);
+
+/**
+ * Is the type specified a thermal type?
+ *
+ * @param[in] typeString - a string representation of a PID type.
+ * @return true if it's a thermal PID type.
+ */
+bool isThermalType(const std::string& typeString);
+
 class ThermalController : public PIDController
 {
   public:
