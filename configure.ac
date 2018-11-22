@@ -21,13 +21,45 @@ AX_CXX_COMPILE_STDCXX_17([noext])
 AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
 # Checks for libraries.
-PKG_CHECK_MODULES([SYSTEMD], [libsystemd >= 221], [], [AC_MSG_ERROR(["systemd required and not found"])])
-PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus], ,[AC_MSG_ERROR([The openbmc/sdbusplus package is required])])
-PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging], ,[AC_MSG_ERROR([The openbmc/phosphor-logging package is required])])
-PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces], [], [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])])
-AC_CHECK_HEADER([host-ipmid], [AC_MSG_ERROR(["phosphor-host-ipmid required and not found."])])
-AC_CHECK_HEADER(experimental/filesystem, ,[AC_MSG_ERROR([Could not find experimental/filesystem...libstdc++fs development package required])])
-PKG_CHECK_MODULES([LIBCONFIGXX], [libconfig++ >= 1.5], ,AC_MSG_ERROR([libconfig++ 1.5 or newer not found.]))
+PKG_CHECK_MODULES(
+    [SYSTEMD],
+    [libsystemd >= 221],
+    [],
+    [AC_MSG_ERROR(["systemd required and not found"])]
+)
+PKG_CHECK_MODULES(
+    [SDBUSPLUS],
+    [sdbusplus],
+    [],
+    [AC_MSG_ERROR([The openbmc/sdbusplus package is required])]
+)
+PKG_CHECK_MODULES(
+    [PHOSPHOR_LOGGING],
+    [phosphor-logging],
+    [],
+    [AC_MSG_ERROR([The openbmc/phosphor-logging package is required])]
+)
+PKG_CHECK_MODULES(
+    [PHOSPHOR_DBUS_INTERFACES],
+    [phosphor-dbus-interfaces],
+    [],
+    [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])]
+)
+PKG_CHECK_MODULES(
+    [LIBCONFIGXX],
+    [libconfig++ >= 1.5],
+    [],
+    [AC_MSG_ERROR([libconfig++ 1.5 or newer not found.])]
+)
+AC_CHECK_HEADER(
+    [host-ipmid],
+    [AC_MSG_ERROR(["phosphor-host-ipmid required and not found."])]
+)
+AC_CHECK_HEADER(
+    experimental/filesystem,
+    [],
+    [AC_MSG_ERROR([Could not find experimental/filesystem...libstdc++fs development package required])]
+)
 AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
 
 # Checks for library functions.
