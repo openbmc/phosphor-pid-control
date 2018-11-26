@@ -34,15 +34,34 @@ AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
 LT_INIT # Required for systemd linking
 
 # Check/set gtest specific functions.
-PKG_CHECK_MODULES([GTEST], [gtest], [], [AC_MSG_NOTICE([gtest not found, tests will not build])])
-PKG_CHECK_MODULES([GMOCK], [gmock], [], [AC_MSG_NOTICE([gmock not found, tests will not build])])
-PKG_CHECK_MODULES([GTEST_MAIN], [gtest_main], [], [AC_MSG_NOTICE([gtest_main not found, tests will not build])])
+PKG_CHECK_MODULES(
+    [GTEST],
+    [gtest],
+    [],
+    [AC_MSG_NOTICE([gtest not found, tests will not build])]
+)
+PKG_CHECK_MODULES(
+    [GMOCK],
+    [gmock],
+    [],
+    [AC_MSG_NOTICE([gmock not found, tests will not build])]
+)
+PKG_CHECK_MODULES(
+    [GTEST_MAIN],
+    [gtest_main],
+    [],
+    [AC_MSG_NOTICE([gtest_main not found, tests will not build])]
+)
 
 AC_ARG_ENABLE([oe-sdk],
-    AS_HELP_STRING([--enable-oe-sdk], [Link testcases absolutely against OE SDK so they can be ran within it.])
+    AS_HELP_STRING(
+        [--enable-oe-sdk],
+        [Link testcases absolutely against OE SDK so they can be ran within it.]
+    )
 )
 AC_ARG_VAR(OECORE_TARGET_SYSROOT,
-    [Path to the OE SDK SYSROOT])
+    [Path to the OE SDK SYSROOT]
+)
 AS_IF([test "x$enable_oe_sdk" == "xyes"],
     AS_IF([test "x$OECORE_TARGET_SYSROOT" == "x"],
           AC_MSG_ERROR([OECORE_TARGET_SYSROOT must be set with --enable-oe-sdk])
@@ -69,7 +88,10 @@ ZONEGEN="$PYTHON ${srcdir}/scripts/zone_gen.py -i $ZONE_YAML_GEN"
 AC_SUBST(ZONEGEN)
 
 AC_ARG_ENABLE([configure-dbus],
-    AS_HELP_STRING([--enable-configure-dbus], [Enable configuring pid from D-Bus.]))
+    AS_HELP_STRING(
+        [--enable-configure-dbus], [Enable configuring pid from D-Bus.]
+    )
+)
 AM_CONDITIONAL(CONFIGURE_DBUS, [test "x$enable_configure_dbus" = "xyes"])
 AS_IF([test "x$enable_configure_dbus" = "xyes"],
     [AC_DEFINE(CONFIGURE_DBUS, [1], [Read configuration from D-Bus.])],
