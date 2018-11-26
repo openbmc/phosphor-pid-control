@@ -31,11 +31,9 @@
 #include <getopt.h>
 
 #include <chrono>
-#include <experimental/any>
 #include <iostream>
 #include <map>
 #include <memory>
-#include <mutex> /* not yet used. */
 #include <sdbusplus/bus.hpp>
 #include <thread>
 #include <unordered_map>
