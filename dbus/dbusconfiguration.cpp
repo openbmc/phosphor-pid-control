@@ -296,9 +296,9 @@ void init(sdbusplus::bus::bus& bus)
             size_t index = getZoneIndex(name, foundZones);
 
             auto& details = zoneDetailsConfig[index];
-            details.minthermalrpm = variant_ns::apply_visitor(
-                VariantToDoubleVisitor(), zone.at("MinThermalRpm"));
-            details.failsafepercent = variant_ns::apply_visitor(
+            details.minthermalrpm = variant_ns::visit(VariantToDoubleVisitor(),
+                                                      zone.at("MinThermalRpm"));
+            details.failsafepercent = variant_ns::visit(
                 VariantToDoubleVisitor(), zone.at("FailSafePercent"));
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
@@ -394,29 +394,29 @@ void init(sdbusplus::bus::bus& bus)
                 }
                 else
                 {
-                    info.setpoint = variant_ns::apply_visitor(
-                        VariantToDoubleVisitor(), base.at("SetPoint"));
+                    info.setpoint = variant_ns::visit(VariantToDoubleVisitor(),
+                                                      base.at("SetPoint"));
                 }
                 info.pidInfo.ts = 1.0; // currently unused
-                info.pidInfo.p_c = variant_ns::apply_visitor(
-                    VariantToDoubleVisitor(), base.at("PCoefficient"));
-                info.pidInfo.i_c = variant_ns::apply_visitor(
-                    VariantToDoubleVisitor(), base.at("ICoefficient"));
-                info.pidInfo.ff_off = variant_ns::apply_visitor(
+                info.pidInfo.p_c = variant_ns::visit(VariantToDoubleVisitor(),
+                                                     base.at("PCoefficient"));
+                info.pidInfo.i_c = variant_ns::visit(VariantToDoubleVisitor(),
+                                                     base.at("ICoefficient"));
+                info.pidInfo.ff_off = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
-                info.pidInfo.ff_gain = variant_ns::apply_visitor(
+                info.pidInfo.ff_gain = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
-                info.pidInfo.i_lim.max = variant_ns::apply_visitor(
+                info.pidInfo.i_lim.max = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("ILimitMax"));
-                info.pidInfo.i_lim.min = variant_ns::apply_visitor(
+                info.pidInfo.i_lim.min = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("ILimitMin"));
-                info.pidInfo.out_lim.max = variant_ns::apply_visitor(
+                info.pidInfo.out_lim.max = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("OutLimitMax"));
-                info.pidInfo.out_lim.min = variant_ns::apply_visitor(
+                info.pidInfo.out_lim.min = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("OutLimitMin"));
-                info.pidInfo.slew_neg = variant_ns::apply_visitor(
+                info.pidInfo.slew_neg = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("SlewNeg"));
-                info.pidInfo.slew_pos = variant_ns::apply_visitor(
+                info.pidInfo.slew_pos = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("SlewPos"));
             }
         }
@@ -476,15 +476,13 @@ void init(sdbusplus::bus::bus& bus)
                 auto findNegHyst = base.find("NegativeHysteresis");
                 if (findPosHyst != base.end())
                 {
-                    info.stepwiseInfo.positiveHysteresis =
-                        variant_ns::apply_visitor(VariantToDoubleVisitor(),
-                                                  findPosHyst->second);
+                    info.stepwiseInfo.positiveHysteresis = variant_ns::visit(
+                        VariantToDoubleVisitor(), findPosHyst->second);
                 }
                 if (findNegHyst != base.end())
                 {
-                    info.stepwiseInfo.positiveHysteresis =
-                        variant_ns::apply_visitor(VariantToDoubleVisitor(),
-                                                  findNegHyst->second);
+                    info.stepwiseInfo.positiveHysteresis = variant_ns::visit(
+                        VariantToDoubleVisitor(), findNegHyst->second);
                 }
                 std::vector<double> readings =
                     variant_ns::get<std::vector<double>>(base.at("Reading"));
