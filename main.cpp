@@ -83,7 +83,7 @@ int main(int argc, char* argv[])
         }
     }
 
-    auto modeControlBus = sdbusplus::bus::new_default();
+    auto modeControlBus = sdbusplus::bus::new_system();
 #if CONFIGURE_DBUS
     {
         dbus_configuration::init(modeControlBus);

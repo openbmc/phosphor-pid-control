@@ -30,7 +30,7 @@ std::unique_ptr<WriteInterface>
     DbusWritePercent::createDbusWrite(const std::string& path, int64_t min,
                                       int64_t max, DbusHelperInterface& helper)
 {
-    auto tempBus = sdbusplus::bus::new_default();
+    auto tempBus = sdbusplus::bus::new_system();
     std::string connectionName;
 
     try
@@ -84,7 +84,7 @@ std::unique_ptr<WriteInterface>
     DbusWrite::createDbusWrite(const std::string& path, int64_t min,
                                int64_t max, DbusHelperInterface& helper)
 {
-    auto tempBus = sdbusplus::bus::new_default();
+    auto tempBus = sdbusplus::bus::new_system();
     std::string connectionName;
 
     try

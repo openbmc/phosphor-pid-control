@@ -26,7 +26,7 @@ static void SetHostSensor(void)
     sValue v{value};
 
     std::string busname{sbusName};
-    auto PropertyWriteBus = sdbusplus::bus::new_default();
+    auto PropertyWriteBus = sdbusplus::bus::new_system();
     std::string path{sobjectPath};
 
     auto pimMsg = PropertyWriteBus.new_method_call(
@@ -59,7 +59,7 @@ static void SetManualMode(int8_t zone)
     Value v{setValue};
 
     std::string busname{busName};
-    auto PropertyWriteBus = sdbusplus::bus::new_default();
+    auto PropertyWriteBus = sdbusplus::bus::new_system();
     std::string path = GetControlPath(zone);
 
     auto pimMsg = PropertyWriteBus.new_method_call(
