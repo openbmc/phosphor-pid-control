@@ -23,8 +23,8 @@ class SensorManager
     }
 
     SensorManager() :
-        SensorManager(std::move(sdbusplus::bus::new_default()),
-                      std::move(sdbusplus::bus::new_default()))
+        SensorManager(std::move(sdbusplus::bus::new_system()),
+                      std::move(sdbusplus::bus::new_system()))
     {
     }
 

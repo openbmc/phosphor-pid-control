@@ -38,7 +38,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     }
 
     /* Need to get the scale and initial value */
-    auto tempBus = sdbusplus::bus::new_default();
+    auto tempBus = sdbusplus::bus::new_system();
 
     /* service == busname */
     std::string path = getSensorPath(type, id);
