@@ -77,7 +77,7 @@ static ipmi_ret_t getFanCtrlProperty(uint8_t zoneId, bool* value,
 {
     std::string path = getControlPath(zoneId);
 
-    auto propertyReadBus = sdbusplus::bus::new_default();
+    auto propertyReadBus = sdbusplus::bus::new_system();
     auto pimMsg = propertyReadBus.new_method_call(busName, path.c_str(),
                                                   propertiesintf, "GetAll");
     pimMsg.append(intf);
@@ -182,7 +182,7 @@ static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     bool setValue = static_cast<bool>(request->value);
     Value v{setValue};
 
-    auto PropertyWriteBus = sdbusplus::bus::new_default();
+    auto PropertyWriteBus = sdbusplus::bus::new_system();
 
     std::string path = getControlPath(request->zone);
 
