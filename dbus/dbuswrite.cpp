@@ -26,11 +26,6 @@ constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 using namespace phosphor::logging;
 
-// this bus object is treated as a singleton because the class is constructed in
-// a different thread than it is used, and as bus objects are relatively
-// expensive we'd prefer to only have one
-std::unique_ptr<sdbusplus::bus::bus> writeBus = nullptr;
-
 std::unique_ptr<WriteInterface>
     DbusWritePercent::createDbusWrite(const std::string& path, int64_t min,
                                       int64_t max, DbusHelperInterface& helper)
@@ -50,15 +45,6 @@ std::unique_ptr<WriteInterface>
     return std::make_unique<DbusWritePercent>(path, min, max, connectionName);
 }
 
-void initBus()
-{
-    if (writeBus == nullptr)
-    {
-        writeBus = std::make_unique<sdbusplus::bus::bus>(
-            sdbusplus::bus::new_default());
-    }
-}
-
 void DbusWritePercent::write(double value)
 {
     double minimum = getMin();
@@ -72,17 +58,17 @@ void DbusWritePercent::write(double value)
     {
         return;
     }
-    initBus();
+    auto writeBus = sdbusplus::bus::new_default();
     auto mesg =
-        writeBus->new_method_call(connectionName.c_str(), path.c_str(),
-                                  "org.freedesktop.DBus.Properties", "Set");
+        writeBus.new_method_call(connectionName.c_str(), path.c_str(),
+                                 "org.freedesktop.DBus.Properties", "Set");
     mesg.append(pwmInterface, "Target",
                 sdbusplus::message::variant<uint64_t>(ovalue));
 
     try
     {
         // TODO: if we don't use the reply, call_noreply()
-        auto resp = writeBus->call(mesg);
+        auto resp = writeBus.call(mesg);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
@@ -119,17 +105,17 @@ void DbusWrite::write(double value)
     {
         return;
     }
-    initBus();
+    auto writeBus = sdbusplus::bus::new_default();
     auto mesg =
-        writeBus->new_method_call(connectionName.c_str(), path.c_str(),
-                                  "org.freedesktop.DBus.Properties", "Set");
+        writeBus.new_method_call(connectionName.c_str(), path.c_str(),
+                                 "org.freedesktop.DBus.Properties", "Set");
     mesg.append(pwmInterface, "Target",
                 sdbusplus::message::variant<uint64_t>(value));
 
     try
     {
         // TODO: consider call_noreplly
-        auto resp = writeBus->call(mesg);
+        auto resp = writeBus.call(mesg);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
