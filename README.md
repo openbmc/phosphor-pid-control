@@ -325,28 +325,33 @@ sensor's definition.  It also holds the sensor manager.
 * `threads` - Most of swampd's threads run in this method where there's just a
 dbus bus that we manage.
 
-### Design
+## Example System Configurations
 
-One defines a series of sensors and a series of PIDs that utilize those sensors
-as inputs (and outputs).
+### Two Margin Sensors Into Three Fans (Non-Step PID)
 
 ```
- The thermal PID
+A single zone system where multiple margin thermal sensors are fed into one PID
+that generates the output RPM for a set of fans controlled by one PID.
 
- set-point -------->|---|---> RPM
- current value ---->|___|
+margin sensors as input to thermal pid
 
- The fan PID
-
- set-point -------->|---|---> pwm%
- current value ---->|___|
-
- How to get set-point for fan PIDs (for abs temp where MAX is worst):
-
- thermal-out ----->|-----|
- thermal-out ----->|     |-----> RPM
- thermal-out ----->| MAX |
- thermal-out ----->|_____|
+fleeting0+---->+-------+    +-------+     Thermal PID sampled
+               |  min()+--->+  PID  |     slower rate.
+fleeting1+---->+-------+    +---+---+
+                                |
+                                |
+                                | RPM set-point
+                    Current RPM v
+                             +--+-----+
+  The Fan PID        fan0+--->        |  New PWM  +-->fan0
+  samples at a               |        |           |
+  faster rate        fan1+--->  PID   +---------->--->fan1
+  speeding up the            |        |           |
+  fans.              fan2+--->        |           +-->fan2
+                       ^     +--------+                +
+                       |                               |
+                       +-------------------------------+
+                              RPM updated by PWM.
 ```
 
 ## Notes
