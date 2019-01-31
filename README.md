@@ -300,6 +300,53 @@ as well as handles difficult to reproduce edge cases.
 The testing of this project on real hardware can likely fold into the general
 gBMC testing planned.
 
+## Code Notes
+
+Swampd's primary function is to drive the fans of a system given various inputs.
+
+### Layout
+
+The code is broken out into modules as follows:
+
+* `dbus` - Any read or write interface that uses dbus primarily.
+* `experiments` - Small execution paths that allow for fan examination
+including how quickly fans respond to changes.
+* `ipmi` - Manual control for any zone is handled by receiving an IPMI message.
+This holds the ipmid provider for receiving those messages and sending them
+onto swampd.
+* `notimpl` - These are read-only and write-only interface implementations that
+can be dropped into a pluggable sensor to make it complete.
+* `pid` - This contains all the PID associated code, including the zone
+definition, controller definition, and the PID computational code.
+* `scripts` - This contains the scripts that convert YAML into C++.
+* `sensors` - This contains a couple of sensor types including the pluggable
+sensor's definition.  It also holds the sensor manager.
+* `sysfs` - This contains code that reads from or writes to sysfs.
+* `threads` - Most of swampd's threads run in this method where there's just a
+dbus bus that we manage.
+
+### Design
+
+One defines a series of sensors and a series of PIDs that utilize those sensors
+as inputs (and outputs).
+
+ The thermal PID
+
+ set-point -------->|---|---> RPM
+ current value ---->|___|
+
+ The fan PID
+
+ set-point -------->|---|---> pwm%
+ current value ---->|___|
+
+ How to get set-point for fan PIDs (for abs temp where MAX is worst):
+
+ thermal-out ----->|-----|
+ thermal-out ----->|     |-----> RPM
+ thermal-out ----->| MAX |
+ thermal-out ----->|_____|
+
 ## Notes
 
 [^2]: BMC - Board Management Controller
