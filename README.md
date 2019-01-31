@@ -1,7 +1,5 @@
 # phosphor-pid-control
 
-[TOC]
-
 ## Objective
 
 Develop a tray level fan control system that will use exhaust temperature and
