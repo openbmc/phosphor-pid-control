@@ -34,6 +34,8 @@ void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
     info->out_lim.max = initial.out_lim.max;
     info->slew_neg = initial.slew_neg;
     info->slew_pos = initial.slew_pos;
+    info->negativeHysteresis = initial.negativeHysteresis;
+    info->positiveHysteresis = initial.positiveHysteresis;
 }
 
 void dumpPIDStruct(ec::pid_info_t* info)

@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -30,7 +31,7 @@ void PIDController::process(void)
 {
     double input;
     double setpt;
-    double output;
+    double output = lastOutput;
 
     // Get setpt value
     setpt = setptProc();
@@ -38,8 +39,26 @@ void PIDController::process(void)
     // Get input value
     input = inputProc();
 
-    // Calculate new output
-    output = ec::pid(getPIDInfo(), input, setpt);
+    auto info = getPIDInfo();
+
+    // Calculate new output if hysteresis allows
+    if (std::isnan(output))
+    {
+        output = ec::pid(info, input, setpt);
+        lastInput = input;
+    }
+    else if ((input - lastInput) > info->positiveHysteresis)
+    {
+        output = ec::pid(info, input, setpt);
+        lastInput = input;
+    }
+    else if ((lastInput - input) > info->negativeHysteresis)
+    {
+        output = ec::pid(info, input, setpt);
+        lastInput = input;
+    }
+
+    lastOutput = output;
 
     // Output new value
     outputProc(output);
