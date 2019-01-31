@@ -20,6 +20,7 @@
 
 #include <algorithm>
 #include <chrono>
+#include <cmath>
 #include <iostream>
 #include <map>
 #include <memory>
@@ -38,8 +39,39 @@ void PIDController::process(void)
     // Get input value
     input = inputProc();
 
-    // Calculate new output
-    output = ec::pid(getPIDInfo(), input, setpt);
+    auto info = getPIDInfo();
+
+    // if no hysteresis, maintain previous behavior
+    if (info->positiveHysteresis == 0 && info->negativeHysteresis == 0)
+    {
+        // Calculate new output
+        output = ec::pid(info, input, setpt);
+
+        // this variable isn't actually used in this context, but we're setting
+        // it here incase somebody uses it later it's the correct value
+        lastInput = input;
+    }
+    else
+    {
+        // initialize if not set yet
+        if (std::isnan(lastInput))
+        {
+            lastInput = input;
+        }
+
+        // if reading is outside of hysteresis bounds, use it for reading,
+        // otherwise use last reading without updating it first
+        else if ((input - lastInput) > info->positiveHysteresis)
+        {
+            lastInput = input;
+        }
+        else if ((lastInput - input) > info->negativeHysteresis)
+        {
+            lastInput = input;
+        }
+
+        output = ec::pid(info, lastInput, setpt);
+    }
 
     // Output new value
     outputProc(output);

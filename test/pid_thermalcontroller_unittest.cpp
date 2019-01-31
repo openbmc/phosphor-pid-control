@@ -8,6 +8,7 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+using ::testing::_;
 using ::testing::Return;
 using ::testing::StrEq;
 
@@ -143,4 +144,71 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting1"))).WillOnce(Return(10.0));
 
     EXPECT_EQ(5.0, p->inputProc());
+}
+
+TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
+{
+
+    // This test verifies Negative hysteresis behaves as expected by
+    // crossing the setpoint and noticing readings don't change until past the
+    // hysteresis value
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fleeting0"};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+    initial.negativeHysteresis = 4.0;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
+        .Times(3)
+        .WillOnce(Return(12.0))
+        .WillOnce(Return(9.0))
+        .WillOnce(Return(7.0));
+
+    EXPECT_CALL(z, addRPMSetPoint(_)).Times(3);
+
+    std::vector<double> lastReadings = {12.0, 12.0, 7.0};
+    for (auto& reading : lastReadings)
+    {
+        p->process();
+        EXPECT_EQ(p->getLastInput(), reading);
+    }
+}
+
+TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
+{
+    // This test verifies Positive hysteresis behaves as expected by
+    // crossing the setpoint and noticing readings don't change until past the
+    // hysteresis value
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fleeting0"};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+    initial.positiveHysteresis = 5.0;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
+        .Times(3)
+        .WillOnce(Return(8.0))
+        .WillOnce(Return(13.0))
+        .WillOnce(Return(14.0));
+
+    EXPECT_CALL(z, addRPMSetPoint(_)).Times(3);
+
+    std::vector<double> lastReadings = {8.0, 8.0, 14.0};
+    for (auto& reading : lastReadings)
+    {
+        p->process();
+        EXPECT_EQ(p->getLastInput(), reading);
+    }
 }

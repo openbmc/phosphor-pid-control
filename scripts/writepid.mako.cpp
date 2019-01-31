@@ -27,6 +27,13 @@ std::map<int64_t, PIDConf> zoneConfig = {
                           setpoint = 0
                       else:
                           setpoint = details['set-point']
+
+                      neg_hysteresis = 0
+                      pos_hysteresis = 0
+                      if 'neg_hysteresis' in details['pid']:
+                          neg_hysteresis = details['pid']['neg_hysteresis']
+                      if 'pos_hysteresis' in details['pid']:
+                          pos_hysteresis = details['pid']['pos_hysteresis']
                   %>
                  ${setpoint},
                  {${details['pid']['sampleperiod']},
@@ -37,7 +44,9 @@ std::map<int64_t, PIDConf> zoneConfig = {
                   {${details['pid']['i_limit']['min']}, ${details['pid']['i_limit']['max']}},
                   {${details['pid']['out_limit']['min']}, ${details['pid']['out_limit']['max']}},
                   ${details['pid']['slew_neg']},
-                  ${details['pid']['slew_pos']}},
+                  ${details['pid']['slew_pos']},
+                  ${neg_hysteresis},
+                  ${pos_hysteresis}},
                 },
             },
             % endfor

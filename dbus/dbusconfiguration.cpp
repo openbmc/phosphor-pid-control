@@ -428,6 +428,24 @@ void init(sdbusplus::bus::bus& bus)
                     VariantToDoubleVisitor(), base.at("SlewNeg"));
                 info.pidInfo.slew_pos = variant_ns::visit(
                     VariantToDoubleVisitor(), base.at("SlewPos"));
+                double negativeHysteresis = 0;
+                double positiveHysteresis = 0;
+
+                auto findNeg = base.find("NegativeHysteresis");
+                auto findPos = base.find("PositiveHysteresis");
+                if (findNeg != base.end())
+                {
+                    negativeHysteresis = variant_ns::visit(
+                        VariantToDoubleVisitor(), findNeg->second);
+                }
+
+                if (findPos != base.end())
+                {
+                    positiveHysteresis = variant_ns::visit(
+                        VariantToDoubleVisitor(), findPos->second);
+                }
+                info.pidInfo.negativeHysteresis = negativeHysteresis;
+                info.pidInfo.positiveHysteresis = positiveHysteresis;
             }
         }
         auto findStepwise =
