@@ -330,6 +330,7 @@ dbus bus that we manage.
 One defines a series of sensors and a series of PIDs that utilize those sensors
 as inputs (and outputs).
 
+```
  The thermal PID
 
  set-point -------->|---|---> RPM
@@ -346,6 +347,7 @@ as inputs (and outputs).
  thermal-out ----->|     |-----> RPM
  thermal-out ----->| MAX |
  thermal-out ----->|_____|
+```
 
 ## Notes
 
