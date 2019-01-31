@@ -57,4 +57,6 @@ class PIDController : public Controller
     ec::pid_info_t _pid_info;
     double _setpoint;
     std::string _id;
+    double lastInput = std::numeric_limits<double>::quiet_NaN();
+    double lastOutput = std::numeric_limits<double>::quiet_NaN();
 };

@@ -31,6 +31,8 @@ typedef struct
     limits_t out_lim; // clamp of output
     double slew_neg;
     double slew_pos;
+    double positiveHysteresis;
+    double negativeHysteresis;
 } pid_info_t;
 
 double pid(pid_info_t* pidinfoptr, double input, double setpoint);
@@ -47,6 +49,8 @@ struct pidinfo
     ec::limits_t out_lim; // clamp of output
     double slew_neg;
     double slew_pos;
+    double positiveHysteresis;
+    double negativeHysteresis;
 };
 
 } // namespace ec
