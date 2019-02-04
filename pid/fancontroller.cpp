@@ -126,8 +126,10 @@ void FanController::outputProc(double value)
     }
 #endif
 
-    // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.
+// value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.
+#if !CONFIGURE_DBUS
     percent /= 100;
+#endif
 
     // PidSensorMap for writing.
     for (const auto& it : _inputs)
