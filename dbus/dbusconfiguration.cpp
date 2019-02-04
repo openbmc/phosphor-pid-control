@@ -21,6 +21,7 @@
 #include <chrono>
 #include <functional>
 #include <iostream>
+#include <regex>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/exception.hpp>
@@ -50,21 +51,21 @@ namespace dbus_configuration
 
 namespace variant_ns = sdbusplus::message::variant_ns;
 
-bool findSensor(const std::unordered_map<std::string, std::string>& sensors,
-                const std::string& search,
-                std::pair<std::string, std::string>& sensor)
+bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
+                 const std::string& search,
+                 std::vector<std::pair<std::string, std::string>>& matches)
 {
-    auto found =
-        std::find_if(sensors.begin(), sensors.end(), [&search](const auto& s) {
-            return (s.first.find(search) != std::string::npos);
-        });
-    if (found != sensors.end())
+    std::smatch match;
+    std::regex reg(search);
+    for (const auto& sensor : sensors)
     {
-        sensor = *found;
-        return true;
+        if (std::regex_search(sensor.first, match, reg))
+        {
+            matches.push_back(sensor);
+        }
     }
 
-    return false;
+    return matches.size() > 0;
 }
 
 // this function prints the configuration into a form similar to the cpp
@@ -327,24 +328,36 @@ void init(sdbusplus::bus::bus& bus)
                     sensorNames.insert(sensorNames.end(), outputs.begin(),
                                        outputs.end());
                 }
-                bool sensorsAvailable = sensorNames.size();
+
                 std::vector<std::string> inputs;
+                std::vector<std::pair<std::string, std::string>>
+                    sensorInterfaces;
                 for (const std::string& sensorName : sensorNames)
                 {
                     std::string name = sensorName;
                     // replace spaces with underscores to be legal on dbus
                     std::replace(name.begin(), name.end(), ' ', '_');
-                    std::pair<std::string, std::string> sensorPathIfacePair;
+                    findSensors(sensors, name, sensorInterfaces);
+                }
 
-                    if (!findSensor(sensors, name, sensorPathIfacePair))
-                    {
-                        sensorsAvailable = false;
-                        break;
-                    }
+                // if the sensors aren't available in the current state, don't
+                // add them to the configuration.
+                if (sensorInterfaces.empty())
+                {
+                    continue;
+                }
+                for (const auto& sensorPathIfacePair : sensorInterfaces)
+                {
+
                     if (sensorPathIfacePair.second == sensorInterface)
                     {
-                        inputs.push_back(name);
-                        auto& config = sensorConfig[name];
+                        size_t idx =
+                            sensorPathIfacePair.first.find_last_of("/") + 1;
+                        std::string shortName =
+                            sensorPathIfacePair.first.substr(idx);
+
+                        inputs.push_back(shortName);
+                        auto& config = sensorConfig[shortName];
                         config.type =
                             variant_ns::get<std::string>(base.at("Class"));
                         config.readpath = sensorPathIfacePair.first;
@@ -360,12 +373,14 @@ void init(sdbusplus::bus::bus& bus)
                         // copy so we can modify it
                         for (std::string otherSensor : sensorNames)
                         {
-                            if (otherSensor == sensorName)
+                            std::replace(otherSensor.begin(), otherSensor.end(),
+                                         ' ', '_');
+                            if (sensorPathIfacePair.first.find(otherSensor) !=
+                                std::string::npos)
                             {
                                 continue;
                             }
-                            std::replace(otherSensor.begin(), otherSensor.end(),
-                                         ' ', '_');
+
                             auto& config = sensorConfig[otherSensor];
                             config.writepath = sensorPathIfacePair.first;
                             // todo: un-hardcode this if there are fans with
@@ -375,12 +390,7 @@ void init(sdbusplus::bus::bus& bus)
                         }
                     }
                 }
-                // if the sensors aren't available in the current state, don't
-                // add them to the configuration.
-                if (!sensorsAvailable)
-                {
-                    continue;
-                }
+
                 struct ControllerInfo& info =
                     conf[variant_ns::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
@@ -443,22 +453,27 @@ void init(sdbusplus::bus::bus& bus)
                     std::string name = sensorName;
                     // replace spaces with underscores to be legal on dbus
                     std::replace(name.begin(), name.end(), ' ', '_');
-                    std::pair<std::string, std::string> sensorPathIfacePair;
+                    std::vector<std::pair<std::string, std::string>>
+                        sensorPathIfacePairs;
 
-                    if (!findSensor(sensors, name, sensorPathIfacePair))
+                    if (!findSensors(sensors, name, sensorPathIfacePairs))
                     {
                         sensorFound = false;
                         break;
                     }
 
-                    inputs.push_back(name);
-                    auto& config = sensorConfig[name];
-                    config.readpath = sensorPathIfacePair.first;
-                    config.type = "temp";
-                    // todo: maybe un-hardcode this if we run into slower
-                    // timeouts with sensors
+                    for (const auto& sensorPathIfacePair : sensorPathIfacePairs)
+                    {
 
-                    config.timeout = 500;
+                        inputs.push_back(name);
+                        auto& config = sensorConfig[name];
+                        config.readpath = sensorPathIfacePair.first;
+                        config.type = "temp";
+                        // todo: maybe un-hardcode this if we run into slower
+                        // timeouts with sensors
+
+                        config.timeout = 500;
+                    }
                 }
                 if (!sensorFound)
                 {
