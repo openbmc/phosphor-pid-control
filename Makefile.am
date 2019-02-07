@@ -91,11 +91,13 @@ libmanualcmds_la_LDFLAGS = \
 	$(SYSTEMD_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(PHOSPHOR_LOGGING_LIBS) \
+	$(LIBIPMID_LIBS) \
 	-version-info 0:0:0 -shared
 libmanualcmds_la_CXXFLAGS = \
 	$(SYSTEMD_CFLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
 	$(PHOSPHOR_LOGGING_CFLAGS) \
+	$(LIBIPMID_CFLAGS) \
 	-flto
 
 SUBDIRS = . test

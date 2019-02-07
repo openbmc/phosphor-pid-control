@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include <host-ipmid/ipmid-api.h>
+#include <ipmid/api.h>
 
-#include <host-ipmid/iana.hpp>
-#include <host-ipmid/oemopenbmc.hpp>
-#include <host-ipmid/oemrouter.hpp>
+#include <ipmid/iana.hpp>
+#include <ipmid/oemopenbmc.hpp>
+#include <ipmid/oemrouter.hpp>
 #include <map>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
