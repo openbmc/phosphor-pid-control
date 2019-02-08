@@ -28,6 +28,7 @@
 #include <set>
 #include <thread>
 #include <unordered_map>
+#include <variant>
 
 static constexpr bool DEBUG = false; // enable to print found configuration
 
@@ -48,8 +49,6 @@ constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 namespace dbus_configuration
 {
-
-namespace variant_ns = sdbusplus::message::variant_ns;
 
 bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
                  const std::string& search,
@@ -156,9 +155,8 @@ size_t getZoneIndex(const std::string& name, std::vector<std::string>& zones)
 void init(sdbusplus::bus::bus& bus)
 {
     using DbusVariantType =
-        sdbusplus::message::variant<uint64_t, int64_t, double, std::string,
-                                    std::vector<std::string>,
-                                    std::vector<double>>;
+        std::variant<uint64_t, int64_t, double, std::string,
+                     std::vector<std::string>, std::vector<double>>;
 
     using ManagedObjectType = std::unordered_map<
         sdbusplus::message::object_path,
@@ -292,15 +290,14 @@ void init(sdbusplus::bus::bus& bus)
         {
             const auto& zone = findZone->second;
 
-            const std::string& name =
-                variant_ns::get<std::string>(zone.at("Name"));
+            const std::string& name = std::get<std::string>(zone.at("Name"));
             size_t index = getZoneIndex(name, foundZones);
 
             auto& details = zoneDetailsConfig[index];
-            details.minthermalrpm = variant_ns::visit(VariantToDoubleVisitor(),
-                                                      zone.at("MinThermalRpm"));
-            details.failsafepercent = variant_ns::visit(
-                VariantToDoubleVisitor(), zone.at("FailSafePercent"));
+            details.minthermalrpm =
+                std::visit(VariantToDoubleVisitor(), zone.at("MinThermalRpm"));
+            details.failsafepercent = std::visit(VariantToDoubleVisitor(),
+                                                 zone.at("FailSafePercent"));
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         if (findBase != configuration.second.end())
@@ -309,22 +306,20 @@ void init(sdbusplus::bus::bus& bus)
             const auto& base =
                 configuration.second.at(pidConfigurationInterface);
             const std::vector<std::string>& zones =
-                variant_ns::get<std::vector<std::string>>(base.at("Zones"));
+                std::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
                 size_t index = getZoneIndex(zone, foundZones);
                 PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> sensorNames =
-                    variant_ns::get<std::vector<std::string>>(
-                        base.at("Inputs"));
+                    std::get<std::vector<std::string>>(base.at("Inputs"));
                 auto findOutputs =
                     base.find("Outputs"); // currently only fans have outputs
                 if (findOutputs != base.end())
                 {
                     std::vector<std::string> outputs =
-                        variant_ns::get<std::vector<std::string>>(
-                            findOutputs->second);
+                        std::get<std::vector<std::string>>(findOutputs->second);
                     sensorNames.insert(sensorNames.end(), outputs.begin(),
                                        outputs.end());
                 }
@@ -358,8 +353,7 @@ void init(sdbusplus::bus::bus& bus)
 
                         inputs.push_back(shortName);
                         auto& config = sensorConfig[shortName];
-                        config.type =
-                            variant_ns::get<std::string>(base.at("Class"));
+                        config.type = std::get<std::string>(base.at("Class"));
                         config.readpath = sensorPathIfacePair.first;
                         // todo: maybe un-hardcode this if we run into slower
                         // timeouts with sensors
@@ -392,10 +386,10 @@ void init(sdbusplus::bus::bus& bus)
                 }
 
                 struct ControllerInfo& info =
-                    conf[variant_ns::get<std::string>(base.at("Name"))];
+                    conf[std::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
 
-                info.type = variant_ns::get<std::string>(base.at("Class"));
+                info.type = std::get<std::string>(base.at("Class"));
                 // todo: auto generation yaml -> c script seems to discard this
                 // value for fans, verify this is okay
                 if (info.type == "fan")
@@ -404,30 +398,30 @@ void init(sdbusplus::bus::bus& bus)
                 }
                 else
                 {
-                    info.setpoint = variant_ns::visit(VariantToDoubleVisitor(),
-                                                      base.at("SetPoint"));
+                    info.setpoint = std::visit(VariantToDoubleVisitor(),
+                                               base.at("SetPoint"));
                 }
                 info.pidInfo.ts = 1.0; // currently unused
-                info.pidInfo.p_c = variant_ns::visit(VariantToDoubleVisitor(),
-                                                     base.at("PCoefficient"));
-                info.pidInfo.i_c = variant_ns::visit(VariantToDoubleVisitor(),
-                                                     base.at("ICoefficient"));
-                info.pidInfo.ff_off = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
-                info.pidInfo.ff_gain = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
-                info.pidInfo.i_lim.max = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("ILimitMax"));
-                info.pidInfo.i_lim.min = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("ILimitMin"));
-                info.pidInfo.out_lim.max = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("OutLimitMax"));
-                info.pidInfo.out_lim.min = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("OutLimitMin"));
-                info.pidInfo.slew_neg = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("SlewNeg"));
-                info.pidInfo.slew_pos = variant_ns::visit(
-                    VariantToDoubleVisitor(), base.at("SlewPos"));
+                info.pidInfo.p_c = std::visit(VariantToDoubleVisitor(),
+                                              base.at("PCoefficient"));
+                info.pidInfo.i_c = std::visit(VariantToDoubleVisitor(),
+                                              base.at("ICoefficient"));
+                info.pidInfo.ff_off = std::visit(VariantToDoubleVisitor(),
+                                                 base.at("FFOffCoefficient"));
+                info.pidInfo.ff_gain = std::visit(VariantToDoubleVisitor(),
+                                                  base.at("FFGainCoefficient"));
+                info.pidInfo.i_lim.max =
+                    std::visit(VariantToDoubleVisitor(), base.at("ILimitMax"));
+                info.pidInfo.i_lim.min =
+                    std::visit(VariantToDoubleVisitor(), base.at("ILimitMin"));
+                info.pidInfo.out_lim.max = std::visit(VariantToDoubleVisitor(),
+                                                      base.at("OutLimitMax"));
+                info.pidInfo.out_lim.min = std::visit(VariantToDoubleVisitor(),
+                                                      base.at("OutLimitMin"));
+                info.pidInfo.slew_neg =
+                    std::visit(VariantToDoubleVisitor(), base.at("SlewNeg"));
+                info.pidInfo.slew_pos =
+                    std::visit(VariantToDoubleVisitor(), base.at("SlewPos"));
                 double negativeHysteresis = 0;
                 double positiveHysteresis = 0;
 
@@ -435,14 +429,14 @@ void init(sdbusplus::bus::bus& bus)
                 auto findPos = base.find("PositiveHysteresis");
                 if (findNeg != base.end())
                 {
-                    negativeHysteresis = variant_ns::visit(
-                        VariantToDoubleVisitor(), findNeg->second);
+                    negativeHysteresis =
+                        std::visit(VariantToDoubleVisitor(), findNeg->second);
                 }
 
                 if (findPos != base.end())
                 {
-                    positiveHysteresis = variant_ns::visit(
-                        VariantToDoubleVisitor(), findPos->second);
+                    positiveHysteresis =
+                        std::visit(VariantToDoubleVisitor(), findPos->second);
                 }
                 info.pidInfo.negativeHysteresis = negativeHysteresis;
                 info.pidInfo.positiveHysteresis = positiveHysteresis;
@@ -454,7 +448,7 @@ void init(sdbusplus::bus::bus& bus)
         {
             const auto& base = findStepwise->second;
             const std::vector<std::string>& zones =
-                variant_ns::get<std::vector<std::string>>(base.at("Zones"));
+                std::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
                 size_t index = getZoneIndex(zone, foundZones);
@@ -462,8 +456,7 @@ void init(sdbusplus::bus::bus& bus)
 
                 std::vector<std::string> inputs;
                 std::vector<std::string> sensorNames =
-                    variant_ns::get<std::vector<std::string>>(
-                        base.at("Inputs"));
+                    std::get<std::vector<std::string>>(base.at("Inputs"));
 
                 bool sensorFound = false;
                 for (const std::string& sensorName : sensorNames)
@@ -502,7 +495,7 @@ void init(sdbusplus::bus::bus& bus)
                     continue;
                 }
                 struct ControllerInfo& info =
-                    conf[variant_ns::get<std::string>(base.at("Name"))];
+                    conf[std::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
 
                 info.type = "stepwise";
@@ -513,16 +506,16 @@ void init(sdbusplus::bus::bus& bus)
                 auto findNegHyst = base.find("NegativeHysteresis");
                 if (findPosHyst != base.end())
                 {
-                    info.stepwiseInfo.positiveHysteresis = variant_ns::visit(
+                    info.stepwiseInfo.positiveHysteresis = std::visit(
                         VariantToDoubleVisitor(), findPosHyst->second);
                 }
                 if (findNegHyst != base.end())
                 {
-                    info.stepwiseInfo.positiveHysteresis = variant_ns::visit(
+                    info.stepwiseInfo.positiveHysteresis = std::visit(
                         VariantToDoubleVisitor(), findNegHyst->second);
                 }
                 std::vector<double> readings =
-                    variant_ns::get<std::vector<double>>(base.at("Reading"));
+                    std::get<std::vector<double>>(base.at("Reading"));
                 if (readings.size() > ec::maxStepwisePoints)
                 {
                     throw std::invalid_argument("Too many stepwise points.");
@@ -540,7 +533,7 @@ void init(sdbusplus::bus::bus& bus)
                         std::numeric_limits<double>::quiet_NaN();
                 }
                 std::vector<double> outputs =
-                    variant_ns::get<std::vector<double>>(base.at("Output"));
+                    std::get<std::vector<double>>(base.at("Output"));
                 if (readings.size() != outputs.size())
                 {
                     throw std::invalid_argument(

@@ -2,13 +2,14 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
 #include <string>
+#include <variant>
 
 /* Fan Control */
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 static constexpr auto busName = "xyz.openbmc_project.State.FanCtrl";
 static constexpr auto intf = "xyz.openbmc_project.Control.Mode";
 static constexpr auto property = "Manual";
-using Value = sdbusplus::message::variant<bool>;
+using Value = std::variant<bool>;
 
 /* Host Sensor. */
 static constexpr auto sobjectPath =
@@ -16,7 +17,7 @@ static constexpr auto sobjectPath =
 static constexpr auto sbusName = "xyz.openbmc_project.Hwmon.external";
 static constexpr auto sintf = "xyz.openbmc_project.Sensor.Value";
 static constexpr auto sproperty = "Value";
-using sValue = sdbusplus::message::variant<int64_t>;
+using sValue = std::variant<int64_t>;
 
 static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
 

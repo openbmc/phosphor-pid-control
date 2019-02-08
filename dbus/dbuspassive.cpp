@@ -23,6 +23,7 @@
 #include <mutex>
 #include <sdbusplus/bus.hpp>
 #include <string>
+#include <variant>
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
@@ -114,8 +115,7 @@ std::string DbusPassive::getID(void)
 int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 {
     std::string msgSensor;
-    std::map<std::string, sdbusplus::message::variant<int64_t, double, bool>>
-        msgData;
+    std::map<std::string, std::variant<int64_t, double, bool>> msgData;
 
     msg.read(msgSensor, msgData);
 
@@ -124,8 +124,8 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
         auto valPropMap = msgData.find("Value");
         if (valPropMap != msgData.end())
         {
-            double value = sdbusplus::message::variant_ns::visit(
-                VariantToDoubleVisitor(), valPropMap->second);
+            double value =
+                std::visit(VariantToDoubleVisitor(), valPropMap->second);
 
             value *= std::pow(10, owner->getScale());
 
@@ -145,16 +145,14 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
         bool asserted = false;
         if (criticalAlarmLow != msgData.end())
         {
-            asserted = sdbusplus::message::variant_ns::get<bool>(
-                criticalAlarmLow->second);
+            asserted = std::get<bool>(criticalAlarmLow->second);
         }
 
         // checking both as in theory you could de-assert one threshold and
         // assert the other at the same moment
         if (!asserted && criticalAlarmHigh != msgData.end())
         {
-            asserted = sdbusplus::message::variant_ns::get<bool>(
-                criticalAlarmHigh->second);
+            asserted = std::get<bool>(criticalAlarmHigh->second);
         }
         owner->setFailed(asserted);
     }

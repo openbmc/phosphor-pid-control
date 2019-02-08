@@ -4,9 +4,10 @@
 #include <iostream>
 #include <phosphor-logging/log.hpp>
 #include <set>
+#include <variant>
 
 using Property = std::string;
-using Value = sdbusplus::message::variant<int64_t, double, std::string, bool>;
+using Value = std::variant<int64_t, double, std::string, bool>;
 using PropertyMap = std::map<Property, Value>;
 
 using namespace phosphor::logging;
@@ -84,22 +85,19 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
     auto findUnit = propMap.find("Unit");
     if (findUnit != propMap.end())
     {
-        prop->unit =
-            sdbusplus::message::variant_ns::get<std::string>(findUnit->second);
+        prop->unit = std::get<std::string>(findUnit->second);
     }
     auto findScale = propMap.find("Scale");
     if (findScale != propMap.end())
     {
-        prop->scale =
-            sdbusplus::message::variant_ns::get<int64_t>(findScale->second);
+        prop->scale = std::get<int64_t>(findScale->second);
     }
     else
     {
         prop->scale = 0;
     }
 
-    prop->value = sdbusplus::message::variant_ns::visit(
-        VariantToDoubleVisitor(), propMap["Value"]);
+    prop->value = std::visit(VariantToDoubleVisitor(), propMap["Value"]);
 
     return;
 }
@@ -131,16 +129,14 @@ bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
     bool asserted = false;
     if (findCriticalLow != criticalMap.end())
     {
-        asserted =
-            sdbusplus::message::variant_ns::get<bool>(findCriticalLow->second);
+        asserted = std::get<bool>(findCriticalLow->second);
     }
 
     // as we are catching properties changed, a sensor could theoretically jump
     // from one threshold to the other in one event, so check both thresholds
     if (!asserted && findCriticalHigh != criticalMap.end())
     {
-        asserted =
-            sdbusplus::message::variant_ns::get<bool>(findCriticalHigh->second);
+        asserted = std::get<bool>(findCriticalHigh->second);
     }
     return asserted;
 }

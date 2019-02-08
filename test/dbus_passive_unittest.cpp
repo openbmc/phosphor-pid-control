@@ -3,6 +3,7 @@
 
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <string>
+#include <variant>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
@@ -138,7 +139,7 @@ TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
     const char* Value = "Value";
     int64_t xValue = 10000;
     const char* intf = "xyz.openbmc_project.Sensor.Value";
-    // string, std::map<std::string, sdbusplus::message::variant<int64_t>>
+    // string, std::map<std::string, std::variant<int64_t>>
     // msg.read(msgSensor, msgData);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
@@ -208,7 +209,7 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
     const char* Scale = "Scale";
     int64_t xScale = -6;
     const char* intf = "xyz.openbmc_project.Sensor.Value";
-    // string, std::map<std::string, sdbusplus::message::variant<int64_t>>
+    // string, std::map<std::string, std::variant<int64_t>>
     // msg.read(msgSensor, msgData);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))

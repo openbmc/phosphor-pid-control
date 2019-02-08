@@ -24,6 +24,7 @@
 #include <sdbusplus/message.hpp>
 #include <string>
 #include <tuple>
+#include <variant>
 
 enum ManualSubCmd
 {
@@ -91,7 +92,7 @@ static ipmi_ret_t getFanCtrlProperty(uint8_t zoneId, bool* value,
 
         valueResponseMsg.read(propMap);
 
-        *value = sdbusplus::message::variant_ns::get<bool>(propMap[property]);
+        *value = std::get<bool>(propMap[property]);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {
