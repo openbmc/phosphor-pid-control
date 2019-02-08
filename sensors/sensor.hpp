@@ -6,6 +6,17 @@
 #include <string>
 
 /**
+ * Given a sensor's type, return the default timeout value.
+ *
+ * @param[in] type - the sensor type (e.g. fan)
+ * @return the default timeout for that type (in seconds).
+ */
+inline int64_t getDefaultTimeout(const std::string& type)
+{
+    return (type == "fan") ? 0 : 2;
+}
+
+/**
  * Abstract base class for all sensors.
  */
 class Sensor
