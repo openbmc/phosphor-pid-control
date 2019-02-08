@@ -18,7 +18,7 @@ check_PROGRAMS = sensor_manager_unittest sensor_pluggable_unittest \
  pid_thermalcontroller_unittest pid_fancontroller_unittest \
  pid_stepwisecontroller_unittest \
  dbus_passive_unittest dbus_active_unittest \
- sensors_json_unittest
+ sensors_json_unittest pid_json_unittest
 TESTS = $(check_PROGRAMS)
 
 # Until libconfig is mocked out or replaced, include it.
@@ -62,3 +62,6 @@ dbus_active_unittest_LDADD = $(top_builddir)/dbus/dbusactiveread.o
 
 sensors_json_unittest_SOURCES = sensors_json_unittest.cpp
 sensors_json_unittest_LDADD = $(top_builddir)/sensors/buildjson.o
+
+pid_json_unittest_SOURCES = pid_json_unittest.cpp
+pid_json_unittest_LDADD = $(top_builddir)/pid/buildjson.o
