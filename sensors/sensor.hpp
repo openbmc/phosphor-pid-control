@@ -11,6 +11,20 @@
 class Sensor
 {
   public:
+    /**
+     * Given a sensor's type, return the default timeout value.
+     * A timeout of 0 means there isn't a timeout for this sensor.
+     * By default a fan sensor isn't checked for a timeout, whereas
+     * any of sensor is meant to be sampled once per second.  By default.
+     *
+     * @param[in] type - the sensor type (e.g. fan)
+     * @return the default timeout for that type (in seconds).
+     */
+    static int64_t getDefaultTimeout(const std::string& type)
+    {
+        return (type == "fan") ? 0 : 2;
+    }
+
     Sensor(const std::string& name, int64_t timeout) :
         _name(name), _timeout(timeout)
     {
