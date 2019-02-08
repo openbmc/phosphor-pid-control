@@ -73,6 +73,7 @@ libswampd_la_SOURCES = \
 	pid/stepwisecontroller.cpp \
 	pid/builder.cpp \
 	pid/builderconfig.cpp \
+	pid/buildjson.cpp \
 	pid/zone.cpp \
 	pid/util.cpp \
 	pid/pidthread.cpp \
