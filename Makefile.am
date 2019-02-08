@@ -77,6 +77,7 @@ libswampd_la_SOURCES = \
 	pid/pidthread.cpp \
 	threads/busthread.cpp \
 	experiments/drive.cpp \
+	build/buildjson.cpp \
 	$(BUILT_SOURCES)
 
 if CONFIGURE_DBUS
