@@ -63,6 +63,7 @@ libswampd_la_SOURCES = \
 	sensors/host.cpp \
 	sensors/builder.cpp \
 	sensors/builderconfig.cpp \
+	sensors/buildjson.cpp \
 	sensors/manager.cpp \
 	pid/ec/pid.cpp \
 	pid/ec/stepwise.cpp \
