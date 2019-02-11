@@ -80,8 +80,8 @@ void debugPrint(void)
 
         std::cout << "\t{" << pair.first << ",\n\t\t{";
         std::cout << pair.second.type << ", ";
-        std::cout << pair.second.readpath << ", ";
-        std::cout << pair.second.writepath << ", ";
+        std::cout << pair.second.readPath << ", ";
+        std::cout << pair.second.writePath << ", ";
         std::cout << pair.second.min << ", ";
         std::cout << pair.second.max << ", ";
         std::cout << pair.second.timeout << "},\n\t},\n";
@@ -354,7 +354,7 @@ void init(sdbusplus::bus::bus& bus)
                         inputs.push_back(shortName);
                         auto& config = sensorConfig[shortName];
                         config.type = std::get<std::string>(base.at("Class"));
-                        config.readpath = sensorPathIfacePair.first;
+                        config.readPath = sensorPathIfacePair.first;
                         // todo: maybe un-hardcode this if we run into slower
                         // timeouts with sensors
                         if (config.type == "temp")
@@ -376,7 +376,7 @@ void init(sdbusplus::bus::bus& bus)
                             }
 
                             auto& config = sensorConfig[otherSensor];
-                            config.writepath = sensorPathIfacePair.first;
+                            config.writePath = sensorPathIfacePair.first;
                             // todo: un-hardcode this if there are fans with
                             // different ranges
                             config.max = 255;
@@ -481,7 +481,7 @@ void init(sdbusplus::bus::bus& bus)
 
                         inputs.push_back(shortName);
                         auto& config = sensorConfig[shortName];
-                        config.readpath = sensorPathIfacePair.first;
+                        config.readPath = sensorPathIfacePair.first;
                         config.type = "temp";
                         // todo: maybe un-hardcode this if we run into slower
                         // timeouts with sensors

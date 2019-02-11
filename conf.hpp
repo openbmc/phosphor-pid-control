@@ -12,11 +12,11 @@
  */
 struct SensorConfig
 {
-    /* Used for listen if readpath is passive. */
+    /* Used for listen if readPath is passive. */
     std::string type;
     /* Can be a sensor path or a dbus path. */
-    std::string readpath;
-    std::string writepath;
+    std::string readPath;
+    std::string writePath;
     /* min/max values for writing a percentage or error checking. */
     int64_t min;
     int64_t max;

@@ -103,8 +103,8 @@ The internal thermometers specified will be read via sysfs.
     ipmi:
       {IPMI_ID}
       name: "fan1"
-      readpath: "/xyz/openbmc_project/sensors/fan_tach/fan1"
-      writepath: "/sys/class/hwmon/hwmon0/pwm0"
+      readPath: "/xyz/openbmc_project/sensors/fan_tach/fan1"
+      writePath: "/sys/class/hwmon/hwmon0/pwm0"
     pidinfo:
       samplerate: 0.1 // sample time in seconds
       p_coeff: 0.01 // coefficient for proportional
@@ -122,8 +122,8 @@ The internal thermometers specified will be read via sysfs.
     ipmi:
       {IPMI_ID}
       name: "sluggish0"
-      readpath: "/xyz/openbmc_project/sensors/external/sluggish0"
-      writepath: ""
+      readPath: "/xyz/openbmc_project/sensors/external/sluggish0"
+      writePath: ""
     pidinfo:
       samplerate: 1 // sample time in seconds
       p_coeff: 94.0

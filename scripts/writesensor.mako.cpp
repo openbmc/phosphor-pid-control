@@ -12,8 +12,8 @@ std::map<std::string, struct SensorConfig> sensorConfig = {
    <%
            sensor = sensorDict[key]
            type = sensor["type"]
-           readpath = sensor["readpath"]
-           writepath = sensor.get("writepath", "")
+           readPath = sensor["readPath"]
+           writePath = sensor.get("writePath", "")
            min = sensor.get("min", 0)
            max = sensor.get("max", 0)
            # Presently only thermal inputs have their timeout
@@ -27,7 +27,7 @@ std::map<std::string, struct SensorConfig> sensorConfig = {
                timeout = sensor.get("timeout", 2)
    %>
     {"${key}",
-        {"${type}","${readpath}","${writepath}", ${min}, ${max}, ${timeout}},
+        {"${type}","${readPath}","${writePath}", ${min}, ${max}, ${timeout}},
     },
    % endif
 % endfor
