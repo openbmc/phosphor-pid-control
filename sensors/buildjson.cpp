@@ -26,17 +26,17 @@ using json = nlohmann::json;
 void from_json(const json& j, SensorConfig& s)
 {
     j.at("type").get_to(s.type);
-    j.at("readpath").get_to(s.readpath);
+    j.at("readPath").get_to(s.readPath);
 
-    /* The writepath field is optional in a configuration */
-    auto writepath = j.find("writepath");
-    if (writepath == j.end())
+    /* The writePath field is optional in a configuration */
+    auto writePath = j.find("writePath");
+    if (writePath == j.end())
     {
-        s.writepath = "";
+        s.writePath = "";
     }
     else
     {
-        j.at("writepath").get_to(s.writepath);
+        j.at("writePath").get_to(s.writePath);
     }
 
     /* The min field is optional in a configuration. */

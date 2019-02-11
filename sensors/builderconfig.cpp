@@ -75,8 +75,8 @@ SensorManager buildSensorsFromConfig(const std::string& path)
              */
             name = sensor.lookup("name").c_str();
             thisOne.type = sensor.lookup("type").c_str();
-            thisOne.readpath = sensor.lookup("readpath").c_str();
-            thisOne.writepath = sensor.lookup("writepath").c_str();
+            thisOne.readPath = sensor.lookup("readPath").c_str();
+            thisOne.writePath = sensor.lookup("writePath").c_str();
 
             /* TODO: Document why this is wonky.  The library probably doesn't
              * like int64_t

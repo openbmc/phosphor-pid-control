@@ -5,7 +5,7 @@ All sensors in phosphor-dbus-interfaces for OpenBMC use Sensor.Value as their
 accessor.  This provides read-only access to information.  The goal of the
 configuration is to specify how it can be read and if it's a fan, how the PID
 output can be written.  Initially there'll only be sysfs and passive dbus
-access.  If a writepath for a sensor is a dbus path, then the system will need
+access.  If a writePath for a sensor is a dbus path, then the system will need
 to verify which Control.Fan* interfaces is registered and send values to the
 Target property of that interface.
 
@@ -14,7 +14,7 @@ FanController object outputs the new fan speed goal as a PWM percentage.  Other
 fan PID control objects may not, and they can leave the fields as 0 & 0.
 
 The only requirement for a sensor is that it isn't writeonly.  Only fans are
-expected to have a writepath set, and in this current version non-fan sensors
+expected to have a writePath set, and in this current version non-fan sensors
 are assumed readonly. 
 
 The sensor names are unique across all zones.

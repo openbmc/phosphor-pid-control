@@ -1,9 +1,9 @@
 fan2: /* Name of the sensor. */
   type: fan /* Type of sensor, fan, temp, margin */
   /* How the sensor can be read[1] */
-  readpath: /xyz/openbmc_project/sensors/fan_tach/fan2
+  readPath: /xyz/openbmc_project/sensors/fan_tach/fan2
   /* How the sensor can be set[2] */
-  writepath: /sys/class/hwmon/hwmon0/pwm1
+  writePath: /sys/class/hwmon/hwmon0/pwm1
   /* The minimum value used for scaling writes (int64) */
   min: 0
   /* The maximum value used for scaling writes (int64) */
@@ -13,7 +13,7 @@ fan2: /* Name of the sensor. */
    */
   timeout: 0
 
-[1] readpath has multiple options:
+[1] readPath has multiple options:
 * If it has "/xyz/openbmc_project/extsensors/" in it, it's an EXTERNAL or
   host-provided sensor.
 * If it has "/xyz/openbmc_project/" in it, it's a sensor whose value is

@@ -53,10 +53,10 @@ SensorManager
         const struct SensorConfig* info = &it.second;
 
         std::cerr << "Sensor: " << name << " " << info->type << " ";
-        std::cerr << info->readpath << " " << info->writepath << "\n";
+        std::cerr << info->readPath << " " << info->writePath << "\n";
 
-        IOInterfaceType rtype = getReadInterfaceType(info->readpath);
-        IOInterfaceType wtype = getWriteInterfaceType(info->writepath);
+        IOInterfaceType rtype = getReadInterfaceType(info->readPath);
+        IOInterfaceType wtype = getWriteInterfaceType(info->writePath);
 
         // fan sensors can be ready any way and written others.
         // fan sensors are the only sensors this is designed to write.
@@ -80,7 +80,7 @@ SensorManager
                 // These are a special case for read-only.
                 break;
             case IOInterfaceType::SYSFS:
-                ri = std::make_unique<SysFsRead>(info->readpath);
+                ri = std::make_unique<SysFsRead>(info->readPath);
                 break;
             default:
                 ri = std::make_unique<WriteOnly>();
@@ -95,11 +95,11 @@ SensorManager
                     if (info->max > 0)
                     {
                         wi = std::make_unique<SysFsWritePercent>(
-                            info->writepath, info->min, info->max);
+                            info->writePath, info->min, info->max);
                     }
                     else
                     {
-                        wi = std::make_unique<SysFsWrite>(info->writepath,
+                        wi = std::make_unique<SysFsWrite>(info->writePath,
                                                           info->min, info->max);
                     }
 
@@ -108,19 +108,19 @@ SensorManager
                     if (info->max > 0)
                     {
                         wi = DbusWritePercent::createDbusWrite(
-                            info->writepath, info->min, info->max, helper);
+                            info->writePath, info->min, info->max, helper);
                     }
                     else
                     {
                         wi = DbusWrite::createDbusWrite(
-                            info->writepath, info->min, info->max, helper);
+                            info->writePath, info->min, info->max, helper);
                     }
 
                     if (wi == nullptr)
                     {
                         throw SensorBuildException(
                             "Unable to create write dbus interface for path: " +
-                            info->writepath);
+                            info->writePath);
                     }
 
                     break;
@@ -137,19 +137,19 @@ SensorManager
         {
             // These sensors are read-only, but only for this application
             // which only writes to fan sensors.
-            std::cerr << info->type << " readpath: " << info->readpath << "\n";
+            std::cerr << info->type << " readPath: " << info->readPath << "\n";
 
             if (IOInterfaceType::EXTERNAL == rtype)
             {
                 std::cerr << "Creating HostSensor: " << name
-                          << " path: " << info->readpath << "\n";
+                          << " path: " << info->readPath << "\n";
 
                 /*
                  * The reason we handle this as a HostSensor is because it's
                  * not quite pluggable; but maybe it could be.
                  */
                 auto sensor = HostSensor::createTemp(
-                    name, info->timeout, hostSensorBus, info->readpath.c_str(),
+                    name, info->timeout, hostSensorBus, info->readPath.c_str(),
                     deferSignals);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }

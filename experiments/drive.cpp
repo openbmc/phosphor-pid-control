@@ -32,13 +32,13 @@ using tstamp = std::chrono::high_resolution_clock::time_point;
 #define DRIVE DRIVE_TIME
 #define MAX_PWM 255
 
-static std::unique_ptr<Sensor> Create(std::string readpath,
-                                      std::string writepath)
+static std::unique_ptr<Sensor> Create(std::string readPath,
+                                      std::string writePath)
 {
     return std::make_unique<PluggableSensor>(
-        readpath, 0, /* default the timeout to disabled */
-        std::make_unique<SysFsRead>(readpath),
-        std::make_unique<SysFsWrite>(writepath, 0, MAX_PWM));
+        readPath, 0, /* default the timeout to disabled */
+        std::make_unique<SysFsRead>(readPath),
+        std::make_unique<SysFsWrite>(writePath, 0, MAX_PWM));
 }
 
 int64_t getAverage(std::tuple<tstamp, int64_t, int64_t>& values)

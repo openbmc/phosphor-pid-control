@@ -27,8 +27,8 @@ TEST(SensorsFromJson, oneFanSensor)
         "sensors": [{
             "name": "fan1",
             "type": "fan",
-            "readpath": "/xyz/openbmc_project/sensors/fan_tach/fan1",
-            "writepath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm1",
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1",
+            "writePath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm1",
             "min": 0,
             "max": 255
         }]
@@ -38,9 +38,9 @@ TEST(SensorsFromJson, oneFanSensor)
     auto output = buildSensorsFromJson(j2);
     EXPECT_EQ(1, output.size());
     EXPECT_EQ(output["fan1"].type, "fan");
-    EXPECT_EQ(output["fan1"].readpath,
+    EXPECT_EQ(output["fan1"].readPath,
               "/xyz/openbmc_project/sensors/fan_tach/fan1");
-    EXPECT_EQ(output["fan1"].writepath,
+    EXPECT_EQ(output["fan1"].writePath,
               "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/"
               "hwmon/**/pwm1");
     EXPECT_EQ(output["fan1"].min, 0);
@@ -51,14 +51,14 @@ TEST(SensorsFromJson, oneFanSensor)
 
 TEST(SensorsFromJson, validateOptionalFields)
 {
-    // The writepath, min, max, timeout fields are optional.
+    // The writePath, min, max, timeout fields are optional.
 
     auto j2 = R"(
       {
         "sensors": [{
             "name": "fan1",
             "type": "fan",
-            "readpath": "/xyz/openbmc_project/sensors/fan_tach/fan1"
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1"
         }]
       }
     )"_json;
@@ -66,9 +66,9 @@ TEST(SensorsFromJson, validateOptionalFields)
     auto output = buildSensorsFromJson(j2);
     EXPECT_EQ(1, output.size());
     EXPECT_EQ(output["fan1"].type, "fan");
-    EXPECT_EQ(output["fan1"].readpath,
+    EXPECT_EQ(output["fan1"].readPath,
               "/xyz/openbmc_project/sensors/fan_tach/fan1");
-    EXPECT_EQ(output["fan1"].writepath, "");
+    EXPECT_EQ(output["fan1"].writePath, "");
     EXPECT_EQ(output["fan1"].min, 0);
     EXPECT_EQ(output["fan1"].max, 0);
     EXPECT_EQ(output["fan1"].timeout,
@@ -86,11 +86,11 @@ TEST(SensorsFromJson, twoSensors)
         "sensors": [{
             "name": "fan1",
             "type": "fan",
-            "readpath": "/xyz/openbmc_project/sensors/fan_tach/fan1"
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1"
         }, {
             "name": "fan2",
             "type": "fan",
-            "readpath": "/xyz/openbmc_project/sensors/fan_tach/fan1"
+            "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1"
         }]
       }
     )"_json;
