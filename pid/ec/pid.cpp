@@ -44,9 +44,9 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 {
     double error;
 
-    double p_term;
-    double i_term = 0.0f;
-    double ff_term = 0.0f;
+    double proportionalTerm;
+    double integralTerm = 0.0f;
+    double feedFwdTerm = 0.0f;
 
     double output;
 
@@ -54,21 +54,22 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 
     // Pid
     error = setpoint - input;
-    p_term = pidinfoptr->proportionalCoeff * error;
+    proportionalTerm = pidinfoptr->proportionalCoeff * error;
 
     // pId
     if (0.0f != pidinfoptr->integralCoeff)
     {
-        i_term = pidinfoptr->integral;
-        i_term += error * pidinfoptr->integralCoeff * pidinfoptr->ts;
-        i_term = clamp(i_term, pidinfoptr->integralLimit.min,
-                       pidinfoptr->integralLimit.max);
+        integralTerm = pidinfoptr->integral;
+        integralTerm += error * pidinfoptr->integralCoeff * pidinfoptr->ts;
+        integralTerm = clamp(integralTerm, pidinfoptr->integralLimit.min,
+                             pidinfoptr->integralLimit.max);
     }
 
     // FF
-    ff_term = (setpoint + pidinfoptr->feedFwdOffset) * pidinfoptr->feedFwdGain;
+    feedFwdTerm =
+        (setpoint + pidinfoptr->feedFwdOffset) * pidinfoptr->feedFwdGain;
 
-    output = p_term + i_term + ff_term;
+    output = proportionalTerm + integralTerm + feedFwdTerm;
     output = clamp(output, pidinfoptr->outLim.min, pidinfoptr->outLim.max);
 
     // slew rate
@@ -80,21 +81,21 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
         if (pidinfoptr->slewNeg != 0.0f)
         {
             // Don't decrease too fast
-            double min_out =
+            double minOut =
                 pidinfoptr->lastOutput + pidinfoptr->slewNeg * pidinfoptr->ts;
-            if (output < min_out)
+            if (output < minOut)
             {
-                output = min_out;
+                output = minOut;
             }
         }
         if (pidinfoptr->slewPos != 0.0f)
         {
             // Don't increase too fast
-            double max_out =
+            double maxOut =
                 pidinfoptr->lastOutput + pidinfoptr->slewPos * pidinfoptr->ts;
-            if (output > max_out)
+            if (output > maxOut)
             {
-                output = max_out;
+                output = maxOut;
             }
         }
 
@@ -102,15 +103,15 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
         {
             // Back calculate integral term for the cases where we limited the
             // output
-            i_term = output - p_term;
+            integralTerm = output - proportionalTerm;
         }
     }
 
     // Clamp again because having limited the output may result in a
     // larger integral term
-    i_term = clamp(i_term, pidinfoptr->integralLimit.min,
-                   pidinfoptr->integralLimit.max);
-    pidinfoptr->integral = i_term;
+    integralTerm = clamp(integralTerm, pidinfoptr->integralLimit.min,
+                         pidinfoptr->integralLimit.max);
+    pidinfoptr->integral = integralTerm;
     pidinfoptr->initialized = true;
     pidinfoptr->lastOutput = output;
 
