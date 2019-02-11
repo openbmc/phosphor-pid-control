@@ -74,7 +74,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 
     // slew rate
     // TODO(aarena) - Simplify logic as Andy suggested by creating dynamic
-    // out_lim_min/max that are affected by slew rate control and just clamping
+    // outLim_min/max that are affected by slew rate control and just clamping
     // to those instead of effectively clamping twice.
     if (pidinfoptr->initialized)
     {

@@ -24,32 +24,32 @@ void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
     info->ts = initial.ts;
-    info->proportionalCoeff = initial.p_c;
-    info->integralCoeff = initial.i_c;
-    info->feedFwdOffset = initial.ff_off;
-    info->feedFwdGain = initial.ff_gain;
-    info->integralLimit.min = initial.i_lim.min;
-    info->integralLimit.max = initial.i_lim.max;
-    info->outLim.min = initial.out_lim.min;
-    info->outLim.max = initial.out_lim.max;
-    info->slewNeg = initial.slew_neg;
-    info->slewPos = initial.slew_pos;
+    info->proportionalCoeff = initial.proportionalCoeff;
+    info->integralCoeff = initial.integralCoeff;
+    info->feedFwdOffset = initial.feedFwdOffset;
+    info->feedFwdGain = initial.feedFwdGain;
+    info->integralLimit.min = initial.integralLimit.min;
+    info->integralLimit.max = initial.integralLimit.max;
+    info->outLim.min = initial.outLim.min;
+    info->outLim.max = initial.outLim.max;
+    info->slewNeg = initial.slewNeg;
+    info->slewPos = initial.slewPos;
     info->negativeHysteresis = initial.negativeHysteresis;
     info->positiveHysteresis = initial.positiveHysteresis;
 }
 
 void dumpPIDStruct(ec::pid_info_t* info)
 {
-    std::cerr << " ts: " << info->ts << " p_c: " << info->proportionalCoeff
-              << " i_c: " << info->integralCoeff
-              << " ff_off: " << info->feedFwdOffset
-              << " ff_gain: " << info->feedFwdGain
-              << " i_lim.min: " << info->integralLimit.min
-              << " i_lim.max: " << info->integralLimit.max
-              << " out_lim.min: " << info->outLim.min
-              << " out_lim.max: " << info->outLim.max
-              << " slew_neg: " << info->slewNeg
-              << " slew_pos: " << info->slewPos
+    std::cerr << " ts: " << info->ts
+              << " proportionalCoeff: " << info->proportionalCoeff
+              << " integralCoeff: " << info->integralCoeff
+              << " feedFwdOffset: " << info->feedFwdOffset
+              << " feedFwdGain: " << info->feedFwdGain
+              << " integralLimit.min: " << info->integralLimit.min
+              << " integralLimit.max: " << info->integralLimit.max
+              << " outLim.min: " << info->outLim.min
+              << " outLim.max: " << info->outLim.max
+              << " slewNeg: " << info->slewNeg << " slewPos: " << info->slewPos
               << " last_output: " << info->lastOutput
               << " integral: " << info->integral << std::endl;
 

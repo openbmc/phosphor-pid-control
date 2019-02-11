@@ -7,18 +7,18 @@
     set-point: 90.0
     pid:
       sampleperiod: 0.1
-      p_coefficient: 0.01
-      i_coefficient: 0.001
-      ff_off_coefficient: 0.0
-      ff_gain_coefficient: 0.0
-      i_limit:
+      proportionalCoeff: 0.01
+      integralCoeff: 0.001
+      feedFwdOffOffsetCoeff: 0.0
+      feedFwdGainCoeff: 0.0
+      integralLimit:
         min: 0
         max: 100
-      out_limit:
+      outLimit:
         min: 0
         max: 100
-      slew_neg: 0
-      slew_pos: 0
+      slewNeg: 0
+      slewPos: 0
   temp1:
     type: temp
     inputs:
@@ -26,18 +26,18 @@
     set-point: 30.0
     pid:
       sampleperiod: 1
-      p_coefficient: 94.0
-      i_coefficient: 2.0
-      ff_off_coefficient: 0.0
-      ff_gain_coefficient: 0.0
-      i_limit:
+      proportionalCoeff: 94.0
+      integralCoeff: 2.0
+      feedFwdOffOffsetCoeff: 0.0
+      feedFwdGainCoeff: 0.0
+      integralLimit:
         min: 3000
         max: 10000
-      out_limit:
+      outLimit:
         min: 3000
         max: 10000
-      slew_neg: 0
-      slew_pos: 0
+      slewNeg: 0
+      slewPos: 0
   sluggish0:
     type: margin
     inputs:
@@ -45,15 +45,15 @@
     set-point: 50
     pid:
       sampleperiod: 1
-      p_coefficient: 94.0
-      i_coefficient: 2.0
-      ff_off_coefficient: 0.0
-      ff_gain_coefficient: 0.0
-      i_limit:
+      proportionalCoeff: 94.0
+      integralCoeff: 2.0
+      feedFwdOffOffsetCoeff: 0.0
+      feedFwdGainCoeff: 0.0
+      integralLimit:
         min: 3000
         max: 10000
-      out_limit:
+      outLimit:
         min: 3000
         max: 10000
-      slew_neg: 0
-      slew_pos: 0
+      slewNeg: 0
+      slewPos: 0

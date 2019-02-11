@@ -107,16 +107,16 @@ The internal thermometers specified will be read via sysfs.
       writePath: "/sys/class/hwmon/hwmon0/pwm0"
     pidinfo:
       samplerate: 0.1 // sample time in seconds
-      p_coeff: 0.01 // coefficient for proportional
-      i_coeff: 0.001 // coefficient for integral
+      proportionalCoeff: 0.01 // coefficient for proportional
+      integralCoeff: 0.001 // coefficient for integral
       integral_limit:
         min: 0
         max: 100
       output_limit:
         min: 0
         max: 100
-      slew_negative: 0
-      slew_positive: 0
+      slewNegative: 0
+      slewPositive: 0
   {PIDID}:
     type: "margin"
     ipmi:
@@ -126,16 +126,16 @@ The internal thermometers specified will be read via sysfs.
       writePath: ""
     pidinfo:
       samplerate: 1 // sample time in seconds
-      p_coeff: 94.0
-      i_coeff: 2.0
+      proportionalCoeff: 94.0
+      integralCoeff: 2.0
       integral_limit:
         min: 3000
         max: 10000
       output_limit:
         min: 3000
         max: 10000
-      slew_negative: 0
-      slew_positive: 0
+      slewNegative: 0
+      slewPositive: 0
 ```
 
 ### Chassis Delta
