@@ -8,17 +8,17 @@
     set-point: 90.0
     pid: /* The PID calculation configuration. */
       sampleperiod: 0.1        /* The input sample period. (double) */
-      p_coefficient: 0.01      /* The proportional coefficient. (double) */
-      i_coefficient: 0.001     /* The integral coefficient. (double) */
+      proportionalCoeff: 0.01      /* The proportional coefficient. (double) */
+      integralCoeff: 0.001     /* The integral coefficient. (double) */
       /* The feed-forward offset coefficient. (double) */
-      ff_off_coefficient: 0.0
+      feedFwdOffOffsetCoeff: 0.0
       /* The feed-forward gain coefficient. (double) */
-      ff_gain_coefficient: 0.0
-      i_limit:   /* The integral limit clamp, min, max (double) */
+      feedFwdGainCoeff: 0.0
+      integralCoeff:   /* The integral limit clamp, min, max (double) */
         min: 0
         max: 100
-      out_limit: /* the PID output clamp, min, max (double) */
+      outLimit: /* the PID output clamp, min, max (double) */
         min: 0
         max: 100
-      slew_neg: -100 /* The slew negative value. (double) */
-      slew_pos: 0 /* The slew positive value. (double) */
+      slewNeg: -100 /* The slew negative value. (double) */
+      slewPos: 0 /* The slew positive value. (double) */

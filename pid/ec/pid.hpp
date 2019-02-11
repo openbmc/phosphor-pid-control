@@ -40,15 +40,15 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint);
 /* Condensed version for use by the configuration. */
 struct pidinfo
 {
-    double ts;            // sample time in seconds
-    double p_c;           // coeff for P
-    double i_c;           // coeff for I
-    double ff_off;        // offset coeff for feed-forward term
-    double ff_gain;       // gain for feed-forward term
-    ec::limits_t i_lim;   // clamp of integral
-    ec::limits_t out_lim; // clamp of output
-    double slew_neg;
-    double slew_pos;
+    double ts;                // sample time in seconds
+    double proportionalCoeff; // coeff for P
+    double integralCoeff;     // coeff for I
+    double ff_off;            // offset coeff for feed-forward term
+    double ff_gain;           // gain for feed-forward term
+    ec::limits_t i_lim;       // clamp of integral
+    ec::limits_t out_lim;     // clamp of output
+    double slewNeg;
+    double slewPos;
     double positiveHysteresis;
     double negativeHysteresis;
 };
