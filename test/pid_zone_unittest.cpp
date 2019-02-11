@@ -146,7 +146,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
 TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
 {
     // Tests adding several RPM setpoints, however, they're all lower than the
-    // configured minimal thermal set-point RPM value.
+    // configured minimal thermal setpoint RPM value.
 
     std::vector<double> values = {100, 200, 300, 400, 500};
     for (auto v : values)
