@@ -78,6 +78,7 @@ libswampd_la_SOURCES = \
 	pid/util.cpp \
 	pid/pidthread.cpp \
 	threads/busthread.cpp \
+	build/buildjson.cpp \
 	experiments/drive.cpp \
 	$(BUILT_SOURCES)
 
