@@ -15,7 +15,7 @@ TEST(ConfigurationVerificationTest, VerifyNoZoneKey)
 {
 }
 
-TEST(ConfigurationVerificationTest, VerifyNoSensor
+TEST(ConfigurationVerificationTest, VerifyNoSensor)
 {
 }
 

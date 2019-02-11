@@ -16,14 +16,17 @@
 
 #include "config.h"
 
+#include "build/buildjson.hpp"
 #include "conf.hpp"
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/builderconfig.hpp"
+#include "pid/buildjson.hpp"
 #include "pid/pidthread.hpp"
 #include "pid/zone.hpp"
 #include "sensors/builder.hpp"
 #include "sensors/builderconfig.hpp"
+#include "sensors/buildjson.hpp"
 #include "sensors/manager.hpp"
 #include "threads/busthread.hpp"
 #include "util.hpp"
@@ -37,6 +40,7 @@
 #include <sdbusplus/bus.hpp>
 #include <thread>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #if CONFIGURE_DBUS
@@ -104,8 +108,14 @@ int main(int argc, char* argv[])
     {
         try
         {
-            mgmr = buildSensorsFromConfig(configPath);
-            zones = buildZonesFromConfig(configPath, mgmr, modeControlBus);
+            auto jsonData = parseValidateJson(configPath);
+            mgmr = buildSensors(buildSensorsFromJson(jsonData));
+
+            std::map<int64_t, PIDConf> pidConfig;
+            std::map<int64_t, struct ZoneConfig> zoneConfig;
+            std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(jsonData);
+
+            zones = buildZones(pidConfig, zoneConfig, mgmr, modeControlBus);
         }
         catch (const std::exception& e)
         {

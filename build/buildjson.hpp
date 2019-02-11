@@ -3,6 +3,8 @@
 #include <nlohmann/json.hpp>
 #include <string>
 
+using json = nlohmann::json;
+
 /**
  * Given a json configuration file, parse and validate it.
  *
