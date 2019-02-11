@@ -18,19 +18,19 @@ typedef struct
 {
     bool initialized; // has pid been initialized
 
-    double ts;          // sample time in seconds
-    double integral;    // intergal of error
-    double last_output; // value of last output
+    double ts;         // sample time in seconds
+    double integral;   // intergal of error
+    double lastOutput; // value of last output
 
-    double p_c;     // coeff for P
-    double i_c;     // coeff for I
-    double ff_off;  // offset coeff for feed-forward term
-    double ff_gain; // gain for feed-forward term
+    double proportionalCoeff; // coeff for P
+    double integralCoeff;     // coeff for I
+    double feedFwdOffset;     // offset coeff for feed-forward term
+    double feedFwdGain;       // gain for feed-forward term
 
-    limits_t i_lim;   // clamp of integral
-    limits_t out_lim; // clamp of output
-    double slew_neg;
-    double slew_pos;
+    limits_t integralLimit; // clamp of integral
+    limits_t outLim;        // clamp of output
+    double slewNeg;
+    double slewPos;
     double positiveHysteresis;
     double negativeHysteresis;
 } pid_info_t;

@@ -54,21 +54,22 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 
     // Pid
     error = setpoint - input;
-    p_term = pidinfoptr->p_c * error;
+    p_term = pidinfoptr->proportionalCoeff * error;
 
     // pId
-    if (0.0f != pidinfoptr->i_c)
+    if (0.0f != pidinfoptr->integralCoeff)
     {
         i_term = pidinfoptr->integral;
-        i_term += error * pidinfoptr->i_c * pidinfoptr->ts;
-        i_term = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
+        i_term += error * pidinfoptr->integralCoeff * pidinfoptr->ts;
+        i_term = clamp(i_term, pidinfoptr->integralLimit.min,
+                       pidinfoptr->integralLimit.max);
     }
 
     // FF
-    ff_term = (setpoint + pidinfoptr->ff_off) * pidinfoptr->ff_gain;
+    ff_term = (setpoint + pidinfoptr->feedFwdOffset) * pidinfoptr->feedFwdGain;
 
     output = p_term + i_term + ff_term;
-    output = clamp(output, pidinfoptr->out_lim.min, pidinfoptr->out_lim.max);
+    output = clamp(output, pidinfoptr->outLim.min, pidinfoptr->outLim.max);
 
     // slew rate
     // TODO(aarena) - Simplify logic as Andy suggested by creating dynamic
@@ -76,28 +77,28 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
     // to those instead of effectively clamping twice.
     if (pidinfoptr->initialized)
     {
-        if (pidinfoptr->slew_neg != 0.0f)
+        if (pidinfoptr->slewNeg != 0.0f)
         {
             // Don't decrease too fast
             double min_out =
-                pidinfoptr->last_output + pidinfoptr->slew_neg * pidinfoptr->ts;
+                pidinfoptr->lastOutput + pidinfoptr->slewNeg * pidinfoptr->ts;
             if (output < min_out)
             {
                 output = min_out;
             }
         }
-        if (pidinfoptr->slew_pos != 0.0f)
+        if (pidinfoptr->slewPos != 0.0f)
         {
             // Don't increase too fast
             double max_out =
-                pidinfoptr->last_output + pidinfoptr->slew_pos * pidinfoptr->ts;
+                pidinfoptr->lastOutput + pidinfoptr->slewPos * pidinfoptr->ts;
             if (output > max_out)
             {
                 output = max_out;
             }
         }
 
-        if (pidinfoptr->slew_neg != 0.0f || pidinfoptr->slew_pos != 0.0f)
+        if (pidinfoptr->slewNeg != 0.0f || pidinfoptr->slewPos != 0.0f)
         {
             // Back calculate integral term for the cases where we limited the
             // output
@@ -107,10 +108,11 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 
     // Clamp again because having limited the output may result in a
     // larger integral term
-    i_term = clamp(i_term, pidinfoptr->i_lim.min, pidinfoptr->i_lim.max);
+    i_term = clamp(i_term, pidinfoptr->integralLimit.min,
+                   pidinfoptr->integralLimit.max);
     pidinfoptr->integral = i_term;
     pidinfoptr->initialized = true;
-    pidinfoptr->last_output = output;
+    pidinfoptr->lastOutput = output;
 
     return output;
 }

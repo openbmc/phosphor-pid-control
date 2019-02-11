@@ -24,32 +24,33 @@ void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 
     info->ts = initial.ts;
-    info->p_c = initial.p_c;
-    info->i_c = initial.i_c;
-    info->ff_off = initial.ff_off;
-    info->ff_gain = initial.ff_gain;
-    info->i_lim.min = initial.i_lim.min;
-    info->i_lim.max = initial.i_lim.max;
-    info->out_lim.min = initial.out_lim.min;
-    info->out_lim.max = initial.out_lim.max;
-    info->slew_neg = initial.slew_neg;
-    info->slew_pos = initial.slew_pos;
+    info->proportionalCoeff = initial.p_c;
+    info->integralCoeff = initial.i_c;
+    info->feedFwdOffset = initial.ff_off;
+    info->feedFwdGain = initial.ff_gain;
+    info->integralLimit.min = initial.i_lim.min;
+    info->integralLimit.max = initial.i_lim.max;
+    info->outLim.min = initial.out_lim.min;
+    info->outLim.max = initial.out_lim.max;
+    info->slewNeg = initial.slew_neg;
+    info->slewPos = initial.slew_pos;
     info->negativeHysteresis = initial.negativeHysteresis;
     info->positiveHysteresis = initial.positiveHysteresis;
 }
 
 void dumpPIDStruct(ec::pid_info_t* info)
 {
-    std::cerr << " ts: " << info->ts << " p_c: " << info->p_c
-              << " i_c: " << info->i_c << " ff_off: " << info->ff_off
-              << " ff_gain: " << info->ff_gain
-              << " i_lim.min: " << info->i_lim.min
-              << " i_lim.max: " << info->i_lim.max
-              << " out_lim.min: " << info->out_lim.min
-              << " out_lim.max: " << info->out_lim.max
-              << " slew_neg: " << info->slew_neg
-              << " slew_pos: " << info->slew_pos
-              << " last_output: " << info->last_output
+    std::cerr << " ts: " << info->ts << " p_c: " << info->proportionalCoeff
+              << " i_c: " << info->integralCoeff
+              << " ff_off: " << info->feedFwdOffset
+              << " ff_gain: " << info->feedFwdGain
+              << " i_lim.min: " << info->integralLimit.min
+              << " i_lim.max: " << info->integralLimit.max
+              << " out_lim.min: " << info->outLim.min
+              << " out_lim.max: " << info->outLim.max
+              << " slew_neg: " << info->slewNeg
+              << " slew_pos: " << info->slewPos
+              << " last_output: " << info->lastOutput
               << " integral: " << info->integral << std::endl;
 
     return;
