@@ -45,12 +45,6 @@ PKG_CHECK_MODULES(
     [],
     [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])]
 )
-PKG_CHECK_MODULES(
-    [LIBCONFIGXX],
-    [libconfig++ >= 1.5],
-    [],
-    [AC_MSG_ERROR([libconfig++ 1.5 or newer not found.])]
-)
 AC_CHECK_HEADER(
     [host-ipmid],
     [AC_MSG_ERROR(["phosphor-host-ipmid required and not found."])]

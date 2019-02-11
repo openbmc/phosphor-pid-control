@@ -39,7 +39,6 @@ noinst_LTLIBRARIES = libswampd.la
 libswampd_la_LDFLAGS = -static
 libswampd_la_LIBADD = \
 	-lstdc++fs \
-	-lconfig++ \
 	$(SDBUSPLUS_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
 	$(PHOSPHOR_LOGGING_LIBS)
@@ -62,7 +61,6 @@ libswampd_la_SOURCES = \
 	sensors/pluggable.cpp \
 	sensors/host.cpp \
 	sensors/builder.cpp \
-	sensors/builderconfig.cpp \
 	sensors/buildjson.cpp \
 	sensors/manager.cpp \
 	pid/ec/pid.cpp \
@@ -72,7 +70,6 @@ libswampd_la_SOURCES = \
 	pid/pidcontroller.cpp \
 	pid/stepwisecontroller.cpp \
 	pid/builder.cpp \
-	pid/builderconfig.cpp \
 	pid/buildjson.cpp \
 	pid/zone.cpp \
 	pid/util.cpp \

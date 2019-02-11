@@ -29,7 +29,6 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
-#include <libconfig.h++>
 #include <memory>
 
 using tstamp = std::chrono::high_resolution_clock::time_point;
