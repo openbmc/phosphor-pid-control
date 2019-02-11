@@ -113,16 +113,21 @@ void debugPrint(void)
             std::cout << "\t\t\t}\n";
             std::cout << "\t\t\t" << pidconf.second.setpoint << ",\n";
             std::cout << "\t\t\t{" << pidconf.second.pidInfo.ts << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.p_c << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.i_c << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.ff_off << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.ff_gain << ",\n";
-            std::cout << "\t\t\t{" << pidconf.second.pidInfo.i_lim.min << ","
-                      << pidconf.second.pidInfo.i_lim.max << "},\n";
-            std::cout << "\t\t\t{" << pidconf.second.pidInfo.out_lim.min << ","
-                      << pidconf.second.pidInfo.out_lim.max << "},\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.slew_neg << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.slew_pos << ",\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.proportionalCoeff
+                      << ",\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.integralCoeff
+                      << ",\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.feedFwdOffset
+                      << ",\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.feedFwdGain
+                      << ",\n";
+            std::cout << "\t\t\t{" << pidconf.second.pidInfo.integralLimit.min
+                      << "," << pidconf.second.pidInfo.integralLimit.max
+                      << "},\n";
+            std::cout << "\t\t\t{" << pidconf.second.pidInfo.outLim.min << ","
+                      << pidconf.second.pidInfo.outLim.max << "},\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.slewNeg << ",\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.slewPos << ",\n";
             std::cout << "\t\t\t}\n\t\t}\n";
         }
         std::cout << "\t},\n";
@@ -402,25 +407,25 @@ void init(sdbusplus::bus::bus& bus)
                                                base.at("SetPoint"));
                 }
                 info.pidInfo.ts = 1.0; // currently unused
-                info.pidInfo.p_c = std::visit(VariantToDoubleVisitor(),
-                                              base.at("PCoefficient"));
-                info.pidInfo.i_c = std::visit(VariantToDoubleVisitor(),
-                                              base.at("ICoefficient"));
-                info.pidInfo.ff_off = std::visit(VariantToDoubleVisitor(),
-                                                 base.at("FFOffCoefficient"));
-                info.pidInfo.ff_gain = std::visit(VariantToDoubleVisitor(),
-                                                  base.at("FFGainCoefficient"));
-                info.pidInfo.i_lim.max =
+                info.pidInfo.proportionalCoeff = std::visit(
+                    VariantToDoubleVisitor(), base.at("PCoefficient"));
+                info.pidInfo.integralCoeff = std::visit(
+                    VariantToDoubleVisitor(), base.at("ICoefficient"));
+                info.pidInfo.feedFwdOffset = std::visit(
+                    VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
+                info.pidInfo.feedFwdGain = std::visit(
+                    VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
+                info.pidInfo.integralLimit.max =
                     std::visit(VariantToDoubleVisitor(), base.at("ILimitMax"));
-                info.pidInfo.i_lim.min =
+                info.pidInfo.integralLimit.min =
                     std::visit(VariantToDoubleVisitor(), base.at("ILimitMin"));
-                info.pidInfo.out_lim.max = std::visit(VariantToDoubleVisitor(),
-                                                      base.at("OutLimitMax"));
-                info.pidInfo.out_lim.min = std::visit(VariantToDoubleVisitor(),
-                                                      base.at("OutLimitMin"));
-                info.pidInfo.slew_neg =
+                info.pidInfo.outLim.max = std::visit(VariantToDoubleVisitor(),
+                                                     base.at("OutLimitMax"));
+                info.pidInfo.outLim.min = std::visit(VariantToDoubleVisitor(),
+                                                     base.at("OutLimitMin"));
+                info.pidInfo.slewNeg =
                     std::visit(VariantToDoubleVisitor(), base.at("SlewNeg"));
-                info.pidInfo.slew_pos =
+                info.pidInfo.slewPos =
                     std::visit(VariantToDoubleVisitor(), base.at("SlewPos"));
                 double negativeHysteresis = 0;
                 double positiveHysteresis = 0;
