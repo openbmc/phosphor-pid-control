@@ -12,27 +12,27 @@
 class SysFsWritePercent : public WriteInterface
 {
   public:
-    SysFsWritePercent(const std::string& writepath, int64_t min, int64_t max) :
-        WriteInterface(min, max), _writepath(FixupPath(writepath))
+    SysFsWritePercent(const std::string& writePath, int64_t min, int64_t max) :
+        WriteInterface(min, max), _writePath(FixupPath(writePath))
     {
     }
 
     void write(double value) override;
 
   private:
-    std::string _writepath;
+    std::string _writePath;
 };
 
 class SysFsWrite : public WriteInterface
 {
   public:
-    SysFsWrite(const std::string& writepath, int64_t min, int64_t max) :
-        WriteInterface(min, max), _writepath(FixupPath(writepath))
+    SysFsWrite(const std::string& writePath, int64_t min, int64_t max) :
+        WriteInterface(min, max), _writePath(FixupPath(writePath))
     {
     }
 
     void write(double value) override;
 
   private:
-    std::string _writepath;
+    std::string _writePath;
 };

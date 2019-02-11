@@ -29,7 +29,7 @@ void SysFsWritePercent::write(double value)
     double ovalue = offset + minimum;
 
     std::ofstream ofs;
-    ofs.open(_writepath);
+    ofs.open(_writePath);
     ofs << static_cast<int64_t>(ovalue);
     ofs.close();
 
@@ -39,7 +39,7 @@ void SysFsWritePercent::write(double value)
 void SysFsWrite::write(double value)
 {
     std::ofstream ofs;
-    ofs.open(_writepath);
+    ofs.open(_writePath);
     ofs << static_cast<int64_t>(value);
     ofs.close();
 
