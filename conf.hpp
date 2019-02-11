@@ -46,10 +46,10 @@ struct ControllerInfo
 struct ZoneConfig
 {
     /* The minimum RPM value we would ever want. */
-    double minthermalrpm;
+    double minThermalRpm;
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */
-    double failsafepercent;
+    double failsafePercent;
 };
 
 using PIDConf = std::map<std::string, struct ControllerInfo>;

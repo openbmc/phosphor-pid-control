@@ -11,8 +11,8 @@ std::map<int64_t, struct ZoneConfig> zoneDetailsConfig = {
    % if zone:
    <%
            zConf = ZoneDict[zone]
-           min = zConf["minthermalrpm"]
-           percent = zConf["failsafepercent"]
+           min = zConf["minThermalRpm"]
+           percent = zConf["failsafePercent"]
    %>
     {${zone},
         {${min}, ${percent}},

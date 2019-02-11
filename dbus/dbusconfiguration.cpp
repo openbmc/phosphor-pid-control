@@ -92,8 +92,8 @@ void debugPrint(void)
     for (const auto& zone : zoneDetailsConfig)
     {
         std::cout << "\t{" << zone.first << ",\n";
-        std::cout << "\t\t{" << zone.second.minthermalrpm << ", ";
-        std::cout << zone.second.failsafepercent << "}\n\t},\n";
+        std::cout << "\t\t{" << zone.second.minThermalRpm << ", ";
+        std::cout << zone.second.failsafePercent << "}\n\t},\n";
     }
     std::cout << "}\n\n";
     std::cout << "ZoneConfig\n";
@@ -294,9 +294,9 @@ void init(sdbusplus::bus::bus& bus)
             size_t index = getZoneIndex(name, foundZones);
 
             auto& details = zoneDetailsConfig[index];
-            details.minthermalrpm =
+            details.minThermalRpm =
                 std::visit(VariantToDoubleVisitor(), zone.at("MinThermalRpm"));
-            details.failsafepercent = std::visit(VariantToDoubleVisitor(),
+            details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);

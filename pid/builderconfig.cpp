@@ -76,9 +76,9 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
 
             zoneSettings.lookupValue("id", id);
 
-            thisZoneConfig.minthermalrpm = zoneSettings.lookup("minthermalrpm");
-            thisZoneConfig.failsafepercent =
-                zoneSettings.lookup("failsafepercent");
+            thisZoneConfig.minThermalRpm = zoneSettings.lookup("minThermalRpm");
+            thisZoneConfig.failsafePercent =
+                zoneSettings.lookup("failsafePercent");
 
             const Setting& pids = zoneSettings["pids"];
             int pidCount = pids.getLength();
