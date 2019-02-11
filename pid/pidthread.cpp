@@ -33,7 +33,7 @@ static void processThermals(PIDZone* zone)
     zone->clearRPMSetPoints();
     // Run the margin PIDs.
     zone->processThermals();
-    // Get the maximum RPM set-point.
+    // Get the maximum RPM setpoint.
     zone->determineMaxRPMRequest();
 }
 

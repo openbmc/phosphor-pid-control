@@ -9,7 +9,7 @@
 
 /*
  * A ThermalController is a PID controller that reads a number of sensors and
- * provides the set-points for the fans.
+ * provides the setpoints for the fans.
  */
 
 enum class ThermalType

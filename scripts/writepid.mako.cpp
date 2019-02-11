@@ -20,13 +20,13 @@ std::map<int64_t, PIDConf> zoneConfig = {
                    % endfor
                  },
                  <%
-                      # If the PID type is a fan, set-point field is unused,
+                      # If the PID type is a fan, setpoint field is unused,
                       # so just use a default of 0.  If the PID is not a type
-                      # of fan, require the set-point field.
+                      # of fan, require the setpoint field.
                       if 'fan' == details['type']:
                           setpoint = 0
                       else:
-                          setpoint = details['set-point']
+                          setpoint = details['setpoint']
 
                       neg_hysteresis = 0
                       pos_hysteresis = 0

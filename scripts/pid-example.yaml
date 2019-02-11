@@ -4,7 +4,7 @@
     inputs:
       fan2
       fan6
-    set-point: 90.0
+    setpoint: 90.0
     pid:
       samplePeriod: 0.1
       proportionalCoeff: 0.01
@@ -23,7 +23,7 @@
     type: temp
     inputs:
       temp1
-    set-point: 30.0
+    setpoint: 30.0
     pid:
       samplePeriod: 1
       proportionalCoeff: 94.0
@@ -42,7 +42,7 @@
     type: margin
     inputs:
       sluggish0
-    set-point: 50
+    setpoint: 50
     pid:
       samplePeriod: 1
       proportionalCoeff: 94.0

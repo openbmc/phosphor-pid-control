@@ -4,8 +4,8 @@
     inputs:   /* Sensor names that are inputs for the PID */
       fan2
       fan6
-    /* For temp/margin PIDs this is the set-point, ignored otherwise (double) */
-    set-point: 90.0
+    /* For temp/margin PIDs this is the setpoint, ignored otherwise (double) */
+    setpoint: 90.0
     pid: /* The PID calculation configuration. */
       samplePeriod: 0.1        /* The input sample period. (double) */
       proportionalCoeff: 0.01      /* The proportional coefficient. (double) */

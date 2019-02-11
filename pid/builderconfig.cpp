@@ -99,9 +99,9 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                  */
                 name = pid.lookup("name").c_str();
                 info.type = pid.lookup("type").c_str();
-                /* set-point is only required to be set for thermal. */
+                /* setpoint is only required to be set for thermal. */
                 /* TODO(venture): Verify this works optionally here. */
-                info.setpoint = pid.lookup("set-point");
+                info.setpoint = pid.lookup("setpoint");
                 info.pidInfo.ts = pid.lookup("pid.samplePeriod");
                 info.pidInfo.proportionalCoeff =
                     pid.lookup("pid.proportionalCoeff");

@@ -340,7 +340,7 @@ fleeting0+---->+-------+    +-------+     Thermal PID sampled
 fleeting1+---->+-------+    +---+---+
                                 |
                                 |
-                                | RPM set-point
+                                | RPM setpoint
                     Current RPM v
                              +--+-----+
   The Fan PID        fan0+--->        |  New PWM  +-->fan0

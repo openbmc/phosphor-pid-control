@@ -118,18 +118,18 @@ void PIDZone::determineMaxRPMRequest(void)
     }
 
     /*
-     * If the maximum RPM set-point output is below the minimum RPM
-     * set-point, set it to the minimum.
+     * If the maximum RPM setpoint output is below the minimum RPM
+     * setpoint, set it to the minimum.
      */
     max = std::max(getMinThermalRPMSetpoint(), max);
 
 #ifdef __TUNING_LOGGING__
     /*
-     * We received no set-points from thermal sensors.
+     * We received no setpoints from thermal sensors.
      * This is a case experienced during tuning where they only specify
      * fan sensors and one large fan PID for all the fans.
      */
-    static constexpr auto setpointpath = "/etc/thermal.d/set-point";
+    static constexpr auto setpointpath = "/etc/thermal.d/setpoint";
     try
     {
         std::ifstream ifs;
@@ -139,7 +139,7 @@ void PIDZone::determineMaxRPMRequest(void)
             int value;
             ifs >> value;
 
-            /* expecting RPM set-point, not pwm% */
+            /* expecting RPM setpoint, not pwm% */
             max = static_cast<double>(value);
         }
     }
