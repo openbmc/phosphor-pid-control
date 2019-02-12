@@ -54,6 +54,11 @@ AC_CHECK_HEADER(
     [],
     [AC_MSG_ERROR([Could not find experimental/filesystem...libstdc++fs development package required])]
 )
+AC_CHECK_HEADER(
+    nlohmann/json.hpp,
+    [],
+    [AC_MSG_ERROR([Could not find nlohmann/json.hpp])]
+)
 AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
 
 # Checks for library functions.
