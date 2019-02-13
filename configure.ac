@@ -27,24 +27,9 @@ PKG_CHECK_MODULES(
     [],
     [AC_MSG_ERROR(["systemd required and not found"])]
 )
-PKG_CHECK_MODULES(
-    [SDBUSPLUS],
-    [sdbusplus],
-    [],
-    [AC_MSG_ERROR([The openbmc/sdbusplus package is required])]
-)
-PKG_CHECK_MODULES(
-    [PHOSPHOR_LOGGING],
-    [phosphor-logging],
-    [],
-    [AC_MSG_ERROR([The openbmc/phosphor-logging package is required])]
-)
-PKG_CHECK_MODULES(
-    [PHOSPHOR_DBUS_INTERFACES],
-    [phosphor-dbus-interfaces],
-    [],
-    [AC_MSG_ERROR(["phosphor-dbus-interfaces required and not found."])]
-)
+PKG_CHECK_MODULES([SDBUSPLUS], [sdbusplus])
+PKG_CHECK_MODULES([PHOSPHOR_LOGGING], [phosphor-logging])
+PKG_CHECK_MODULES([PHOSPHOR_DBUS_INTERFACES], [phosphor-dbus-interfaces])
 PKG_CHECK_MODULES(
     [LIBIPMID],
     [libipmid],
