@@ -1,4 +1,0 @@
-0x01: /* The zone ID */
-  minThermalRpm: 3000.0 /* The minimum thermal RPM value. (double) */
-  /* The percent to use when the zone is in fail-safe mode. (double) */
-  failsafePercent: 90.0
