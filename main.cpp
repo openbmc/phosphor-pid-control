@@ -89,17 +89,15 @@ int main(int argc, char* argv[])
     }
 
     auto modeControlBus = sdbusplus::bus::new_system();
+    static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
+    // Create a manager for the ModeBus because we own it.
+    sdbusplus::server::manager::manager(modeControlBus, modeRoot);
+
 #if CONFIGURE_DBUS
     {
         dbus_configuration::init(modeControlBus);
     }
 #endif
-    SensorManager mgmr;
-    std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones;
-
-    // Create a manager for the ModeBus because we own it.
-    static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
-    sdbusplus::server::manager::manager(modeControlBus, modeRoot);
 
     /*
      * When building the sensors, if any of the dbus passive ones aren't on the
@@ -110,13 +108,9 @@ int main(int argc, char* argv[])
         try
         {
             auto jsonData = parseValidateJson(configPath);
-            mgmr = buildSensors(buildSensorsFromJson(jsonData));
-
-            std::map<int64_t, PIDConf> pidConfig;
-            std::map<int64_t, struct ZoneConfig> zoneConfig;
-            std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(jsonData);
-
-            zones = buildZones(pidConfig, zoneConfig, mgmr, modeControlBus);
+            sensorConfig = buildSensorsFromJson(jsonData);
+            std::tie(zoneConfig, zoneDetailsConfig) =
+                buildPIDsFromJson(jsonData);
         }
         catch (const std::exception& e)
         {
@@ -124,11 +118,10 @@ int main(int argc, char* argv[])
             exit(EXIT_FAILURE); /* fatal error. */
         }
     }
-    else
-    {
-        mgmr = buildSensors(sensorConfig);
-        zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
-    }
+
+    SensorManager mgmr = buildSensors(sensorConfig);
+    std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones =
+        buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
 
     if (0 == zones.size())
     {
