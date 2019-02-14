@@ -52,6 +52,9 @@ extern std::map<int64_t, PIDConf> zoneConfig;
 /* The YAML converted Zone configuration. */
 extern std::map<int64_t, struct ZoneConfig> zoneDetailsConfig;
 
+/** the swampd daemon will check for the existence of this file. */
+constexpr auto jsonConfigurationPath = "/usr/share/swampd/config.json";
+
 int main(int argc, char* argv[])
 {
     int rc = 0;
