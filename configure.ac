@@ -12,10 +12,6 @@ AM_PROG_AR
 AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
-# Python
-AM_PATH_PYTHON([2.7], [AC_SUBST([PYTHON], [echo "$PYTHON"])],
-[AC_MSG_ERROR([Could not find python-2.7 installed...python-2.7 is required])])
-
 # Checks for typedefs, structures, and compiler characteristics.
 AX_CXX_COMPILE_STDCXX_17([noext])
 AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
@@ -92,18 +88,6 @@ AS_IF([test "x$enable_oe_sdk" == "xyes"],
     ]
     AC_SUBST([OESDK_TESTCASE_FLAGS], [$testcase_flags])
 )
-
-AS_IF([test "x$SENSOR_YAML_GEN" == "x"], [SENSOR_YAML_GEN="sensor-example.yaml"])
-SENSORGEN="$PYTHON ${srcdir}/scripts/sensor_gen.py -i $SENSOR_YAML_GEN"
-AC_SUBST(SENSORGEN)
-
-AS_IF([test "x$PID_YAML_GEN" == "x"], [PID_YAML_GEN="pid-example.yaml"])
-PIDGEN="$PYTHON ${srcdir}/scripts/pid_gen.py -i $PID_YAML_GEN"
-AC_SUBST(PIDGEN)
-
-AS_IF([test "x$ZONE_YAML_GEN" == "x"], [ZONE_YAML_GEN="zone-example.yaml"])
-ZONEGEN="$PYTHON ${srcdir}/scripts/zone_gen.py -i $ZONE_YAML_GEN"
-AC_SUBST(ZONEGEN)
 
 AC_ARG_ENABLE([configure-dbus],
     AS_HELP_STRING(
