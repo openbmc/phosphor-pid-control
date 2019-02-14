@@ -46,11 +46,11 @@
 #endif
 
 /* The YAML converted sensor list. */
-extern std::map<std::string, struct SensorConfig> sensorConfig;
+std::map<std::string, struct SensorConfig> sensorConfig = {};
 /* The YAML converted PID list. */
-extern std::map<int64_t, PIDConf> zoneConfig;
+std::map<int64_t, PIDConf> zoneConfig = {};
 /* The YAML converted Zone configuration. */
-extern std::map<int64_t, struct ZoneConfig> zoneDetailsConfig;
+std::map<int64_t, struct ZoneConfig> zoneDetailsConfig = {};
 
 /** the swampd daemon will check for the existence of this file. */
 constexpr auto jsonConfigurationPath = "/usr/share/swampd/config.json";
@@ -97,8 +97,7 @@ int main(int argc, char* argv[])
     {
         dbus_configuration::init(modeControlBus);
     }
-#endif
-
+#else
     /*
      * When building the sensors, if any of the dbus passive ones aren't on the
      * bus, it'll fail immediately.
@@ -118,6 +117,12 @@ int main(int argc, char* argv[])
             exit(EXIT_FAILURE); /* fatal error. */
         }
     }
+    else
+    {
+        std::cerr << "No configuration file provided, service must use -c \"path/to/json\"\n";
+        exit(EXIT_FAILURE); /* fatal error. */
+    }
+#endif
 
     SensorManager mgmr = buildSensors(sensorConfig);
     std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones =

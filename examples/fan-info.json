@@ -71,7 +71,7 @@
                     "inputs": ["fan1", "fan5"],
                     "setpoint": 90.0,
                     "pid": {
-                        "sampleperiod": 0.1,
+                        "samplePeriod": 0.1,
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffOffsetCoeff": 0.0,
@@ -90,7 +90,7 @@
                     "inputs": ["fan2", "fan6"],
                     "setpoint": 90.0,
                     "pid": {
-                        "sampleperiod": 0.1,
+                        "samplePeriod": 0.1,
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffOffsetCoeff": 0.0,
@@ -109,7 +109,7 @@
                     "inputs": ["fan3", "fan7"],
                     "setpoint": 90.0,
                     "pid": {
-                        "sampleperiod": 0.1,
+                        "samplePeriod": 0.1,
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffOffsetCoeff": 0.0,
@@ -128,7 +128,7 @@
                     "inputs": ["fan4", "fan8"],
                     "setpoint": 90.0,
                     "pid": {
-                        "sampleperiod": 0.1,
+                        "samplePeriod": 0.1,
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffOffsetCoeff": 0.0,
@@ -147,7 +147,7 @@
                     "inputs": ["fleeting0"],
                     "setpoint": 10,
                     "pid": {
-                        "sampleperiod": 1,
+                        "samplePeriod": 1,
                         "proportionalCoeff": 750.0,
                         "integralCoeff": 16.0,
                         "feedFwdOffOffsetCoeff": 0.0,

@@ -2,20 +2,6 @@ AM_DEFAULT_SOURCE_EXT = .cpp
 
 sbin_PROGRAMS = swampd setsensor
 
-if !CONFIGURE_DBUS
-BUILT_SOURCES = sensorlist-gen.cpp pidlist-gen.cpp zoneinfo-gen.cpp
-endif
-CLEANFILES = $(BUILT_SOURCES)
-
-sensorlist-gen.cpp:
-	$(AM_V_GEN)@SENSORGEN@ -o $(top_builddir) generate-cpp
-
-pidlist-gen.cpp:
-	$(AM_V_GEN)@PIDGEN@ -o $(top_builddir) generate-cpp
-
-zoneinfo-gen.cpp:
-	$(AM_V_GEN)@ZONEGEN@ -o $(top_builddir) generate-cpp
-
 setsensor_SOURCES = setsensor.cpp
 setsensor_LDADD = \
 	$(SDBUSPLUS_LIBS) \
@@ -76,8 +62,7 @@ libswampd_la_SOURCES = \
 	pid/pidthread.cpp \
 	threads/busthread.cpp \
 	build/buildjson.cpp \
-	experiments/drive.cpp \
-	$(BUILT_SOURCES)
+	experiments/drive.cpp
 
 if CONFIGURE_DBUS
 libswampd_la_SOURCES += dbus/dbusconfiguration.cpp
