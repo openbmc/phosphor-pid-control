@@ -32,9 +32,9 @@
 
 static constexpr bool DEBUG = false; // enable to print found configuration
 
-std::map<std::string, struct SensorConfig> sensorConfig = {};
-std::map<int64_t, PIDConf> zoneConfig = {};
-std::map<int64_t, struct ZoneConfig> zoneDetailsConfig = {};
+extern std::map<std::string, struct SensorConfig> sensorConfig;
+extern std::map<int64_t, PIDConf> zoneConfig;
+extern std::map<int64_t, struct ZoneConfig> zoneDetailsConfig;
 
 constexpr const char* pidConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid";
