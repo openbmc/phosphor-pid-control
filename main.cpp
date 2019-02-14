@@ -46,11 +46,11 @@
 #endif
 
 /* The YAML converted sensor list. */
-extern std::map<std::string, struct SensorConfig> sensorConfig;
+std::map<std::string, struct SensorConfig> sensorConfig = {};
 /* The YAML converted PID list. */
-extern std::map<int64_t, PIDConf> zoneConfig;
+std::map<int64_t, PIDConf> zoneConfig = {};
 /* The YAML converted Zone configuration. */
-extern std::map<int64_t, struct ZoneConfig> zoneDetailsConfig;
+std::map<int64_t, struct ZoneConfig> zoneDetailsConfig = {};
 
 /** the swampd daemon will check for the existence of this file. */
 constexpr auto jsonConfigurationPath = "/usr/share/swampd/config.json";
@@ -97,27 +97,26 @@ int main(int argc, char* argv[])
     {
         dbus_configuration::init(modeControlBus);
     }
-#endif
+#else
+    const std::string& path =
+        (configPath.length() > 0) ? configPath : jsonConfigurationPath;
 
     /*
      * When building the sensors, if any of the dbus passive ones aren't on the
      * bus, it'll fail immediately.
      */
-    if (configPath.length() > 0)
+    try
     {
-        try
-        {
-            auto jsonData = parseValidateJson(configPath);
-            sensorConfig = buildSensorsFromJson(jsonData);
-            std::tie(zoneConfig, zoneDetailsConfig) =
-                buildPIDsFromJson(jsonData);
-        }
-        catch (const std::exception& e)
-        {
-            std::cerr << "Failed during building: " << e.what() << "\n";
-            exit(EXIT_FAILURE); /* fatal error. */
-        }
+        auto jsonData = parseValidateJson(path);
+        sensorConfig = buildSensorsFromJson(jsonData);
+        std::tie(zoneConfig, zoneDetailsConfig) = buildPIDsFromJson(jsonData);
     }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Failed during building: " << e.what() << "\n";
+        exit(EXIT_FAILURE); /* fatal error. */
+    }
+#endif
 
     SensorManager mgmr = buildSensors(sensorConfig);
     std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones =
