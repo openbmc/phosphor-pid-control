@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include "config.h"
-
 #include "fancontroller.hpp"
 
 #include "util.hpp"
@@ -128,12 +126,8 @@ void FanController::outputProc(double value)
     }
 #endif
 
-// in the dbus configurations the /100 is added to the configurations
-// directly so this step is not needed
-#if !CONFIGURE_DBUS
     // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.
     percent /= 100;
-#endif
 
     // PidSensorMap for writing.
     for (const auto& it : _inputs)
