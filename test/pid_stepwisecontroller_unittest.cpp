@@ -12,6 +12,8 @@
 using ::testing::Return;
 using ::testing::StrEq;
 
+constexpr size_t scale = 100; // values are 10 for 10%
+
 TEST(StepwiseControllerTest, HysteresisTestPositive)
 {
     // Verifies positive hysteresis works as expected
@@ -38,8 +40,8 @@ TEST(StepwiseControllerTest, HysteresisTestPositive)
         .WillOnce(Return(31.0))  // return 40
         .WillOnce(Return(32.0)); // return 60
 
-    EXPECT_CALL(z, addRPMSetPoint(40.0)).Times(2);
-    EXPECT_CALL(z, addRPMSetPoint(60.0)).Times(1);
+    EXPECT_CALL(z, addRPMSetPoint(40.0 * scale)).Times(2);
+    EXPECT_CALL(z, addRPMSetPoint(60.0 * scale)).Times(1);
 
     for (int ii = 0; ii < 3; ii++)
     {
@@ -73,8 +75,8 @@ TEST(StepwiseControllerTest, HysteresisTestNegative)
         .WillOnce(Return(27.0))  // return 60
         .WillOnce(Return(26.0)); // return 40
 
-    EXPECT_CALL(z, addRPMSetPoint(40.0)).Times(1);
-    EXPECT_CALL(z, addRPMSetPoint(60.0)).Times(2);
+    EXPECT_CALL(z, addRPMSetPoint(40.0 * scale)).Times(1);
+    EXPECT_CALL(z, addRPMSetPoint(60.0 * scale)).Times(2);
 
     for (int ii = 0; ii < 3; ii++)
     {
