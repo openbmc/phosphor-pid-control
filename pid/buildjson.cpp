@@ -38,7 +38,7 @@ void from_json(const json& j, ControllerInfo& c)
     p.at("samplePeriod").get_to(c.pidInfo.ts);
     p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
     p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
-    p.at("feedFwdOffOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
+    p.at("feedFwdOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
     p.at("feedFwdGainCoeff").get_to(c.pidInfo.feedFwdGain);
     p.at("integralLimit_min").get_to(c.pidInfo.integralLimit.min);
     p.at("integralLimit_max").get_to(c.pidInfo.integralLimit.max);

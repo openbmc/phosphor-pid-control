@@ -67,7 +67,7 @@ The PID configuration is a list of PIDs per zone.
           "samplePeriod": 0.1,          /* The input sample period. (double) */
           "proportionalCoeff": 0.0,     /* The proportional coefficient. (double) */
           "integralCoeff": 0.0,         /* The integral coefficient. (double) */
-          "feedFwdOffOffsetCoeff": 0.0, /* The feed-forward offset coefficient. (double) */
+          "feedFwdOffsetCoeff": 0.0, /* The feed-forward offset coefficient. (double) */
           "feedFwdGainCoeff": 0.010,    /* The feed-forward gain coefficient. (double) */
           "integralLimit_min": 0.0,     /* The integral limit clamp, min, max (double) */
           "integralLimit_max": 0.0,
