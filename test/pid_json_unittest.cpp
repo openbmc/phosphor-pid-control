@@ -45,7 +45,7 @@ TEST(ZoneFromJson, oneZoneOnePid)
               "samplePeriod": 0.1,
               "proportionalCoeff": 0.0,
               "integralCoeff": 0.0,
-              "feedFwdOffOffsetCoeff": 0.0,
+              "feedFwdOffsetCoeff": 0.0,
               "feedFwdGainCoeff": 0.010,
               "integralLimit_min": 0.0,
               "integralLimit_max": 0.0,
