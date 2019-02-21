@@ -44,6 +44,10 @@ constexpr const char* pidZoneConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid.Zone";
 constexpr const char* stepwiseConfigurationInterface =
     "xyz.openbmc_project.Configuration.Stepwise";
+constexpr const char* fanProfileConfigurationIface =
+    "xyz.openbmc_project.Configuration.FanProfile";
+constexpr const char* thermalControlIface =
+    "xyz.openbmc_project.Control.ThermalMode";
 constexpr const char* sensorInterface = "xyz.openbmc_project.Sensor.Value";
 constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
@@ -157,6 +161,74 @@ size_t getZoneIndex(const std::string& name, std::vector<std::string>& zones)
     return it - zones.begin();
 }
 
+void getSelectedProfiles(sdbusplus::bus::bus& bus,
+                         std::vector<std::string>& resp)
+{
+
+    auto mapper =
+        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                            "/xyz/openbmc_project/object_mapper",
+                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+    mapper.append("/", 0, std::array<const char*, 1>{thermalControlIface});
+    std::unordered_map<
+        std::string, std::unordered_map<std::string, std::vector<std::string>>>
+        respData;
+
+    try
+    {
+        auto resp = bus.call(mapper);
+        resp.read(respData);
+    }
+    catch (sdbusplus::exception_t&)
+    {
+        // can't do anything without mapper call data
+        throw std::runtime_error("ObjectMapper Call Failure");
+    }
+    if (respData.empty())
+    {
+        // if the user has profiles but doesn't expose the interface to select
+        // one, just go ahead without using profiles
+        return;
+    }
+
+    // assumption is that we should only have a small handful of selected
+    // profiles at a time (probably only 1), so calling each individually should
+    // not incur a large cost
+    for (const auto& objectPair : respData)
+    {
+        const std::string& path = objectPair.first;
+        for (const auto& ownerPair : objectPair.second)
+        {
+            const std::string& busName = ownerPair.first;
+            auto getProfile =
+                bus.new_method_call(busName.c_str(), path.c_str(),
+                                    "org.freedesktop.DBus.Properties", "Get");
+            getProfile.append(thermalControlIface, "Current");
+            std::variant<std::string> variantResp;
+            try
+            {
+                auto resp = bus.call(getProfile);
+                resp.read(variantResp);
+            }
+            catch (sdbusplus::exception_t&)
+            {
+                throw std::runtime_error("Failure getting profile");
+            }
+            std::string mode = std::get<std::string>(variantResp);
+            resp.emplace_back(std::move(mode));
+        }
+    }
+    if constexpr (DEBUG)
+    {
+        std::cout << "Profiles selected: ";
+        for (const auto& profile : resp)
+        {
+            std::cout << profile << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
 void init(sdbusplus::bus::bus& bus)
 {
     using DbusVariantType =
@@ -175,6 +247,13 @@ void init(sdbusplus::bus::bus& bus)
             std::string(pidConfigurationInterface) + "'",
         eventHandler);
 
+    // restart on profile change
+    static sdbusplus::bus::match::match profileMatch(
+        bus,
+        "type='signal',member='PropertiesChanged',arg0namespace='" +
+            std::string(thermalControlIface) + "'",
+        eventHandler);
+
     // restart on sensors changed
     static sdbusplus::bus::match::match sensorAdded(
         bus,
@@ -187,11 +266,11 @@ void init(sdbusplus::bus::bus& bus)
                             "/xyz/openbmc_project/object_mapper",
                             "xyz.openbmc_project.ObjectMapper", "GetSubTree");
     mapper.append("/", 0,
-                  std::array<const char*, 6>{objectManagerInterface,
-                                             pidConfigurationInterface,
-                                             pidZoneConfigurationInterface,
-                                             stepwiseConfigurationInterface,
-                                             sensorInterface, pwmInterface});
+                  std::array<const char*, 7>{
+                      objectManagerInterface, pidConfigurationInterface,
+                      pidZoneConfigurationInterface,
+                      stepwiseConfigurationInterface, sensorInterface,
+                      pwmInterface, fanProfileConfigurationIface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
         respData;
@@ -247,6 +326,7 @@ void init(sdbusplus::bus::bus& bus)
         }
     }
     ManagedObjectType configurations;
+    ManagedObjectType profiles;
     for (const auto& owner : owners)
     {
         // skip if no pid configuration (means probably a sensor)
@@ -280,6 +360,128 @@ void init(sdbusplus::bus::bus& bus)
                     pathPair.second.end())
             {
                 configurations.emplace(pathPair);
+            }
+            if (pathPair.second.find(fanProfileConfigurationIface) !=
+                pathPair.second.end())
+            {
+                profiles.emplace(pathPair);
+            }
+        }
+    }
+
+    std::vector<std::string> selectedProfiles;
+
+    // remove controllers from config that aren't in the current profile(s)
+    if (profiles.size())
+    {
+        getSelectedProfiles(bus, selectedProfiles);
+        if (selectedProfiles.size())
+        {
+            // make the names match the dbus name
+            for (auto& profile : selectedProfiles)
+            {
+                std::replace(profile.begin(), profile.end(), ' ', '_');
+            }
+
+            // remove profiles that aren't supported
+            for (auto it = profiles.begin(); it != profiles.end();)
+            {
+                auto& path = it->first.str;
+                auto inConfig = std::find_if(
+                    selectedProfiles.begin(), selectedProfiles.end(),
+                    [&path](const std::string& key) {
+                        return (path.find(key) != std::string::npos);
+                    });
+                if (inConfig == selectedProfiles.end())
+                {
+                    it = profiles.erase(it);
+                }
+                else
+                {
+                    it++;
+                }
+            }
+            std::vector<std::string> allowedControllers;
+
+            // create a vector of profile match strings
+            for (const auto& profile : profiles)
+            {
+                const auto& interface =
+                    profile.second.at(fanProfileConfigurationIface);
+                auto findController = interface.find("Controllers");
+                if (findController == interface.end())
+                {
+                    throw std::runtime_error("Profile Missing Controllers");
+                }
+                std::vector<std::string> controllers =
+                    std::get<std::vector<std::string>>(findController->second);
+                allowedControllers.insert(allowedControllers.end(),
+                                          controllers.begin(),
+                                          controllers.end());
+            }
+            std::vector<std::regex> regexes;
+            for (auto& controller : allowedControllers)
+            {
+                std::replace(controller.begin(), controller.end(), ' ', '_');
+                try
+                {
+                    regexes.push_back(std::regex(controller));
+                }
+                catch (std::regex_error&)
+                {
+                    std::cerr << "Invalid regex: " << controller << "\n";
+                    throw;
+                }
+            }
+
+            // remove configurations that don't match any of the regexes
+            for (auto it = configurations.begin(); it != configurations.end();)
+            {
+                const std::string& path = it->first;
+                size_t lastSlash = path.rfind("/");
+                if (lastSlash == std::string::npos)
+                {
+                    // if this happens, the mapper has a bug
+                    throw std::runtime_error("Invalid path in configuration");
+                }
+                std::string name = path.substr(lastSlash);
+                auto allowed = std::find_if(
+                    regexes.begin(), regexes.end(), [&name](auto& reg) {
+                        std::smatch match;
+                        return std::regex_search(name, match, reg);
+                    });
+                if (allowed == regexes.end())
+                {
+                    auto findZone =
+                        it->second.find(pidZoneConfigurationInterface);
+
+                    // if there is a fanzone under the given configuration, keep
+                    // it but remove any of the other controllers
+                    if (findZone != it->second.end())
+                    {
+                        for (auto subIt = it->second.begin();
+                             subIt != it->second.end();)
+                        {
+                            if (subIt == findZone)
+                            {
+                                subIt++;
+                            }
+                            else
+                            {
+                                subIt = it->second.erase(subIt);
+                            }
+                        }
+                        it++;
+                    }
+                    else
+                    {
+                        it = configurations.erase(it);
+                    }
+                }
+                else
+                {
+                    it++;
+                }
             }
         }
     }
@@ -562,7 +764,7 @@ void init(sdbusplus::bus::bus& bus)
             }
         }
     }
-    if (DEBUG)
+    if constexpr (DEBUG)
     {
         debugPrint();
     }
