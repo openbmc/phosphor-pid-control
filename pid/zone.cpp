@@ -65,6 +65,16 @@ void PIDZone::addRPMSetPoint(double setpoint)
     _RPMSetPoints.push_back(setpoint);
 }
 
+void PIDZone::addRPMCeiling(double ceiling)
+{
+    _RPMCeilings.push_back(ceiling);
+}
+
+void PIDZone::clearRPMCeilings(void)
+{
+    _RPMCeilings.clear();
+}
+
 void PIDZone::clearRPMSetPoints(void)
 {
     _RPMSetPoints.clear();
@@ -114,6 +124,12 @@ void PIDZone::determineMaxRPMRequest(void)
     {
         result = std::max_element(_RPMSetPoints.begin(), _RPMSetPoints.end());
         max = *result;
+    }
+
+    if (_RPMCeilings.size() > 0)
+    {
+        result = std::min_element(_RPMCeilings.begin(), _RPMCeilings.end());
+        max = std::min(max, *result);
     }
 
     /*
