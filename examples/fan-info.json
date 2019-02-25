@@ -62,7 +62,7 @@
     "zones" : [
         {
             "id": 1,
-            "minThermalRpm": 3000.0,
+            "minThermalOutput": 3000.0,
             "failsafePercent": 75.0,
             "pids": [
                 {

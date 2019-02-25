@@ -34,7 +34,7 @@ TEST(ZoneFromJson, oneZoneOnePid)
       {
         "zones" : [{
           "id": 1,
-          "minThermalRpm": 3000.0,
+          "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
           "pids": [{
             "name": "fan1-5",
@@ -64,5 +64,5 @@ TEST(ZoneFromJson, oneZoneOnePid)
     EXPECT_EQ(zoneConfig.size(), 1);
 
     EXPECT_EQ(pidConfig[1]["fan1-5"].type, "fan");
-    EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalRpm, 3000.0);
+    EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
 }

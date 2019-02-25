@@ -92,7 +92,7 @@ void debugPrint(void)
     for (const auto& zone : zoneDetailsConfig)
     {
         std::cout << "\t{" << zone.first << ",\n";
-        std::cout << "\t\t{" << zone.second.minThermalRpm << ", ";
+        std::cout << "\t\t{" << zone.second.minThermalOutput << ", ";
         std::cout << zone.second.failsafePercent << "}\n\t},\n";
     }
     std::cout << "}\n\n";
@@ -299,8 +299,8 @@ void init(sdbusplus::bus::bus& bus)
             size_t index = getZoneIndex(name, foundZones);
 
             auto& details = zoneDetailsConfig[index];
-            details.minThermalRpm =
-                std::visit(VariantToDoubleVisitor(), zone.at("MinThermalRpm"));
+            details.minThermalOutput = std::visit(VariantToDoubleVisitor(),
+                                                  zone.at("MinThermalOutput"));
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
         }

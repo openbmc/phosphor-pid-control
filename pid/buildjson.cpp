@@ -86,7 +86,7 @@ std::pair<std::map<int64_t, PIDConf>, std::map<int64_t, struct ZoneConfig>>
 
         /* TODO: using at() throws a specific exception we can catch */
         id = zone["id"];
-        thisZoneConfig.minThermalRpm = zone["minThermalRpm"];
+        thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
         thisZoneConfig.failsafePercent = zone["failsafePercent"];
 
         auto pids = zone["pids"];
