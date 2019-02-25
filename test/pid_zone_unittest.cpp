@@ -42,7 +42,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     bool defer = true;
     const char* objPath = "/path/";
     int64_t zone = 1;
-    double minThermalRpm = 1000.0;
+    double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
 
     int i;
@@ -50,8 +50,8 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
                     &i);
 
-    PIDZone p(zone, minThermalRpm, failSafePercent, m, bus_mock_mode, objPath,
-              defer);
+    PIDZone p(zone, minThermalOutput, failSafePercent, m, bus_mock_mode,
+              objPath, defer);
     // Success.
 }
 
@@ -80,8 +80,9 @@ class PidZoneTest : public ::testing::Test
         SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface,
                         properties, &property_index);
 
-        zone = std::make_unique<PIDZone>(zoneId, minThermalRpm, failSafePercent,
-                                         mgr, bus_mock_mode, objPath, defer);
+        zone =
+            std::make_unique<PIDZone>(zoneId, minThermalOutput, failSafePercent,
+                                      mgr, bus_mock_mode, objPath, defer);
     }
 
     // unused
@@ -92,7 +93,7 @@ class PidZoneTest : public ::testing::Test
     sdbusplus::SdBusMock sdbus_mock_host;
     sdbusplus::SdBusMock sdbus_mock_mode;
     int64_t zoneId = 1;
-    double minThermalRpm = 1000.0;
+    double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
     bool defer = true;
     const char* objPath = "/path/";

@@ -16,7 +16,7 @@ TEST(ConfigurationVerificationTest, VerifyHappy)
         }],
         "zones": [{
           "id": 1,
-          "minThermalRpm": 3000.0,
+          "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
           "pids": [{
             "name": "fan1-5",
@@ -51,7 +51,7 @@ TEST(ConfigurationVerificationTest, VerifyNoSensorKey)
       {
         "zones": [{
           "id": 1,
-          "minThermalRpm": 3000.0,
+          "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
           "pids": [{
             "name": "fan1-5",
@@ -103,7 +103,7 @@ TEST(ConfigurationVerificationTest, VerifyNoSensor)
         "sensors": [],
         "zones": [{
           "id": 1,
-          "minThermalRpm": 3000.0,
+          "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
           "pids": [{
             "name": "fan1-5",
@@ -143,7 +143,7 @@ TEST(ConfigurationVerificationTest, VerifyNoPidInZone)
         }],
         "zones": [{
           "id": 1,
-          "minThermalRpm": 3000.0,
+          "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
           "pids": []
         }]

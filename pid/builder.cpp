@@ -63,7 +63,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
         const PIDConf& pidConfig = zi.second;
 
         auto zone = std::make_unique<PIDZone>(
-            zoneId, zoneConf->second.minThermalRpm,
+            zoneId, zoneConf->second.minThermalOutput,
             zoneConf->second.failsafePercent, mgr, modeControlBus,
             getControlPath(zi.first).c_str(), deferSignals);
 

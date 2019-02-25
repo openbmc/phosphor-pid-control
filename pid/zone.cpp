@@ -77,7 +77,7 @@ double PIDZone::getFailSafePercent(void) const
 
 double PIDZone::getMinThermalRPMSetpoint(void) const
 {
-    return _minThermalRpmSetPt;
+    return _minThermalOutputSetPt;
 }
 
 void PIDZone::addFanPID(std::unique_ptr<Controller> pid)
