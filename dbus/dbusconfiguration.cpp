@@ -300,7 +300,7 @@ void init(sdbusplus::bus::bus& bus)
 
             auto& details = zoneDetailsConfig[index];
             details.minThermalRpm =
-                std::visit(VariantToDoubleVisitor(), zone.at("MinThermalRpm"));
+                std::visit(VariantToDoubleVisitor(), zone.at("MinTachPercent"));
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
         }
