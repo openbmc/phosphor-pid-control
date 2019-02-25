@@ -507,6 +507,9 @@ void init(sdbusplus::bus::bus& bus)
                 info.stepwiseInfo.ts = 1.0; // currently unused
                 info.stepwiseInfo.positiveHysteresis = 0.0;
                 info.stepwiseInfo.negativeHysteresis = 0.0;
+                std::string subtype = std::get<std::string>(base.at("Class"));
+
+                info.stepwiseInfo.isCeiling = (subtype == "Ceiling");
                 auto findPosHyst = base.find("PositiveHysteresis");
                 auto findNegHyst = base.find("NegativeHysteresis");
                 if (findPosHyst != base.end())
