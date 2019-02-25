@@ -31,6 +31,7 @@ struct StepwiseInfo
     double output[maxStepwisePoints];
     double positiveHysteresis;
     double negativeHysteresis;
+    bool isCeiling;
 };
 
 double stepwise(const ec::StepwiseInfo& info, double value);

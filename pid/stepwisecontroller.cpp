@@ -95,9 +95,13 @@ double StepwiseController::inputProc(void)
 
 void StepwiseController::outputProc(double value)
 {
-    // values are 10 for 10%
-    value *= 100;
-    _owner->addRPMSetPoint(value);
-
+    if (get_stepwise_info().isCeiling)
+    {
+        _owner->addRPMCeiling(value);
+    }
+    else
+    {
+        _owner->addRPMSetPoint(value);
+    }
     return;
 }
