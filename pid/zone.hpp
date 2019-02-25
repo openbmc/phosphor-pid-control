@@ -43,11 +43,12 @@ class ZoneInterface
 class PIDZone : public ZoneInterface, public ModeObject
 {
   public:
-    PIDZone(int64_t zone, double minThermalRpm, double failSafePercent,
+    PIDZone(int64_t zone, double minThermalOutput, double failSafePercent,
             const SensorManager& mgr, sdbusplus::bus::bus& bus,
             const char* objPath, bool defer) :
         ModeObject(bus, objPath, defer),
-        _zoneId(zone), _maximumRPMSetPt(), _minThermalRpmSetPt(minThermalRpm),
+        _zoneId(zone), _maximumRPMSetPt(),
+        _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _mgr(mgr)
     {
 #ifdef __TUNING_LOGGING__
@@ -104,7 +105,7 @@ class PIDZone : public ZoneInterface, public ModeObject
     const int64_t _zoneId;
     double _maximumRPMSetPt = 0;
     bool _manualMode = false;
-    const double _minThermalRpmSetPt;
+    const double _minThermalOutputSetPt;
     const double _failSafePercent;
 
     std::set<std::string> _failSafeSensors;
