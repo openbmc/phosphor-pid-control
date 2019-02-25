@@ -1,5 +1,6 @@
 #pragma once
 
+#include "conf.hpp"
 #include "dbus/util.hpp"
 #include "interfaces.hpp"
 
@@ -35,7 +36,8 @@ class DbusPassive : public ReadInterface
   public:
     static std::unique_ptr<ReadInterface>
         createDbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
-                          const std::string& id, DbusHelperInterface* helper);
+                          const std::string& id, DbusHelperInterface* helper,
+                          const SensorConfig* info);
 
     DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
                 const std::string& id, DbusHelperInterface* helper,
@@ -48,6 +50,8 @@ class DbusPassive : public ReadInterface
     void setFailed(bool value);
     int64_t getScale(void);
     std::string getID(void);
+    double getMax(void);
+    double getMin(void);
 
   private:
     sdbusplus::bus::bus& _bus;
@@ -58,6 +62,8 @@ class DbusPassive : public ReadInterface
 
     std::mutex _lock;
     double _value = 0;
+    double _max = 0;
+    double _min = 0;
     bool _failed = false;
     /* The last time the value was refreshed, not necessarily changed. */
     std::chrono::high_resolution_clock::time_point _updated;

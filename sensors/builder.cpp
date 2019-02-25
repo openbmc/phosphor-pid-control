@@ -67,8 +67,8 @@ SensorManager
         switch (rtype)
         {
             case IOInterfaceType::DBUSPASSIVE:
-                ri = DbusPassive::createDbusPassive(passiveListeningBus,
-                                                    info->type, name, &helper);
+                ri = DbusPassive::createDbusPassive(
+                    passiveListeningBus, info->type, name, &helper, info);
                 if (ri == nullptr)
                 {
                     throw SensorBuildException(

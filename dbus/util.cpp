@@ -88,13 +88,23 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
         prop->unit = std::get<std::string>(findUnit->second);
     }
     auto findScale = propMap.find("Scale");
+    auto findMax = propMap.find("MaxValue");
+    auto findMin = propMap.find("MinValue");
+
+    prop->min = 0;
+    prop->max = 0;
+    prop->scale = 0;
     if (findScale != propMap.end())
     {
         prop->scale = std::get<int64_t>(findScale->second);
     }
-    else
+    if (findMax != propMap.end())
     {
-        prop->scale = 0;
+        prop->max = std::visit(VariantToDoubleVisitor(), findMax->second);
+    }
+    if (findMin != propMap.end())
+    {
+        prop->min = std::visit(VariantToDoubleVisitor(), findMin->second);
     }
 
     prop->value = std::visit(VariantToDoubleVisitor(), propMap["Value"]);
@@ -173,4 +183,13 @@ bool validType(const std::string& type)
 {
     static std::set<std::string> valid = {"fan", "temp"};
     return (valid.find(type) != valid.end());
+}
+
+void scaleSensorReading(const double min, const double max, double& value)
+{
+    if (max <= 0)
+    {
+        return;
+    }
+    value /= (max - min);
 }

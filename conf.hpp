@@ -7,6 +7,11 @@
 #include <string>
 #include <vector>
 
+namespace conf
+{
+constexpr int64_t inheritValueFromDbus = -1;
+} // namespace conf
+
 /*
  * General sensor structure used for configuration.
  */
