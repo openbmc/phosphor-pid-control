@@ -27,7 +27,7 @@
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
-    DbusHelperInterface* helper)
+    DbusHelperInterface* helper, const SensorConfig* info)
 {
     if (helper == nullptr)
     {
@@ -58,6 +58,15 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     {
         return nullptr;
     }
+    if (info->max != conf::inheritValueFromDbus)
+    {
+        settings.max = info->max;
+    }
+
+    if (info->max != conf::inheritValueFromDbus)
+    {
+        settings.min = info->min;
+    }
 
     return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
                                          failed);
@@ -72,6 +81,8 @@ DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
 {
     _scale = settings.scale;
     _value = settings.value * pow(10, _scale);
+    _min = settings.min * pow(10, _scale);
+    _max = settings.max * pow(10, _scale);
     _updated = std::chrono::high_resolution_clock::now();
 }
 
@@ -112,6 +123,16 @@ std::string DbusPassive::getID(void)
     return _id;
 }
 
+double DbusPassive::getMax(void)
+{
+    return _max;
+}
+
+double DbusPassive::getMin(void)
+{
+    return _min;
+}
+
 int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 {
     std::string msgSensor;
@@ -128,6 +149,8 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
                 std::visit(VariantToDoubleVisitor(), valPropMap->second);
 
             value *= std::pow(10, owner->getScale());
+
+            scaleSensorReading(owner->getMin(), owner->getMax(), value);
 
             owner->setValue(value);
         }
