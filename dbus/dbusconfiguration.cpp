@@ -364,7 +364,7 @@ void init(sdbusplus::bus::bus& bus)
                         // timeouts with sensors
                         if (config.type == "temp")
                         {
-                            config.timeout = 500;
+                            config.timeout = 0;
                         }
                     }
                     else if (sensorPathIfacePair.second == pwmInterface)
@@ -491,7 +491,7 @@ void init(sdbusplus::bus::bus& bus)
                         // todo: maybe un-hardcode this if we run into slower
                         // timeouts with sensors
 
-                        config.timeout = 500;
+                        config.timeout = 0;
                         sensorFound = true;
                     }
                 }
