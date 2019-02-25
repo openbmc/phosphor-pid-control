@@ -7,6 +7,8 @@ struct SensorProperties
 {
     int64_t scale;
     double value;
+    double min;
+    double max;
     std::string unit;
 };
 
@@ -83,6 +85,7 @@ class DbusHelper : public DbusHelperInterface
 
 std::string getSensorPath(const std::string& type, const std::string& id);
 std::string getMatch(const std::string& type, const std::string& id);
+void scaleSensorReading(const double min, const double max, double& value);
 bool validType(const std::string& type);
 
 struct VariantToDoubleVisitor
