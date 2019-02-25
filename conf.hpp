@@ -7,6 +7,11 @@
 #include <string>
 #include <vector>
 
+namespace conf
+{
+constexpr int64_t inheritValueFromDbus = std::numeric_limits<int64_t>::lowest();
+} // namespace conf
+
 /*
  * General sensor structure used for configuration.
  */
