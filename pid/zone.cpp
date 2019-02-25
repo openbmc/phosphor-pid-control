@@ -250,31 +250,25 @@ void PIDZone::updateSensors(void)
         _cachedValuesByName[t] = r.value;
         tstamp then = r.updated;
 
+        auto duration = duration_cast<std::chrono::seconds>(now - then).count();
+        auto period = std::chrono::seconds(timeout).count();
+
         if (sensor->getFailed())
         {
             _failSafeSensors.insert(t);
         }
-        /* Only go into failsafe if the timeout is set for
-         * the sensor.
-         */
-        else if (timeout > 0)
+        else if (timeout != 0 && duration >= period)
         {
-            auto duration =
-                duration_cast<std::chrono::seconds>(now - then).count();
-            auto period = std::chrono::seconds(timeout).count();
-            if (duration >= period)
+            // std::cerr << "Entering fail safe mode.\n";
+            _failSafeSensors.insert(t);
+        }
+        else
+        {
+            // Check if it's in there: remove it.
+            auto kt = _failSafeSensors.find(t);
+            if (kt != _failSafeSensors.end())
             {
-                // std::cerr << "Entering fail safe mode.\n";
-                _failSafeSensors.insert(t);
-            }
-            else
-            {
-                // Check if it's in there: remove it.
-                auto kt = _failSafeSensors.find(t);
-                if (kt != _failSafeSensors.end())
-                {
-                    _failSafeSensors.erase(kt);
-                }
+                _failSafeSensors.erase(kt);
             }
         }
     }
