@@ -1,0 +1,8 @@
+Ok-To-Test+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Verified+1: Jenkins <openbmc-ci-admin@ozlabs.org>
+Code-Review+2: Patrick Venture <venture@google.com>
+Submitted-by: James Feist <james.feist@linux.intel.com>
+Submitted-at: Tue, 26 Feb 2019 18:31:58 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/18650
+Project: openbmc/phosphor-pid-control
+Branch: refs/heads/master
