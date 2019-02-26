@@ -8,8 +8,8 @@ TEST(ZoneFromJson, emptyZone)
     // There is a zone key, but it's empty.
     // This is technically invalid.
 
-    std::map<int64_t, PIDConf> pidConfig;
-    std::map<int64_t, struct ZoneConfig> zoneConfig;
+    std::map<int64_t, conf::PIDConf> pidConfig;
+    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
 
     auto j2 = R"(
       {
@@ -27,8 +27,8 @@ TEST(ZoneFromJson, oneZoneOnePid)
 {
     // Parse a valid configuration with one zone and one PID.
 
-    std::map<int64_t, PIDConf> pidConfig;
-    std::map<int64_t, struct ZoneConfig> zoneConfig;
+    std::map<int64_t, conf::PIDConf> pidConfig;
+    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
 
     auto j2 = R"(
       {

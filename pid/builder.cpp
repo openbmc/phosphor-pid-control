@@ -36,8 +36,8 @@ static std::string getControlPath(int64_t zone)
 }
 
 std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
-    buildZones(std::map<int64_t, PIDConf>& zonePids,
-               std::map<int64_t, struct ZoneConfig>& zoneConfigs,
+    buildZones(std::map<int64_t, conf::PIDConf>& zonePids,
+               std::map<int64_t, struct conf::ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus)
 {
     std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones;
@@ -60,7 +60,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
             throw std::runtime_error(err);
         }
 
-        const PIDConf& pidConfig = zi.second;
+        const conf::PIDConf& pidConfig = zi.second;
 
         auto zone = std::make_unique<PIDZone>(
             zoneId, zoneConf->second.minThermalRpm,
@@ -74,7 +74,7 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
         {
             std::vector<std::string> inputs;
             std::string name = pit.first;
-            const struct ControllerInfo* info = &pit.second;
+            const struct conf::ControllerInfo* info = &pit.second;
 
             std::cerr << "PID name: " << name << "\n";
 
