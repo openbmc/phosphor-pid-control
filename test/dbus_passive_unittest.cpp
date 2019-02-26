@@ -29,7 +29,7 @@ TEST(DbusPassiveTest, FactoryFailsWithInvalidType)
     std::string id = "id";
 
     DbusHelperMock helper;
-    auto info = SensorConfig();
+    auto info = conf::SensorConfig();
 
     std::unique_ptr<ReadInterface> ri =
         DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info);
@@ -76,7 +76,7 @@ class DbusPassiveTestObj : public ::testing::Test
         EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
-        auto info = SensorConfig();
+        auto info = conf::SensorConfig();
         ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info);
         passive = reinterpret_cast<DbusPassive*>(ri.get());
         EXPECT_FALSE(passive == nullptr);

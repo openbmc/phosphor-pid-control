@@ -27,7 +27,7 @@
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
-    DbusHelperInterface* helper, const SensorConfig* info)
+    DbusHelperInterface* helper, const conf::SensorConfig* info)
 {
     if (helper == nullptr)
     {

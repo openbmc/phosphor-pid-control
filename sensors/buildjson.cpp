@@ -23,7 +23,9 @@
 
 using json = nlohmann::json;
 
-void from_json(const json& j, SensorConfig& s)
+namespace conf
+{
+void from_json(const json& j, conf::SensorConfig& s)
 {
     j.at("type").get_to(s.type);
     j.at("readPath").get_to(s.readPath);
@@ -72,11 +74,12 @@ void from_json(const json& j, SensorConfig& s)
         j.at("timeout").get_to(s.timeout);
     }
 }
+} // namespace conf
 
-std::map<std::string, struct SensorConfig>
+std::map<std::string, struct conf::SensorConfig>
     buildSensorsFromJson(const json& data)
 {
-    std::map<std::string, struct SensorConfig> config;
+    std::map<std::string, struct conf::SensorConfig> config;
     auto sensors = data["sensors"];
 
     /* TODO: If no sensors, this is invalid, and we should except here or during
@@ -84,7 +87,7 @@ std::map<std::string, struct SensorConfig>
      */
     for (const auto& sensor : sensors)
     {
-        config[sensor["name"]] = sensor.get<struct SensorConfig>();
+        config[sensor["name"]] = sensor.get<struct conf::SensorConfig>();
     }
 
     return config;
