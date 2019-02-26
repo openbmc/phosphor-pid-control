@@ -37,7 +37,7 @@ class DbusPassive : public ReadInterface
     static std::unique_ptr<ReadInterface>
         createDbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
                           const std::string& id, DbusHelperInterface* helper,
-                          const SensorConfig* info);
+                          const conf::SensorConfig* info);
 
     DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
                 const std::string& id, DbusHelperInterface* helper,
