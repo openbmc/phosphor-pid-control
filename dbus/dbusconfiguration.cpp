@@ -32,9 +32,9 @@
 
 static constexpr bool DEBUG = false; // enable to print found configuration
 
-extern std::map<std::string, struct SensorConfig> sensorConfig;
-extern std::map<int64_t, PIDConf> zoneConfig;
-extern std::map<int64_t, struct ZoneConfig> zoneDetailsConfig;
+extern std::map<std::string, struct conf::SensorConfig> sensorConfig;
+extern std::map<int64_t, conf::PIDConf> zoneConfig;
+extern std::map<int64_t, struct conf::ZoneConfig> zoneDetailsConfig;
 
 constexpr const char* pidConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid";
@@ -315,7 +315,7 @@ void init(sdbusplus::bus::bus& bus)
             for (const std::string& zone : zones)
             {
                 size_t index = getZoneIndex(zone, foundZones);
-                PIDConf& conf = zoneConfig[index];
+                conf::PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> sensorNames =
                     std::get<std::vector<std::string>>(base.at("Inputs"));
@@ -395,7 +395,7 @@ void init(sdbusplus::bus::bus& bus)
                     }
                 }
 
-                struct ControllerInfo& info =
+                struct conf::ControllerInfo& info =
                     conf[std::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
 
@@ -462,7 +462,7 @@ void init(sdbusplus::bus::bus& bus)
             for (const std::string& zone : zones)
             {
                 size_t index = getZoneIndex(zone, foundZones);
-                PIDConf& conf = zoneConfig[index];
+                conf::PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> inputs;
                 std::vector<std::string> sensorNames =
@@ -504,7 +504,7 @@ void init(sdbusplus::bus::bus& bus)
                 {
                     continue;
                 }
-                struct ControllerInfo& info =
+                struct conf::ControllerInfo& info =
                     conf[std::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
 

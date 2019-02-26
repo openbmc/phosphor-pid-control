@@ -10,7 +10,6 @@
 namespace conf
 {
 constexpr int64_t inheritValueFromDbus = std::numeric_limits<int64_t>::lowest();
-} // namespace conf
 
 /*
  * General sensor structure used for configuration.
@@ -58,3 +57,5 @@ struct ZoneConfig
 };
 
 using PIDConf = std::map<std::string, struct ControllerInfo>;
+
+} // namespace conf

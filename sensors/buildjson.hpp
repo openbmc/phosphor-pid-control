@@ -16,5 +16,5 @@ using json = nlohmann::json;
  * @param[in] data - the json data
  * @return a map of sensors.
  */
-std::map<std::string, struct SensorConfig>
+std::map<std::string, struct conf::SensorConfig>
     buildSensorsFromJson(const json& data);

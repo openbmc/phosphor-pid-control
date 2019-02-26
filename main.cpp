@@ -46,11 +46,11 @@
 #endif
 
 /* The YAML converted sensor list. */
-std::map<std::string, struct SensorConfig> sensorConfig = {};
+std::map<std::string, struct conf::SensorConfig> sensorConfig = {};
 /* The YAML converted PID list. */
-std::map<int64_t, PIDConf> zoneConfig = {};
+std::map<int64_t, conf::PIDConf> zoneConfig = {};
 /* The YAML converted Zone configuration. */
-std::map<int64_t, struct ZoneConfig> zoneDetailsConfig = {};
+std::map<int64_t, struct conf::ZoneConfig> zoneDetailsConfig = {};
 
 /** the swampd daemon will check for the existence of this file. */
 constexpr auto jsonConfigurationPath = "/usr/share/swampd/config.json";
