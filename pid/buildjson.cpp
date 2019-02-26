@@ -24,7 +24,9 @@
 
 using json = nlohmann::json;
 
-void from_json(const json& j, ControllerInfo& c)
+namespace conf
+{
+void from_json(const json& j, conf::ControllerInfo& c)
 {
     j.at("type").get_to(c.type);
     j.at("inputs").get_to(c.inputs);
@@ -67,22 +69,24 @@ void from_json(const json& j, ControllerInfo& c)
         j.at("negativeHysteresis").get_to(c.pidInfo.negativeHysteresis);
     }
 }
+} // namespace conf
 
-std::pair<std::map<int64_t, PIDConf>, std::map<int64_t, struct ZoneConfig>>
+std::pair<std::map<int64_t, conf::PIDConf>,
+          std::map<int64_t, struct conf::ZoneConfig>>
     buildPIDsFromJson(const json& data)
 {
     // zone -> pids
-    std::map<int64_t, PIDConf> pidConfig;
+    std::map<int64_t, conf::PIDConf> pidConfig;
     // zone -> configs
-    std::map<int64_t, struct ZoneConfig> zoneConfig;
+    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
 
     /* TODO: if zones is empty, that's invalid. */
     auto zones = data["zones"];
     for (const auto& zone : zones)
     {
         int64_t id;
-        PIDConf thisZone;
-        struct ZoneConfig thisZoneConfig;
+        conf::PIDConf thisZone;
+        struct conf::ZoneConfig thisZoneConfig;
 
         /* TODO: using at() throws a specific exception we can catch */
         id = zone["id"];
@@ -93,7 +97,7 @@ std::pair<std::map<int64_t, PIDConf>, std::map<int64_t, struct ZoneConfig>>
         for (const auto& pid : pids)
         {
             auto name = pid["name"];
-            auto item = pid.get<ControllerInfo>();
+            auto item = pid.get<conf::ControllerInfo>();
 
             thisZone[name] = item;
         }

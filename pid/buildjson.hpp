@@ -14,5 +14,6 @@ using json = nlohmann::json;
  * @param[in] data - the json data
  * @return the pidConfig, and the zoneConfig
  */
-std::pair<std::map<int64_t, PIDConf>, std::map<int64_t, struct ZoneConfig>>
+std::pair<std::map<int64_t, conf::PIDConf>,
+          std::map<int64_t, struct conf::ZoneConfig>>
     buildPIDsFromJson(const json& data);
