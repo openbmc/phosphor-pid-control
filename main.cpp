@@ -22,6 +22,7 @@
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
 #include "pid/pidthread.hpp"
+#include "pid/tuning.hpp"
 #include "pid/zone.hpp"
 #include "sensors/builder.hpp"
 #include "sensors/buildjson.hpp"
@@ -65,12 +66,13 @@ int main(int argc, char* argv[])
         // clang-format off
         static struct option long_options[] = {
             {"conf", required_argument, 0, 'c'},
+            {"tuning", required_argument, 0, 't'},
             {0, 0, 0, 0}
         };
         // clang-format on
 
         int option_index = 0;
-        int c = getopt_long(argc, argv, "c:", long_options, &option_index);
+        int c = getopt_long(argc, argv, "tc:", long_options, &option_index);
 
         if (c == -1)
         {
@@ -81,6 +83,10 @@ int main(int argc, char* argv[])
         {
             case 'c':
                 configPath = std::string{optarg};
+                break;
+            case 't':
+                tuningLoggingEnabled = true;
+                tuningLoggingPath = std::string{optarg};
                 break;
             default:
                 /* skip garbage. */

@@ -17,6 +17,7 @@
 #include "pidthread.hpp"
 
 #include "pid/pidcontroller.hpp"
+#include "pid/tuning.hpp"
 #include "sensors/sensor.hpp"
 
 #include <chrono>
@@ -63,9 +64,11 @@ void pidControlThread(PIDZone* zone)
      * TODO(venture): If the fan value is 0 should that loop just be skipped?
      * Right now, a 0 value is ignored in FanController::inputProc()
      */
-#ifdef __TUNING_LOGGING__
-    zone->initializeLog();
-#endif
+    if (tuningLoggingEnabled)
+    {
+        zone->initializeLog();
+    }
+
     zone->initializeCache();
     processThermals(zone);
 
@@ -93,10 +96,11 @@ void pidControlThread(PIDZone* zone)
         // Run the fan PIDs every iteration.
         zone->processFans();
 
-#ifdef __TUNING_LOGGING__
-        zone->getLogHandle() << "," << zone->getFailSafeMode();
-        zone->getLogHandle() << std::endl;
-#endif
+        if (tuningLoggingEnabled)
+        {
+            zone->getLogHandle() << "," << zone->getFailSafeMode();
+            zone->getLogHandle() << std::endl;
+        }
 
         ms100cnt += 1;
     }

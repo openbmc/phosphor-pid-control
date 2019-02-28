@@ -16,6 +16,7 @@
 
 #include "fancontroller.hpp"
 
+#include "tuning.hpp"
 #include "util.hpp"
 #include "zone.hpp"
 
@@ -115,16 +116,17 @@ void FanController::outputProc(double value)
     double percent = value;
 
     /* If doing tuning logging, don't go into failsafe mode. */
-#ifndef __TUNING_LOGGING__
-    if (_owner->getFailSafeMode())
+    if (!tuningLoggingEnabled)
     {
-        /* In case it's being set to 100% */
-        if (percent < _owner->getFailSafePercent())
+        if (_owner->getFailSafeMode())
         {
-            percent = _owner->getFailSafePercent();
+            /* In case it's being set to 100% */
+            if (percent < _owner->getFailSafePercent())
+            {
+                percent = _owner->getFailSafePercent();
+            }
         }
     }
-#endif
 
     // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.
     percent /= 100;
