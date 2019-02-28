@@ -254,14 +254,8 @@ configuration files. It will also register a dbus handler for the OEM message.
 
 ### Enabling Logging
 
-By default, swampd isn't compiled to log information. To compile it for tuning,
-you'll need to add:
-
-```
-EXTRA_OEMAKE_append_YOUR_MACHINE = " CXXFLAGS='${CXXFLAGS} -D__TUNING_LOGGING__'"
-```
-
-To the recipe.
+By default, swampd won't log tuning information.  To enable this pass "-t" on
+the command line.
 
 ## Project Information
 
