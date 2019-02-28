@@ -23,6 +23,7 @@
 #include "pid/fancontroller.hpp"
 #include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
+#include "pid/tuning.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -138,38 +139,38 @@ void PIDZone::determineMaxRPMRequest(void)
      */
     max = std::max(getMinThermalRPMSetpoint(), max);
 
-#ifdef __TUNING_LOGGING__
-    /*
-     * We received no setpoints from thermal sensors.
-     * This is a case experienced during tuning where they only specify
-     * fan sensors and one large fan PID for all the fans.
-     */
-    static constexpr auto setpointpath = "/etc/thermal.d/setpoint";
-    try
+    if (tuningLoggingEnabled)
     {
-        std::ifstream ifs;
-        ifs.open(setpointpath);
-        if (ifs.good())
+        /*
+         * We received no setpoints from thermal sensors.
+         * This is a case experienced during tuning where they only specify
+         * fan sensors and one large fan PID for all the fans.
+         */
+        static constexpr auto setpointpath = "/etc/thermal.d/setpoint";
+        try
         {
-            int value;
-            ifs >> value;
+            std::ifstream ifs;
+            ifs.open(setpointpath);
+            if (ifs.good())
+            {
+                int value;
+                ifs >> value;
 
-            /* expecting RPM setpoint, not pwm% */
-            max = static_cast<double>(value);
+                /* expecting RPM setpoint, not pwm% */
+                max = static_cast<double>(value);
+            }
+        }
+        catch (const std::exception& e)
+        {
+            /* This exception is uninteresting. */
+            std::cerr << "Unable to read from '" << setpointpath << "'\n";
         }
     }
-    catch (const std::exception& e)
-    {
-        /* This exception is uninteresting. */
-        std::cerr << "Unable to read from '" << setpointpath << "'\n";
-    }
-#endif
 
     _maximumRPMSetPt = max;
     return;
 }
 
-#ifdef __TUNING_LOGGING__
 void PIDZone::initializeLog(void)
 {
     /* Print header for log file:
@@ -196,7 +197,6 @@ std::ofstream& PIDZone::getLogHandle(void)
 {
     return _log;
 }
-#endif
 
 /*
  * TODO(venture) This is effectively updating the cache and should check if the
@@ -217,13 +217,14 @@ void PIDZone::updateFanTelemetry(void)
      * is disabled?  I think it's a waste to try and log things even if the
      * data is just being dropped though.
      */
-#ifdef __TUNING_LOGGING__
-    tstamp now = std::chrono::high_resolution_clock::now();
-    _log << std::chrono::duration_cast<std::chrono::milliseconds>(
-                now.time_since_epoch())
-                .count();
-    _log << "," << _maximumRPMSetPt;
-#endif
+    if (tuningLoggingEnabled)
+    {
+        tstamp now = std::chrono::high_resolution_clock::now();
+        _log << std::chrono::duration_cast<std::chrono::milliseconds>(
+                    now.time_since_epoch())
+                    .count();
+        _log << "," << _maximumRPMSetPt;
+    }
 
     for (const auto& f : _fanInputs)
     {
@@ -236,17 +237,19 @@ void PIDZone::updateFanTelemetry(void)
          * However, these are the fans, so if I'm not getting updated values
          * for them... what should I do?
          */
-#ifdef __TUNING_LOGGING__
-        _log << "," << r.value;
-#endif
+        if (tuningLoggingEnabled)
+        {
+            _log << "," << r.value;
+        }
     }
 
-#ifdef __TUNING_LOGGING__
-    for (const auto& t : _thermalInputs)
+    if (tuningLoggingEnabled)
     {
-        _log << "," << _cachedValuesByName[t];
+        for (const auto& t : _thermalInputs)
+        {
+            _log << "," << _cachedValuesByName[t];
+        }
     }
-#endif
 
     return;
 }

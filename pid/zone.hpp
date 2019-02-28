@@ -5,6 +5,7 @@
 #include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
+#include "tuning.hpp"
 
 #include <fstream>
 #include <map>
@@ -51,9 +52,10 @@ class PIDZone : public ZoneInterface, public ModeObject
         _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _mgr(mgr)
     {
-#ifdef __TUNING_LOGGING__
-        _log.open("/tmp/swampd.log");
-#endif
+        if (tuningLoggingEnabled)
+        {
+            _log.open("/tmp/swampd.log");
+        }
     }
 
     double getMaxRPMRequest(void) const override;
@@ -87,10 +89,8 @@ class PIDZone : public ZoneInterface, public ModeObject
     void addFanInput(const std::string& fan);
     void addThermalInput(const std::string& therm);
 
-#ifdef __TUNING_LOGGING__
     void initializeLog(void);
     std::ofstream& getLogHandle(void);
-#endif
 
     /* Method for setting the manual mode over dbus */
     bool manual(bool value) override;
@@ -98,9 +98,7 @@ class PIDZone : public ZoneInterface, public ModeObject
     bool failSafe() const override;
 
   private:
-#ifdef __TUNING_LOGGING__
     std::ofstream _log;
-#endif
 
     const int64_t _zoneId;
     double _maximumRPMSetPt = 0;
