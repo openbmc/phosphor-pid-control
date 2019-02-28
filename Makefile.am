@@ -60,6 +60,7 @@ libswampd_la_SOURCES = \
 	pid/zone.cpp \
 	pid/util.cpp \
 	pid/pidthread.cpp \
+	pid/tuning.cpp \
 	threads/busthread.cpp \
 	build/buildjson.cpp \
 	experiments/drive.cpp
