@@ -1,3 +1,12 @@
+# Test suite logs
+*.log
+
+# Code Coverage
+*.gcda
+*.gcno
+*.trs
+*-coverage*
+
 *.o
 *.lo
 *.la
