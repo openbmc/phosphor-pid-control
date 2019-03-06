@@ -41,7 +41,8 @@ setsensor_LDADD = \
 setsensor_CXXFLAGS = \
 	$(SDBUSPLUS_CFLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
-	$(PHOSPHOR_LOGGING_CFLAGS)
+	$(PHOSPHOR_LOGGING_CFLAGS) \
+	$(CODE_COVERAGE_CXXFLAGS)
 
 swampd_SOURCES = main.cpp util.cpp
 swampd_LDADD = \
@@ -50,7 +51,8 @@ swampd_LDADD = \
 	libswampd.la
 swampd_CXXFLAGS = \
 	$(SDBUSPLUS_CFLAGS) \
-	$(PTHREAD_CFLAGS)
+	$(PTHREAD_CFLAGS) \
+	$(CODE_COVERAGE_CXXFLAGS)
 
 noinst_LTLIBRARIES = libswampd.la
 libswampd_la_LDFLAGS = -static
@@ -64,6 +66,7 @@ libswampd_la_CXXFLAGS = \
 	$(SDBUSPLUS_CFLAGS) \
 	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
 	$(PHOSPHOR_LOGGING_CFLAGS) \
+	$(CODE_COVERAGE_CXXFLAGS) \
 	-flto
 
 libswampd_la_SOURCES = \
@@ -117,6 +120,7 @@ libmanualcmds_la_CXXFLAGS = \
 	$(PHOSPHOR_DBUS_INTERFACES_CFLAGS) \
 	$(PHOSPHOR_LOGGING_CFLAGS) \
 	$(LIBIPMID_CFLAGS) \
+	$(CODE_COVERAGE_CXXFLAGS) \
 	-flto
 
 SUBDIRS = . test
