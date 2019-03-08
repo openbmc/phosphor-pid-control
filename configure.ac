@@ -46,11 +46,6 @@ PKG_CHECK_MODULES(
     [AC_MSG_ERROR([Could not find libipmid...openbmc/phosphor-host-ipmid package required])]
 )
 AC_CHECK_HEADER(
-    experimental/filesystem,
-    [],
-    [AC_MSG_ERROR([Could not find experimental/filesystem...libstdc++fs development package required])]
-)
-AC_CHECK_HEADER(
     nlohmann/json.hpp,
     [],
     [AC_MSG_ERROR([Could not find nlohmann/json.hpp])]

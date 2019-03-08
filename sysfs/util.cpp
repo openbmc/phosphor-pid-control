@@ -16,7 +16,7 @@
 
 #include "sysfs/util.hpp"
 
-#include <experimental/filesystem>
+#include <filesystem>
 #include <iostream>
 #include <string>
 
@@ -31,7 +31,7 @@
  */
 
 static constexpr auto platform = "/sys/devices/platform/";
-namespace fs = std::experimental::filesystem;
+namespace fs = std::filesystem;
 
 std::string FixupPath(std::string original)
 {
