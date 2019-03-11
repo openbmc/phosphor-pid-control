@@ -30,8 +30,7 @@
 #include "threads/busthread.hpp"
 #include "util.hpp"
 
-#include <getopt.h>
-
+#include <CLI/CLI.hpp>
 #include <chrono>
 #include <iostream>
 #include <map>
@@ -60,39 +59,21 @@ int main(int argc, char* argv[])
 {
     int rc = 0;
     std::string configPath = "";
+    tuningLoggingPath = "";
 
-    while (1)
-    {
-        // clang-format off
-        static struct option long_options[] = {
-            {"conf", required_argument, 0, 'c'},
-            {"tuning", required_argument, 0, 't'},
-            {0, 0, 0, 0}
-        };
-        // clang-format on
+    CLI::App app{"OpenBMC Fan Control Daemon"};
 
-        int option_index = 0;
-        int c = getopt_long(argc, argv, "t:c:", long_options, &option_index);
+    app.add_option("-c,--conf", configPath,
+                   "Optional parameter to specify configuration at run-time")
+        ->check(CLI::ExistingFile);
+    app.add_option("-t,--tuning", tuningLoggingPath,
+                   "Optional parameter to specify tuning logging path, and "
+                   "enable tuning")
+        ->check(CLI::ExistingFile);
 
-        if (c == -1)
-        {
-            break;
-        }
+    CLI11_PARSE(app, argc, argv);
 
-        switch (c)
-        {
-            case 'c':
-                configPath = std::string{optarg};
-                break;
-            case 't':
-                tuningLoggingEnabled = true;
-                tuningLoggingPath = std::string{optarg};
-                break;
-            default:
-                /* skip garbage. */
-                continue;
-        }
-    }
+    tuningLoggingEnabled = (tuningLoggingPath.length() > 0);
 
     auto modeControlBus = sdbusplus::bus::new_system();
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";

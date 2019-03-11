@@ -50,6 +50,12 @@ AC_CHECK_HEADER(
     [],
     [AC_MSG_ERROR([Could not find nlohmann/json.hpp])]
 )
+# We need the header only CLI library
+AC_CHECK_HEADERS(
+    [CLI/CLI.hpp],
+    [],
+    [AC_MSG_ERROR([Could not find CLI11 CLI/CLI.hpp])]
+)
 AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
 
 # Checks for library functions.
