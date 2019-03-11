@@ -80,7 +80,7 @@ static void driveGoal(int64_t& seriesCnt, int64_t setPwm, int64_t goal,
 
     while (reading)
     {
-        bool check = false;
+        bool check;
         ReadReturn r0 = fan0->read();
         ReadReturn r1 = fan1->read();
         int64_t n0 = static_cast<int64_t>(r0.value);
