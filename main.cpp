@@ -21,21 +21,24 @@
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
-#include "pid/pidthread.hpp"
+#include "pid/pidloop.hpp"
 #include "pid/tuning.hpp"
 #include "pid/zone.hpp"
 #include "sensors/builder.hpp"
 #include "sensors/buildjson.hpp"
 #include "sensors/manager.hpp"
-#include "threads/busthread.hpp"
 #include "util.hpp"
 
 #include <getopt.h>
 
+#include <boost/asio/io_context.hpp>
+#include <boost/asio/steady_timer.hpp>
 #include <chrono>
 #include <iostream>
 #include <map>
 #include <memory>
+#include <sdbusplus/asio/connection.hpp>
+#include <sdbusplus/asio/object_server.hpp>
 #include <sdbusplus/bus.hpp>
 #include <thread>
 #include <unordered_map>
@@ -142,42 +145,24 @@ int main(int argc, char* argv[])
     auto& hostSensorBus = mgmr.getHostBus();
     auto& passiveListeningBus = mgmr.getPassiveBus();
 
-    std::cerr << "Starting threads\n";
+    boost::asio::io_context io;
+    sdbusplus::asio::connection passiveBus(io, passiveListeningBus.release());
 
-    /* TODO(venture): Ask SensorManager if we have any passive sensors. */
-    struct ThreadParams p = {std::ref(passiveListeningBus), ""};
-    std::thread l(busThread, std::ref(p));
+    sdbusplus::asio::connection hostBus(io, hostSensorBus.release());
+    hostBus.request_name("xyz.openbmc_project.Hwmon.external");
 
-    /* TODO(venture): Ask SensorManager if we have any host sensors. */
-    static constexpr auto hostBus = "xyz.openbmc_project.Hwmon.external";
-    struct ThreadParams e = {std::ref(hostSensorBus), hostBus};
-    std::thread te(busThread, std::ref(e));
+    sdbusplus::asio::connection modeBus(io, modeControlBus.release());
+    modeBus.request_name("xyz.openbmc_project.State.FanCtrl");
 
-    static constexpr auto modeBus = "xyz.openbmc_project.State.FanCtrl";
-    struct ThreadParams m = {std::ref(modeControlBus), modeBus};
-    std::thread tm(busThread, std::ref(m));
+    std::list<boost::asio::steady_timer> timers;
 
-    std::vector<std::thread> zoneThreads;
-
-    /* TODO(venture): This was designed to have one thread per zone, but really
-     * it could have one thread for all the zones and iterate through each
-     * sequentially as it goes -- and it'd probably be fast enough to do that,
-     * however, a system isn't likely going to have more than a couple zones.
-     * If it only has a couple zones, then this is fine.
-     */
     for (const auto& i : zones)
     {
+        auto& timer = timers.emplace_back(io);
         std::cerr << "pushing zone" << std::endl;
-        zoneThreads.push_back(std::thread(pidControlThread, i.second.get()));
+        pidControlLoop(i.second.get(), timer);
     }
 
-    l.join();
-    te.join();
-    tm.join();
-    for (auto& t : zoneThreads)
-    {
-        t.join();
-    }
-
+    io.run();
     return rc;
 }

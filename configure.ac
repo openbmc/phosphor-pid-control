@@ -50,7 +50,21 @@ AC_CHECK_HEADER(
     [],
     [AC_MSG_ERROR([Could not find nlohmann/json.hpp])]
 )
-AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
+
+# check for boost headers
+AC_CHECK_HEADER(
+    boost/asio/io_context.hpp,
+    [],
+    [AC_MSG_ERROR([Could not find boost/asio/io_context.hpp])]
+)
+AC_CHECK_HEADER(
+    boost/asio/steady_timer.hpp,
+    [],
+    [AC_MSG_ERROR([Could not find boost/asio/steady_timer.hpp])]
+)
+AX_APPEND_COMPILE_FLAGS(["-DBOOST_ASIO_DISABLE_THREADS"], [CPPFLAGS])
+AX_APPEND_COMPILE_FLAGS(["-DBOOST_ERROR_CODE_HEADER_ONLY"], [CPPFLAGS])
+AX_APPEND_COMPILE_FLAGS(["-DBOOST_SYSTEM_NO_DEPRECATED"], [CPPFLAGS])
 
 # Checks for library functions.
 LT_INIT # Required for systemd linking
@@ -64,19 +78,13 @@ AC_ARG_ENABLE([tests], AC_HELP_STRING([--disable-tests],
 AS_IF([test "x$enable_tests" != "xno"], [
     PKG_CHECK_MODULES([GTEST], [gtest], [], [true])
     PKG_CHECK_MODULES([GMOCK], [gmock], [], [true])
-    AX_PTHREAD
 
     AX_SAVE_FLAGS_WITH_PREFIX(OLD, [CPPFLAGS])
     AX_APPEND_COMPILE_FLAGS([$GTEST_CFLAGS], [CPPFLAGS])
     AC_LANG_PUSH([C++])
     AC_CHECK_HEADERS([gtest/gtest.h], [
         AS_IF([test "x$GTEST_CFLAGS" = "x"], [
-            AS_IF([test "x$PTHREAD_CFLAGS" = "x"], [
-                AX_APPEND_COMPILE_FLAGS(["-DGTEST_HAS_PTHREAD=0"], [GTEST_CFLAGS])
-            ], [
-                AX_APPEND_COMPILE_FLAGS(["-DGTEST_HAS_PTHREAD=1"], [GTEST_CFLAGS])
-                AX_APPEND_COMPILE_FLAGS([$PTHREAD_CFLAGS], [GTEST_CFLAGS])
-            ])
+            AX_APPEND_COMPILE_FLAGS(["-DGTEST_HAS_PTHREAD=0"], [GTEST_CFLAGS])
         ])
     ], [
         AS_IF([test "x$enable_tests" = "xyes"], [
