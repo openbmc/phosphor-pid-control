@@ -55,11 +55,9 @@ setsensor_CXXFLAGS = \
 swampd_SOURCES = main.cpp util.cpp
 swampd_LDADD = \
 	$(SDBUSPLUS_LIBS) \
-	$(PTHREAD_LIBS) \
 	libswampd.la
 swampd_CXXFLAGS = \
 	$(SDBUSPLUS_CFLAGS) \
-	$(PTHREAD_CFLAGS) \
 	$(CODE_COVERAGE_CXXFLAGS)
 
 noinst_LTLIBRARIES = libswampd.la
@@ -102,9 +100,8 @@ libswampd_la_SOURCES = \
 	pid/buildjson.cpp \
 	pid/zone.cpp \
 	pid/util.cpp \
-	pid/pidthread.cpp \
+	pid/pidloop.cpp \
 	pid/tuning.cpp \
-	threads/busthread.cpp \
 	build/buildjson.cpp \
 	experiments/drive.cpp
 
