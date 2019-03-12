@@ -56,7 +56,22 @@ AC_CHECK_HEADERS(
     [],
     [AC_MSG_ERROR([Could not find CLI11 CLI/CLI.hpp])]
 )
-AX_PTHREAD([], [AC_MSG_ERROR(["pthread required and not found"])])
+
+# check for boost headers
+AC_CHECK_HEADER(
+    boost/asio/io_context.hpp,
+    [],
+    [AC_MSG_ERROR([Could not find boost/asio/io_context.hpp])]
+)
+AC_CHECK_HEADER(
+    boost/asio/steady_timer.hpp,
+    [],
+    [AC_MSG_ERROR([Could not find boost/asio/steady_timer.hpp])]
+)
+AX_APPEND_COMPILE_FLAGS(["-DBOOST_ASIO_DISABLE_THREADS"], [CPPFLAGS])
+AX_APPEND_COMPILE_FLAGS(["-DBOOST_ERROR_CODE_HEADER_ONLY"], [CPPFLAGS])
+AX_APPEND_COMPILE_FLAGS(["-DBOOST_SYSTEM_NO_DEPRECATED"], [CPPFLAGS])
+AX_APPEND_COMPILE_FLAGS(["-DBOOST_ASIO_NO_DEPRECATED"], [CPPFLAGS])
 
 # Checks for library functions.
 LT_INIT # Required for systemd linking
