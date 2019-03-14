@@ -54,7 +54,7 @@ class PIDZone : public ZoneInterface, public ModeObject
     {
         if (tuningLoggingEnabled && !tuningLoggingPath.empty())
         {
-            _log.open(tuningLoggingPath);
+            _log.open(tuningLoggingPath + std::to_string(zone));
         }
     }
 
