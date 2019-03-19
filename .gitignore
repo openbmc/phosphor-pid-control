@@ -20,6 +20,7 @@ aclocal.m4
 ar-lib
 arm-openbmc-linux-gnueabi-libtool
 autom4te.cache/
+/aminclude_static.am
 compile
 config.guess
 config.h

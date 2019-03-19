@@ -3,7 +3,7 @@ AC_PREREQ([2.69])
 AC_INIT([swampd], [0.1], [https://github.com/openbmc/phosphor-pid-control/issues])
 AC_LANG([C++])
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE([subdir-objects -Wall -Werror foreign dist-xz])
+AM_INIT_AUTOMAKE([subdir-objects -Wall -Wno-portability -Werror foreign dist-xz])
 AM_SILENT_RULES([yes])
 
 # Make sure the default CFLAGS of `-O2 -g` don't override CODE_COVERAGE_CFLAGS
@@ -132,10 +132,13 @@ AS_IF([test "x$enable_tests" != "xno"], [
 
 # Code coverage
 AX_CODE_COVERAGE
-AM_EXTRA_RECURSIVE_TARGETS([check-code-coverage])
 AS_IF([test "x$CODE_COVERAGE_ENABLED" = "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DHAVE_GCOV], [CODE_COVERAGE_CPPFLAGS])
 ])
+m4_ifdef([_AX_CODE_COVERAGE_RULES],
+    [AM_CONDITIONAL(AUTOCONF_CODE_COVERAGE_2019_01_06, [true])],
+    [AM_CONDITIONAL(AUTOCONF_CODE_COVERAGE_2019_01_06, [false])])
+AX_ADD_AM_MACRO_STATIC([])
 
 AC_ARG_ENABLE([oe-sdk],
     AS_HELP_STRING(
