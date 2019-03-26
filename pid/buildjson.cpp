@@ -56,7 +56,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
     }
     else
     {
-        j.at("positiveHysteresis").get_to(c.pidInfo.positiveHysteresis);
+        p.at("positiveHysteresis").get_to(c.pidInfo.positiveHysteresis);
     }
 
     auto negativeHysteresis = p.find("negativeHysteresis");
@@ -66,7 +66,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
     }
     else
     {
-        j.at("negativeHysteresis").get_to(c.pidInfo.negativeHysteresis);
+        p.at("negativeHysteresis").get_to(c.pidInfo.negativeHysteresis);
     }
 }
 } // namespace conf
