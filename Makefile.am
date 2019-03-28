@@ -38,7 +38,7 @@ AM_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS)
 AM_CFLAGS = $(CODE_COVERAGE_CFLAGS)
 AM_CXXFLAGS = $(CODE_COVERAGE_CXXFLAGS)
 
-sbin_PROGRAMS = swampd setsensor
+bin_PROGRAMS = swampd setsensor
 
 setsensor_SOURCES = setsensor.cpp
 setsensor_LDADD = \
