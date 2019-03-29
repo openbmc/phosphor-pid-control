@@ -37,36 +37,101 @@ void from_json(const json& j, conf::ControllerInfo& c)
      * accordingly.
      */
     auto p = j.at("pid");
-    p.at("samplePeriod").get_to(c.pidInfo.ts);
-    p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
-    p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
-    p.at("feedFwdOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
-    p.at("feedFwdGainCoeff").get_to(c.pidInfo.feedFwdGain);
-    p.at("integralLimit_min").get_to(c.pidInfo.integralLimit.min);
-    p.at("integralLimit_max").get_to(c.pidInfo.integralLimit.max);
-    p.at("outLim_min").get_to(c.pidInfo.outLim.min);
-    p.at("outLim_max").get_to(c.pidInfo.outLim.max);
-    p.at("slewNeg").get_to(c.pidInfo.slewNeg);
-    p.at("slewPos").get_to(c.pidInfo.slewPos);
-
-    auto positiveHysteresis = p.find("positiveHysteresis");
-    if (positiveHysteresis == p.end())
+    if (c.type != "stepwise")
     {
-        c.pidInfo.positiveHysteresis = 0.0;
+        p.at("samplePeriod").get_to(c.pidInfo.ts);
+        p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
+        p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
+        p.at("feedFwdOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
+        p.at("feedFwdGainCoeff").get_to(c.pidInfo.feedFwdGain);
+        p.at("integralLimit_min").get_to(c.pidInfo.integralLimit.min);
+        p.at("integralLimit_max").get_to(c.pidInfo.integralLimit.max);
+        p.at("outLim_min").get_to(c.pidInfo.outLim.min);
+        p.at("outLim_max").get_to(c.pidInfo.outLim.max);
+        p.at("slewNeg").get_to(c.pidInfo.slewNeg);
+        p.at("slewPos").get_to(c.pidInfo.slewPos);
+
+        auto positiveHysteresis = p.find("positiveHysteresis");
+        if (positiveHysteresis == p.end())
+        {
+            c.pidInfo.positiveHysteresis = 0.0;
+        }
+        else
+        {
+            p.at("positiveHysteresis").get_to(c.pidInfo.positiveHysteresis);
+        }
+
+        auto negativeHysteresis = p.find("negativeHysteresis");
+        if (negativeHysteresis == p.end())
+        {
+            c.pidInfo.negativeHysteresis = 0.0;
+        }
+        else
+        {
+            p.at("negativeHysteresis").get_to(c.pidInfo.negativeHysteresis);
+        }
     }
     else
     {
-        p.at("positiveHysteresis").get_to(c.pidInfo.positiveHysteresis);
-    }
+        p.at("samplePeriod").get_to(c.stepwiseInfo.ts);
+        p.at("isCeiling").get_to(c.stepwiseInfo.isCeiling);
 
-    auto negativeHysteresis = p.find("negativeHysteresis");
-    if (negativeHysteresis == p.end())
-    {
-        c.pidInfo.negativeHysteresis = 0.0;
-    }
-    else
-    {
-        p.at("negativeHysteresis").get_to(c.pidInfo.negativeHysteresis);
+        for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+        {
+            c.stepwiseInfo.reading[i] =
+                std::numeric_limits<double>::quiet_NaN();
+            c.stepwiseInfo.output[i] = std::numeric_limits<double>::quiet_NaN();
+        }
+
+        auto reading = p.find("reading");
+        if (reading != p.end())
+        {
+            auto r = p.at("reading");
+            for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+            {
+                auto n = r.find(std::to_string(i));
+                if (n != r.end())
+                {
+                    r.at(std::to_string(i)).get_to(c.stepwiseInfo.reading[i]);
+                }
+            }
+        }
+
+        auto output = p.find("output");
+        if (output != p.end())
+        {
+            auto o = p.at("output");
+            for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+            {
+                auto n = o.find(std::to_string(i));
+                if (n != o.end())
+                {
+                    o.at(std::to_string(i)).get_to(c.stepwiseInfo.output[i]);
+                }
+            }
+        }
+
+        auto positiveHysteresis = p.find("positiveHysteresis");
+        if (positiveHysteresis == p.end())
+        {
+            c.stepwiseInfo.positiveHysteresis = 0.0;
+        }
+        else
+        {
+            p.at("positiveHysteresis")
+                .get_to(c.stepwiseInfo.positiveHysteresis);
+        }
+
+        auto negativeHysteresis = p.find("negativeHysteresis");
+        if (negativeHysteresis == p.end())
+        {
+            c.stepwiseInfo.negativeHysteresis = 0.0;
+        }
+        else
+        {
+            p.at("negativeHysteresis")
+                .get_to(c.stepwiseInfo.negativeHysteresis);
+        }
     }
 }
 } // namespace conf
