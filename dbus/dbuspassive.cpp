@@ -42,8 +42,15 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     auto tempBus = sdbusplus::bus::new_system();
 
     /* service == busname */
-    std::string path = getSensorPath(type, id);
-
+    std::string path;
+    if (id.find("nvme") ==  std::string::npos)
+    {
+        path = getSensorPath(type, id);
+    }
+    else
+    {
+        path = std::string("/xyz/openbmc_project/" + id);
+    }
     struct SensorProperties settings;
     bool failed;
 
