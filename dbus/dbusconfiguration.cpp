@@ -724,7 +724,7 @@ void init(sdbusplus::bus::bus& bus)
                 }
                 if (findNegHyst != base.end())
                 {
-                    info.stepwiseInfo.positiveHysteresis = std::visit(
+                    info.stepwiseInfo.negativeHysteresis = std::visit(
                         VariantToDoubleVisitor(), findNegHyst->second);
                 }
                 std::vector<double> readings =
