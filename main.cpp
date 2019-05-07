@@ -48,45 +48,43 @@
 #include "dbus/dbusconfiguration.hpp"
 #endif
 
-/* The YAML converted sensor list. */
+/* The configuration converted sensor list. */
 std::map<std::string, struct conf::SensorConfig> sensorConfig = {};
-/* The YAML converted PID list. */
+/* The configuration converted PID list. */
 std::map<int64_t, conf::PIDConf> zoneConfig = {};
-/* The YAML converted Zone configuration. */
+/* The configuration converted Zone configuration. */
 std::map<int64_t, struct conf::ZoneConfig> zoneDetailsConfig = {};
 
 /** the swampd daemon will check for the existence of this file. */
 constexpr auto jsonConfigurationPath = "/usr/share/swampd/config.json";
+std::string configPath = "";
 
-int main(int argc, char* argv[])
+/* async io context for operation */
+boost::asio::io_context io;
+
+/* buses for system control */
+static sdbusplus::asio::connection modeControlBus(io);
+static sdbusplus::asio::connection
+    hostBus(io, sdbusplus::bus::new_system().release());
+static sdbusplus::asio::connection
+    passiveBus(io, sdbusplus::bus::new_system().release());
+
+void restartControlLoops()
 {
-    int rc = 0;
-    std::string configPath = "";
-    tuningLoggingPath = "";
+    static SensorManager mgmr;
+    static std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones;
+    static std::list<boost::asio::steady_timer> timers;
 
-    CLI::App app{"OpenBMC Fan Control Daemon"};
-
-    app.add_option("-c,--conf", configPath,
-                   "Optional parameter to specify configuration at run-time")
-        ->check(CLI::ExistingFile);
-    app.add_option("-t,--tuning", tuningLoggingPath,
-                   "Optional parameter to specify tuning logging path, and "
-                   "enable tuning")
-        ->check(CLI::ExistingFile);
-
-    CLI11_PARSE(app, argc, argv);
-
-    tuningLoggingEnabled = (tuningLoggingPath.length() > 0);
-
-    auto modeControlBus = sdbusplus::bus::new_system();
-    static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
-    // Create a manager for the ModeBus because we own it.
-    sdbusplus::server::manager::manager(modeControlBus, modeRoot);
+    timers.clear();
 
 #if CONFIGURE_DBUS
+
+    static boost::asio::steady_timer reloadTimer(io);
+    if (!dbus_configuration::init(modeControlBus, reloadTimer))
     {
-        dbus_configuration::init(modeControlBus);
+        return; // configuration not ready
     }
+
 #else
     const std::string& path =
         (configPath.length() > 0) ? configPath : jsonConfigurationPath;
@@ -108,42 +106,55 @@ int main(int argc, char* argv[])
     }
 #endif
 
-    SensorManager mgmr = buildSensors(sensorConfig);
-    std::unordered_map<int64_t, std::unique_ptr<PIDZone>> zones =
-        buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
+    mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
+    zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
 
     if (0 == zones.size())
     {
         std::cerr << "No zones defined, exiting.\n";
-        return rc;
+        std::exit(EXIT_FAILURE);
     }
+
+    for (const auto& i : zones)
+    {
+        auto& timer = timers.emplace_back(io);
+        std::cerr << "pushing zone " << i.first << "\n";
+        pidControlLoop(i.second.get(), timer);
+    }
+}
+
+int main(int argc, char* argv[])
+{
+    tuningLoggingPath = "";
+
+    CLI::App app{"OpenBMC Fan Control Daemon"};
+
+    app.add_option("-c,--conf", configPath,
+                   "Optional parameter to specify configuration at run-time")
+        ->check(CLI::ExistingFile);
+    app.add_option("-t,--tuning", tuningLoggingPath,
+                   "Optional parameter to specify tuning logging path, and "
+                   "enable tuning")
+        ->check(CLI::ExistingFile);
+
+    CLI11_PARSE(app, argc, argv);
+
+    tuningLoggingEnabled = (tuningLoggingPath.length() > 0);
+
+    static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
+    // Create a manager for the ModeBus because we own it.
+    sdbusplus::server::manager::manager(
+        static_cast<sdbusplus::bus::bus&>(modeControlBus), modeRoot);
+    hostBus.request_name("xyz.openbmc_project.Hwmon.external");
+    modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
 
     /*
      * All sensors are managed by one manager, but each zone has a pointer to
      * it.
      */
 
-    auto& hostSensorBus = mgmr.getHostBus();
-    auto& passiveListeningBus = mgmr.getPassiveBus();
-
-    boost::asio::io_context io;
-    sdbusplus::asio::connection passiveBus(io, passiveListeningBus.release());
-
-    sdbusplus::asio::connection hostBus(io, hostSensorBus.release());
-    hostBus.request_name("xyz.openbmc_project.Hwmon.external");
-
-    sdbusplus::asio::connection modeBus(io, modeControlBus.release());
-    modeBus.request_name("xyz.openbmc_project.State.FanCtrl");
-
-    std::list<boost::asio::steady_timer> timers;
-
-    for (const auto& i : zones)
-    {
-        auto& timer = timers.emplace_back(io);
-        std::cerr << "pushing zone" << std::endl;
-        pidControlLoop(i.second.get(), timer);
-    }
+    restartControlLoops();
 
     io.run();
-    return rc;
+    return 0;
 }

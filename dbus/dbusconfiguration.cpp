@@ -14,19 +14,21 @@
 // limitations under the License.
 */
 
+#include "../util.hpp"
 #include "conf.hpp"
 #include "dbus/util.hpp"
 
 #include <algorithm>
+#include <boost/asio/steady_timer.hpp>
 #include <chrono>
 #include <functional>
 #include <iostream>
+#include <list>
 #include <regex>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/exception.hpp>
 #include <set>
-#include <thread>
 #include <unordered_map>
 #include <variant>
 
@@ -139,16 +141,6 @@ void debugPrint(void)
     std::cout << "}\n\n";
 }
 
-int eventHandler(sd_bus_message*, void*, sd_bus_error*)
-{
-    // do a brief sleep as we tend to get a bunch of these events at
-    // once
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    std::cout << "New configuration detected, restarting\n.";
-    std::exit(EXIT_SUCCESS); // service file should make us restart
-    return 1;
-}
-
 size_t getZoneIndex(const std::string& name, std::vector<std::string>& zones)
 {
     auto it = std::find(zones.begin(), zones.end(), name);
@@ -229,8 +221,74 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
     return ret;
 }
 
-void init(sdbusplus::bus::bus& bus)
+int eventHandler(sd_bus_message*, void* context, sd_bus_error*)
 {
+
+    if (context == nullptr)
+    {
+        throw std::runtime_error("Invalid match");
+    }
+    boost::asio::steady_timer* timer =
+        static_cast<boost::asio::steady_timer*>(context);
+
+    // do a brief sleep as we tend to get a bunch of these events at
+    // once
+    timer->expires_after(std::chrono::seconds(2));
+    timer->async_wait([](const boost::system::error_code ec) {
+        if (ec == boost::asio::error::operation_aborted)
+        {
+            /* another timer started*/
+            return;
+        }
+
+        std::cout << "New configuration detected, reloading\n.";
+        restartControlLoops();
+    });
+
+    return 1;
+}
+
+void createMatches(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
+{
+    // this is a list because the matches can't be moved
+    static std::list<sdbusplus::bus::match::match> matches;
+
+    const std::array<std::string, 5> interfaces = {
+        thermalControlIface, fanProfileConfigurationIface,
+        pidConfigurationInterface, pidZoneConfigurationInterface,
+        stepwiseConfigurationInterface};
+
+    // this list only needs to be created once
+    if (!matches.empty())
+    {
+        return;
+    }
+
+    // we restart when the configuration changes or there are new sensors
+    for (const auto& interface : interfaces)
+    {
+        matches.emplace_back(
+            bus,
+            "type='signal',member='PropertiesChanged',arg0namespace='" +
+                interface + "'",
+            eventHandler, &timer);
+    }
+    matches.emplace_back(
+        bus,
+        "type='signal',member='InterfacesAdded',arg0path='/xyz/openbmc_project/"
+        "sensors/'",
+        eventHandler, &timer);
+}
+
+bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
+{
+
+    sensorConfig.clear();
+    zoneConfig.clear();
+    zoneDetailsConfig.clear();
+
+    createMatches(bus, timer);
+
     using DbusVariantType =
         std::variant<uint64_t, int64_t, double, std::string,
                      std::vector<std::string>, std::vector<double>>;
@@ -239,27 +297,6 @@ void init(sdbusplus::bus::bus& bus)
         sdbusplus::message::object_path,
         std::unordered_map<std::string,
                            std::unordered_map<std::string, DbusVariantType>>>;
-
-    // restart on configuration properties changed
-    static sdbusplus::bus::match::match configMatch(
-        bus,
-        "type='signal',member='PropertiesChanged',arg0namespace='" +
-            std::string(pidConfigurationInterface) + "'",
-        eventHandler);
-
-    // restart on profile change
-    static sdbusplus::bus::match::match profileMatch(
-        bus,
-        "type='signal',member='PropertiesChanged',arg0namespace='" +
-            std::string(thermalControlIface) + "'",
-        eventHandler);
-
-    // restart on sensors changed
-    static sdbusplus::bus::match::match sensorAdded(
-        bus,
-        "type='signal',member='InterfacesAdded',arg0path='/xyz/openbmc_project/"
-        "sensors/'",
-        eventHandler);
 
     auto mapper =
         bus.new_method_call("xyz.openbmc_project.ObjectMapper",
@@ -768,12 +805,10 @@ void init(sdbusplus::bus::bus& bus)
     }
     if (zoneConfig.empty() || zoneDetailsConfig.empty())
     {
-        std::cerr << "No fan zones, application pausing until reboot\n";
-        while (1)
-        {
-            bus.process_discard();
-            bus.wait();
-        }
+        std::cerr
+            << "No fan zones, application pausing until new configuration\n";
+        return false;
     }
+    return true;
 }
 } // namespace dbus_configuration
