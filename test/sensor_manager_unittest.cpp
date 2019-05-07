@@ -24,7 +24,7 @@ TEST(SensorManagerTest, BoringConstructorTest)
                     IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
         .WillOnce(Return(0));
 
-    SensorManager s(std::move(bus_mock_passive), std::move(bus_mock_host));
+    SensorManager s(bus_mock_passive, bus_mock_host);
     // Success
 }
 
@@ -43,7 +43,7 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest)
                     IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
         .WillOnce(Return(0));
 
-    SensorManager s(std::move(bus_mock_passive), std::move(bus_mock_host));
+    SensorManager s(bus_mock_passive, bus_mock_host);
 
     std::string name = "name";
     std::string type = "invalid";
