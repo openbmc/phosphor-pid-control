@@ -24,3 +24,5 @@ enum class IOInterfaceType
 IOInterfaceType getWriteInterfaceType(const std::string& path);
 
 IOInterfaceType getReadInterfaceType(const std::string& path);
+
+void restartControlLoops(void);

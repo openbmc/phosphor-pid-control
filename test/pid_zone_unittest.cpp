@@ -37,7 +37,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
                     IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
         .WillOnce(Return(0));
 
-    SensorManager m(std::move(bus_mock_passive), std::move(bus_mock_host));
+    SensorManager m(bus_mock_passive, bus_mock_host);
 
     bool defer = true;
     const char* objPath = "/path/";
@@ -74,7 +74,7 @@ class PidZoneTest : public ::testing::Test
         auto bus_mock_mode = sdbusplus::get_mocked_new(&sdbus_mock_mode);
 
         // Compiler weirdly not happy about just instantiating mgr(...);
-        SensorManager m(std::move(bus_mock_passive), std::move(bus_mock_host));
+        SensorManager m(bus_mock_passive, bus_mock_host);
         mgr = std::move(m);
 
         SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface,
