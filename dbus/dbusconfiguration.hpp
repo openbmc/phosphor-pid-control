@@ -21,5 +21,5 @@
 
 namespace dbus_configuration
 {
-void init(sdbusplus::bus::bus& bus);
+bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer);
 } // namespace dbus_configuration
