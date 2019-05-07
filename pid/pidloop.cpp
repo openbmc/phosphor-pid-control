@@ -57,6 +57,11 @@ void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer, bool first,
     timer.expires_after(std::chrono::milliseconds(100));
     timer.async_wait(
         [zone, &timer, ms100cnt](const boost::system::error_code& ec) mutable {
+            if (ec == boost::asio::error::operation_aborted)
+            {
+                return; // timer being canceled, stop loop
+            }
+
             /*
              * This should sleep on the conditional wait for the listen thread
              * to tell us it's in sync.  But then we also need a timeout option
