@@ -54,7 +54,8 @@ class PIDZone : public ZoneInterface, public ModeObject
     {
         if (loggingEnabled)
         {
-            _log.open(loggingPath + std::to_string(zone));
+            /* TODO: Consider using fs::path /= */
+            _log.open(loggingPath + "/zone_" + std::to_string(zone) + ".log");
         }
     }
 
