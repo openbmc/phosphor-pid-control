@@ -71,8 +71,7 @@ int main(int argc, char* argv[])
         ->check(CLI::ExistingFile);
     app.add_option("-t,--tuning", tuningLoggingPath,
                    "Optional parameter to specify tuning logging path, and "
-                   "enable tuning")
-        ->check(CLI::ExistingFile);
+                   "enable tuning");
 
     CLI11_PARSE(app, argc, argv);
 
