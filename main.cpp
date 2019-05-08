@@ -72,7 +72,8 @@ int main(int argc, char* argv[])
                    "Optional parameter to specify configuration at run-time")
         ->check(CLI::ExistingFile);
     app.add_option("-l,--log", loggingPath,
-                   "Optional parameter to specify logging path");
+                   "Optional parameter to specify logging folder")
+        ->check(CLI::ExistingDirectory);
     app.add_flag("-t,--tuning", tuningEnabled, "Enable or disable tuning");
 
     loggingEnabled = (!loggingPath.empty());
