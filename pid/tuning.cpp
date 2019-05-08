@@ -16,5 +16,7 @@
 
 #include <string>
 
-bool tuningLoggingEnabled = false;
-std::string tuningLoggingPath;
+bool tuningEnabled = false;
+
+std::string loggingPath;
+bool loggingEnabled = false;

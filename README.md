@@ -252,10 +252,14 @@ will have.
 The main thread will manage the other threads, and process the initial
 configuration files. It will also register a dbus handler for the OEM message.
 
-### Enabling Logging
+### Enabling Logging & Tuning
 
-By default, swampd won't log tuning information.  To enable this pass "-t" on
-the command line with a pareter of the path to write the log file.
+By default, swampd won't log information.  To enable logging pass "-l" on the
+command line with a parameter that is the folder into which to write the logs.
+
+The log files will be named {folderpath}/zone_{zoneid}.log
+
+To enable tuning, pass "-t" on the command line.
 
 ## Project Information
 

@@ -45,7 +45,7 @@ void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer, bool first,
 {
     if (first)
     {
-        if (tuningLoggingEnabled)
+        if (loggingEnabled)
         {
             zone->initializeLog();
         }
@@ -104,7 +104,7 @@ void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer, bool first,
             // Run the fan PIDs every iteration.
             zone->processFans();
 
-            if (tuningLoggingEnabled)
+            if (loggingEnabled)
             {
                 zone->getLogHandle() << "," << zone->getFailSafeMode();
                 zone->getLogHandle() << std::endl;
