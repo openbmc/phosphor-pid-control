@@ -1,7 +1,7 @@
 #pragma once
 
 #include "interfaces.hpp"
-#include "sysfs/util.hpp"
+#include "util.hpp"
 
 #include <string>
 

@@ -15,7 +15,7 @@
  */
 #include "dbuspassive.hpp"
 
-#include "dbus/util.hpp"
+#include "util.hpp"
 
 #include <chrono>
 #include <cmath>

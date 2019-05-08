@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "util.hpp"
+
 #include "ec/pid.hpp"
 
 #include <cstring>

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "dbus/util.hpp"
+#include "util.hpp"
 
 #include <sdbusplus/bus.hpp>
 #include <string>

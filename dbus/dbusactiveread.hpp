@@ -1,7 +1,7 @@
 #pragma once
 
-#include "dbus/util.hpp"
 #include "interfaces.hpp"
+#include "util.hpp"
 
 #include <memory>
 #include <sdbusplus/bus.hpp>

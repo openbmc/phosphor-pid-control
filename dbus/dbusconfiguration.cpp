@@ -15,7 +15,7 @@
 */
 
 #include "conf.hpp"
-#include "dbus/util.hpp"
+#include "util.hpp"
 
 #include <algorithm>
 #include <chrono>

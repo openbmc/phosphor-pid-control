@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "sysfs/util.hpp"
+#include "util.hpp"
 
 #include <filesystem>
 #include <iostream>
