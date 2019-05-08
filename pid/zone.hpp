@@ -52,9 +52,9 @@ class PIDZone : public ZoneInterface, public ModeObject
         _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _mgr(mgr)
     {
-        if (tuningLoggingEnabled && !tuningLoggingPath.empty())
+        if (loggingEnabled)
         {
-            _log.open(tuningLoggingPath + std::to_string(zone));
+            _log.open(loggingPath + std::to_string(zone));
         }
     }
 

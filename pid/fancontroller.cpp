@@ -115,8 +115,8 @@ void FanController::outputProc(double value)
 {
     double percent = value;
 
-    /* If doing tuning logging, don't go into failsafe mode. */
-    if (!tuningLoggingEnabled)
+    /* If doing tuning, don't go into failsafe mode. */
+    if (!tuningEnabled)
     {
         if (_owner->getFailSafeMode())
         {

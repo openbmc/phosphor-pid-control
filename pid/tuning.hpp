@@ -2,8 +2,12 @@
 
 #include <string>
 
-/** Boolean variable controlling whether tuning logging output is enabled
+/** Boolean variable controlling whether tuning is enabled
  * during this run.
  */
-extern bool tuningLoggingEnabled;
-extern std::string tuningLoggingPath;
+extern bool tuningEnabled;
+/** String variable with the folder for writing logs if logging is enabled.
+ */
+extern std::string loggingPath;
+/** Boolean variable whether loggingPath is non-empty. */
+extern bool loggingEnabled;

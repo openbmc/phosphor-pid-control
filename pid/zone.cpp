@@ -139,7 +139,7 @@ void PIDZone::determineMaxRPMRequest(void)
      */
     max = std::max(getMinThermalRPMSetpoint(), max);
 
-    if (tuningLoggingEnabled)
+    if (tuningEnabled)
     {
         /*
          * We received no setpoints from thermal sensors.
@@ -217,7 +217,7 @@ void PIDZone::updateFanTelemetry(void)
      * is disabled?  I think it's a waste to try and log things even if the
      * data is just being dropped though.
      */
-    if (tuningLoggingEnabled)
+    if (loggingEnabled)
     {
         tstamp now = std::chrono::high_resolution_clock::now();
         _log << std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -237,13 +237,13 @@ void PIDZone::updateFanTelemetry(void)
          * However, these are the fans, so if I'm not getting updated values
          * for them... what should I do?
          */
-        if (tuningLoggingEnabled)
+        if (loggingEnabled)
         {
             _log << "," << r.value;
         }
     }
 
-    if (tuningLoggingEnabled)
+    if (loggingEnabled)
     {
         for (const auto& t : _thermalInputs)
         {
