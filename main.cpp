@@ -62,20 +62,22 @@ int main(int argc, char* argv[])
 {
     int rc = 0;
     std::string configPath = "";
-    tuningLoggingPath = "";
+    loggingPath = "";
+    loggingEnabled = false;
+    tuningEnabled = false;
 
     CLI::App app{"OpenBMC Fan Control Daemon"};
 
     app.add_option("-c,--conf", configPath,
                    "Optional parameter to specify configuration at run-time")
         ->check(CLI::ExistingFile);
-    app.add_option("-t,--tuning", tuningLoggingPath,
-                   "Optional parameter to specify tuning logging path, and "
-                   "enable tuning");
+    app.add_option("-l,--log", loggingPath,
+                   "Optional parameter to specify logging path");
+    app.add_flag("-t,--tuning", tuningEnabled, "Enable or disable tuning");
+
+    loggingEnabled = (!loggingPath.empty());
 
     CLI11_PARSE(app, argc, argv);
-
-    tuningLoggingEnabled = (tuningLoggingPath.length() > 0);
 
     auto modeControlBus = sdbusplus::bus::new_system();
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
