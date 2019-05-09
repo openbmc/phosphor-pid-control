@@ -241,6 +241,21 @@ void PIDZone::updateFanTelemetry(void)
         {
             _log << "," << r.value;
         }
+
+        //check if fan fail.
+        if (sensor->getFailed())
+        {
+            _failSafeSensors.insert(f);
+        }
+        else
+        {
+            // Check if it's in there: remove it.
+            auto kt = _failSafeSensors.find(f);
+            if (kt != _failSafeSensors.end())
+            {
+                _failSafeSensors.erase(kt);
+            }
+        }
     }
 
     if (tuningLoggingEnabled)
