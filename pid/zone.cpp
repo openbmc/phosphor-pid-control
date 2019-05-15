@@ -217,9 +217,9 @@ void PIDZone::updateFanTelemetry(void)
      * is disabled?  I think it's a waste to try and log things even if the
      * data is just being dropped though.
      */
+    tstamp now = std::chrono::high_resolution_clock::now();
     if (loggingEnabled)
     {
-        tstamp now = std::chrono::high_resolution_clock::now();
         _log << std::chrono::duration_cast<std::chrono::milliseconds>(
                     now.time_since_epoch())
                     .count();
@@ -231,7 +231,13 @@ void PIDZone::updateFanTelemetry(void)
         auto sensor = _mgr.getSensor(f);
         ReadReturn r = sensor->read();
         _cachedValuesByName[f] = r.value;
+        int64_t timeout = sensor->getTimeout();
+        tstamp then = r.updated;
 
+        auto duration =
+            std::chrono::duration_cast<std::chrono::seconds>(now - then)
+                .count();
+        auto period = std::chrono::seconds(timeout).count();
         /*
          * TODO(venture): We should check when these were last read.
          * However, these are the fans, so if I'm not getting updated values
@@ -240,6 +246,25 @@ void PIDZone::updateFanTelemetry(void)
         if (loggingEnabled)
         {
             _log << "," << r.value;
+        }
+
+        // check if fan fail.
+        if (sensor->getFailed())
+        {
+            _failSafeSensors.insert(f);
+        }
+        else if (timeout != 0 && duration >= period)
+        {
+            _failSafeSensors.insert(f);
+        }
+        else
+        {
+            // Check if it's in there: remove it.
+            auto kt = _failSafeSensors.find(f);
+            if (kt != _failSafeSensors.end())
+            {
+                _failSafeSensors.erase(kt);
+            }
         }
     }
 
@@ -300,6 +325,9 @@ void PIDZone::initializeCache(void)
     for (const auto& f : _fanInputs)
     {
         _cachedValuesByName[f] = 0;
+
+        // Start all fans in fail-safe mode.
+        _failSafeSensors.insert(f);
     }
 
     for (const auto& t : _thermalInputs)
