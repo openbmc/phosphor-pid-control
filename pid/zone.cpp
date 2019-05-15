@@ -241,6 +241,21 @@ void PIDZone::updateFanTelemetry(void)
         {
             _log << "," << r.value;
         }
+
+        // check if fan fail.
+        if (sensor->getFailed())
+        {
+            _failSafeSensors.insert(f);
+        }
+        else
+        {
+            // Check if it's in there: remove it.
+            auto kt = _failSafeSensors.find(f);
+            if (kt != _failSafeSensors.end())
+            {
+                _failSafeSensors.erase(kt);
+            }
+        }
     }
 
     if (loggingEnabled)
@@ -300,6 +315,9 @@ void PIDZone::initializeCache(void)
     for (const auto& f : _fanInputs)
     {
         _cachedValuesByName[f] = 0;
+
+        // Start all fans in fail-safe mode.
+        _failSafeSensors.insert(f);
     }
 
     for (const auto& t : _thermalInputs)
