@@ -139,9 +139,9 @@ int main(int argc, char* argv[])
         ->check(CLI::ExistingDirectory);
     app.add_flag("-t,--tuning", tuningEnabled, "Enable or disable tuning");
 
-    loggingEnabled = (!loggingPath.empty());
-
     CLI11_PARSE(app, argc, argv);
+
+    loggingEnabled = (!loggingPath.empty());
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     // Create a manager for the ModeBus because we own it.
