@@ -261,6 +261,8 @@ The log files will be named {folderpath}/zone_{zoneid}.log
 
 To enable tuning, pass "-t" on the command line.
 
+See [Logging & Tuning](tuning.md) for more information.
+
 ## Project Information
 
 This project is designed to be a daemon running within the OpenBMC environment.
