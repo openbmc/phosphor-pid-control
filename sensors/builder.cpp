@@ -71,7 +71,6 @@ SensorManager
                     passiveListeningBus, info->type, name, &helper, info);
                 if (ri == nullptr)
                 {
-                    system("pwm_tacho.py -a -d 100");
                     throw SensorBuildException(
                         "Failed to create dbus passive sensor: " + name +
                         " of type: " + info->type);
