@@ -79,6 +79,7 @@ libswampd_la_SOURCES = \
 	notimpl/readonly.cpp \
 	notimpl/writeonly.cpp \
 	dbus/util.cpp \
+	dbus/dbuspassiveredundancy.cpp \
 	dbus/dbuspassive.cpp \
 	dbus/dbusactiveread.cpp \
 	dbus/dbuswrite.cpp \

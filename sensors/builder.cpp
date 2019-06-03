@@ -68,8 +68,23 @@ SensorManager
         switch (rtype)
         {
             case IOInterfaceType::DBUSPASSIVE:
-                ri = DbusPassive::createDbusPassive(
-                    passiveListeningBus, info->type, name, &helper, info);
+                // we only need to make one match based on the dbus object
+                static std::shared_ptr<DbusPassiveRedundancy> redundancy =
+                    std::make_shared<DbusPassiveRedundancy>(
+                        passiveListeningBus);
+
+                if (info->type == "fan")
+                {
+                    ri = DbusPassive::createDbusPassive(
+                        passiveListeningBus, info->type, name, &helper, info,
+                        redundancy);
+                }
+                else
+                {
+                    ri = DbusPassive::createDbusPassive(passiveListeningBus,
+                                                        info->type, name,
+                                                        &helper, info, nullptr);
+                }
                 if (ri == nullptr)
                 {
                     throw SensorBuildException(
