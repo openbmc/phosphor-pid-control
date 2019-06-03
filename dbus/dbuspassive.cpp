@@ -15,6 +15,7 @@
  */
 #include "dbuspassive.hpp"
 
+#include "dbuspassiveredundancy.hpp"
 #include "util.hpp"
 
 #include <chrono>
@@ -27,7 +28,8 @@
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
-    DbusHelperInterface* helper, const conf::SensorConfig* info)
+    DbusHelperInterface* helper, const conf::SensorConfig* info,
+    const std::shared_ptr<DbusPassiveRedundancy>& redundancy)
 {
     if (helper == nullptr)
     {
@@ -68,16 +70,25 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         settings.min = info->min;
     }
 
+    if (type == "fan")
+    {
+        return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
+                                             failed, path, redundancy);
+    }
     return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
-                                         failed);
+                                         failed, path, nullptr);
 }
 
-DbusPassive::DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
-                         const std::string& id, DbusHelperInterface* helper,
-                         const struct SensorProperties& settings, bool failed) :
+DbusPassive::DbusPassive(
+    sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
+    DbusHelperInterface* helper, const struct SensorProperties& settings,
+    bool failed, const std::string& path,
+    const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
     ReadInterface(),
     _bus(bus), _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
-    _id(id), _helper(helper), _failed(failed)
+    _id(id), _helper(helper), _failed(failed), path(path),
+    redundancy(redundancy)
+
 {
     _scale = settings.scale;
     _value = settings.value * pow(10, _scale);
@@ -105,6 +116,14 @@ void DbusPassive::setValue(double value)
 
 bool DbusPassive::getFailed(void) const
 {
+    if (redundancy)
+    {
+        const std::set<std::string>& failures = redundancy->getFailed();
+        if (failures.find(path) != failures.end())
+        {
+            return true;
+        }
+    }
     return _failed;
 }
 
