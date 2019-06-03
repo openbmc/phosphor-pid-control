@@ -1,6 +1,7 @@
 #pragma once
 
 #include "conf.hpp"
+#include "dbuspassiveredundancy.hpp"
 #include "interfaces.hpp"
 #include "util.hpp"
 
@@ -34,14 +35,17 @@ int dbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
 class DbusPassive : public ReadInterface
 {
   public:
-    static std::unique_ptr<ReadInterface>
-        createDbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
-                          const std::string& id, DbusHelperInterface* helper,
-                          const conf::SensorConfig* info);
+    static std::unique_ptr<ReadInterface> createDbusPassive(
+        sdbusplus::bus::bus& bus, const std::string& type,
+        const std::string& id, DbusHelperInterface* helper,
+        const conf::SensorConfig* info,
+        const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
 
     DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
                 const std::string& id, DbusHelperInterface* helper,
-                const struct SensorProperties& settings, bool failed);
+                const struct SensorProperties& settings, bool failed,
+                const std::string& path,
+                const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
 
     ReadReturn read(void) override;
     bool getFailed(void) const override;
@@ -65,6 +69,9 @@ class DbusPassive : public ReadInterface
     double _max = 0;
     double _min = 0;
     bool _failed = false;
+
+    std::string path;
+    std::shared_ptr<DbusPassiveRedundancy> redundancy;
     /* The last time the value was refreshed, not necessarily changed. */
     std::chrono::high_resolution_clock::time_point _updated;
 };
