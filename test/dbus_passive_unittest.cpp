@@ -31,8 +31,8 @@ TEST(DbusPassiveTest, FactoryFailsWithInvalidType)
     DbusHelperMock helper;
     auto info = conf::SensorConfig();
 
-    std::unique_ptr<ReadInterface> ri =
-        DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info);
+    std::unique_ptr<ReadInterface> ri = DbusPassive::createDbusPassive(
+        bus_mock, type, id, &helper, &info, nullptr);
 
     EXPECT_EQ(ri, nullptr);
 }
@@ -50,7 +50,7 @@ TEST(DbusPassiveTest, BoringConstructorTest)
     DbusHelperMock helper;
     struct SensorProperties properties;
 
-    DbusPassive(bus_mock, type, id, &helper, properties, false);
+    DbusPassive(bus_mock, type, id, &helper, properties, false, path, nullptr);
     // Success
 }
 
@@ -77,7 +77,8 @@ class DbusPassiveTestObj : public ::testing::Test
             .WillOnce(Return(false));
 
         auto info = conf::SensorConfig();
-        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info);
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info,
+                                            nullptr);
         passive = reinterpret_cast<DbusPassive*>(ri.get());
         EXPECT_FALSE(passive == nullptr);
     }
