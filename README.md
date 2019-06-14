@@ -21,6 +21,10 @@ should be provided in case of failure or other unknown situation.
 The system will run a control loop for each zone with the attempt to maintain
 the temperature within that zone within the margin for the devices specified.
 
+## Configuring
+
+[How to configure phosphor-pid-control](configure.md)
+
 ## Detailed Design
 
 The software will run as a multi-threaded daemon that runs a control loop for
