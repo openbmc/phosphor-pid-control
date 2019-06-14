@@ -142,73 +142,13 @@ The internal thermometers specified will be read via sysfs.
 Due to data center requirements, the delta between the outgoing air temperature
 and the environmental air temperature must be no greater than 15C.
 
-### IPMI Command Specification
+### IPMI Access to Phosphor-pid-control
 
-Gsys needs the ability to send to the BMC, the margin information on the devices
-that it knows how to read that the BMC cannot. There is no command in IPMI that
-currently supports this use-case, therefore it will be added as an OEM command.
-
-The state of the BMC readable temperature sensors can be read through normal
-IPMI commands and is already supported.
-
-#### OEM Set Control
-
-Gsys needs to be able to set the control of the thermal system to either
-automatic or manual. When manual, the daemon will effectively wait to be told to
-be put back in automatic mode. It is expected in this manual mode that something
-will be controlling the fans via the other commands.
-
-Manual mode is controlled by zone through the following OEM command:
-
-##### Request
-
-Byte | Purpose      | Value
----- | ------------ | -----------------------------------------------------
-`00` | `netfn`      | `0x2e`
-`01` | `command`    | `0x04 (also using manual command)`
-`02` | `oem1`       | `0xcf`
-`03` | `oem2`       | `0xc2`
-`04` | `padding`    | `0x00`
-`05` | `SubCommand` | `Get or Set. Get == 0, Set == 1`
-`06` | `ZoneId`     |
-`07` | `Mode`       | `If Set, Value 1 == Manual Mode, 0 == Automatic Mode`
-
-##### Response
-
-Byte | Purpose   | Value
----- | --------- | -----------------------------------------------------
-`02` | `oem1`    | `0xcf`
-`03` | `oem2`    | `0xc2`
-`04` | `padding` | `0x00`
-`07` | `Mode`    | `If Set, Value 1 == Manual Mode, 0 == Automatic Mode`
-
-#### OEM Get Failsafe Mode
-
-Gbmctool needs to be able to read back whether a zone is in failsafe mode. This
-setting is read-only because it's dynamically determined within Swampd per zone.
-
-Byte | Purpose      | Value
----- | ------------ | ----------------------------------
-`00` | `netfn`      | `0x2e`
-`01` | `command`    | `0x04 (also using manual command)`
-`02` | `oem1`       | `0xcf`
-`03` | `oem2`       | `0xc2`
-`04` | `padding`    | `0x00`
-`05` | `SubCommand` | `Get == 2`
-`06` | `ZoneId`     |
-
-##### Response
-
-Byte | Purpose    | Value
----- | ---------- | -----------------------------------------------
-`02` | `oem1`     | `0xcf`
-`03` | `oem2`     | `0xc2`
-`04` | `padding`  | `0x00`
-`07` | `failsafe` | `1 == in Failsafe Mode, 0 not in failsafe mode`
+[OEM-IPMI Definitions](ipmid.md)
 
 #### Set Sensor Value
 
-Gsys needs to update the thermal controller with information not necessarily
+Tools needs to update the thermal controller with information not necessarily
 available to the BMC. This will comprise of a list of temperature (or margin?)
 sensors that are updated by the set sensor command. Because they don't represent
 real sensors in the system, the set sensor handler can simply broadcast the
@@ -216,13 +156,13 @@ update as a properties update on dbus when it receives the command over IPMI.
 
 #### Set Fan PWM
 
-Gsys can override a specific fan's PWM when we implement the set sensor IPMI
+A tool can override a specific fan's PWM when we implement the set sensor IPMI
 command pathway.
 
 #### Get Fan Tach
 
-Gsys can read fan_tach through the normal IPMI interface presently exported for
-sensors.
+A tool can read fan_tach through the normal IPMI interface presently exported
+for sensors.
 
 ### Sensor Update Loop
 
@@ -267,14 +207,14 @@ See [Logging & Tuning](tuning.md) for more information.
 This project is designed to be a daemon running within the OpenBMC environment.
 It will use a well-defined configuration file to control the temperature of the
 tray components to keep them within operating conditions. It will require
-coordinate with gsys and OpenBMC. Providing a host-side service upstream to talk
-to the BMC is beyond the scope of this project.
+coordinate with host-side tooling and OpenBMC. Providing a host-side service
+upstream to talk to the BMC is beyond the scope of this project.
 
 ## Security Considerations
 
 A rogue client on the host could send invalid thermal information causing
 physical damage to the system. There will be an effort to sanity check all input
-from gsys to alleviate this concern.
+from a host-tool to alleviate this concern.
 
 ## Privacy Considerations
 
@@ -290,11 +230,11 @@ a real system.
 
 Testing the system on real hardware will be performed to verify:
 
-1.  The fallback values are used when gsys isn't reporting.
+1.  The fallback values are used when the host isn't reporting.
 1.  The system behaves as expected given the information it reads.
 
-Unit-tests will provide that we know it validates information from gsys properly
-as well as handles difficult to reproduce edge cases.
+Unit-tests will provide that we know it validates information from the host
+properly as well as handles difficult to reproduce edge cases.
 
 The testing of this project on real hardware can likely fold into the general
 gBMC testing planned.
