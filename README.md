@@ -1,35 +1,9 @@
 # phosphor-pid-control
 
-## Objective
-
-Develop a tray level fan control system that will use exhaust temperature and
-other machine temperature information to control fan speeds in order to keep
-machines within acceptable operating conditions.
-
-Effectively porting the Chromium EC thermal code to run on the BMC and use the
-OpenBMC dbus namespace and IPMI commands.
-
-## Background
-
-Recent server systems come with a general secondary processing system attached
-for the purpose of monitoring and control, generally referred to as a BMC[^2].
-There is a large effort to develop an open source framework for writing
-applications and control systems that will run on the BMC, known as
-OpenBMC[^3]<sup>,</sup>[^4]. Within Google the effort has been internalized
-(while also providing upstream pushes) as gBMC[^5]. The primary goal of OpenBMC
-is to provide support for remote and local system management through a REST
-interface, and also through IPMI[^6] tied together via the system dbus. OpenBMC
-provides many applications and daemons that we can leverage and improve.
-
-The BMC is wired such that it has direct access and control over many
-motherboard components, including fans and temperature sensors[^7]. Therefore,
-it is an ideal location to run a thermal control loop, similar to the EC.
-However, to upstream it will need to follow (as best as possible) the OpenBMC
-specifications for communicating and executing[^8].
-
-IPMI allows for OEM commands to provide custom information flow or system
-control with a BMC. OEM commands are already lined up for certain other accesses
-routed through the BMC, and can be upstreamed for others to use.
+This is a daemon running within the OpenBMC environment. It uses a well-defined
+configuration file to control the temperature of the tray components to keep
+them within operating conditions. It may require coordination with host-side
+tooling and OpenBMC.
 
 ## Overview
 
@@ -59,83 +33,14 @@ share temperature sensors.
 In this figure the communications channels between swampd and ipmid and
 phosphor-hwmon are laid out.
 
-### OpenBMC Upstream
-
-To be upstreamed to OpenBMC for use on open-power systems, we need to follow the
-OpenBMC code style specification[^9] and leverage the dbus framework for reading
-sensors and fan control[^10].
-
-There is already a daemon, which given a configuration file for a hwmon device,
-will add it to the dbus objects namespace which handles queries for values such
-a temperature or fan speed and allows another process to control the fan
-speed[^11]. It is the goal to utilize this other daemon through dbus to read the
-onboard sensors and control the fans.
-
-Because of the present implementation of the dbus interfaces to require
-controlling the fans only via specifying the RPM target, whereas the driver
-we're using for Quanta-Q71l (the first system) only allows writing PWM. This can
-be controlled either directly or via dbus.
-
 ### Zone Specification
 
-A configuration file will need to exist for each board, likely in YAML[^12].
-Similar information will also be necessary for gsys, such that it knows what
-sensors to read and send to the BMC. Presently it does something similar with
-EC, so it shouldn't be unreasonable to do something similar.
+A configuration file will need to exist for each board.
 
 Each zone must have at least one fan that it exclusively controls. Each zone
 must have at least one temperature sensor, but they may be shared.
 
-The external devices specified in the zone must have default information as a
-fallback, while their current temperatures will be provided by gsys. Some
-devices adapt quickly and others slowly, and this distinction will need to be a
-factor and described in the configuration.
-
-The internal thermometers specified will be read via sysfs.
-
-#### A proposed configuration file:
-
-```
-{ZONEID}:
-  {PIDID}:
-    type: "fan" | "margin"
-    ipmi:
-      {IPMI_ID}
-      name: "fan1"
-      readPath: "/xyz/openbmc_project/sensors/fan_tach/fan1"
-      writePath: "/sys/class/hwmon/hwmon0/pwm0"
-    pidinfo:
-      samplerate: 0.1 // sample time in seconds
-      proportionalCoeff: 0.01 // coefficient for proportional
-      integralCoeff: 0.001 // coefficient for integral
-      integral_limit:
-        min: 0
-        max: 100
-      output_limit:
-        min: 0
-        max: 100
-      slewNegative: 0
-      slewPositive: 0
-  {PIDID}:
-    type: "margin"
-    ipmi:
-      {IPMI_ID}
-      name: "sluggish0"
-      readPath: "/xyz/openbmc_project/sensors/external/sluggish0"
-      writePath: ""
-    pidinfo:
-      samplerate: 1 // sample time in seconds
-      proportionalCoeff: 94.0
-      integralCoeff: 2.0
-      integral_limit:
-        min: 3000
-        max: 10000
-      output_limit:
-        min: 3000
-        max: 10000
-      slewNegative: 0
-      slewPositive: 0
-```
+The internal thermometers specified can be read via sysfs or dbus.
 
 ### Chassis Delta
 
@@ -196,54 +101,13 @@ configuration files. It will also register a dbus handler for the OEM message.
 By default, swampd won't log information. To enable logging pass "-l" on the
 command line with a parameter that is the folder into which to write the logs.
 
-The log files will be named {folderpath}/zone_{zoneid}.log
+The log files will be named `{folderpath}/zone_{zoneid}.log`.
 
 To enable tuning, pass "-t" on the command line.
 
 See [Logging & Tuning](tuning.md) for more information.
 
-## Project Information
-
-This project is designed to be a daemon running within the OpenBMC environment.
-It will use a well-defined configuration file to control the temperature of the
-tray components to keep them within operating conditions. It will require
-coordinate with host-side tooling and OpenBMC. Providing a host-side service
-upstream to talk to the BMC is beyond the scope of this project.
-
-## Security Considerations
-
-A rogue client on the host could send invalid thermal information causing
-physical damage to the system. There will be an effort to sanity check all input
-from a host-tool to alleviate this concern.
-
-## Privacy Considerations
-
-This device holds no user data, however, you could profile the types of jobs
-executed on the server by watching its temperatures.
-
-## Testing Plan
-
-Testing individual code logic will be handled through unit-tests, however some
-pieces of code rely on abstractions such that we can swap out dbus with
-something encapsulated such that testing can be done without strictly running on
-a real system.
-
-Testing the system on real hardware will be performed to verify:
-
-1.  The fallback values are used when the host isn't reporting.
-1.  The system behaves as expected given the information it reads.
-
-Unit-tests will provide that we know it validates information from the host
-properly as well as handles difficult to reproduce edge cases.
-
-The testing of this project on real hardware can likely fold into the general
-gBMC testing planned.
-
-## Code Notes
-
-Swampd's primary function is to drive the fans of a system given various inputs.
-
-### Layout
+## Code Layout
 
 The code is broken out into modules as follows:
 
@@ -292,19 +156,3 @@ fleeting1+---->+-------+    +---+---+
                        +-------------------------------+
                               RPM updated by PWM.
 ```
-
-## Notes
-
-[^2]: BMC - Board Management Controller
-[^3]: with url https://github.com/openbmc/openbmc
-[^4]: with url https://github.com/facebook/openbmc
-[^5]: with url http://go/gbmc
-[^6]: with url
-    http://www.intel.com/content/www/us/en/servers/ipmi/ipmi-second-gen-interface-spec-v2-rev1-1.html
-[^7]: Excluding temperature sensors on PCIe cards and other add-ons.
-[^8]: They prefer c++.
-[^9]: With url
-    https://github.com/openbmc/docs/blob/master/cpp-style-and-conventions.md
-[^10]: with url https://github.com/openbmc/phosphor-dbus-interfaces
-[^11]: with url https://github.com/openbmc/phosphor-hwmon
-[^12]: YAML appears to be the configuration language of choice for OpenBMC.
