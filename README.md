@@ -34,15 +34,14 @@ routed through the BMC, and can be upstreamed for others to use.
 ## Overview
 
 The BMC will run a daemon that controls the fans by pre-defined zones. The
-application will use thermal control, such that each defined zone is kept
-within a range and adjusted based on thermal information provided from locally
-readable sensors as well as host-provided information over an IPMI OEM
-command.
+application will use thermal control, such that each defined zone is kept within
+a range and adjusted based on thermal information provided from locally readable
+sensors as well as host-provided information over an IPMI OEM command.
 
 A system (or tray) will be broken out into one or more zones, specified via
 configuration files or dbus. Each zone will contain at least one fan and at
-least one temperature sensor and some device margins. The sensor data can
-be provided via sysfs, dbus, or through IPMI. In either case, default margins
+least one temperature sensor and some device margins. The sensor data can be
+provided via sysfs, dbus, or through IPMI. In either case, default margins
 should be provided in case of failure or other unknown situation.
 
 The system will run a control loop for each zone with the attempt to maintain
@@ -51,9 +50,9 @@ the temperature within that zone within the margin for the devices specified.
 ## Detailed Design
 
 The software will run as a multi-threaded daemon that runs a control loop for
-each zone, and has a master thread which listens for dbus messages.  Each zone
+each zone, and has a master thread which listens for dbus messages. Each zone
 will require at least one fan that it exclusively controls, however, zones can
- share temperature sensors.
+share temperature sensors.
 
 ![Swampd Architecture](swampd_diagram.png "Swampd Architecture")
 
@@ -74,8 +73,8 @@ onboard sensors and control the fans.
 
 Because of the present implementation of the dbus interfaces to require
 controlling the fans only via specifying the RPM target, whereas the driver
-we're using for Quanta-Q71l (the first system) only allows writing PWM.  This
-can be controlled either directly or via dbus.
+we're using for Quanta-Q71l (the first system) only allows writing PWM. This can
+be controlled either directly or via dbus.
 
 ### Zone Specification
 
@@ -254,7 +253,7 @@ configuration files. It will also register a dbus handler for the OEM message.
 
 ### Enabling Logging & Tuning
 
-By default, swampd won't log information.  To enable logging pass "-l" on the
+By default, swampd won't log information. To enable logging pass "-l" on the
 command line with a parameter that is the folder into which to write the logs.
 
 The log files will be named {folderpath}/zone_{zoneid}.log
@@ -308,22 +307,22 @@ Swampd's primary function is to drive the fans of a system given various inputs.
 
 The code is broken out into modules as follows:
 
-* `dbus` - Any read or write interface that uses dbus primarily.
-* `experiments` - Small execution paths that allow for fan examination
-including how quickly fans respond to changes.
-* `ipmi` - Manual control for any zone is handled by receiving an IPMI message.
-This holds the ipmid provider for receiving those messages and sending them
-onto swampd.
-* `notimpl` - These are read-only and write-only interface implementations that
-can be dropped into a pluggable sensor to make it complete.
-* `pid` - This contains all the PID associated code, including the zone
-definition, controller definition, and the PID computational code.
-* `scripts` - This contains the scripts that convert YAML into C++.
-* `sensors` - This contains a couple of sensor types including the pluggable
-sensor's definition.  It also holds the sensor manager.
-* `sysfs` - This contains code that reads from or writes to sysfs.
-* `threads` - Most of swampd's threads run in this method where there's just a
-dbus bus that we manage.
+*   `dbus` - Any read or write interface that uses dbus primarily.
+*   `experiments` - Small execution paths that allow for fan examination
+    including how quickly fans respond to changes.
+*   `ipmi` - Manual control for any zone is handled by receiving an IPMI
+    message. This holds the ipmid provider for receiving those messages and
+    sending them onto swampd.
+*   `notimpl` - These are read-only and write-only interface implementations
+    that can be dropped into a pluggable sensor to make it complete.
+*   `pid` - This contains all the PID associated code, including the zone
+    definition, controller definition, and the PID computational code.
+*   `scripts` - This contains the scripts that convert YAML into C++.
+*   `sensors` - This contains a couple of sensor types including the pluggable
+    sensor's definition. It also holds the sensor manager.
+*   `sysfs` - This contains code that reads from or writes to sysfs.
+*   `threads` - Most of swampd's threads run in this method where there's just a
+    dbus bus that we manage.
 
 ## Example System Configurations
 
