@@ -10,7 +10,8 @@ class SensorMock : public Sensor
   public:
     virtual ~SensorMock() = default;
 
-    SensorMock(const std::string& name, int64_t timeout) : Sensor(name, timeout)
+    SensorMock(const std::string& name, int64_t timeout, bool ignoreCheck) :
+        Sensor(name, timeout, ignoreCheck)
     {
     }
 

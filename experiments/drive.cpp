@@ -36,7 +36,8 @@ static std::unique_ptr<Sensor> Create(std::string readpath,
                                       std::string writepath)
 {
     return std::make_unique<PluggableSensor>(
-        readpath, 0, /* default the timeout to disabled */
+        readpath, 0 /* default the timeout to disabled */,
+        false /* Sensor is not ignored by default */,
         std::make_unique<SysFsRead>(readpath),
         std::make_unique<SysFsWrite>(writepath, 0, MAX_PWM));
 }

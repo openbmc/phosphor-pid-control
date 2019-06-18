@@ -73,6 +73,17 @@ void from_json(const json& j, conf::SensorConfig& s)
     {
         j.at("timeout").get_to(s.timeout);
     }
+
+    /* The ignoreCheck field is optional in a configuration. */
+    auto ignoreCheck = j.find("ignoreCheck");
+    if (ignoreCheck == j.end())
+    {
+        s.ignoreCheck = false;
+    }
+    else
+    {
+        j.at("ignoreCheck").get_to(s.ignoreCheck);
+    }
 }
 } // namespace conf
 

@@ -25,8 +25,8 @@ class Sensor
         return (type == "fan") ? 0 : 2;
     }
 
-    Sensor(const std::string& name, int64_t timeout) :
-        _name(name), _timeout(timeout)
+    Sensor(const std::string& name, int64_t timeout, bool ignoreCheck) :
+        _name(name), _timeout(timeout), _ignoreCheck(ignoreCheck)
     {
     }
 
@@ -54,7 +54,13 @@ class Sensor
         return _timeout;
     }
 
+    bool isIgnoreCheck(void) const
+    {
+        return _ignoreCheck;
+    }
+
   private:
     std::string _name;
     int64_t _timeout;
+    bool _ignoreCheck;
 };

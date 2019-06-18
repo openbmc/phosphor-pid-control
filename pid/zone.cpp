@@ -249,11 +249,11 @@ void PIDZone::updateFanTelemetry(void)
         }
 
         // check if fan fail.
-        if (sensor->getFailed())
+        if (sensor->getFailed() && !sensor->isIgnoreCheck())
         {
             _failSafeSensors.insert(f);
         }
-        else if (timeout != 0 && duration >= period)
+        else if (timeout != 0 && duration >= period && !sensor->isIgnoreCheck())
         {
             _failSafeSensors.insert(f);
         }
@@ -297,11 +297,11 @@ void PIDZone::updateSensors(void)
         auto duration = duration_cast<std::chrono::seconds>(now - then).count();
         auto period = std::chrono::seconds(timeout).count();
 
-        if (sensor->getFailed())
+        if (sensor->getFailed() && !sensor->isIgnoreCheck())
         {
             _failSafeSensors.insert(t);
         }
-        else if (timeout != 0 && duration >= period)
+        else if (timeout != 0 && duration >= period && !sensor->isIgnoreCheck())
         {
             // std::cerr << "Entering fail safe mode.\n";
             _failSafeSensors.insert(t);

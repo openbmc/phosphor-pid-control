@@ -13,10 +13,10 @@
 class PluggableSensor : public Sensor
 {
   public:
-    PluggableSensor(const std::string& name, int64_t timeout,
+    PluggableSensor(const std::string& name, int64_t timeout, bool ignoreCheck,
                     std::unique_ptr<ReadInterface> reader,
                     std::unique_ptr<WriteInterface> writer) :
-        Sensor(name, timeout),
+        Sensor(name, timeout, ignoreCheck),
         _reader(std::move(reader)), _writer(std::move(writer))
     {
     }

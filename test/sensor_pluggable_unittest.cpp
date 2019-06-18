@@ -22,8 +22,9 @@ TEST(PluggableSensorTest, BoringConstructorTest)
 
     std::string name = "name";
     int64_t timeout = 1;
+    bool ignoreCheck = false;
 
-    PluggableSensor p(name, timeout, std::move(ri), std::move(wi));
+    PluggableSensor p(name, timeout, ignoreCheck, std::move(ri), std::move(wi));
     // Successfully created it.
 }
 
@@ -40,10 +41,11 @@ TEST(PluggableSensorTest, TryReadingTest)
 
     std::string name = "name";
     int64_t timeout = 1;
+    bool ignoreCheck = false;
 
     ReadInterfaceMock* rip = reinterpret_cast<ReadInterfaceMock*>(ri.get());
 
-    PluggableSensor p(name, timeout, std::move(ri), std::move(wi));
+    PluggableSensor p(name, timeout, ignoreCheck, std::move(ri), std::move(wi));
 
     ReadReturn r;
     r.value = 0.1;
@@ -70,10 +72,11 @@ TEST(PluggableSensorTest, TryWritingTest)
 
     std::string name = "name";
     int64_t timeout = 1;
+    bool ignoreCheck = false;
 
     WriteInterfaceMock* wip = reinterpret_cast<WriteInterfaceMock*>(wi.get());
 
-    PluggableSensor p(name, timeout, std::move(ri), std::move(wi));
+    PluggableSensor p(name, timeout, ignoreCheck, std::move(ri), std::move(wi));
 
     double value = 0.303;
 

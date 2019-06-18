@@ -29,6 +29,7 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
+    bool ignoreCheck = false;
     const char* objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
@@ -49,8 +50,8 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
                 sd_bus_emit_object_removed(IsNull(), StrEq(objPath)))
         .WillOnce(Return(0));
 
-    std::unique_ptr<Sensor> s =
-        HostSensor::createTemp(name, timeout, bus_mock, objPath, defer);
+    std::unique_ptr<Sensor> s = HostSensor::createTemp(
+        name, timeout, ignoreCheck, bus_mock, objPath, defer);
 }
 
 TEST(HostSensorTest, VerifyWriteThenReadMatches)
@@ -62,6 +63,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
+    bool ignoreCheck = false;
     const char* objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
@@ -79,8 +81,8 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
                 sd_bus_emit_object_removed(IsNull(), StrEq(objPath)))
         .WillOnce(Return(0));
 
-    std::unique_ptr<Sensor> s =
-        HostSensor::createTemp(name, timeout, bus_mock, objPath, defer);
+    std::unique_ptr<Sensor> s = HostSensor::createTemp(
+        name, timeout, ignoreCheck, bus_mock, objPath, defer);
 
     // Value is updated from dbus calls only (normally).
     HostSensor* hs = static_cast<HostSensor*>(s.get());

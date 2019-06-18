@@ -160,8 +160,10 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     EXPECT_CALL(z, getFailSafePercent()).Times(2).WillRepeatedly(Return(75.0));
 
     int64_t timeout = 0;
-    std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
-    std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
+    std::unique_ptr<Sensor> s1 =
+        std::make_unique<SensorMock>("fan0", timeout, false);
+    std::unique_ptr<Sensor> s2 =
+        std::make_unique<SensorMock>("fan1", timeout, false);
     // Grab pointers for mocking.
     SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
     SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
@@ -196,8 +198,10 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected)
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(false));
 
     int64_t timeout = 0;
-    std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
-    std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
+    std::unique_ptr<Sensor> s1 =
+        std::make_unique<SensorMock>("fan0", timeout, false);
+    std::unique_ptr<Sensor> s2 =
+        std::make_unique<SensorMock>("fan1", timeout, false);
     // Grab pointers for mocking.
     SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
     SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
@@ -230,7 +234,8 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(75.0));
 
     int64_t timeout = 0;
-    std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
+    std::unique_ptr<Sensor> s1 =
+        std::make_unique<SensorMock>("fan0", timeout, false);
     // Grab pointer for mocking.
     SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
 

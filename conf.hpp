@@ -26,6 +26,8 @@ struct SensorConfig
     int64_t min;
     int64_t max;
     int64_t timeout;
+    /* Ignore this sensor for error checking? */
+    bool ignoreCheck;
 };
 
 /*

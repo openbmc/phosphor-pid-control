@@ -54,7 +54,8 @@ SensorManager
         const struct conf::SensorConfig* info = &it.second;
 
         std::cerr << "Sensor: " << name << " " << info->type << " ";
-        std::cerr << info->readPath << " " << info->writePath << "\n";
+        std::cerr << info->readPath << " " << info->writePath << " "
+                  << info->ignoreCheck << "\n";
 
         IOInterfaceType rtype = getReadInterfaceType(info->readPath);
         IOInterfaceType wtype = getWriteInterfaceType(info->writePath);
@@ -146,7 +147,8 @@ SensorManager
             }
 
             auto sensor = std::make_unique<PluggableSensor>(
-                name, info->timeout, std::move(ri), std::move(wi));
+                name, info->timeout, info->ignoreCheck, std::move(ri),
+                std::move(wi));
             mgmr.addSensor(info->type, name, std::move(sensor));
         }
         else if (info->type == "temp" || info->type == "margin")
@@ -165,15 +167,16 @@ SensorManager
                  * not quite pluggable; but maybe it could be.
                  */
                 auto sensor = HostSensor::createTemp(
-                    name, info->timeout, hostSensorBus, info->readPath.c_str(),
-                    deferSignals);
+                    name, info->timeout, info->ignoreCheck, hostSensorBus,
+                    info->readPath.c_str(), deferSignals);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
             else
             {
                 wi = std::make_unique<ReadOnlyNoExcept>();
                 auto sensor = std::make_unique<PluggableSensor>(
-                    name, info->timeout, std::move(ri), std::move(wi));
+                    name, info->timeout, info->ignoreCheck, std::move(ri),
+                    std::move(wi));
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
         }

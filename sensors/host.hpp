@@ -22,13 +22,13 @@ class HostSensor : public Sensor, public ValueObject
 {
   public:
     static std::unique_ptr<Sensor> createTemp(const std::string& name,
-                                              int64_t timeout,
+                                              int64_t timeout, bool ignoreCheck,
                                               sdbusplus::bus::bus& bus,
                                               const char* objPath, bool defer);
 
-    HostSensor(const std::string& name, int64_t timeout,
+    HostSensor(const std::string& name, int64_t timeout, bool ignoreCheck,
                sdbusplus::bus::bus& bus, const char* objPath, bool defer) :
-        Sensor(name, timeout),
+        Sensor(name, timeout, ignoreCheck),
         ValueObject(bus, objPath, defer)
     {
     }

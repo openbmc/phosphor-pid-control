@@ -177,12 +177,12 @@ TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
     int64_t timeout = 1;
 
     std::unique_ptr<Sensor> sensor1 =
-        std::make_unique<SensorMock>(name1, timeout);
+        std::make_unique<SensorMock>(name1, timeout, false);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "temp2";
     std::unique_ptr<Sensor> sensor2 =
-        std::make_unique<SensorMock>(name2, timeout);
+        std::make_unique<SensorMock>(name2, timeout, false);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -229,12 +229,12 @@ TEST_F(PidZoneTest, FanInputTest_VerifiesFanValuesCached)
     int64_t timeout = 2;
 
     std::unique_ptr<Sensor> sensor1 =
-        std::make_unique<SensorMock>(name1, timeout);
+        std::make_unique<SensorMock>(name1, timeout, false);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "fan2";
     std::unique_ptr<Sensor> sensor2 =
-        std::make_unique<SensorMock>(name2, timeout);
+        std::make_unique<SensorMock>(name2, timeout, false);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -277,12 +277,12 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
 
     std::string name1 = "temp1";
     std::unique_ptr<Sensor> sensor1 =
-        std::make_unique<SensorMock>(name1, timeout);
+        std::make_unique<SensorMock>(name1, timeout, false);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "temp2";
     std::unique_ptr<Sensor> sensor2 =
-        std::make_unique<SensorMock>(name2, timeout);
+        std::make_unique<SensorMock>(name2, timeout, false);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -328,6 +328,65 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
     EXPECT_TRUE(zone->getFailSafeMode());
 }
 
+TEST_F(PidZoneTest, ThermalInput_VerifyIgnoreCheckSensorDoNotEntersFailSafeMode)
+{
+
+    int64_t timeout = 1;
+    bool ignoreCheck = true;
+
+    std::string name1 = "temp1";
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout, ignoreCheck);
+    SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
+
+    std::string name2 = "temp2";
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout, ignoreCheck);
+    SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
+
+    std::string type = "unchecked";
+    mgr.addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
+    mgr.addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+
+    zone->addThermalInput(name1);
+    zone->addThermalInput(name2);
+
+    // Initialize Zone
+    zone->initializeCache();
+
+    // Verify now in failsafe mode.
+    EXPECT_TRUE(zone->getFailSafeMode());
+
+    ReadReturn r1;
+    r1.value = 10.0;
+    r1.updated = std::chrono::high_resolution_clock::now();
+    EXPECT_CALL(*sensor_ptr1, read()).WillOnce(Return(r1));
+
+    ReadReturn r2;
+    r2.value = 11.0;
+    r2.updated = std::chrono::high_resolution_clock::now();
+    EXPECT_CALL(*sensor_ptr2, read()).WillOnce(Return(r2));
+
+    zone->updateSensors();
+    EXPECT_FALSE(zone->getFailSafeMode());
+
+    // Ok, so we're not in failsafe mode, so let's set updated to the past.
+    // sensor1 will have an updated field older than its timeout value, but
+    // sensor2 will be fine.
+    r1.updated -= std::chrono::seconds(3);
+    r2.updated = std::chrono::high_resolution_clock::now();
+
+    EXPECT_CALL(*sensor_ptr1, read()).WillOnce(Return(r1));
+    EXPECT_CALL(*sensor_ptr2, read()).WillOnce(Return(r2));
+
+    // Method under test will read each sensor.  One sensor's value is older
+    // than the timeout for that sensor and this triggers failsafe mode.
+    zone->updateSensors();
+    EXPECT_FALSE(zone->getFailSafeMode());
+}
+
 TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
 {
     // This will add a couple fan inputs, and verify the values are cached.
@@ -336,12 +395,12 @@ TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
     int64_t timeout = 2;
 
     std::unique_ptr<Sensor> sensor1 =
-        std::make_unique<SensorMock>(name1, timeout);
+        std::make_unique<SensorMock>(name1, timeout, false);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "fan2";
     std::unique_ptr<Sensor> sensor2 =
-        std::make_unique<SensorMock>(name2, timeout);
+        std::make_unique<SensorMock>(name2, timeout, false);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -389,12 +448,12 @@ TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
     int64_t timeout = 2;
 
     std::unique_ptr<Sensor> sensor1 =
-        std::make_unique<SensorMock>(name1, timeout);
+        std::make_unique<SensorMock>(name1, timeout, false);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "fan2";
     std::unique_ptr<Sensor> sensor2 =
-        std::make_unique<SensorMock>(name2, timeout);
+        std::make_unique<SensorMock>(name2, timeout, false);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -430,6 +489,9 @@ TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
     // We should no longer be in failsafe mode.
     EXPECT_FALSE(zone->getFailSafeMode());
 
+    // Ok, so we're not in failsafe mode, so let's set updated to the past.
+    // sensor1 will have an updated field older than its timeout value, but
+    // sensor2 will be fine.
     r1.updated -= std::chrono::seconds(3);
     r2.updated = std::chrono::high_resolution_clock::now();
 
@@ -440,6 +502,67 @@ TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
     EXPECT_TRUE(zone->getFailSafeMode());
 }
 
+TEST_F(PidZoneTest, FanInputTest_VerifyIgnoreCheckSensorDoNotEntersFailSafeMode)
+{
+    // This will add a couple fan inputs, and verify the values are cached.
+
+    std::string name1 = "fan1";
+    int64_t timeout = 1;
+    bool ignoreCheck = true;
+
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout, ignoreCheck);
+    SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
+
+    std::string name2 = "fan2";
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout, ignoreCheck);
+    SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
+
+    std::string type = "unchecked";
+    mgr.addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
+    mgr.addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+
+    // Now that the sensors exist, add them to the zone.
+    zone->addFanInput(name1);
+    zone->addFanInput(name2);
+
+    // Initialize Zone
+    zone->initializeCache();
+
+    // Verify now in failsafe mode.
+    EXPECT_TRUE(zone->getFailSafeMode());
+
+    ReadReturn r1;
+    r1.value = 10.0;
+    r1.updated = std::chrono::high_resolution_clock::now();
+    EXPECT_CALL(*sensor_ptr1, read()).WillOnce(Return(r1));
+
+    ReadReturn r2;
+    r2.value = 11.0;
+    r2.updated = std::chrono::high_resolution_clock::now();
+    EXPECT_CALL(*sensor_ptr2, read()).WillOnce(Return(r2));
+
+    // Method under test will read through each fan sensor for the zone and
+    // cache the values.
+    zone->updateFanTelemetry();
+
+    // should no longer be in failsafe mode.
+    EXPECT_FALSE(zone->getFailSafeMode());
+
+    r1.updated -= std::chrono::seconds(3);
+    r2.updated = std::chrono::high_resolution_clock::now();
+
+    EXPECT_CALL(*sensor_ptr1, read()).WillOnce(Return(r1));
+    EXPECT_CALL(*sensor_ptr2, read()).WillOnce(Return(r2));
+
+    zone->updateFanTelemetry();
+
+    EXPECT_FALSE(zone->getFailSafeMode());
+}
+
 TEST_F(PidZoneTest, GetSensorTest_ReturnsExpected)
 {
     // One can grab a sensor from the manager through the zone.
@@ -448,7 +571,7 @@ TEST_F(PidZoneTest, GetSensorTest_ReturnsExpected)
 
     std::string name1 = "temp1";
     std::unique_ptr<Sensor> sensor1 =
-        std::make_unique<SensorMock>(name1, timeout);
+        std::make_unique<SensorMock>(name1, timeout, false);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string type = "unchecked";
