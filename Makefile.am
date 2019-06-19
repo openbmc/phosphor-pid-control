@@ -38,6 +38,10 @@ AM_CPPFLAGS = $(CODE_COVERAGE_CPPFLAGS)
 AM_CFLAGS = $(CODE_COVERAGE_CFLAGS)
 AM_CXXFLAGS = $(CODE_COVERAGE_CXXFLAGS)
 
+if HAVE_SYSTEMD
+systemdsystemunit_DATA = phosphor-pid-control.service
+endif
+
 bin_PROGRAMS = swampd setsensor
 
 setsensor_SOURCES = setsensor.cpp
