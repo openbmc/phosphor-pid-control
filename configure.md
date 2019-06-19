@@ -26,13 +26,14 @@ zones.
         "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan2",
         "writePath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm2",
         "min": 0,
-        "max": 255
+        "max": 255,
+        "timeout": 4,
     },
 ...
 ```
 
-A sensor has a `name`, a `type`, a `readPath`, a `writePath`, a `minimum` value
-and an `maximum` value.
+A sensor has a `name`, a `type`, a `readPath`, a `writePath`, a `minimum` value,
+a `maximum` value, and a `timeout`.
 
 The `name` is used to reference the sensor in the zone portion of the
 configuration.
@@ -108,6 +109,13 @@ xyz.openbmc_project.Sensor.Value    interface -         -                       
 The `minimum` and `maximum` values are optional. When `maximum` is non-zero it
 expects to write a percentage value converted to a value between the minimum and
 maximum.
+
+The `timeout` value is optional and controls the sensor failure behavior. If a
+sensor is a fan the default value is 2 seconds, otherwise it's 0. When a
+sensor's timeout is 0 it isn't checked against a read timeout failure case. If a
+sensor fails to be read within the timeout period, the zone goes into failsafe
+to handle the case where it doesn't know what to do -- as it doesn't have all
+its inputs.
 
 ### Zones
 
