@@ -4,31 +4,32 @@ A system needs two groups of configurations: zones and sensors.
 
 ## Json Configuration
 
-```
-{
-    "sensors" : [
-        {
-            "name": "fan1",
-            "type": "fan",
-            "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1",
-            "writePath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm1",
-            "min": 0,
-            "max": 255
-        },
-        {
-            "name": "fan2",
-            "type": "fan",
-            "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan2",
-            "writePath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm2",
-            "min": 0,
-            "max": 255
-        },
-<trim>
-}
-```
+The json object should be a dictionary with two keys, `sensors` and `zones`.
+`sensors` is a list of the sensor dictionaries, whereas `zones` is a list of
+zones.
 
-The overall configuratino is a dictionary with two keys, `sensors` and `zones`.
-Each of those is an array of entries.
+### Sensors
+
+```
+"sensors" : [
+    {
+        "name": "fan1",
+        "type": "fan",
+        "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1",
+        "writePath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm1",
+        "min": 0,
+        "max": 255
+    },
+    {
+        "name": "fan2",
+        "type": "fan",
+        "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan2",
+        "writePath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm2",
+        "min": 0,
+        "max": 255
+    },
+...
+```
 
 A sensor has a `name`, a `type`, a `readPath`, a `writePath`, a `minimum` value
 and an `maximum` value.
@@ -107,3 +108,148 @@ xyz.openbmc_project.Sensor.Value    interface -         -                       
 The `minimum` and `maximum` values are optional. When `maximum` is non-zero it
 expects to write a percentage value converted to a value between the minimum and
 maximum.
+
+### Zones
+
+```
+"zones" : [
+        {
+            "id": 1,
+            "minThermalOutput": 3000.0,
+            "failsafePercent": 75.0,
+            "pids": [],
+...
+```
+
+Each zone has its own fields, and a list of PIDs.
+
+| field              | type      | meaning                                   |
+| ------------------ | --------- | ----------------------------------------- |
+| `id`               | `int64_t` | This is a unique identifier for the zone. |
+| `minThermalOutput` | `double`  | This is the minimum value that should be  |
+:                    :           : considered from the thermal outputs.      :
+:                    :           : Commonly used as the minimum fan RPM.     :
+| `failsafePercent`  | `double`  | If there is a fan PID, it will use this   |
+:                    :           : value if the zone goes into fail-safe as  :
+:                    :           : the output value written to the fan's     :
+:                    :           : sensors.                                  :
+
+The `id` field here is used in the d-bus path to talk to the
+`xyz.openbmc_project.Control.Mode` interface.
+
+***TODO:*** Examine how the fan controller always treating its output as a
+percentage works for future cases.
+
+### PIDs
+
+There are a few PID types: `fan`, `temp`, `margin`, and `stepwise`.
+
+The `fan` PID is meant to drive fans. It's expecting to get the maximum RPM
+setpoint value from the owning zone and then drive the fans to that value.
+
+A `temp` PID is meant to drive the RPM setpoint given an absolute temperature
+value (higher value indicates a warmer temperature).
+
+A `margin` PID is meant to drive the RPM setpoint given a margin value (lower
+value indicates a warmer temperature).
+
+The setpoint output from the thermal controllers is called `RPMSetpoint()`
+However, it doesn't need to be an RPM value.
+
+***TODO:*** Rename this method and others to not say necessarily RPM.
+
+Some PID configurations have fields in common, but may be interpreted
+differently.
+
+#### PID Field
+
+If the PID `type` is not `stepwise` then the PID field is defined as follows:
+
+| field                | type     | meaning                                   |
+| -------------------- | -------- | ----------------------------------------- |
+| `samplePeriod`       | `double` | How frequently the value is sampled. 0.1  |
+:                      :          : for fans, 1.0 for temperatures.           :
+| `proportionalCoeff`  | `double` | The proportional coefficient.             |
+| `integralCoeff`      | `double` | The integral coefficient.                 |
+| `feedFwdOffsetCoeff` | `double` | The feed forward offset coefficient.      |
+| `feedFwdGainCoeff`   | `double` | The feed forward gain coefficient.        |
+| `integralLimit_min`  | `double` | The integral minimum clamp value.         |
+| `integralLimit_max`  | `double` | The integral maximum clamp value.         |
+| `outLim_min`         | `double` | The output minimum clamp value.           |
+| `outLim_max`         | `double` | The output maximum clamp value.           |
+| `slewNeg`            | `double` | Negative slew value to dampen output.     |
+| `slewPos`            | `double` | Positive slew value to accelerate output. |
+
+The units for the coefficients depend on the configuration of the PIDs.
+
+If the PID is a `margin` controller and its `setpoint` is in centigrade and
+output in RPM: proportionalCoeff is your p value in units: RPM/C and integral
+coefficient: RPM/C sec
+
+If the PID is a fan controller whose output is pwm: proportionalCoeff is %/RPM
+and integralCoeff is %/RPM sec.
+
+***NOTE:*** The sample periods are specified in the configuration as they are
+used in the PID computations, however, they are not truly configurable as they
+are used for the update periods for the fan and thermal sensors.
+
+#### type == "fan"
+
+```
+"name": "fan1-5",
+"type": "fan",
+"inputs": ["fan1", "fan5"],
+"setpoint": 90.0,
+"pid": {
+...
+}
+```
+
+The type `fan` builds a `FanController` PID.
+
+| field      | type              | meaning                                     |
+| ---------- | ----------------- | ------------------------------------------- |
+| `name`     | `string`          | The name of the PID. This is just for       |
+:            :                   : humans and logging.                         :
+| `type`     | `string`          | `fan`                                       |
+| `inputs`   | `list of strings` | The names of the sensor(s) that are used as |
+:            :                   : input and output for the PID loop.          :
+| `setpoint` | `double`          | Presently UNUSED                            |
+| `pid`      | `dictionary`      | A PID dictionary detailed above.            |
+
+#### type == "temp"
+
+***TODO:*** Add notes for temperature configuration.
+
+#### type == "margin"
+
+```
+"name": "fleetingpid0",
+"type": "margin",
+"inputs": ["fleeting0"],
+"setpoint": 10,
+"pid": {
+...
+}
+```
+
+The type `margin` builds a `ThermalController` PID.
+
+| field      | type              | meaning                                     |
+| ---------- | ----------------- | ------------------------------------------- |
+| `name`     | `string`          | The name of the PID. This is just for       |
+:            :                   : humans and logging.                         :
+| `type`     | `string`          | `margin`                                    |
+| `inputs`   | `list of strings` | The names of the sensor(s) that are used as |
+:            :                   : input for the PID loop.                     :
+| `setpoint` | `double`          | The setpoint value for the thermal PID. The |
+:            :                   : setpoint for the margin sensors.            :
+| `pid`      | `dictionary`      | A PID dictionary detailed above.            |
+
+The output of a `margin` PID loop is that it sets the setpoint value for the
+zone. It does this by adding the value to a list of values. The value chosen by
+the fan PIDs (in this cascade configuration) is the maximum value.
+
+#### type == "stepwise"
+
+***TODO:*** Write up `stepwise` details.
