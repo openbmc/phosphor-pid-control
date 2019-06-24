@@ -507,12 +507,6 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                     findSensors(sensors, name, sensorInterfaces);
                 }
 
-                // if the sensors aren't available in the current state, don't
-                // add them to the configuration.
-                if (sensorInterfaces.empty())
-                {
-                    continue;
-                }
                 for (const auto& sensorPathIfacePair : sensorInterfaces)
                 {
 
@@ -560,6 +554,13 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                             config.min = 0;
                         }
                     }
+                }
+
+                // if the sensors aren't available in the current state, don't
+                // add them to the configuration.
+                if (inputs.empty())
+                {
+                    continue;
                 }
 
                 struct conf::ControllerInfo& info =
