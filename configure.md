@@ -134,13 +134,8 @@ Each zone has its own fields, and a list of PIDs.
 | field              | type      | meaning                                   |
 | ------------------ | --------- | ----------------------------------------- |
 | `id`               | `int64_t` | This is a unique identifier for the zone. |
-| `minThermalOutput` | `double`  | This is the minimum value that should be  |
-:                    :           : considered from the thermal outputs.      :
-:                    :           : Commonly used as the minimum fan RPM.     :
-| `failsafePercent`  | `double`  | If there is a fan PID, it will use this   |
-:                    :           : value if the zone goes into fail-safe as  :
-:                    :           : the output value written to the fan's     :
-:                    :           : sensors.                                  :
+| `minThermalOutput` | `double`  | This is the minimum value that should be considered from the thermal outputs.  Commonly used as the minimum fan RPM.|
+| `failsafePercent`  | `double`  | If there is a fan PID, it will use this value if the zone goes into fail-safe as the output value written to the fan's sensors.|
 
 The `id` field here is used in the d-bus path to talk to the
 `xyz.openbmc_project.Control.Mode` interface.
@@ -175,8 +170,7 @@ If the PID `type` is not `stepwise` then the PID field is defined as follows:
 
 | field                | type     | meaning                                   |
 | -------------------- | -------- | ----------------------------------------- |
-| `samplePeriod`       | `double` | How frequently the value is sampled. 0.1  |
-:                      :          : for fans, 1.0 for temperatures.           :
+| `samplePeriod`       | `double` | How frequently the value is sampled. 0.1 for fans, 1.0 for temperatures.|
 | `proportionalCoeff`  | `double` | The proportional coefficient.             |
 | `integralCoeff`      | `double` | The integral coefficient.                 |
 | `feedFwdOffsetCoeff` | `double` | The feed forward offset coefficient.      |
@@ -217,11 +211,9 @@ The type `fan` builds a `FanController` PID.
 
 | field      | type              | meaning                                     |
 | ---------- | ----------------- | ------------------------------------------- |
-| `name`     | `string`          | The name of the PID. This is just for       |
-:            :                   : humans and logging.                         :
+| `name`     | `string`          | The name of the PID. This is just for humans and logging.|
 | `type`     | `string`          | `fan`                                       |
-| `inputs`   | `list of strings` | The names of the sensor(s) that are used as |
-:            :                   : input and output for the PID loop.          :
+| `inputs`   | `list of strings` | The names of the sensor(s) that are used as input and output for the PID loop.|
 | `setpoint` | `double`          | Presently UNUSED                            |
 | `pid`      | `dictionary`      | A PID dictionary detailed above.            |
 
@@ -245,13 +237,10 @@ The type `margin` builds a `ThermalController` PID.
 
 | field      | type              | meaning                                     |
 | ---------- | ----------------- | ------------------------------------------- |
-| `name`     | `string`          | The name of the PID. This is just for       |
-:            :                   : humans and logging.                         :
+| `name`     | `string`          | The name of the PID. This is just for humans and logging.|
 | `type`     | `string`          | `margin`                                    |
-| `inputs`   | `list of strings` | The names of the sensor(s) that are used as |
-:            :                   : input for the PID loop.                     :
-| `setpoint` | `double`          | The setpoint value for the thermal PID. The |
-:            :                   : setpoint for the margin sensors.            :
+| `inputs`   | `list of strings` | The names of the sensor(s) that are used as input for the PID loop.|
+| `setpoint` | `double`          | The setpoint value for the thermal PID. The setpoint for the margin sensors.|
 | `pid`      | `dictionary`      | A PID dictionary detailed above.            |
 
 The output of a `margin` PID loop is that it sets the setpoint value for the
