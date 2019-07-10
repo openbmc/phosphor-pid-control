@@ -3,6 +3,7 @@
 #include "pid/ec/pid.hpp"
 
 #include <limits>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <string>
 
@@ -117,6 +118,34 @@ class DbusHelper : public DbusHelperInterface
     bool thresholdsAsserted(sdbusplus::bus::bus& bus,
                             const std::string& service,
                             const std::string& path) override;
+
+    template <typename T>
+    void getProperty(sdbusplus::bus::bus& bus, const std::string& service,
+                     const std::string& path, const std::string& interface,
+                     const std::string& propertyName, T& prop)
+    {
+        namespace log = phosphor::logging;
+
+        auto msg = bus.new_method_call(service.c_str(), path.c_str(),
+                                       propertiesintf.c_str(), "Get");
+
+        msg.append(interface, propertyName);
+
+        std::variant<T> result;
+        try
+        {
+            auto valueResponseMsg = bus.call(msg);
+            valueResponseMsg.read(result);
+        }
+        catch (const sdbusplus::exception::SdBusError& ex)
+        {
+            log::log<log::level::ERR>("Get Property Failed",
+                                      log::entry("WHAT=%s", ex.what()));
+            throw;
+        }
+
+        prop = std::get<T>(result);
+    }
 };
 
 std::string getSensorPath(const std::string& type, const std::string& id);
