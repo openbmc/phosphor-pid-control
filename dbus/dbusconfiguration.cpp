@@ -50,8 +50,23 @@ constexpr const char* thermalControlIface =
 constexpr const char* sensorInterface = "xyz.openbmc_project.Sensor.Value";
 constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
+namespace thresholds
+{
+constexpr const char* warningInterface =
+    "xyz.openbmc_project.Sensor.Threshold.Warning";
+constexpr const char* criticalInterface =
+    "xyz.openbmc_project.Sensor.Threshold.Critical";
+const std::array<const char*, 4> types = {"CriticalLow", "CriticalHigh",
+                                          "WarningLow", "WarningHigh"};
+
+} // namespace thresholds
+
 namespace dbus_configuration
 {
+
+using DbusVariantType =
+    std::variant<uint64_t, int64_t, double, std::string,
+                 std::vector<std::string>, std::vector<double>>;
 
 bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
                  const std::string& search,
@@ -274,6 +289,97 @@ void createMatches(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
         "type='signal',member='InterfacesAdded',arg0path='/xyz/openbmc_project/"
         "sensors/'",
         eventHandler, &timer);
+}
+
+void populatePidInfo(
+    sdbusplus::bus::bus& bus,
+    const std::unordered_map<std::string, DbusVariantType>& base,
+    struct conf::ControllerInfo& info, const std::string* thresholdProperty)
+{
+
+    info.type = std::get<std::string>(base.at("Class"));
+
+    if (info.type == "fan")
+    {
+        info.setpoint = 0;
+    }
+    else
+    {
+        info.setpoint =
+            std::visit(VariantToDoubleVisitor(), base.at("SetPoint"));
+    }
+
+    if (thresholdProperty != nullptr)
+    {
+        std::string interface;
+        if (*thresholdProperty == "WarningHigh" ||
+            *thresholdProperty == "WarningLow")
+        {
+            interface = thresholds::warningInterface;
+        }
+        else
+        {
+            interface = thresholds::criticalInterface;
+        }
+        const std::string& path = sensorConfig[info.inputs.front()].readPath;
+
+        DbusHelper helper;
+        std::string service = helper.getService(bus, interface, path);
+        double reading = 0;
+        try
+        {
+            helper.getProperty(bus, service, path, interface,
+                               *thresholdProperty, reading);
+        }
+        catch (const sdbusplus::exception::SdBusError& ex)
+        {
+            // unsupported threshold, leaving reading at 0
+        }
+
+        info.setpoint += reading;
+    }
+
+    info.pidInfo.ts = 1.0; // currently unused
+    info.pidInfo.proportionalCoeff =
+        std::visit(VariantToDoubleVisitor(), base.at("PCoefficient"));
+    info.pidInfo.integralCoeff =
+        std::visit(VariantToDoubleVisitor(), base.at("ICoefficient"));
+    info.pidInfo.feedFwdOffset =
+        std::visit(VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
+    info.pidInfo.feedFwdGain =
+        std::visit(VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
+    info.pidInfo.integralLimit.max =
+        std::visit(VariantToDoubleVisitor(), base.at("ILimitMax"));
+    info.pidInfo.integralLimit.min =
+        std::visit(VariantToDoubleVisitor(), base.at("ILimitMin"));
+    info.pidInfo.outLim.max =
+        std::visit(VariantToDoubleVisitor(), base.at("OutLimitMax"));
+    info.pidInfo.outLim.min =
+        std::visit(VariantToDoubleVisitor(), base.at("OutLimitMin"));
+    info.pidInfo.slewNeg =
+        std::visit(VariantToDoubleVisitor(), base.at("SlewNeg"));
+    info.pidInfo.slewPos =
+        std::visit(VariantToDoubleVisitor(), base.at("SlewPos"));
+    double negativeHysteresis = 0;
+    double positiveHysteresis = 0;
+
+    auto findNeg = base.find("NegativeHysteresis");
+    auto findPos = base.find("PositiveHysteresis");
+
+    if (findNeg != base.end())
+    {
+        negativeHysteresis =
+            std::visit(VariantToDoubleVisitor(), findNeg->second);
+    }
+
+    if (findPos != base.end())
+    {
+        positiveHysteresis =
+            std::visit(VariantToDoubleVisitor(), findPos->second);
+    }
+
+    info.pidInfo.negativeHysteresis = negativeHysteresis;
+    info.pidInfo.positiveHysteresis = positiveHysteresis;
 }
 
 bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
@@ -558,61 +664,43 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                     continue;
                 }
 
-                struct conf::ControllerInfo& info =
-                    conf[std::get<std::string>(base.at("Name"))];
-                info.inputs = std::move(inputs);
+                std::string offsetType;
 
-                info.type = std::get<std::string>(base.at("Class"));
-                // todo: auto generation yaml -> c script seems to discard this
-                // value for fans, verify this is okay
-                if (info.type == "fan")
+                // SetPointOffset is a threshold value to pull from the sensor
+                // to apply an offset. For upper thresholds this means the
+                // setpoint is usually negative.
+                auto findSetpointOffset = base.find("SetPointOffset");
+                if (findSetpointOffset != base.end())
                 {
-                    info.setpoint = 0;
+                    offsetType =
+                        std::get<std::string>(findSetpointOffset->second);
+                    if (std::find(thresholds::types.begin(),
+                                  thresholds::types.end(),
+                                  offsetType) == thresholds::types.end())
+                    {
+                        throw std::runtime_error("Unsupported type: " +
+                                                 offsetType);
+                    }
+                }
+
+                if (offsetType.empty())
+                {
+                    struct conf::ControllerInfo& info =
+                        conf[std::get<std::string>(base.at("Name"))];
+                    info.inputs = std::move(inputs);
+                    populatePidInfo(bus, base, info, nullptr);
                 }
                 else
                 {
-                    info.setpoint = std::visit(VariantToDoubleVisitor(),
-                                               base.at("SetPoint"));
+                    // we have to split up the inputs, as in practice t-control
+                    // values will differ, making setpoints differ
+                    for (const std::string& input : inputs)
+                    {
+                        struct conf::ControllerInfo& info = conf[input];
+                        info.inputs.emplace_back(input);
+                        populatePidInfo(bus, base, info, &offsetType);
+                    }
                 }
-                info.pidInfo.ts = 1.0; // currently unused
-                info.pidInfo.proportionalCoeff = std::visit(
-                    VariantToDoubleVisitor(), base.at("PCoefficient"));
-                info.pidInfo.integralCoeff = std::visit(
-                    VariantToDoubleVisitor(), base.at("ICoefficient"));
-                info.pidInfo.feedFwdOffset = std::visit(
-                    VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
-                info.pidInfo.feedFwdGain = std::visit(
-                    VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
-                info.pidInfo.integralLimit.max =
-                    std::visit(VariantToDoubleVisitor(), base.at("ILimitMax"));
-                info.pidInfo.integralLimit.min =
-                    std::visit(VariantToDoubleVisitor(), base.at("ILimitMin"));
-                info.pidInfo.outLim.max = std::visit(VariantToDoubleVisitor(),
-                                                     base.at("OutLimitMax"));
-                info.pidInfo.outLim.min = std::visit(VariantToDoubleVisitor(),
-                                                     base.at("OutLimitMin"));
-                info.pidInfo.slewNeg =
-                    std::visit(VariantToDoubleVisitor(), base.at("SlewNeg"));
-                info.pidInfo.slewPos =
-                    std::visit(VariantToDoubleVisitor(), base.at("SlewPos"));
-                double negativeHysteresis = 0;
-                double positiveHysteresis = 0;
-
-                auto findNeg = base.find("NegativeHysteresis");
-                auto findPos = base.find("PositiveHysteresis");
-                if (findNeg != base.end())
-                {
-                    negativeHysteresis =
-                        std::visit(VariantToDoubleVisitor(), findNeg->second);
-                }
-
-                if (findPos != base.end())
-                {
-                    positiveHysteresis =
-                        std::visit(VariantToDoubleVisitor(), findPos->second);
-                }
-                info.pidInfo.negativeHysteresis = negativeHysteresis;
-                info.pidInfo.positiveHysteresis = positiveHysteresis;
             }
         }
         auto findStepwise =
