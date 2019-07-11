@@ -65,7 +65,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         settings.max = info->max;
     }
 
-    if (info->max != conf::inheritValueFromDbus)
+    if (info->min != conf::inheritValueFromDbus)
     {
         settings.min = info->min;
     }
