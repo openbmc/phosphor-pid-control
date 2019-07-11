@@ -527,11 +527,6 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                         {
                             config.timeout = 0;
                         }
-                        else if (config.type == "fan")
-                        {
-                            config.max = conf::inheritValueFromDbus;
-                            config.min = conf::inheritValueFromDbus;
-                        }
                     }
                     else if (sensorPathIfacePair.second == pwmInterface)
                     {
