@@ -75,9 +75,16 @@ SensorManager
 
                 if (info->type == "fan")
                 {
+                    // min/max RPM value for fan D-Bus read has a different
+                    // semantics. Should be detected from D-Bus
+                    // MinValue/MaxValue properties.
+                    auto fanReadIntfInfo = *info;
+                    fanReadIntfInfo.min = conf::inheritValueFromDbus;
+                    fanReadIntfInfo.max = conf::inheritValueFromDbus;
+
                     ri = DbusPassive::createDbusPassive(
-                        passiveListeningBus, info->type, name, &helper, info,
-                        redundancy);
+                        passiveListeningBus, info->type, name, &helper,
+                        &fanReadIntfInfo, redundancy);
                 }
                 else
                 {
