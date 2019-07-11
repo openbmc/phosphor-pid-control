@@ -60,15 +60,6 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     {
         return nullptr;
     }
-    if (info->max != conf::inheritValueFromDbus)
-    {
-        settings.max = info->max;
-    }
-
-    if (info->min != conf::inheritValueFromDbus)
-    {
-        settings.min = info->min;
-    }
 
     return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
                                          failed, path, redundancy);
