@@ -187,7 +187,7 @@ bool validType(const std::string& type)
 
 void scaleSensorReading(const double min, const double max, double& value)
 {
-    if (max <= 0)
+    if (max <= 0 || max <= min)
     {
         return;
     }
