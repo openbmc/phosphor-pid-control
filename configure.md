@@ -75,13 +75,10 @@ written sysfs path. There are two support paths:
 *   `/sys/devices/platform/ahb/1e786000.pwm-tacho-controller/hwmon/<asterisk
     asterisk>/pwm1`
 
-If the `writePath` value contains: `/xyz/openbmc_project/control/fanpwm/` it
+If the `writePath` value contains: `/xyz/openbmc_project/sensors/fan_tach/fan{N}` it
 sets of a sensor object that writes over dbus to the
-`xyz.openbmc_project.Control.FanPwm` interface. The `writePath` should end with
-the sensor's dbus name.
-
-**BUG NOTE** It's currently using the writePath specified for fanpwm as the
-sensor path, when in fact, the interface is attached to:
+`xyz.openbmc_project.Control.FanPwm` interface. The `writePath` should be the
+full object path.
 
 ```
 busctl introspect xyz.openbmc_project.Hwmon-1644477290.Hwmon1 /xyz/openbmc_project/sensors/fan_tach/fan1 --no-pager
