@@ -48,7 +48,7 @@ struct ControllerInfo
  */
 struct ZoneConfig
 {
-    /* The minimum RPM value we would ever want. */
+    /* The minimum set-point value we would ever want (typically in RPM) */
     double minThermalOutput;
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */

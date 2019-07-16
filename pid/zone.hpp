@@ -30,7 +30,7 @@ class ZoneInterface
     virtual double getCachedValue(const std::string& name) = 0;
     virtual void addSetPoint(double setpoint) = 0;
     virtual void addRPMCeiling(double ceiling) = 0;
-    virtual double getMaxRPMRequest() const = 0;
+    virtual double getMaxSetPointRequest() const = 0;
     virtual bool getFailSafeMode() const = 0;
     virtual double getFailSafePercent() const = 0;
     virtual Sensor* getSensor(const std::string& name) = 0;
@@ -48,7 +48,7 @@ class PIDZone : public ZoneInterface, public ModeObject
             const SensorManager& mgr, sdbusplus::bus::bus& bus,
             const char* objPath, bool defer) :
         ModeObject(bus, objPath, defer),
-        _zoneId(zone), _maximumRPMSetPt(),
+        _zoneId(zone), _maximumSetPoint(),
         _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _mgr(mgr)
     {
@@ -58,7 +58,7 @@ class PIDZone : public ZoneInterface, public ModeObject
         }
     }
 
-    double getMaxRPMRequest(void) const override;
+    double getMaxSetPointRequest(void) const override;
     bool getManualMode(void) const;
 
     /* Could put lock around this since it's accessed from two threads, but
@@ -72,10 +72,10 @@ class PIDZone : public ZoneInterface, public ModeObject
     void clearSetPoints(void);
     void clearRPMCeilings(void);
     double getFailSafePercent(void) const override;
-    double getMinThermalRPMSetpoint(void) const;
+    double getMinThermalSetpoint(void) const;
 
     Sensor* getSensor(const std::string& name) override;
-    void determineMaxRPMRequest(void);
+    void determineMaxSetPointRequest(void);
     void updateFanTelemetry(void);
     void updateSensors(void);
     void initializeCache(void);
@@ -101,7 +101,7 @@ class PIDZone : public ZoneInterface, public ModeObject
     std::ofstream _log;
 
     const int64_t _zoneId;
-    double _maximumRPMSetPt = 0;
+    double _maximumSetPoint = 0;
     bool _manualMode = false;
     const double _minThermalOutputSetPt;
     const double _failSafePercent;

@@ -122,21 +122,21 @@ TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection)
     // Fanspeed starts are Neutral.
     EXPECT_EQ(FanSpeedDirection::NEUTRAL, fp->getFanDirection());
 
-    // getMaxRPMRequest returns a higher value than 0, so the fans should be
-    // marked as speeding up.
-    EXPECT_CALL(z, getMaxRPMRequest()).WillOnce(Return(10.0));
+    // getMaxSetPointRequest returns a higher value than 0, so the fans should
+    // be marked as speeding up.
+    EXPECT_CALL(z, getMaxSetPointRequest()).WillOnce(Return(10.0));
     EXPECT_EQ(10.0, p->setptProc());
     EXPECT_EQ(FanSpeedDirection::UP, fp->getFanDirection());
 
-    // getMaxRPMRequest returns a lower value than 10, so the fans should be
-    // marked as slowing down.
-    EXPECT_CALL(z, getMaxRPMRequest()).WillOnce(Return(5.0));
+    // getMaxSetPointRequest returns a lower value than 10, so the fans should
+    // be marked as slowing down.
+    EXPECT_CALL(z, getMaxSetPointRequest()).WillOnce(Return(5.0));
     EXPECT_EQ(5.0, p->setptProc());
     EXPECT_EQ(FanSpeedDirection::DOWN, fp->getFanDirection());
 
-    // getMaxRPMRequest returns the same value, so the fans should be marked as
-    // neutral.
-    EXPECT_CALL(z, getMaxRPMRequest()).WillOnce(Return(5.0));
+    // getMaxSetPointRequest returns the same value, so the fans should be
+    // marked as neutral.
+    EXPECT_CALL(z, getMaxSetPointRequest()).WillOnce(Return(5.0));
     EXPECT_EQ(5.0, p->setptProc());
     EXPECT_EQ(FanSpeedDirection::NEUTRAL, fp->getFanDirection());
 }

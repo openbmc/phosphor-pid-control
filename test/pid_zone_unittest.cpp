@@ -121,8 +121,8 @@ TEST_F(PidZoneTest, GetAndSetManualModeTest_BehavesAsExpected)
 
 TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
 {
-    // Tests addSetPoint, clearSetPoints, determineMaxRPMRequest
-    // and getMinThermalRPMSetpoint.
+    // Tests addSetPoint, clearSetPoints, determineMaxSetPointRequest
+    // and getMinThermalSetpoint.
 
     // At least one value must be above the minimum thermal setpoint used in
     // the constructor otherwise it'll choose that value
@@ -133,15 +133,15 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
     }
 
     // This will pull the maximum RPM setpoint request.
-    zone->determineMaxRPMRequest();
-    EXPECT_EQ(5000, zone->getMaxRPMRequest());
+    zone->determineMaxSetPointRequest();
+    EXPECT_EQ(5000, zone->getMaxSetPointRequest());
 
     // Clear the values, so it'll choose the minimum thermal setpoint.
     zone->clearSetPoints();
 
     // This will go through the RPM set point values and grab the maximum.
-    zone->determineMaxRPMRequest();
-    EXPECT_EQ(zone->getMinThermalRPMSetpoint(), zone->getMaxRPMRequest());
+    zone->determineMaxSetPointRequest();
+    EXPECT_EQ(zone->getMinThermalSetpoint(), zone->getMaxSetPointRequest());
 }
 
 TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
@@ -156,10 +156,10 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
     }
 
     // This will pull the maximum RPM setpoint request.
-    zone->determineMaxRPMRequest();
+    zone->determineMaxSetPointRequest();
 
     // Verifies the value returned in the minimal thermal rpm set point.
-    EXPECT_EQ(zone->getMinThermalRPMSetpoint(), zone->getMaxRPMRequest());
+    EXPECT_EQ(zone->getMinThermalSetpoint(), zone->getMaxSetPointRequest());
 }
 
 TEST_F(PidZoneTest, GetFailSafePercent_ReturnsExpected)

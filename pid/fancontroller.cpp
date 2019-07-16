@@ -88,7 +88,7 @@ double FanController::inputProc(void)
 
 double FanController::setptProc(void)
 {
-    double maxRPM = _owner->getMaxRPMRequest();
+    double maxRPM = _owner->getMaxSetPointRequest();
 
     // store for reference, and check if more or less.
     double prev = getSetpoint();

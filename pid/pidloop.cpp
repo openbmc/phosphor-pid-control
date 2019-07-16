@@ -37,7 +37,7 @@ static void processThermals(PIDZone* zone)
     // Run the margin PIDs.
     zone->processThermals();
     // Get the maximum RPM setpoint.
-    zone->determineMaxRPMRequest();
+    zone->determineMaxSetPointRequest();
 }
 
 void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer, bool first,

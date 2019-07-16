@@ -35,9 +35,9 @@
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
 
-double PIDZone::getMaxRPMRequest(void) const
+double PIDZone::getMaxSetPointRequest(void) const
 {
-    return _maximumRPMSetPt;
+    return _maximumSetPoint;
 }
 
 bool PIDZone::getManualMode(void) const
@@ -86,7 +86,7 @@ double PIDZone::getFailSafePercent(void) const
     return _failSafePercent;
 }
 
-double PIDZone::getMinThermalRPMSetpoint(void) const
+double PIDZone::getMinThermalSetpoint(void) const
 {
     return _minThermalOutputSetPt;
 }
@@ -116,7 +116,7 @@ void PIDZone::addThermalInput(const std::string& therm)
     _thermalInputs.push_back(therm);
 }
 
-void PIDZone::determineMaxRPMRequest(void)
+void PIDZone::determineMaxSetPointRequest(void)
 {
     double max = 0;
     std::vector<double>::iterator result;
@@ -137,7 +137,7 @@ void PIDZone::determineMaxRPMRequest(void)
      * If the maximum RPM setpoint output is below the minimum RPM
      * setpoint, set it to the minimum.
      */
-    max = std::max(getMinThermalRPMSetpoint(), max);
+    max = std::max(getMinThermalSetpoint(), max);
 
     if (tuningEnabled)
     {
@@ -167,7 +167,7 @@ void PIDZone::determineMaxRPMRequest(void)
         }
     }
 
-    _maximumRPMSetPt = max;
+    _maximumSetPoint = max;
     return;
 }
 
@@ -223,7 +223,7 @@ void PIDZone::updateFanTelemetry(void)
         _log << std::chrono::duration_cast<std::chrono::milliseconds>(
                     now.time_since_epoch())
                     .count();
-        _log << "," << _maximumRPMSetPt;
+        _log << "," << _maximumSetPoint;
     }
 
     for (const auto& f : _fanInputs)
