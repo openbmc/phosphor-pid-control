@@ -31,8 +31,8 @@ static void processThermals(PIDZone* zone)
 {
     // Get the latest margins.
     zone->updateSensors();
-    // Zero out the RPM set point goals.
-    zone->clearRPMSetPoints();
+    // Zero out the set point goals.
+    zone->clearSetPoints();
     zone->clearRPMCeilings();
     // Run the margin PIDs.
     zone->processThermals();

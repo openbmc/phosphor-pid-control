@@ -61,9 +61,9 @@ int64_t PIDZone::getZoneID(void) const
     return _zoneId;
 }
 
-void PIDZone::addRPMSetPoint(double setpoint)
+void PIDZone::addSetPoint(double setpoint)
 {
-    _RPMSetPoints.push_back(setpoint);
+    _SetPoints.push_back(setpoint);
 }
 
 void PIDZone::addRPMCeiling(double ceiling)
@@ -76,9 +76,9 @@ void PIDZone::clearRPMCeilings(void)
     _RPMCeilings.clear();
 }
 
-void PIDZone::clearRPMSetPoints(void)
+void PIDZone::clearSetPoints(void)
 {
-    _RPMSetPoints.clear();
+    _SetPoints.clear();
 }
 
 double PIDZone::getFailSafePercent(void) const
@@ -121,9 +121,9 @@ void PIDZone::determineMaxRPMRequest(void)
     double max = 0;
     std::vector<double>::iterator result;
 
-    if (_RPMSetPoints.size() > 0)
+    if (_SetPoints.size() > 0)
     {
-        result = std::max_element(_RPMSetPoints.begin(), _RPMSetPoints.end());
+        result = std::max_element(_SetPoints.begin(), _SetPoints.end());
         max = *result;
     }
 

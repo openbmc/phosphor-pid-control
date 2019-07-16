@@ -28,7 +28,7 @@ class ZoneInterface
     virtual ~ZoneInterface() = default;
 
     virtual double getCachedValue(const std::string& name) = 0;
-    virtual void addRPMSetPoint(double setpoint) = 0;
+    virtual void addSetPoint(double setpoint) = 0;
     virtual void addRPMCeiling(double ceiling) = 0;
     virtual double getMaxRPMRequest() const = 0;
     virtual bool getFailSafeMode() const = 0;
@@ -67,9 +67,9 @@ class PIDZone : public ZoneInterface, public ModeObject
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
     int64_t getZoneID(void) const;
-    void addRPMSetPoint(double setpoint) override;
+    void addSetPoint(double setpoint) override;
     void addRPMCeiling(double ceiling) override;
-    void clearRPMSetPoints(void);
+    void clearSetPoints(void);
     void clearRPMCeilings(void);
     double getFailSafePercent(void) const override;
     double getMinThermalRPMSetpoint(void) const;
@@ -108,7 +108,7 @@ class PIDZone : public ZoneInterface, public ModeObject
 
     std::set<std::string> _failSafeSensors;
 
-    std::vector<double> _RPMSetPoints;
+    std::vector<double> _SetPoints;
     std::vector<double> _RPMCeilings;
     std::vector<std::string> _fanInputs;
     std::vector<std::string> _thermalInputs;

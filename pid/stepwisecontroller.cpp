@@ -101,7 +101,7 @@ void StepwiseController::outputProc(double value)
     }
     else
     {
-        _owner->addRPMSetPoint(value);
+        _owner->addSetPoint(value);
     }
     return;
 }
