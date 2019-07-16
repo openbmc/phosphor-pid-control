@@ -99,7 +99,7 @@ TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
     EXPECT_FALSE(p == nullptr);
 
     double value = 90.0;
-    EXPECT_CALL(z, addRPMSetPoint(value));
+    EXPECT_CALL(z, addSetPoint(value));
 
     p->outputProc(value);
 }
@@ -170,7 +170,7 @@ TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
         .WillOnce(Return(9.0))
         .WillOnce(Return(7.0));
 
-    EXPECT_CALL(z, addRPMSetPoint(_)).Times(3);
+    EXPECT_CALL(z, addSetPoint(_)).Times(3);
 
     std::vector<double> lastReadings = {12.0, 12.0, 7.0};
     for (auto& reading : lastReadings)
@@ -203,7 +203,7 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
         .WillOnce(Return(13.0))
         .WillOnce(Return(14.0));
 
-    EXPECT_CALL(z, addRPMSetPoint(_)).Times(3);
+    EXPECT_CALL(z, addSetPoint(_)).Times(3);
 
     std::vector<double> lastReadings = {8.0, 8.0, 14.0};
     for (auto& reading : lastReadings)
