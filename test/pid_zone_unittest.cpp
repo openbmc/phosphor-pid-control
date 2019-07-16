@@ -121,7 +121,7 @@ TEST_F(PidZoneTest, GetAndSetManualModeTest_BehavesAsExpected)
 
 TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
 {
-    // Tests addRPMSetPoint, clearRPMSetPoints, determineMaxRPMRequest
+    // Tests addSetPoint, clearSetPoints, determineMaxRPMRequest
     // and getMinThermalRPMSetpoint.
 
     // At least one value must be above the minimum thermal setpoint used in
@@ -129,7 +129,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
     std::vector<double> values = {100, 200, 300, 400, 500, 5000};
     for (auto v : values)
     {
-        zone->addRPMSetPoint(v);
+        zone->addSetPoint(v);
     }
 
     // This will pull the maximum RPM setpoint request.
@@ -137,7 +137,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
     EXPECT_EQ(5000, zone->getMaxRPMRequest());
 
     // Clear the values, so it'll choose the minimum thermal setpoint.
-    zone->clearRPMSetPoints();
+    zone->clearSetPoints();
 
     // This will go through the RPM set point values and grab the maximum.
     zone->determineMaxRPMRequest();
@@ -152,7 +152,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
     std::vector<double> values = {100, 200, 300, 400, 500};
     for (auto v : values)
     {
-        zone->addRPMSetPoint(v);
+        zone->addSetPoint(v);
     }
 
     // This will pull the maximum RPM setpoint request.

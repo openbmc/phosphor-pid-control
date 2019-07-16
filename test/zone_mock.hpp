@@ -12,7 +12,7 @@ class ZoneMock : public ZoneInterface
     virtual ~ZoneMock() = default;
 
     MOCK_METHOD1(getCachedValue, double(const std::string&));
-    MOCK_METHOD1(addRPMSetPoint, void(double));
+    MOCK_METHOD1(addSetPoint, void(double));
     MOCK_METHOD1(addRPMCeiling, void(double));
     MOCK_CONST_METHOD0(getMaxRPMRequest, double());
     MOCK_CONST_METHOD0(getFailSafeMode, bool());
