@@ -46,3 +46,5 @@ x86_64-libtool
 *_unittest.log
 *_unittest.trs
 test-suite.log
+
+phosphor-pid-control.service
