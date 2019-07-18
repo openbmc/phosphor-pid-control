@@ -44,7 +44,7 @@ RunRpmSteps() {
 
   echo "Running RPM from ${start_rpm} to ${stop_rpm} in ${num_steps} steps"
   CommandRpm "${start_rpm}"
-  SystemCtl start swampd.service
+  SystemCtl start phosphor-pid-control.service
   Sleep 60
 
   local i
@@ -56,7 +56,7 @@ RunRpmSteps() {
     Sleep "${dwell}"
   done
 
-  SystemCtl stop swampd.service
+  SystemCtl stop phosphor-pid-control.service
   Mv /tmp/swampd.log ~/"${start_rpm}_${stop_rpm}_${num_steps}_${dwell}.csv"
   echo "Done!!"
 }
@@ -76,7 +76,7 @@ main() {
   fi
 
   MkDir -p /etc/thermal.d/
-  SystemCtl stop swampd.service
+  SystemCtl stop phosphor-pid-control.service
 
   RunRpmSteps "${min_rpm}" "${max_rpm}" 10 30
   RunRpmSteps "${max_rpm}" "${min_rpm}" 10 30

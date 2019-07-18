@@ -21,7 +21,7 @@ as `4000` or `5000`, and is in RPM.
 file and restart the daemon to make the new values effective.
 
 ```
-systemctl restart swampd.service
+systemctl restart phosphor-pid-control.service
 ```
 
 ## Logging
