@@ -695,37 +695,19 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                     info.stepwiseInfo.negativeHysteresis = std::visit(
                         VariantToDoubleVisitor(), findNegHyst->second);
                 }
-                std::vector<double> readings =
+                info.stepwiseInfo.reading =
                     std::get<std::vector<double>>(base.at("Reading"));
-                if (readings.size() > ec::maxStepwisePoints)
-                {
-                    throw std::invalid_argument("Too many stepwise points.");
-                }
                 if (readings.empty())
                 {
                     throw std::invalid_argument(
                         "Must have one stepwise point.");
                 }
-                std::copy(readings.begin(), readings.end(),
-                          info.stepwiseInfo.reading);
-                if (readings.size() < ec::maxStepwisePoints)
-                {
-                    info.stepwiseInfo.reading[readings.size()] =
-                        std::numeric_limits<double>::quiet_NaN();
-                }
-                std::vector<double> outputs =
+                info.stepwiseInfo.output =
                     std::get<std::vector<double>>(base.at("Output"));
                 if (readings.size() != outputs.size())
                 {
                     throw std::invalid_argument(
                         "Outputs size must match readings");
-                }
-                std::copy(outputs.begin(), outputs.end(),
-                          info.stepwiseInfo.output);
-                if (outputs.size() < ec::maxStepwisePoints)
-                {
-                    info.stepwiseInfo.output[outputs.size()] =
-                        std::numeric_limits<double>::quiet_NaN();
                 }
             }
         }

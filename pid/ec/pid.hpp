@@ -24,6 +24,7 @@ typedef struct
 
     double proportionalCoeff; // coeff for P
     double integralCoeff;     // coeff for I
+    double derivativeCoeff;   // coeff for D
     double feedFwdOffset;     // offset coeff for feed-forward term
     double feedFwdGain;       // gain for feed-forward term
 
@@ -35,7 +36,8 @@ typedef struct
     double negativeHysteresis;
 } pid_info_t;
 
-double pid(pid_info_t* pidinfoptr, double input, double setpoint);
+double pid(pid_info_t* pidinfoptr, double input, double setpoint,
+           double lastInput);
 
 /* Condensed version for use by the configuration. */
 struct pidinfo
@@ -43,6 +45,7 @@ struct pidinfo
     double ts;                  // sample time in seconds
     double proportionalCoeff;   // coeff for P
     double integralCoeff;       // coeff for I
+    double derivativeCoeff;     // coeff for D
     double feedFwdOffset;       // offset coeff for feed-forward term
     double feedFwdGain;         // gain for feed-forward term
     ec::limits_t integralLimit; // clamp of integral

@@ -51,7 +51,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
         p.at("negativeHysteresis").get_to(negativeHysteresisValue);
     }
 
-    if (c.type != "stepwise")
+    if (c.type != "stepwise" && c.type != "linear")
     {
         p.at("samplePeriod").get_to(c.pidInfo.ts);
         p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
@@ -64,7 +64,14 @@ void from_json(const json& j, conf::ControllerInfo& c)
         p.at("outLim_max").get_to(c.pidInfo.outLim.max);
         p.at("slewNeg").get_to(c.pidInfo.slewNeg);
         p.at("slewPos").get_to(c.pidInfo.slewPos);
+        auto derivativeCoeff = p.find("derivativeCoeff");
+        auto derivativeCoeffValue = 0.0;
+        if (derivativeCoeff != p.end())
+        {
+            p.at("derivativeCoeff").get_to(derivativeCoeffValue);
+        }
 
+        c.pidInfo.derivativeCoeff = derivativeCoeffValue;
         c.pidInfo.positiveHysteresis = positiveHysteresisValue;
         c.pidInfo.negativeHysteresis = negativeHysteresisValue;
     }
@@ -73,23 +80,21 @@ void from_json(const json& j, conf::ControllerInfo& c)
         p.at("samplePeriod").get_to(c.stepwiseInfo.ts);
         p.at("isCeiling").get_to(c.stepwiseInfo.isCeiling);
 
-        for (size_t i = 0; i < ec::maxStepwisePoints; i++)
-        {
-            c.stepwiseInfo.reading[i] =
-                std::numeric_limits<double>::quiet_NaN();
-            c.stepwiseInfo.output[i] = std::numeric_limits<double>::quiet_NaN();
-        }
-
         auto reading = p.find("reading");
         if (reading != p.end())
         {
             auto r = p.at("reading");
-            for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+            for (size_t i = 0;; i++)
             {
                 auto n = r.find(std::to_string(i));
                 if (n != r.end())
                 {
-                    r.at(std::to_string(i)).get_to(c.stepwiseInfo.reading[i]);
+                    c.stepwiseInfo.reading.emplace_back(
+                        std::move(r.at(std::to_string(i))));
+                }
+                else
+                {
+                    break;
                 }
             }
         }
@@ -98,12 +103,17 @@ void from_json(const json& j, conf::ControllerInfo& c)
         if (output != p.end())
         {
             auto o = p.at("output");
-            for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+            for (size_t i = 0;; i++)
             {
                 auto n = o.find(std::to_string(i));
                 if (n != o.end())
                 {
-                    o.at(std::to_string(i)).get_to(c.stepwiseInfo.output[i]);
+                    c.stepwiseInfo.output.emplace_back(
+                        std::move(o.at(std::to_string(i))));
+                }
+                else
+                {
+                    break;
                 }
             }
         }
@@ -135,6 +145,21 @@ std::pair<std::map<int64_t, conf::PIDConf>,
         id = zone["id"];
         thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
         thisZoneConfig.failsafePercent = zone["failsafePercent"];
+        auto timeBase = zone.find("cycleTimeBase");
+        if (timeBase != zone.end())
+        {
+            thisZoneConfig.cycleTimeBase = zone["cycleTimeBase"];
+        }
+        auto timeCheckFanFailures = zone.find("checkFanFailuresTime");
+        if (timeCheckFanFailures != zone.end())
+        {
+            thisZoneConfig.checkFanFailuresTime = zone["checkFanFailuresTime"];
+        }
+        auto timeUpdateThermals = zone.find("updateThermalsTime");
+        if (timeUpdateThermals != zone.end())
+        {
+            thisZoneConfig.updateThermalsTime = zone["updateThermalsTime"];
+        }
 
         auto pids = zone["pids"];
         for (const auto& pid : pids)

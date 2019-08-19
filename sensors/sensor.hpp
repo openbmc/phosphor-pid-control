@@ -25,8 +25,8 @@ class Sensor
         return (type == "fan") ? 0 : 2;
     }
 
-    Sensor(const std::string& name, int64_t timeout) :
-        _name(name), _timeout(timeout)
+    Sensor(const std::string& name, int64_t timeout, double tjMax) :
+        _name(name), _timeout(timeout), _tjMax(tjMax)
     {
     }
 
@@ -54,7 +54,13 @@ class Sensor
         return _timeout;
     }
 
+    double getTjMax(void)
+    {
+        return _tjMax;
+    }
+
   private:
     std::string _name;
     int64_t _timeout;
+    double _tjMax;
 };

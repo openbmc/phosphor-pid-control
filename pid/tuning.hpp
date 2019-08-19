@@ -11,3 +11,5 @@ extern bool tuningEnabled;
 extern std::string loggingPath;
 /** Boolean variable whether loggingPath is non-empty. */
 extern bool loggingEnabled;
+/** Boolean variable whether debug mode is enabled. */
+extern bool debugModeEnabled;

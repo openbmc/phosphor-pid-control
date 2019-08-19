@@ -15,8 +15,8 @@ class PluggableSensor : public Sensor
   public:
     PluggableSensor(const std::string& name, int64_t timeout,
                     std::unique_ptr<ReadInterface> reader,
-                    std::unique_ptr<WriteInterface> writer) :
-        Sensor(name, timeout),
+                    std::unique_ptr<WriteInterface> writer, double tjMax = 0) :
+        Sensor(name, timeout, tjMax),
         _reader(std::move(reader)), _writer(std::move(writer))
     {
     }

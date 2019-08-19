@@ -26,19 +26,50 @@ double stepwise(const ec::StepwiseInfo& info, double input)
 {
     double value = info.output[0]; // if we are below the lowest
                                    // point, we set the lowest value
-
-    for (size_t ii = 1; ii < ec::maxStepwisePoints; ii++)
+    if (input > info.reading[0])
     {
+        for (size_t i = 1; i < info.reading.size(); ++i)
+        {
+            if (info.reading[i] > input)
+            {
+                break;
+            }
+            value = info.output[i];
+        }
+    }
 
-        if (std::isnan(info.reading[ii]))
+    return value;
+}
+
+double linear(const ec::StepwiseInfo& info, double input)
+{
+    double value = info.output[0];
+
+    // if input is higher than the max reading point
+    // return the max value of output
+    if (input >= info.reading.back())
+    {
+        value = info.output.back();
+    }
+    // if input is smaller than the minimum reading point
+    // return the minimum value of output
+    else if (input > info.reading[0])
+    {
+        for (size_t i = 1; i < info.reading.size(); ++i)
         {
-            break;
+            // DO Interpolation
+            if (info.reading[i] > input)
+            {
+                double inputLow = info.reading[i - 1];
+                double inputHigh = info.reading[i];
+                double outputLow = info.output[i - 1];
+                double outputHigh = info.output[i];
+                value = outputLow +
+                        ((outputHigh - outputLow) / (inputHigh - inputLow)) *
+                            (input - inputLow);
+                break;
+            }
         }
-        if (info.reading[ii] > input)
-        {
-            break;
-        }
-        value = info.output[ii];
     }
 
     return value;

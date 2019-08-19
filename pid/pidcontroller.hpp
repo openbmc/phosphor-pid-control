@@ -54,6 +54,16 @@ class PIDController : public Controller
         return lastInput;
     }
 
+    double getLastOutput(void)
+    {
+        return lastOutput;
+    }
+
+    void setLastOutput(double value)
+    {
+        lastOutput = value;
+    }
+
   protected:
     ZoneInterface* _owner;
 
@@ -63,4 +73,5 @@ class PIDController : public Controller
     double _setpoint;
     std::string _id;
     double lastInput = std::numeric_limits<double>::quiet_NaN();
+    double lastOutput = 0;
 };

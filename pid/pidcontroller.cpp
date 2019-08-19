@@ -45,7 +45,7 @@ void PIDController::process(void)
     if (info->positiveHysteresis == 0 && info->negativeHysteresis == 0)
     {
         // Calculate new output
-        output = ec::pid(info, input, setpt);
+        output = ec::pid(info, input, setpt, lastInput);
 
         // this variable isn't actually used in this context, but we're setting
         // it here incase somebody uses it later it's the correct value
@@ -56,21 +56,26 @@ void PIDController::process(void)
         // initialize if not set yet
         if (std::isnan(lastInput))
         {
-            lastInput = input;
+            lastInput = setpt;
         }
-
-        // if reading is outside of hysteresis bounds, use it for reading,
-        // otherwise use last reading without updating it first
-        else if ((input - lastInput) > info->positiveHysteresis)
+        // over the hysteresis bounds, keep counting pid
+        if (input > setpt + info->positiveHysteresis)
         {
+            output = ec::pid(info, input, setpt, lastInput);
             lastInput = input;
         }
-        else if ((lastInput - input) > info->negativeHysteresis)
+        // under the hysteresis bounds, initialize pid
+        else if (input < setpt - info->negativeHysteresis)
         {
-            lastInput = input;
+            lastInput = setpt;
+            info->integral = 0;
+            output = 0;
         }
-
-        output = ec::pid(info, lastInput, setpt);
+        // inside the hysteresis bounds, keep last output
+        else
+        {
+            output = lastOutput;
+        }
     }
 
     // Output new value

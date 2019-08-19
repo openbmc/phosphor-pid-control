@@ -15,6 +15,8 @@
  */
 
 /* Configuration. */
+#include "config.h"
+
 #include "zone.hpp"
 
 #include "conf.hpp"
@@ -24,6 +26,8 @@
 #include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 #include "pid/tuning.hpp"
+
+#include <systemd/sd-journal.h>
 
 #include <algorithm>
 #include <chrono>
@@ -52,8 +56,26 @@ void PIDZone::setManualMode(bool mode)
 
 bool PIDZone::getFailSafeMode(void) const
 {
-    // If any keys are present at least one sensor is in fail safe mode.
-    return !_failSafeSensors.empty();
+    /* If fail safe fans are more than the maximum number that project
+     * defined(default = 1) or any temperature sensors in fail safe, Enter fail
+     * safe mode. If MAX_FAN_REDUNDANCY == 0, process will not enter failsafe
+     * mode beacause of fan failures.
+     */
+    if ((MAX_FAN_REDUNDANCY != 0) &&
+        (_failSafeFans.size() >= MAX_FAN_REDUNDANCY))
+    {
+        return true;
+    }
+    // If any CPU or DIMM sensors are failed, enter fail safe mode.
+    for (auto& it : _failSafeTemps)
+    {
+        if ((it.find("CPU") != std::string::npos) || (it.find("DIMM") != std::string::npos))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 int64_t PIDZone::getZoneID(void) const
@@ -89,6 +111,31 @@ double PIDZone::getFailSafePercent(void) const
 double PIDZone::getMinThermalRPMSetpoint(void) const
 {
     return _minThermalOutputSetPt;
+}
+
+uint64_t PIDZone::getCycleTimeBase(void) const
+{
+    return _cycleTimeBase;
+}
+
+uint64_t PIDZone::getCheckFanFailuresCycle(void) const
+{
+    return _checkFanFailuresCycle;
+}
+
+uint64_t PIDZone::getUpdateThermalsCycle(void) const
+{
+    return _updateThermalsCycle;
+}
+
+void PIDZone::setCheckFanFailuresFlag(bool value)
+{
+    _checkFanFailuresFlag = value;
+}
+
+bool PIDZone::getCheckFanFailuresFlag(void) const
+{
+    return _checkFanFailuresFlag;
 }
 
 void PIDZone::addFanPID(std::unique_ptr<Controller> pid)
@@ -251,19 +298,27 @@ void PIDZone::updateFanTelemetry(void)
         // check if fan fail.
         if (sensor->getFailed())
         {
-            _failSafeSensors.insert(f);
+            sd_journal_print(LOG_INFO, "%s fan sensor getfailed", f.c_str());
+            _failSafeFans.insert(f);
         }
         else if (timeout != 0 && duration >= period)
         {
-            _failSafeSensors.insert(f);
+            sd_journal_print(LOG_INFO, "%s fan sensor timeout, duration: %lld",
+                             f.c_str(), duration);
+            _failSafeFans.insert(f);
         }
         else
         {
             // Check if it's in there: remove it.
-            auto kt = _failSafeSensors.find(f);
-            if (kt != _failSafeSensors.end())
+            auto kt = _failSafeFans.find(f);
+            /* Avoid erasing failed fans from failSafeFans set.
+             * Because checkFanFailures detect that this fan is failed.
+             */
+            if ((kt != _failSafeFans.end()) && (_isFanFailure[f] == false))
             {
-                _failSafeSensors.erase(kt);
+                sd_journal_print(LOG_INFO, "erase %s fan sensor from failsafe",
+                                 f.c_str());
+                _failSafeFans.erase(kt);
             }
         }
     }
@@ -279,6 +334,71 @@ void PIDZone::updateFanTelemetry(void)
     return;
 }
 
+void PIDZone::checkFanFailures(void)
+{
+    std::map<std::string, double> fanSpeeds;
+    double firstLargestFanTach = 0;
+    double secondLargestFanTach = 0;
+    double value = 0;
+    double twoLargestAverage = 0;
+
+    // Get the fan speeds
+    for (const auto& name : _fanInputs)
+    {
+        value = _cachedValuesByName[name];
+        if (value > 0)
+        {
+            fanSpeeds[name] = value;
+        }
+        // If the reading value is under 0 set the fan speed to 0
+        else
+        {
+            fanSpeeds[name] = 0;
+        }
+
+        // Find the two largest fan speeds
+        if (value > secondLargestFanTach)
+        {
+            if (value > firstLargestFanTach)
+            {
+                firstLargestFanTach = value;
+            }
+            else
+            {
+                secondLargestFanTach = value;
+            }
+        }
+    }
+
+    twoLargestAverage = (firstLargestFanTach + secondLargestFanTach) / 2;
+
+    /* If a fan tachometer value is 25% below the twoLargestAverage
+     * log a SEL to indicate a suspected failure on this fan
+     */
+    for (auto& it : fanSpeeds)
+    {
+        if (it.second < (twoLargestAverage * 0.75))
+        {
+            sd_journal_print(LOG_ERR, "%s is 25%% below the average",
+                             it.first.c_str());
+            _failSafeFans.insert(it.first);
+            _isFanFailure[it.first] = true;
+        }
+        else
+        {
+            /* Another sides place fans in failSafeFans.
+             * Do not erase them from set.
+             */
+            if (_isFanFailure[it.first] == true)
+            {
+                _failSafeFans.erase(it.first);
+            }
+            _isFanFailure[it.first] = false;
+        }
+    }
+
+    return;
+}
 void PIDZone::updateSensors(void)
 {
     using namespace std::chrono;
@@ -290,7 +410,11 @@ void PIDZone::updateSensors(void)
         auto sensor = _mgr.getSensor(t);
         ReadReturn r = sensor->read();
         int64_t timeout = sensor->getTimeout();
-
+        if (debugModeEnabled)
+        {
+            sd_journal_print(LOG_INFO, "%s temperature sensor reading: %lg",
+                             t.c_str(), r.value);
+        }
         _cachedValuesByName[t] = r.value;
         tstamp then = r.updated;
 
@@ -299,20 +423,73 @@ void PIDZone::updateSensors(void)
 
         if (sensor->getFailed())
         {
-            _failSafeSensors.insert(t);
+            sd_journal_print(LOG_INFO, "%s temperature sensor getfailed",
+                             t.c_str());
+            _failSafeTemps.insert(t);
         }
         else if (timeout != 0 && duration >= period)
         {
             // std::cerr << "Entering fail safe mode.\n";
-            _failSafeSensors.insert(t);
+            sd_journal_print(LOG_INFO,
+                             "%s temperature sensor timeout, duration: %lld",
+                             t.c_str(), duration);
+            _failSafeTemps.insert(t);
+        }
+        else if ((r.value == 0) && ((t.find("CPU") != std::string::npos) || (t.find("DIMM") != std::string::npos)))
+        {
+            auto method = _bus.new_method_call("xyz.openbmc_project.CPUSensor",
+                                        ("/xyz/openbmc_project/sensors/temperature/" + t).c_str(),
+                                        "org.freedesktop.DBus.Properties", "Get");
+            method.append("xyz.openbmc_project.Sensor.Value", "ReadingState");
+
+            auto reply = _bus.call(method);
+            if (reply.is_method_error())
+            {
+                sd_journal_print(LOG_INFO, "Failed to get ReadingState from D-Bus: %s",
+                    t.c_str());
+                continue;
+            }
+
+            bool readingState;
+            reply.read(readingState);
+
+            // ReadingState is true means that this value is invalid.
+            if (readingState == true)
+            {
+                // The interval of pid control update sensor values.
+                sensorFailuresTimer[t] += (getUpdateThermalsCycle() * getCycleTimeBase());
+
+                /**
+                 *  If BMC can’t get the correct response from CPU or DIMM over 30 seconds.
+                 *  Add these CPU and DIMM sensors to fail safe set.
+                 *  When BMC can't get sensor value, it will try 10 times(about 10 seconds)
+                 *  before it changes sensor state. So when PID control receives that
+                 *  state has changed, it’s been 10 seconds already.
+                 */
+                if (sensorFailuresTimer[t] >= 20000)
+                {
+                    _failSafeTemps.insert(t);
+                }
+            }
+            else
+            {
+                // Reset sensor failure time counter.
+                sensorFailuresTimer[t] = 0;
+            }
         }
         else
         {
+            // Reset sensor failure time counter.
+            sensorFailuresTimer[t] = 0;
+
             // Check if it's in there: remove it.
-            auto kt = _failSafeSensors.find(t);
-            if (kt != _failSafeSensors.end())
+            auto kt = _failSafeTemps.find(t);
+            if (kt != _failSafeTemps.end())
             {
-                _failSafeSensors.erase(kt);
+                sd_journal_print(LOG_INFO,
+                                 "erase %s temperature sensor from failsafe",
+                                 t.c_str());
+                _failSafeTemps.erase(kt);
             }
         }
     }
@@ -327,7 +504,7 @@ void PIDZone::initializeCache(void)
         _cachedValuesByName[f] = 0;
 
         // Start all fans in fail-safe mode.
-        _failSafeSensors.insert(f);
+        _failSafeFans.insert(f);
     }
 
     for (const auto& t : _thermalInputs)
@@ -335,7 +512,7 @@ void PIDZone::initializeCache(void)
         _cachedValuesByName[t] = 0;
 
         // Start all sensors in fail-safe mode.
-        _failSafeSensors.insert(t);
+        _failSafeTemps.insert(t);
     }
 }
 

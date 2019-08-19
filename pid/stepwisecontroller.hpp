@@ -4,6 +4,7 @@
 #include "ec/stepwise.hpp"
 #include "fan.hpp"
 
+#include <functional>
 #include <limits>
 #include <memory>
 #include <vector>
@@ -15,15 +16,24 @@ class StepwiseController : public Controller
   public:
     static std::unique_ptr<Controller>
         createStepwiseController(ZoneInterface* owner, const std::string& id,
+                                 const std::string& type,
                                  const std::vector<std::string>& inputs,
                                  const ec::StepwiseInfo& initial);
 
-    StepwiseController(const std::string& id,
+    StepwiseController(const std::string& id, const std::string& type,
                        const std::vector<std::string>& inputs,
                        ZoneInterface* owner) :
         Controller(),
         _owner(owner), _id(id), _inputs(inputs)
     {
+        if (type == "stepwise")
+        {
+            pwmFunction = ec::stepwise;
+        }
+        else if (type == "linear")
+        {
+            pwmFunction = ec::linear;
+        }
     }
 
     double inputProc(void) override;
@@ -50,6 +60,7 @@ class StepwiseController : public Controller
     ec::StepwiseInfo _stepwise_info;
     std::string _id;
     std::vector<std::string> _inputs;
+    std::function<double(const ec::StepwiseInfo&, double)> pwmFunction;
     double lastInput = std::numeric_limits<double>::quiet_NaN();
     double lastOutput = std::numeric_limits<double>::quiet_NaN();
 };

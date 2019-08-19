@@ -209,6 +209,12 @@ AS_IF([test "x$enable_configure_dbus" = "xyes"],
     [AC_DEFINE(CONFIGURE_DBUS, [0], [Do not read configuration from D-Bus.])]
 )
 
+AC_ARG_VAR(MAX_FAN_REDUNDANCY, 
+           [The maximum number of fan redundancy in the project(default = 1). If set to 0, process will not enter failsafe mode beacause of fan failures.])
+AS_IF([test "x$MAX_FAN_REDUNDANCY" == "x"], [MAX_FAN_REDUNDANCY=1])
+AC_DEFINE_UNQUOTED([MAX_FAN_REDUNDANCY], [$MAX_FAN_REDUNDANCY],
+                   [The maximum number of fan redundancy in the project(default = 1). If set to 0, process will not enter failsafe mode beacause of fan failures.])
+
 AC_ARG_VAR(SYSTEMD_TARGET, "Target for starting this service")
 AS_IF([test "x$SYSTEMD_TARGET" == "x"], [SYSTEMD_TARGET="multi-user.target"])
 

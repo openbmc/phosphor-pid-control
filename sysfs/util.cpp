@@ -21,16 +21,20 @@
 #include <string>
 
 /*
- * There are two basic paths I want to support:
+ * There are three basic paths I want to support:
  * 1. /sys/class/hwmon/hwmon0/pwm1
  * 2. /sys/devices/platform/ahb/1e786000.pwm-tacho-controller/hwmon/<asterisk
  * asterisk>/pwm1
+ * 3.
+ * /sys/bus/peci/devices/0-30/peci-cputemp.0/hwmon/<asteriskasterisk>/tempN_input
  *
  * In this latter case, I want to fill in that gap.  Assuming because it's this
  * path that it'll only have one directory there.
  */
 
-static constexpr auto platform = "/sys/devices/platform/";
+std::vector<std::string> supportPath = {"/sys/devices/platform/",
+                                        "/sys/bus/peci/devices/"};
+
 namespace fs = std::filesystem;
 
 std::string FixupPath(std::string original)
@@ -39,7 +43,16 @@ std::string FixupPath(std::string original)
 
     /* TODO: Consider the merits of using regex for this. */
     n = original.find("**");
-    x = original.find(platform);
+
+    x = std::string::npos;
+    for (auto& path : supportPath)
+    {
+        x = original.find(path);
+        if (x != std::string::npos)
+        {
+            break;
+        }
+    }
 
     if ((n != std::string::npos) && (x != std::string::npos))
     {

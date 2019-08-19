@@ -20,6 +20,8 @@
 #include "util.hpp"
 #include "zone.hpp"
 
+#include <systemd/sd-journal.h>
+
 #include <algorithm>
 
 ThermalType getThermalType(const std::string& typeString)
@@ -77,6 +79,12 @@ double ThermalController::inputProc(void)
         value = compare(value, _owner->getCachedValue(in));
     }
 
+    if (debugModeEnabled)
+    {
+        sd_journal_print(LOG_INFO,
+                         "%s choose the maximum temperature value: %lg",
+                         getID().c_str(), value);
+    }
     return value;
 }
 
@@ -103,6 +111,13 @@ double ThermalController::setptProc(void)
 void ThermalController::outputProc(double value)
 {
     _owner->addRPMSetPoint(value);
+    if (debugModeEnabled)
+    {
+        sd_journal_print(LOG_INFO, "%s temp output pwm: %lg", getID().c_str(),
+                         value);
+    }
+
+    setLastOutput(value);
 
     return;
 }

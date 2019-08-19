@@ -21,6 +21,8 @@
 #include "util.hpp"
 #include "zone.hpp"
 
+#include <systemd/sd-journal.h>
+
 #include <algorithm>
 #include <chrono>
 #include <cmath>
@@ -42,17 +44,17 @@ void StepwiseController::process(void)
     // Calculate new output if hysteresis allows
     if (std::isnan(output))
     {
-        output = ec::stepwise(info, input);
+        output = pwmFunction(info, input);
         lastInput = input;
     }
     else if ((input - lastInput) > info.positiveHysteresis)
     {
-        output = ec::stepwise(info, input);
+        output = pwmFunction(info, input);
         lastInput = input;
     }
     else if ((lastInput - input) > info.negativeHysteresis)
     {
-        output = ec::stepwise(info, input);
+        output = pwmFunction(info, input);
         lastInput = input;
     }
 
@@ -64,7 +66,7 @@ void StepwiseController::process(void)
 }
 
 std::unique_ptr<Controller> StepwiseController::createStepwiseController(
-    ZoneInterface* owner, const std::string& id,
+    ZoneInterface* owner, const std::string& id, const std::string& type,
     const std::vector<std::string>& inputs, const ec::StepwiseInfo& initial)
 {
     // StepwiseController requires at least 1 input
@@ -74,7 +76,8 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
         return nullptr;
     }
 
-    auto thermal = std::make_unique<StepwiseController>(id, inputs, owner);
+    auto thermal =
+        std::make_unique<StepwiseController>(id, type, inputs, owner);
 
     ec::StepwiseInfo& info = thermal->get_stepwise_info();
 
@@ -90,6 +93,12 @@ double StepwiseController::inputProc(void)
     {
         value = std::max(value, _owner->getCachedValue(in));
     }
+    if (debugModeEnabled)
+    {
+        sd_journal_print(LOG_INFO,
+                         "%s choose the maximum temperature value: %lg",
+                         getID().c_str(), value);
+    }
     return value;
 }
 
@@ -103,5 +112,11 @@ void StepwiseController::outputProc(double value)
     {
         _owner->addRPMSetPoint(value);
     }
+    if (debugModeEnabled)
+    {
+        sd_journal_print(LOG_INFO, "%s stepwise output pwm: %lg",
+                         getID().c_str(), value);
+    }
+
     return;
 }

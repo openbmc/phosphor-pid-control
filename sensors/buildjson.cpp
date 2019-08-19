@@ -41,6 +41,34 @@ void from_json(const json& j, conf::SensorConfig& s)
         j.at("writePath").get_to(s.writePath);
     }
 
+    /**
+     *  The tjMaxPath field is used when temp is margin,
+     *  but dbus reading value is absolute temperature value.
+     **/
+    auto tjMaxPath = j.find("tjMaxPath");
+    if (tjMaxPath == j.end())
+    {
+        s.tjMaxPath = "";
+    }
+    else
+    {
+        j.at("tjMaxPath").get_to(s.tjMaxPath);
+    }
+
+    /**
+     * The tjMaxSale field is used to scale the tjMax value which
+     * read from PECI driver.
+     **/
+    auto tjMaxScale = j.find("tjMaxScale");
+    if (tjMaxScale == j.end())
+    {
+        s.tjMaxScale = 1.0;
+    }
+    else
+    {
+        j.at("tjMaxScale").get_to(s.tjMaxScale);
+    }
+
     /* The min field is optional in a configuration. */
     auto min = j.find("min");
     if (min == j.end())

@@ -22,18 +22,18 @@
 
 namespace ec
 {
-constexpr size_t maxStepwisePoints = 20;
 
 struct StepwiseInfo
 {
     double ts; // sample time in seconds
-    double reading[maxStepwisePoints];
-    double output[maxStepwisePoints];
+    std::vector<double> reading;
+    std::vector<double> output;
     double positiveHysteresis;
     double negativeHysteresis;
     bool isCeiling;
 };
 
 double stepwise(const ec::StepwiseInfo& info, double value);
+double linear(const ec::StepwiseInfo& info, double value);
 
 } // namespace ec

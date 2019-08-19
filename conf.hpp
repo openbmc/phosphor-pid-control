@@ -22,6 +22,10 @@ struct SensorConfig
     /* Can be a sensor path or a dbus path. */
     std::string readPath;
     std::string writePath;
+    /* Tjmax file path, read from PECI driver to adjust temperature values */
+    std::string tjMaxPath;
+    /* Scale tjmax value which read from PECI driver */
+    double tjMaxScale;
     /* min/max values for writing a percentage or error checking. */
     int64_t min;
     int64_t max;
@@ -36,11 +40,8 @@ struct ControllerInfo
     std::string type;                // fan or margin or temp?
     std::vector<std::string> inputs; // one or more sensors.
     double setpoint;                 // initial setpoint for thermal.
-    union
-    {
-        ec::pidinfo pidInfo; // pid details
-        ec::StepwiseInfo stepwiseInfo;
-    };
+    ec::pidinfo pidInfo;             // pid details
+    ec::StepwiseInfo stepwiseInfo;
 };
 
 /*
@@ -55,6 +56,15 @@ struct ZoneConfig
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */
     double failsafePercent;
+
+    /* The time interval every cycle. 0.1 seconds by default */
+    uint64_t cycleTimeBase = 100; // milliseconds
+
+    /* The interval of checking fan failures. 10 seconds by default */
+    uint64_t checkFanFailuresTime = 10000; // milliseconds
+
+    /* The interval of updating thermals. 1 second by default */
+    uint64_t updateThermalsTime = 1000; // milliseconds
 };
 
 using PIDConf = std::map<std::string, struct ControllerInfo>;

@@ -22,6 +22,8 @@
 #include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 
+#include <systemd/sd-journal.h>
+
 #include <iostream>
 #include <memory>
 #include <sdbusplus/bus.hpp>
@@ -64,7 +66,9 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
 
         auto zone = std::make_unique<PIDZone>(
             zoneId, zoneConf->second.minThermalOutput,
-            zoneConf->second.failsafePercent, mgr, modeControlBus,
+            zoneConf->second.failsafePercent, zoneConf->second.cycleTimeBase,
+            zoneConf->second.checkFanFailuresTime,
+            zoneConf->second.updateThermalsTime, mgr, modeControlBus,
             getControlPath(zi.first).c_str(), deferSignals);
 
         std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
@@ -106,9 +110,21 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                     zone.get(), name, inputs, info->setpoint, info->pidInfo,
                     getThermalType(info->type));
 
+                /**
+                 *  Keep pid control operating when creating thermal pid failed
+                 *  and skipping this failed thermal pid.
+                 **/
+                if (pid == nullptr)
+                {
+                    sd_journal_print(LOG_INFO,
+                                     "Failed to create thermal pid."
+                                     "Skip %s of type: %s",
+                                     name.c_str(), info->type.c_str());
+                    continue;
+                }
                 zone->addThermalPID(std::move(pid));
             }
-            else if (info->type == "stepwise")
+            else if (info->type == "stepwise" || info->type == "linear")
             {
                 for (const auto& i : info->inputs)
                 {
@@ -116,7 +132,20 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
                     zone->addThermalInput(i);
                 }
                 auto stepwise = StepwiseController::createStepwiseController(
-                    zone.get(), name, inputs, info->stepwiseInfo);
+                    zone.get(), name, info->type, inputs, info->stepwiseInfo);
+
+                /**
+                 *  Keep pid control operating when creating stepwise failed
+                 *  and skipping this failed stepwise.
+                 **/
+                if (stepwise == nullptr)
+                {
+                    sd_journal_print(LOG_INFO,
+                                     "Failed to create stepwise controller."
+                                     "Skip %s of type: %s",
+                                     name.c_str(), info->type.c_str());
+                    continue;
+                }
                 zone->addThermalPID(std::move(stepwise));
             }
 

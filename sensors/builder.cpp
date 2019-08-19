@@ -13,7 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include <systemd/sd-journal.h>
 
+#include <fstream>
 #include <iostream>
 #include <map>
 #include <string>
@@ -87,9 +89,11 @@ SensorManager
                 }
                 if (ri == nullptr)
                 {
-                    throw SensorBuildException(
-                        "Failed to create dbus passive sensor: " + name +
-                        " of type: " + info->type);
+                    sd_journal_print(LOG_INFO,
+                                     "Failed to create dbus passive sensor: "
+                                     "%s of type: %s",
+                                     name.c_str(), info->type.c_str());
+                    continue;
                 }
                 break;
             case IOInterfaceType::EXTERNAL:
@@ -149,11 +153,42 @@ SensorManager
                 name, info->timeout, std::move(ri), std::move(wi));
             mgmr.addSensor(info->type, name, std::move(sensor));
         }
-        else if (info->type == "temp" || info->type == "margin")
+        else if ((info->type == "temp") || (info->type == "margin"))
         {
             // These sensors are read-only, but only for this application
             // which only writes to fan sensors.
             std::cerr << info->type << " readPath: " << info->readPath << "\n";
+
+            // Read the Tjmax value from the tjMaxPath given by json file.
+            double tjMax = 0;
+            if (info->tjMaxPath != "")
+            {
+                // Fixup path "**" to absolute path.
+                std::string fixedTjMaxPath = FixupPath(info->tjMaxPath);
+
+                std::ifstream fin(fixedTjMaxPath);
+                if (fin.fail())
+                {
+                    sd_journal_print(LOG_INFO,
+                                     "Failed to open Tjmax file. "
+                                     "Skip %s of type: %s",
+                                     name.c_str(), info->type.c_str());
+                    continue;
+                }
+
+                fin >> tjMax;
+                if (fin.fail())
+                {
+                    sd_journal_print(LOG_INFO,
+                                     "Failed to read Tjmax value. "
+                                     "Skip %s of type: %s",
+                                     name.c_str(), info->type.c_str());
+                    continue;
+                }
+
+                // Scale the tjMax value.
+                tjMax = tjMax * info->tjMaxScale;
+            }
 
             if (IOInterfaceType::EXTERNAL == rtype)
             {
@@ -166,14 +201,14 @@ SensorManager
                  */
                 auto sensor = HostSensor::createTemp(
                     name, info->timeout, hostSensorBus, info->readPath.c_str(),
-                    deferSignals);
+                    deferSignals, tjMax);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
             else
             {
                 wi = std::make_unique<ReadOnlyNoExcept>();
                 auto sensor = std::make_unique<PluggableSensor>(
-                    name, info->timeout, std::move(ri), std::move(wi));
+                    name, info->timeout, std::move(ri), std::move(wi), tjMax);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
         }

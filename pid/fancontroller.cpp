@@ -20,6 +20,8 @@
 #include "util.hpp"
 #include "zone.hpp"
 
+#include <systemd/sd-journal.h>
+
 #include <algorithm>
 #include <iostream>
 
@@ -125,7 +127,30 @@ void FanController::outputProc(double value)
             {
                 percent = _owner->getFailSafePercent();
             }
+            sd_journal_print(LOG_INFO, "Fans output failsafe pwm: %lg%%",
+                             percent);
         }
+        else
+        {
+            if (debugModeEnabled)
+            {
+                sd_journal_print(LOG_INFO, "Fans output pwm: %lg%%", percent);
+            }
+        }
+    }
+
+    /* If current output pwm is equal to last output pwm
+     * Set fan failure checking flag to true
+     * Going to do fan failure checking process
+     */
+    if (percent == getLastOutput())
+    {
+        _owner->setCheckFanFailuresFlag(true);
+    }
+    else
+    {
+        _owner->setCheckFanFailuresFlag(false);
+        setLastOutput(percent);
     }
 
     // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.

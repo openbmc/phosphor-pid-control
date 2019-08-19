@@ -16,6 +16,8 @@
 
 #include "pid.hpp"
 
+#include <cmath>
+
 namespace ec
 {
 
@@ -40,12 +42,14 @@ static double clamp(double x, double min, double max)
  *  pid code
  *  Note: Codes assumes the ts field is non-zero
  */
-double pid(pid_info_t* pidinfoptr, double input, double setpoint)
+double pid(pid_info_t* pidinfoptr, double input, double setpoint,
+           double lastInput)
 {
     double error;
 
     double proportionalTerm;
     double integralTerm = 0.0f;
+    double derivativeTerm = 0.0f;
     double feedFwdTerm = 0.0f;
 
     double output;
@@ -53,7 +57,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
     // calculate P, I, D, FF
 
     // Pid
-    error = setpoint - input;
+    error = std::abs(setpoint - input);
     proportionalTerm = pidinfoptr->proportionalCoeff * error;
 
     // pId
@@ -65,11 +69,14 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
                              pidinfoptr->integralLimit.max);
     }
 
+    // piD
+    derivativeTerm = pidinfoptr->derivativeCoeff * (input - lastInput);
+
     // FF
     feedFwdTerm =
         (setpoint + pidinfoptr->feedFwdOffset) * pidinfoptr->feedFwdGain;
 
-    output = proportionalTerm + integralTerm + feedFwdTerm;
+    output = proportionalTerm + integralTerm + derivativeTerm + feedFwdTerm;
     output = clamp(output, pidinfoptr->outLim.min, pidinfoptr->outLim.max);
 
     // slew rate

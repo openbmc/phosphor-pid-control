@@ -15,4 +15,5 @@
  * @param[in] ms100cnt - loop timer counter.
  */
 void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer,
-                    bool first = true, int ms100cnt = 0);
+                    bool first = true, uint64_t ms100cnt = 0,
+                    uint64_t checkFanFailuresCount = 0);

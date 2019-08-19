@@ -24,10 +24,11 @@
 std::unique_ptr<Sensor> HostSensor::createTemp(const std::string& name,
                                                int64_t timeout,
                                                sdbusplus::bus::bus& bus,
-                                               const char* objPath, bool defer)
+                                               const char* objPath, bool defer,
+                                               double tjMax)
 {
     auto sensor =
-        std::make_unique<HostSensor>(name, timeout, bus, objPath, defer);
+        std::make_unique<HostSensor>(name, timeout, bus, objPath, defer, tjMax);
     sensor->value(0);
 
     // DegreesC and value of 0 are the defaults at present, therefore testing

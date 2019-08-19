@@ -34,6 +34,8 @@ class ZoneInterface
     virtual bool getFailSafeMode() const = 0;
     virtual double getFailSafePercent() const = 0;
     virtual Sensor* getSensor(const std::string& name) = 0;
+    virtual void setCheckFanFailuresFlag(bool value) = 0;
+    virtual bool getCheckFanFailuresFlag() const = 0;
 };
 
 /*
@@ -45,12 +47,16 @@ class PIDZone : public ZoneInterface, public ModeObject
 {
   public:
     PIDZone(int64_t zone, double minThermalOutput, double failSafePercent,
-            const SensorManager& mgr, sdbusplus::bus::bus& bus,
-            const char* objPath, bool defer) :
+            uint64_t cycleTimeBase, uint64_t checkFanFailuresTime,
+            uint64_t updateThermalsTime, const SensorManager& mgr,
+            sdbusplus::bus::bus& bus, const char* objPath, bool defer) :
         ModeObject(bus, objPath, defer),
+        _bus(sdbusplus::bus::new_default_system()),
         _zoneId(zone), _maximumRPMSetPt(),
         _minThermalOutputSetPt(minThermalOutput),
-        _failSafePercent(failSafePercent), _mgr(mgr)
+        _failSafePercent(failSafePercent), _cycleTimeBase(cycleTimeBase),
+        _checkFanFailuresCycle(checkFanFailuresTime / cycleTimeBase),
+        _updateThermalsCycle(updateThermalsTime / cycleTimeBase), _mgr(mgr)
     {
         if (loggingEnabled)
         {
@@ -73,10 +79,17 @@ class PIDZone : public ZoneInterface, public ModeObject
     void clearRPMCeilings(void);
     double getFailSafePercent(void) const override;
     double getMinThermalRPMSetpoint(void) const;
+    uint64_t getCycleTimeBase(void) const;
+    uint64_t getCheckFanFailuresCycle(void) const;
+    uint64_t getUpdateThermalsCycle(void) const;
+    // Method for set/get last pwm and current pwm are different
+    void setCheckFanFailuresFlag(bool value) override;
+    bool getCheckFanFailuresFlag(void) const override;
 
     Sensor* getSensor(const std::string& name) override;
     void determineMaxRPMRequest(void);
     void updateFanTelemetry(void);
+    void checkFanFailures(void);
     void updateSensors(void);
     void initializeCache(void);
     void dumpCache(void);
@@ -98,6 +111,7 @@ class PIDZone : public ZoneInterface, public ModeObject
     bool failSafe() const override;
 
   private:
+    sdbusplus::bus::bus _bus;
     std::ofstream _log;
 
     const int64_t _zoneId;
@@ -105,8 +119,15 @@ class PIDZone : public ZoneInterface, public ModeObject
     bool _manualMode = false;
     const double _minThermalOutputSetPt;
     const double _failSafePercent;
+    const uint64_t _cycleTimeBase;
+    const uint64_t _checkFanFailuresCycle;
+    const uint64_t _updateThermalsCycle;
+    bool _checkFanFailuresFlag = false;
 
-    std::set<std::string> _failSafeSensors;
+    std::set<std::string> _failSafeTemps;
+    std::set<std::string> _failSafeFans;
+    std::map<std::string, bool> _isFanFailure;
+    std::map<std::string, int64_t> sensorFailuresTimer;
 
     std::vector<double> _RPMSetPoints;
     std::vector<double> _RPMCeilings;
