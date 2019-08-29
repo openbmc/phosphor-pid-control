@@ -19,6 +19,7 @@
 #include "conf.hpp"
 #include "sensors/sensor.hpp"
 
+#include <cstdio>
 #include <nlohmann/json.hpp>
 
 using json = nlohmann::json;
@@ -48,14 +49,28 @@ void from_json(const json& j, conf::SensorConfig& s)
     auto min = j.find("min");
     if (min != j.end())
     {
-        j.at("min").get_to(s.min);
+        if (s.type == "fan")
+        {
+            j.at("min").get_to(s.min);
+        }
+        else
+        {
+            std::fprintf(stderr, "Non-fan types ignore min value specified\n");
+        }
     }
 
     /* The max field is optional in a configuration. */
     auto max = j.find("max");
     if (max != j.end())
     {
-        j.at("max").get_to(s.max);
+        if (s.type == "fan")
+        {
+            j.at("max").get_to(s.max);
+        }
+        else
+        {
+            std::fprintf(stderr, "Non-fan types ignore max value specified\n");
+        }
     }
 
     /* The timeout field is optional in a configuration. */
