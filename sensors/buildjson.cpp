@@ -41,24 +41,19 @@ void from_json(const json& j, conf::SensorConfig& s)
         j.at("writePath").get_to(s.writePath);
     }
 
+    s.min = 0;
+    s.max = 0;
+
     /* The min field is optional in a configuration. */
     auto min = j.find("min");
-    if (min == j.end())
-    {
-        s.min = 0;
-    }
-    else
+    if (min != j.end())
     {
         j.at("min").get_to(s.min);
     }
 
     /* The max field is optional in a configuration. */
     auto max = j.find("max");
-    if (max == j.end())
-    {
-        s.max = 0;
-    }
-    else
+    if (max != j.end())
     {
         j.at("max").get_to(s.max);
     }
