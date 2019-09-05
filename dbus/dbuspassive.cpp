@@ -60,6 +60,12 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     {
         return nullptr;
     }
+    // avoid scaling problem of non-fan sensors
+    if (type != "fan")
+    {
+        settings.max = 0;
+        settings.min = 0;
+    }
 
     return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
                                          failed, path, redundancy);
