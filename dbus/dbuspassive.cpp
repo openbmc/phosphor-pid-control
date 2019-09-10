@@ -61,6 +61,13 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         return nullptr;
     }
 
+    /* only use min/max from dbus for fans... */
+    if (type != "fan")
+    {
+        settings.min = 0;
+        settings.max = 0;
+    }
+
     return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
                                          failed, path, redundancy);
 }
