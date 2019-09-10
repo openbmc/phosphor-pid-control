@@ -61,6 +61,13 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         return nullptr;
     }
 
+    /* if these values are zero, they're ignored. */
+    if (info->ignoreDbusMinMax)
+    {
+        settings.min = 0;
+        settings.max = 0;
+    }
+
     return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
                                          failed, path, redundancy);
 }

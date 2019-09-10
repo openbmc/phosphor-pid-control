@@ -18,7 +18,8 @@ zones.
         "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1",
         "writePath": "/sys/devices/platform/ahb/ahb:apb/1e786000.pwm-tacho-controller/hwmon/**/pwm1",
         "min": 0,
-        "max": 255
+        "max": 255,
+        "ignoreDbusMinMax": true
     },
     {
         "name": "fan2",
@@ -33,7 +34,7 @@ zones.
 ```
 
 A sensor has a `name`, a `type`, a `readPath`, a `writePath`, a `minimum` value,
-a `maximum` value, and a `timeout`.
+a `maximum` value, a `timeout`, and a `ignoreDbusMinMax` value.
 
 The `name` is used to reference the sensor in the zone portion of the
 configuration.
@@ -113,6 +114,11 @@ sensor's timeout is 0 it isn't checked against a read timeout failure case. If a
 sensor fails to be read within the timeout period, the zone goes into failsafe
 to handle the case where it doesn't know what to do -- as it doesn't have all
 its inputs.
+
+The `ignoreDbusMinMax` value is optional and defaults to false.  The dbus
+passive sensors check for a `MinValue` and `MaxValue` and scale the incoming
+values via these.  Setting this property to true will ignore `MinValue` and
+`MaxValue` from dbus and therefore won't call any passive value scaling.
 
 ### Zones
 

@@ -24,6 +24,7 @@ struct SensorConfig
     int64_t min;
     int64_t max;
     int64_t timeout;
+    bool ignoreDbusMinMax;
 };
 
 /*

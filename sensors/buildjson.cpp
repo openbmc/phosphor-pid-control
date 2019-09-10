@@ -42,8 +42,18 @@ void from_json(const json& j, conf::SensorConfig& s)
         j.at("writePath").get_to(s.writePath);
     }
 
+    /* Default to not ignore dbus MinValue/MaxValue - only used by passive
+     * sensors.
+     */
+    s.ignoreDbusMinMax = false;
     s.min = 0;
     s.max = 0;
+
+    auto ignore = j.find("ignoreDbusMinMax");
+    if (ignore != j.end())
+    {
+        j.at("ignoreDbusMinMax").get_to(s.ignoreDbusMinMax);
+    }
 
     /* The min field is optional in a configuration. */
     auto min = j.find("min");

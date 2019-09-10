@@ -2,6 +2,7 @@
 #include "dbus/dbuspassive.hpp"
 #include "test/dbushelper_mock.hpp"
 
+#include <functional>
 #include <sdbusplus/test/sdbus_mock.hpp>
 #include <string>
 #include <variant>
@@ -72,6 +73,8 @@ class DbusPassiveTestObj : public ::testing::Test
                     prop->scale = _scale;
                     prop->value = _value;
                     prop->unit = "x";
+                    prop->min = 0;
+                    prop->max = 0;
                 }));
         EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
@@ -129,6 +132,11 @@ TEST_F(DbusPassiveTestObj, getIDReturnsExpectedValue)
 {
     // Verify getID returns the expected value.
     EXPECT_EQ(id, passive->getID());
+}
+
+TEST_F(DbusPassiveTestObj, GetMinValueReturnsExpectedValue)
+{
+    EXPECT_DOUBLE_EQ(0, passive->getMin());
 }
 
 TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
@@ -417,4 +425,106 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
     EXPECT_EQ(rv, 0); // It's always 0.
     bool failed = passive->getFailed();
     EXPECT_EQ(failed, false);
+}
+
+void GetPropertiesMax3k(sdbusplus::bus::bus& bus, const std::string& service,
+                        const std::string& path, SensorProperties* prop)
+{
+    prop->scale = -3;
+    prop->value = 10;
+    prop->unit = "x";
+    prop->min = 0;
+    prop->max = 3000;
+}
+
+using GetPropertiesFunction =
+    std::function<void(sdbusplus::bus::bus&, const std::string&,
+                       const std::string&, SensorProperties*)>;
+
+// TODO: There is definitely a cleaner way to do this.
+class DbusPassiveTest3kMaxObj : public ::testing::Test
+{
+  protected:
+    DbusPassiveTest3kMaxObj() :
+        sdbus_mock(),
+        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))), helper()
+    {
+        EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+            .WillOnce(Return("asdf"));
+
+        EXPECT_CALL(helper,
+                    getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
+            .WillOnce(_getProps);
+        EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+            .WillOnce(Return(false));
+
+        auto info = conf::SensorConfig();
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info,
+                                            nullptr);
+        passive = reinterpret_cast<DbusPassive*>(ri.get());
+        EXPECT_FALSE(passive == nullptr);
+    }
+
+    sdbusplus::SdBusMock sdbus_mock;
+    sdbusplus::bus::bus bus_mock;
+    DbusHelperMock helper;
+    std::string type = "temp";
+    std::string id = "id";
+    std::string path = "/xyz/openbmc_project/sensors/temperature/id";
+    int64_t _scale = -3;
+    int64_t _value = 10;
+
+    std::unique_ptr<ReadInterface> ri;
+    DbusPassive* passive;
+    GetPropertiesFunction _getProps = &GetPropertiesMax3k;
+};
+
+TEST_F(DbusPassiveTest3kMaxObj, ReadMinAndMaxReturnsExpected)
+{
+    EXPECT_DOUBLE_EQ(0, passive->getMin());
+    EXPECT_DOUBLE_EQ(3, passive->getMax());
+}
+
+class DbusPassiveTest3kMaxIgnoredObj : public ::testing::Test
+{
+  protected:
+    DbusPassiveTest3kMaxIgnoredObj() :
+        sdbus_mock(),
+        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))), helper()
+    {
+        EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+            .WillOnce(Return("asdf"));
+
+        EXPECT_CALL(helper,
+                    getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
+            .WillOnce(_getProps);
+        EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+            .WillOnce(Return(false));
+
+        auto info = conf::SensorConfig();
+        info.ignoreDbusMinMax = true;
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info,
+                                            nullptr);
+        passive = reinterpret_cast<DbusPassive*>(ri.get());
+        EXPECT_FALSE(passive == nullptr);
+    }
+
+    sdbusplus::SdBusMock sdbus_mock;
+    sdbusplus::bus::bus bus_mock;
+    DbusHelperMock helper;
+    std::string type = "temp";
+    std::string id = "id";
+    std::string path = "/xyz/openbmc_project/sensors/temperature/id";
+    int64_t _scale = -3;
+    int64_t _value = 10;
+
+    std::unique_ptr<ReadInterface> ri;
+    DbusPassive* passive;
+    GetPropertiesFunction _getProps = &GetPropertiesMax3k;
+};
+
+TEST_F(DbusPassiveTest3kMaxIgnoredObj, ReadMinAndMaxReturnsExpected)
+{
+    EXPECT_DOUBLE_EQ(0, passive->getMin());
+    EXPECT_DOUBLE_EQ(0, passive->getMax());
 }
