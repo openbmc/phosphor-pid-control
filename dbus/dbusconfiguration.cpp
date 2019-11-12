@@ -745,6 +745,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                         auto& config = sensorConfig[shortName];
                         config.readPath = sensorPathIfacePair.first;
                         config.type = "temp";
+                        config.ignoreDbusMinMax = true;
                         // todo: maybe un-hardcode this if we run into slower
                         // timeouts with sensors
 
