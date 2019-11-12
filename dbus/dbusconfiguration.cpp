@@ -632,6 +632,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                         if (config.type == "temp")
                         {
                             config.timeout = 0;
+                            config.ignoreDbusMinMax = true;
                         }
                     }
                     else if (sensorPathIfacePair.second == pwmInterface)
