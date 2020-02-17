@@ -148,6 +148,7 @@ bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
     {
         asserted = std::get<bool>(findCriticalHigh->second);
     }
+    // std::cerr << "DbusHelper::thresholdsAsserted path: '" << path << "' asserted: " << asserted << "\n";
     return asserted;
 }
 

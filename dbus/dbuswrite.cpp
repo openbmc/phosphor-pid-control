@@ -65,6 +65,8 @@ void DbusWritePercent::write(double value)
                                  "org.freedesktop.DBus.Properties", "Set");
     mesg.append(pwmInterface, "Target", std::variant<uint64_t>(ovalue));
 
+    // std::cerr << "DbusWritePercent::write(" << value << "), writing to connection '" << connectionName.c_str() << "', path '" << path.c_str() << "' xyz.openbmc_project.Control.FanPwm Target '" << ovalue << "'\n";
+
     try
     {
         // TODO: if we don't use the reply, call_noreply()
@@ -110,6 +112,8 @@ void DbusWrite::write(double value)
         writeBus.new_method_call(connectionName.c_str(), path.c_str(),
                                  "org.freedesktop.DBus.Properties", "Set");
     mesg.append(pwmInterface, "Target", std::variant<uint64_t>(value));
+
+    // std::cerr << "DbusWrite::write(" << value << "), writing to connection '" << connectionName.c_str() << "', path '" << path.c_str() << "' xyz.openbmc_project.Control.FanPwm Target '" << value << "'\n";
 
     try
     {

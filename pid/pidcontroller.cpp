@@ -73,6 +73,8 @@ void PIDController::process(void)
         output = ec::pid(info, lastInput, setpt);
     }
 
+    // std::cerr << "PIDController::process() setpt: " << setpt << " input: " << input << " output: " << output << "\n";
+
     // Output new value
     outputProc(output);
 

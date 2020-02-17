@@ -107,6 +107,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         settings.max = 0;
     }
 
+    // std::cerr << "DbusPassive::createDbusPassive() failed: " << failed << "\n";
     return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
                                          failed, path, redundancy);
 }
@@ -149,19 +150,23 @@ void DbusPassive::setValue(double value)
 
 bool DbusPassive::getFailed(void) const
 {
+    // std::cerr << "DbusPassive::getFailed() redundancy: " << redundancy << "\n";
     if (redundancy)
     {
         const std::set<std::string>& failures = redundancy->getFailed();
         if (failures.find(path) != failures.end())
         {
+            // std::cerr << "DbusPassive::getFailed() redundancy has signalled failure!\n";
             return true;
         }
     }
+    // std::cerr << "DbusPassive::getFailed() _failed: " << _failed << "\n";
     return _failed;
 }
 
 void DbusPassive::setFailed(bool value)
 {
+    // std::cerr << "DbusPassive::setFailed(" << value << ")\n";
     _failed = value;
 }
 

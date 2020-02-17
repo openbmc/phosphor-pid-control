@@ -106,6 +106,7 @@ double FanController::setptProc(void)
         setFanDirection(FanSpeedDirection::NEUTRAL);
     }
 
+    // std::cerr << "FanController::setptProc() prev: " << prev << " going to return: " << maxRPM << "\n";
     setSetpoint(maxRPM);
 
     return (maxRPM);
@@ -128,12 +129,15 @@ void FanController::outputProc(double value)
         }
     }
 
+    // std::cerr << "FanController::outputProc(" << value << ") _owner->getFailSafeMode(): " << _owner->getFailSafeMode() << " percent: " << percent << "\n";
+
     // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.
     percent /= 100;
 
     // PidSensorMap for writing.
     for (const auto& it : _inputs)
     {
+        // std::cerr << "FanController::outputProc(" << value << ") for '" << it << "', writing value '" << percent << "'\n";
         auto sensor = _owner->getSensor(it);
         sensor->write(percent);
     }

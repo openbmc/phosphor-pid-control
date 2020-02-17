@@ -53,6 +53,11 @@ void PIDZone::setManualMode(bool mode)
 bool PIDZone::getFailSafeMode(void) const
 {
     // If any keys are present at least one sensor is in fail safe mode.
+    // if (!_failSafeSensors.empty())
+    // {
+    //     std::set<std::string>::iterator it = _failSafeSensors.begin();
+    //     std::cerr << "PIDZone::getFailSafeMode sensor '" << *it << "' failed!\n";
+    // }
     return !_failSafeSensors.empty();
 }
 
@@ -139,6 +144,7 @@ void PIDZone::determineMaxSetPointRequest(void)
      */
     max = std::max(getMinThermalSetpoint(), max);
 
+    // std::cerr << "PIDZone::determineMaxSetPointRequest _SetPoints.size(): " << _SetPoints.size() << " tuningEnabled: " << tuningEnabled << " max: " << max << "\n";
     if (tuningEnabled)
     {
         /*
@@ -251,6 +257,7 @@ void PIDZone::updateFanTelemetry(void)
         // check if fan fail.
         if (sensor->getFailed())
         {
+            std::cerr << "Fan '" << f << "' has failed!.\n";
             _failSafeSensors.insert(f);
         }
         else if (timeout != 0 && duration >= period)
@@ -314,7 +321,7 @@ void PIDZone::updateSensors(void)
         }
         else if (timeout != 0 && duration >= period)
         {
-            // std::cerr << "Entering fail safe mode.\n";
+            std::cerr << "Entering fail safe mode.\n";
             _failSafeSensors.insert(t);
         }
         else
@@ -326,6 +333,8 @@ void PIDZone::updateSensors(void)
                 _failSafeSensors.erase(kt);
             }
         }
+
+        // std::cerr << "PIDZone::updateSensors for '" << t << "', got value '" << _cachedValuesByName[t] << "'\n";
     }
 
     return;

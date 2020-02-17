@@ -16,6 +16,8 @@
 
 #include "pid.hpp"
 
+#include <iostream>
+
 namespace ec
 {
 
@@ -71,6 +73,8 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 
     output = proportionalTerm + integralTerm + feedFwdTerm;
     output = clamp(output, pidinfoptr->outLim.min, pidinfoptr->outLim.max);
+
+    // std::cerr << "pid() input: " << input << " error: " << error << " proportionalTerm: " << proportionalTerm << " integralTerm: " << integralTerm << " feedFwdTerm: " << feedFwdTerm << " output: " << output << "\n";
 
     // slew rate
     // TODO(aarena) - Simplify logic as Andy suggested by creating dynamic
