@@ -87,9 +87,11 @@ SensorManager
                 }
                 if (ri == nullptr)
                 {
-                    throw SensorBuildException(
-                        "Failed to create dbus passive sensor: " + name +
-                        " of type: " + info->type);
+                    // FIXME
+                    // Sensors creation should be continually retried, as sensor hardware may be added to the system
+                    // while this daemon is running.  See https://github.com/openbmc/phosphor-pid-control/issues/2
+                    std::cerr << "unable to create dbus passive sensor, continuing.  sensor creation will not be retried.\n";
+                    continue;
                 }
                 break;
             case IOInterfaceType::EXTERNAL:
