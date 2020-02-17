@@ -38,6 +38,8 @@ class SensorManager
     // TODO(venture): Should implement read/write by name.
     Sensor* getSensor(const std::string& name) const
     {
+        if (_sensorMap.count(name) <= 0)
+            return nullptr;
         return _sensorMap.at(name).get();
     }
 

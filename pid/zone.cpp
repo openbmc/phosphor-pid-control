@@ -288,6 +288,17 @@ void PIDZone::updateSensors(void)
     for (const auto& t : _thermalInputs)
     {
         auto sensor = _mgr.getSensor(t);
+        if (!sensor)
+        {
+            // std::cerr << "Skipping missing sensor '" << t << "'.\n";
+            // Check if it's in there: remove it.
+            auto kt = _failSafeSensors.find(t);
+            if (kt != _failSafeSensors.end())
+            {
+                _failSafeSensors.erase(kt);
+            }
+            continue;
+        }
         ReadReturn r = sensor->read();
         int64_t timeout = sensor->getTimeout();
 

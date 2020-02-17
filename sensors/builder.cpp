@@ -87,9 +87,7 @@ SensorManager
                 }
                 if (ri == nullptr)
                 {
-                    throw SensorBuildException(
-                        "Failed to create dbus passive sensor: " + name +
-                        " of type: " + info->type);
+                    continue;
                 }
                 break;
             case IOInterfaceType::EXTERNAL:
