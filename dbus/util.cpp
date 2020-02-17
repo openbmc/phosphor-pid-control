@@ -170,6 +170,11 @@ std::string getSensorPath(const std::string& type, const std::string& id)
     return std::string("/xyz/openbmc_project/sensors/" + layer + "/" + id);
 }
 
+std::string getInventoryPath(const std::string& id)
+{
+    return std::string("/xyz/openbmc_project/inventory/system/chassis/motherboard/" + id);
+}
+
 std::string getMatch(const std::string& type, const std::string& id)
 {
     return std::string("type='signal',"

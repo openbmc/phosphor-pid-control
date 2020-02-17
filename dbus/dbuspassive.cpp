@@ -26,6 +26,10 @@
 #include <string>
 #include <variant>
 
+using Property = std::string;
+using Value = std::variant<int64_t, double, std::string, bool>;
+using PropertyMap = std::map<Property, Value>;
+
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
     DbusHelperInterface* helper, const conf::SensorConfig* info,
@@ -61,6 +65,45 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         return nullptr;
     }
 
+    if (failed && (type == "fan"))
+    {
+        std::string path = getInventoryPath(id);
+
+        try
+        {
+            bool present = true;
+
+            auto pimMsg = tempBus.new_method_call(
+                "xyz.openbmc_project.Inventory.Manager", path.c_str(),
+                "org.freedesktop.DBus.Properties", "GetAll");
+            pimMsg.append("xyz.openbmc_project.Inventory.Item");
+
+            PropertyMap propMap;
+
+            auto valueResponseMsg = bus.call(pimMsg);
+            valueResponseMsg.read(propMap);
+
+            // If no error was set, the data should all be there.
+            auto findPresent = propMap.find("Present");
+            if (findPresent != propMap.end())
+            {
+                present = std::get<bool>(findPresent->second);
+            }
+
+            // std::cerr << "DbusPassive::createDbusPassive() present: '" <<
+            // present
+            // << "'\n";
+            if (!present)
+            {
+                failed = false;
+            }
+        }
+        catch (const std::exception& e)
+        {
+            // Ignore failure
+        }
+    }
+
     /* if these values are zero, they're ignored. */
     if (info->ignoreDbusMinMax)
     {
@@ -76,11 +119,10 @@ DbusPassive::DbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
     DbusHelperInterface* helper, const struct SensorProperties& settings,
     bool failed, const std::string& path,
-    const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
-    ReadInterface(),
-    _bus(bus), _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
-    _id(id), _helper(helper), _failed(failed), path(path),
-    redundancy(redundancy)
+    const std::shared_ptr<DbusPassiveRedundancy>& redundancy)
+    : ReadInterface(), _id(id), _type(type), _helper(helper), _bus(bus),
+      _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
+      _failed(failed), path(path), redundancy(redundancy)
 
 {
     _scale = settings.scale;
@@ -189,6 +231,48 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
         {
             asserted = std::get<bool>(criticalAlarmHigh->second);
         }
+
+        // std::cerr << "handleSensorValue() asserted: " << asserted << " type:
+        // '"
+        // << owner->_type << "'\n";
+        if (asserted && (owner->_type == "fan"))
+        {
+            std::string path = getInventoryPath(owner->_id);
+
+            try
+            {
+                bool present = true;
+
+                auto pimMsg = owner->_bus.new_method_call(
+                    "xyz.openbmc_project.Inventory.Manager", path.c_str(),
+                    "org.freedesktop.DBus.Properties", "GetAll");
+                pimMsg.append("xyz.openbmc_project.Inventory.Item");
+
+                PropertyMap propMap;
+
+                auto valueResponseMsg = owner->_bus.call(pimMsg);
+                valueResponseMsg.read(propMap);
+
+                // If no error was set, the data should all be there.
+                auto findPresent = propMap.find("Present");
+                if (findPresent != propMap.end())
+                {
+                    present = std::get<bool>(findPresent->second);
+                }
+
+                // std::cerr << "handleSensorValue() present: '" << present <<
+                // "'\n";
+                if (!present)
+                {
+                    asserted = false;
+                }
+            }
+            catch (const std::exception& e)
+            {
+                // Ignore failure
+            }
+        }
+
         owner->setFailed(asserted);
     }
 

@@ -57,12 +57,14 @@ class DbusPassive : public ReadInterface
     double getMax(void);
     double getMin(void);
 
-  private:
+    std::string _id; // for debug identification
+    std::string _type; // for inventory match
+    DbusHelperInterface* _helper;
     sdbusplus::bus::bus& _bus;
+
+  private:
     sdbusplus::server::match::match _signal;
     int64_t _scale;
-    std::string _id; // for debug identification
-    DbusHelperInterface* _helper;
 
     std::mutex _lock;
     double _value = 0;
