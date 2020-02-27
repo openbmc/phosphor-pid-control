@@ -42,6 +42,24 @@
     },
     {
       "key": {
+        "uuid": "98a5c9fd_41e3371f",
+        "filename": "sensors/builder.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2020-02-27T19:48:27Z",
+      "side": 1,
+      "message": "While the latter would definitely be preferred, I don\u0027t have resources allocated to my team to implement this feature at this time.  I can add the warning with a FIXME comment referring back to https://github.com/openbmc/phosphor-pid-control/issues/2",
+      "parentUuid": "7afbabb2_1bc4bc51",
+      "revId": "aabf41d33ff1e6cdca2cdd37ce53e7b46ea55147",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "0edfa86c_aef2e324",
         "filename": "sensors/manager.hpp",
         "patchSetId": 1
