@@ -34,6 +34,24 @@
       "revId": "70b6dff1b66b800ddbf8427c72a20f979a46a83b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1cc0e25e_9795fd58",
+        "filename": "dbus/util.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2020-02-27T19:55:26Z",
+      "side": 1,
+      "message": "While that would be a nice feature, I don\u0027t have resources allocated to my team to rewrite parts of this daemon.  Directly above this line there is another direct query in the same style that I am using here.",
+      "parentUuid": "f1d841ad_39fb9c94",
+      "revId": "70b6dff1b66b800ddbf8427c72a20f979a46a83b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
