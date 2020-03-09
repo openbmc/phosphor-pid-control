@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "33347e3b_e31bf2d0",
+        "filename": "sensors/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1000164
+      },
+      "writtenOn": "2020-03-09T16:12:38Z",
+      "side": 1,
+      "message": "this will fail the clang-format check, causing the build to fail",
+      "range": {
+        "startLine": 90,
+        "startChar": 0,
+        "endLine": 94,
+        "endChar": 29
+      },
+      "revId": "b048f202a5b8b972f9af6ef2b5df5c8beb27a89c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
