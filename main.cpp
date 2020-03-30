@@ -106,7 +106,26 @@ void restartControlLoops()
     }
 #endif
 
-    mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
+    int count = 0;
+    while (1)
+    {
+        try
+        {
+            mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
+            break;
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Failed during buildSensors, try again: " << e.what()
+                      << "\n";
+            if (count++ > 5)
+            {
+                exit(EXIT_FAILURE);
+            }
+            std::this_thread::sleep_for(std::chrono::seconds(10));
+        }
+    }
+
     zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
 
     if (0 == zones.size())
