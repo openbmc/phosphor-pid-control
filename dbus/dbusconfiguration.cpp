@@ -254,7 +254,7 @@ int eventHandler(sd_bus_message*, void* context, sd_bus_error*)
         }
 
         std::cout << "New configuration detected, reloading\n.";
-        restartControlLoops();
+        tryRestartControlLoops();
     });
 
     return 1;
