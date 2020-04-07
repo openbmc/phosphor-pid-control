@@ -123,6 +123,32 @@ void restartControlLoops()
     }
 }
 
+void tryRestartControlLoops()
+{
+    int count = 0;
+    for (count = 0; count <= 5; count++)
+    {
+        try
+        {
+            restartControlLoops();
+            break;
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << count
+                      << " Failed during restartControlLoops, try again: "
+                      << e.what() << "\n";
+            if (count >= 5)
+            {
+                throw std::runtime_error(e.what());
+            }
+        }
+        std::this_thread::sleep_for(std::chrono::seconds(10));
+    }
+
+    return;
+}
+
 int main(int argc, char* argv[])
 {
     loggingPath = "";
@@ -155,7 +181,7 @@ int main(int argc, char* argv[])
      * it.
      */
 
-    restartControlLoops();
+    tryRestartControlLoops();
 
     io.run();
     return 0;

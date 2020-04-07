@@ -30,7 +30,7 @@ IOInterfaceType getWriteInterfaceType(const std::string& path);
 
 IOInterfaceType getReadInterfaceType(const std::string& path);
 
-void restartControlLoops(void);
+void tryRestartControlLoops(void);
 
 /*
  * Given a configuration structure, fill out the information we use within the
