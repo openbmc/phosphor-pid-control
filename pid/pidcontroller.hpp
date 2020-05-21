@@ -4,6 +4,7 @@
 #include "ec/pid.hpp"
 #include "fan.hpp"
 
+#include <limits>
 #include <memory>
 #include <vector>
 
