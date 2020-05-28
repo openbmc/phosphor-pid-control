@@ -212,6 +212,17 @@ AS_IF([test "x$enable_configure_dbus" = "xyes"],
 AC_ARG_VAR(SYSTEMD_TARGET, "Target for starting this service")
 AS_IF([test "x$SYSTEMD_TARGET" == "x"], [SYSTEMD_TARGET="multi-user.target"])
 
+# Make a fully expanded variable for the service definition
+if test "x$prefix" = xNONE; then
+  prefix=$ac_default_prefix
+fi
+# Let make expand exec_prefix.
+if test "x$exec_prefix" = xNONE; then
+  exec_prefix='${prefix}'
+fi
+eval "eval BINDIR=$bindir"
+AC_SUBST([BINDIR])
+
 # Create configured output
 AC_CONFIG_FILES([Makefile test/Makefile])
 AC_CONFIG_FILES([phosphor-pid-control.service])
