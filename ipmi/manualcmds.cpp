@@ -54,7 +54,7 @@ static constexpr auto failsafeProperty = "FailSafe";
 static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
 
 using Property = std::string;
-using Value = sdbusplus::message::variant<bool>;
+using Value = std::variant<bool>;
 using PropertyMap = std::map<Property, Value>;
 
 /* The following was copied directly from my manual thread handler. */
@@ -174,7 +174,7 @@ static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
         return IPMI_CC_INVALID;
     }
 
-    using Value = sdbusplus::message::variant<bool>;
+    using Value = std::variant<bool>;
 
     const auto request =
         reinterpret_cast<const struct FanCtrlRequestSet*>(&reqBuf[0]);
