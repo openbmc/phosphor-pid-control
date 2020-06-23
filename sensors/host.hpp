@@ -6,6 +6,7 @@
 #include <mutex>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
+#include <type_traits>
 #include <xyz/openbmc_project/Sensor/Value/server.hpp>
 
 template <typename... T>
@@ -13,6 +14,10 @@ using ServerObject = typename sdbusplus::server::object::object<T...>;
 
 using ValueInterface = sdbusplus::xyz::openbmc_project::Sensor::server::Value;
 using ValueObject = ServerObject<ValueInterface>;
+constexpr bool usingDouble =
+    std::is_same_v<ValueInterface::PropertiesVariant,
+                   std::variant<double, ValueInterface::Unit>>;
+using ValueType = std::conditional_t<usingDouble, double, int64_t>;
 
 /*
  * HostSensor object is a Sensor derivative that also implements a ValueObject,
@@ -33,8 +38,7 @@ class HostSensor : public Sensor, public ValueObject
     {
     }
 
-    /* Note: This must be int64_t because it's from ValueObject */
-    int64_t value(int64_t value) override;
+    ValueType value(ValueType value) override;
 
     ReadReturn read(void) override;
     void write(double value) override;
