@@ -22,9 +22,12 @@
 #include <cmath>
 #include <memory>
 #include <mutex>
+#include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <string>
 #include <variant>
+
+using namespace phosphor::logging;
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
@@ -33,10 +36,12 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 {
     if (helper == nullptr)
     {
+      std::cerr << "failed because helper is nullptr" << std::endl;
         return nullptr;
     }
     if (!validType(type))
     {
+      std::cerr << "failed because type is not valid type " << std::endl;
         return nullptr;
     }
 
@@ -49,16 +54,28 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     struct SensorProperties settings;
     bool failed;
 
+    // try to determine service name using sensor name
     try
     {
         std::string service = helper->getService(tempBus, sensorintf, path);
+    }
+    // sensor name does not correspond to a valid path
+    catch(const std::exception& e)
+    {
+      log<level::INFO>("Failed to find service using path built from name", entry("PATH=%s", path.c_str()));
+      path = info->readPath;
+    }
 
+    // try once more using the readPath instead
+    try
+    {
+        std::string service = helper->getService(tempBus, sensorintf, path);
         helper->getProperties(tempBus, service, path, &settings);
         failed = helper->thresholdsAsserted(tempBus, service, path);
     }
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
-        return nullptr;
+      return nullptr;
     }
 
     /* if these values are zero, they're ignored. */
