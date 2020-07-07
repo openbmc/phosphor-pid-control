@@ -117,12 +117,18 @@ bool DbusPassive::getFailed(void) const
             return true;
         }
     }
-    return _failed;
+
+    return _failed || !_functional;
 }
 
 void DbusPassive::setFailed(bool value)
 {
     _failed = value;
+}
+
+void DbusPassive::setFunctional(bool value)
+{
+    _functional = value;
 }
 
 int64_t DbusPassive::getScale(void)
@@ -190,6 +196,17 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
             asserted = std::get<bool>(criticalAlarmHigh->second);
         }
         owner->setFailed(asserted);
+    }
+    else if (msgSensor ==
+             "xyz.openbmc_project.State.Decorator.OperationalStatus")
+    {
+        auto functional = msgData.find("Functional");
+        if (functional == msgData.end())
+        {
+            return 0;
+        }
+        bool asserted = std::get<bool>(functional->second);
+        owner->setFunctional(asserted);
     }
 
     return 0;
