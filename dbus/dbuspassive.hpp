@@ -52,6 +52,7 @@ class DbusPassive : public ReadInterface
 
     void setValue(double value);
     void setFailed(bool value);
+    void setFunctional(bool value);
     int64_t getScale(void);
     std::string getID(void);
     double getMax(void);
@@ -69,6 +70,7 @@ class DbusPassive : public ReadInterface
     double _max = 0;
     double _min = 0;
     bool _failed = false;
+    bool _functional = true;
 
     std::string path;
     std::shared_ptr<DbusPassiveRedundancy> redundancy;
