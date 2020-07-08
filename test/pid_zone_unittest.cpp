@@ -45,10 +45,10 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
 
-    int i;
+    double d;
     std::vector<std::string> properties;
     SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
-                    &i);
+                    &d);
 
     PIDZone p(zone, minThermalOutput, failSafePercent, m, bus_mock_mode,
               objPath, defer);
@@ -86,7 +86,7 @@ class PidZoneTest : public ::testing::Test
     }
 
     // unused
-    int property_index;
+    double property_index;
     std::vector<std::string> properties;
 
     sdbusplus::SdBusMock sdbus_mock_passive;
