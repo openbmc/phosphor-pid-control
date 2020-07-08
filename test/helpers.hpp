@@ -32,11 +32,11 @@ using ::testing::StrEq;
  * @param[in] path - the dbus path passed to the object
  * @param[in] intf - the dbus interface
  * @param[in] properties - an ordered list of expected property updates.
- * @param[in] index - a pointer to a valid integer in a surviving scope.
+ * @param[in] index - a pointer to a valid double in a surviving scope.
  */
 void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
                      const std::string& path, const std::string& intf,
-                     const std::vector<std::string>& properties, int* index)
+                     const std::vector<std::string>& properties, double* index)
 {
     EXPECT_CALL(*sdbus_mock,
                 sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),

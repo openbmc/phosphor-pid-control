@@ -33,16 +33,12 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
-    // Scale is the only property we change in the code.  Also,
-    // emit_object_added isn't called twice.
-    // Temperature is the default for type, and everything, so those aren't
-    // updated.
-    std::vector<std::string> properties = {"Scale"};
-    int i;
+    std::vector<std::string> properties = {};
+    double d;
 
     // The createTemp updates all the properties, however, only Scale is set
     // to non-default.
-    SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &i);
+    SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &d);
 
     // This is called during object destruction.
     EXPECT_CALL(sdbus_mock,
@@ -66,14 +62,10 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
-    // Scale is the only property we change in the code.  Also,
-    // emit_object_added isn't called twice.
-    // Temperature is the default for type, and everything, so those aren't
-    // updated.
-    std::vector<std::string> properties = {"Scale"};
-    int i;
+    std::vector<std::string> properties = {};
+    double d;
 
-    SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &i);
+    SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &d);
 
     EXPECT_CALL(sdbus_mock,
                 sd_bus_emit_object_removed(IsNull(), StrEq(objPath)))
@@ -84,7 +76,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
 
     // Value is updated from dbus calls only (normally).
     HostSensor* hs = static_cast<HostSensor*>(s.get());
-    int64_t new_value = 2;
+    double new_value = 2;
 
     ReadReturn r = hs->read();
     EXPECT_EQ(r.value, 0);
@@ -103,7 +95,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
 
     hs->value(new_value);
     r = hs->read();
-    EXPECT_EQ(r.value, new_value * 0.001);
+    EXPECT_EQ(r.value, new_value);
 
     auto duration =
         std::chrono::duration_cast<std::chrono::seconds>(t1 - r.updated)
