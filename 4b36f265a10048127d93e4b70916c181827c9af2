@@ -1,0 +1,10 @@
+Code-Review+1: Zhikui Ren <zhikui.ren@intel.com>
+Ok-To-Test+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Patrick Venture <venture@google.com>
+Code-Review+2: James Feist <james.feist@linux.intel.com>
+Submitted-by: James Feist <james.feist@linux.intel.com>
+Submitted-at: Thu, 09 Jul 2020 20:55:40 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/34449
+Project: openbmc/phosphor-pid-control
+Branch: refs/heads/master
