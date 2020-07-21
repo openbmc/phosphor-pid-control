@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9152a5b4_a8a41889",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 284,
+      "author": {
+        "id": 1000164
+      },
+      "writtenOn": "2020-07-21T15:41:13Z",
+      "side": 1,
+      "message": "changing this to interfacesAdded might be the change you are looking for",
+      "range": {
+        "startLine": 284,
+        "startChar": 34,
+        "endLine": 284,
+        "endChar": 53
+      },
+      "revId": "05243a6a14cc10bd016618ff62fac7df89d4ec0f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
