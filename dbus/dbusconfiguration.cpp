@@ -50,6 +50,9 @@ constexpr const char* thermalControlIface =
 constexpr const char* sensorInterface = "xyz.openbmc_project.Sensor.Value";
 constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
+using Association = std::tuple<std::string, std::string, std::string>;
+using Associations = std::vector<Association>;
+
 namespace thresholds
 {
 constexpr const char* warningInterface =
@@ -233,13 +236,43 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
     return ret;
 }
 
-int eventHandler(sd_bus_message*, void* context, sd_bus_error*)
+int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
 {
 
-    if (context == nullptr)
+    if (context == nullptr || m == nullptr)
     {
         throw std::runtime_error("Invalid match");
     }
+
+    // we skip associations because the mapper populates these, not the sensors
+    const std::array<const char*, 1> skipList = {
+        "xyz.openbmc_project.Association"};
+
+    sdbusplus::message::message message(m);
+    if (std::string(message.get_member()) == "InterfacesAdded")
+    {
+        sdbusplus::message::object_path path;
+        std::unordered_map<
+            std::string,
+            std::unordered_map<std::string, std::variant<Associations, bool>>>
+            data;
+
+        message.read(path, data);
+
+        for (const char* skip : skipList)
+        {
+            auto find = data.find(skip);
+            if (find != data.end())
+            {
+                data.erase(find);
+                if (data.empty())
+                {
+                    return 1;
+                }
+            }
+        }
+    }
+
     boost::asio::steady_timer* timer =
         static_cast<boost::asio::steady_timer*>(context);
 
