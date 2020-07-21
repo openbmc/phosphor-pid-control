@@ -247,9 +247,10 @@ int eventHandler(sd_bus_message*, void* context, sd_bus_error*)
     // once
     timer->expires_after(std::chrono::seconds(2));
     timer->async_wait([](const boost::system::error_code ec) {
-        if (ec == boost::asio::error::operation_aborted)
+        if (ec == boost::asio::error::operation_aborted ||
+            ec == boost::system::errc::success)
         {
-            /* another timer started*/
+            /* another timer started or success */
             return;
         }
 
