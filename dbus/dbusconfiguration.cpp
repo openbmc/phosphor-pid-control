@@ -81,7 +81,6 @@ bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
             matches.push_back(sensor);
         }
     }
-
     return matches.size() > 0;
 }
 
@@ -291,13 +290,23 @@ void createMatches(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
         eventHandler, &timer);
 }
 
+inline DbusVariantType getPIDAttribute(const std::unordered_map<std::string, DbusVariantType>& base, const char * attributeName)
+{
+  auto search = base.find(attributeName);
+  if(search == base.end())
+  {
+    throw std::runtime_error("missing attribute " + std::string(attributeName));
+  }
+  return search->second;
+}
+
 void populatePidInfo(
     sdbusplus::bus::bus& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
     struct conf::ControllerInfo& info, const std::string* thresholdProperty)
 {
 
-    info.type = std::get<std::string>(base.at("Class"));
+    info.type = std::get<std::string>(getPIDAttribute(base,"Class"));
 
     if (info.type == "fan")
     {
@@ -306,7 +315,7 @@ void populatePidInfo(
     else
     {
         info.setpoint =
-            std::visit(VariantToDoubleVisitor(), base.at("SetPoint"));
+            std::visit(VariantToDoubleVisitor(),getPIDAttribute(base, "SetPoint"));
     }
 
     if (thresholdProperty != nullptr)
@@ -341,25 +350,25 @@ void populatePidInfo(
 
     info.pidInfo.ts = 1.0; // currently unused
     info.pidInfo.proportionalCoeff =
-        std::visit(VariantToDoubleVisitor(), base.at("PCoefficient"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "PCoefficient"));
     info.pidInfo.integralCoeff =
-        std::visit(VariantToDoubleVisitor(), base.at("ICoefficient"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "ICoefficient"));
     info.pidInfo.feedFwdOffset =
-        std::visit(VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "FFOffCoefficient"));
     info.pidInfo.feedFwdGain =
-        std::visit(VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "FFGainCoefficient"));
     info.pidInfo.integralLimit.max =
-        std::visit(VariantToDoubleVisitor(), base.at("ILimitMax"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "ILimitMax"));
     info.pidInfo.integralLimit.min =
-        std::visit(VariantToDoubleVisitor(), base.at("ILimitMin"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "ILimitMin"));
     info.pidInfo.outLim.max =
-        std::visit(VariantToDoubleVisitor(), base.at("OutLimitMax"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "OutLimitMax"));
     info.pidInfo.outLim.min =
-        std::visit(VariantToDoubleVisitor(), base.at("OutLimitMin"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "OutLimitMin"));
     info.pidInfo.slewNeg =
-        std::visit(VariantToDoubleVisitor(), base.at("SlewNeg"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewNeg"));
     info.pidInfo.slewPos =
-        std::visit(VariantToDoubleVisitor(), base.at("SlewPos"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewPos"));
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
 
