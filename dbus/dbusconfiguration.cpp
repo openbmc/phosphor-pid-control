@@ -84,7 +84,6 @@ bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
             matches.push_back(sensor);
         }
     }
-
     return matches.size() > 0;
 }
 
@@ -324,22 +323,40 @@ void createMatches(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
         eventHandler, &timer);
 }
 
+/**
+ * retrieve an attribute from the pid configuration map
+ * @param[in] base - the PID configuration map, keys are the attributes and
+ * value is the variant associated with that attribute.
+ * @param attributeName - the name of the attribute
+ * @return a variant holding the value associated with a key
+ * @throw runtime_error : attributeName is not in base
+ */
+inline DbusVariantType getPIDAttribute(
+    const std::unordered_map<std::string, DbusVariantType>& base,
+    const std::string& attributeName)
+{
+    auto search = base.find(attributeName);
+    if (search == base.end())
+    {
+        throw std::runtime_error("missing attribute " + attributeName);
+    }
+    return search->second;
+}
+
 void populatePidInfo(
     sdbusplus::bus::bus& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
     struct conf::ControllerInfo& info, const std::string* thresholdProperty)
 {
-
-    info.type = std::get<std::string>(base.at("Class"));
-
+    info.type = std::get<std::string>(getPIDAttribute(base, "Class"));
     if (info.type == "fan")
     {
         info.setpoint = 0;
     }
     else
     {
-        info.setpoint =
-            std::visit(VariantToDoubleVisitor(), base.at("SetPoint"));
+        info.setpoint = std::visit(VariantToDoubleVisitor(),
+                                   getPIDAttribute(base, "SetPoint"));
     }
 
     if (thresholdProperty != nullptr)
@@ -373,26 +390,26 @@ void populatePidInfo(
     }
 
     info.pidInfo.ts = 1.0; // currently unused
-    info.pidInfo.proportionalCoeff =
-        std::visit(VariantToDoubleVisitor(), base.at("PCoefficient"));
-    info.pidInfo.integralCoeff =
-        std::visit(VariantToDoubleVisitor(), base.at("ICoefficient"));
-    info.pidInfo.feedFwdOffset =
-        std::visit(VariantToDoubleVisitor(), base.at("FFOffCoefficient"));
-    info.pidInfo.feedFwdGain =
-        std::visit(VariantToDoubleVisitor(), base.at("FFGainCoefficient"));
-    info.pidInfo.integralLimit.max =
-        std::visit(VariantToDoubleVisitor(), base.at("ILimitMax"));
-    info.pidInfo.integralLimit.min =
-        std::visit(VariantToDoubleVisitor(), base.at("ILimitMin"));
-    info.pidInfo.outLim.max =
-        std::visit(VariantToDoubleVisitor(), base.at("OutLimitMax"));
-    info.pidInfo.outLim.min =
-        std::visit(VariantToDoubleVisitor(), base.at("OutLimitMin"));
+    info.pidInfo.proportionalCoeff = std::visit(
+        VariantToDoubleVisitor(), getPIDAttribute(base, "PCoefficient"));
+    info.pidInfo.integralCoeff = std::visit(
+        VariantToDoubleVisitor(), getPIDAttribute(base, "ICoefficient"));
+    info.pidInfo.feedFwdOffset = std::visit(
+        VariantToDoubleVisitor(), getPIDAttribute(base, "FFOffCoefficient"));
+    info.pidInfo.feedFwdGain = std::visit(
+        VariantToDoubleVisitor(), getPIDAttribute(base, "FFGainCoefficient"));
+    info.pidInfo.integralLimit.max = std::visit(
+        VariantToDoubleVisitor(), getPIDAttribute(base, "ILimitMax"));
+    info.pidInfo.integralLimit.min = std::visit(
+        VariantToDoubleVisitor(), getPIDAttribute(base, "ILimitMin"));
+    info.pidInfo.outLim.max = std::visit(VariantToDoubleVisitor(),
+                                         getPIDAttribute(base, "OutLimitMax"));
+    info.pidInfo.outLim.min = std::visit(VariantToDoubleVisitor(),
+                                         getPIDAttribute(base, "OutLimitMin"));
     info.pidInfo.slewNeg =
-        std::visit(VariantToDoubleVisitor(), base.at("SlewNeg"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewNeg"));
     info.pidInfo.slewPos =
-        std::visit(VariantToDoubleVisitor(), base.at("SlewPos"));
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewPos"));
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
 
@@ -410,7 +427,6 @@ void populatePidInfo(
         positiveHysteresis =
             std::visit(VariantToDoubleVisitor(), findPos->second);
     }
-
     info.pidInfo.negativeHysteresis = negativeHysteresis;
     info.pidInfo.positiveHysteresis = positiveHysteresis;
 }
