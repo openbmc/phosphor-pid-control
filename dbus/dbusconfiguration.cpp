@@ -66,10 +66,15 @@ const std::array<const char*, 4> types = {"CriticalLow", "CriticalHigh",
 
 namespace dbus_configuration
 {
-
 using DbusVariantType =
     std::variant<uint64_t, int64_t, double, std::string,
                  std::vector<std::string>, std::vector<double>>;
+using SensorInterfaceType = std::pair<std::string, std::string>;
+
+inline std::string getSensorNameFromPath(const std::string& dbusPath)
+{
+    return dbusPath.substr(dbusPath.find_last_of("/") + 1);
+}
 
 bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
                  const std::string& search,
@@ -627,89 +632,165 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                                                  zone.at("FailSafePercent"));
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
+        // loop through all the PID configurations and fill out a sensor config
         if (findBase != configuration.second.end())
         {
 
             const auto& base =
                 configuration.second.at(pidConfigurationInterface);
+            const std::string pidName = std::get<std::string>(base.at("Name"));
+            const std::string pidClass =
+                std::get<std::string>(base.at("Class"));
             const std::vector<std::string>& zones =
                 std::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
                 size_t index = getZoneIndex(zone, foundZones);
                 conf::PIDConf& conf = zoneConfig[index];
+                std::vector<std::string> inputSensorNames(
+                    std::get<std::vector<std::string>>(base.at("Inputs")));
+                std::vector<std::string> outputSensorNames;
 
-                std::vector<std::string> sensorNames =
-                    std::get<std::vector<std::string>>(base.at("Inputs"));
-                auto findOutputs =
-                    base.find("Outputs"); // currently only fans have outputs
-                if (findOutputs != base.end())
+                // assumption: all fan pids must have at least one output
+                if (pidClass == "fan")
                 {
-                    std::vector<std::string> outputs =
-                        std::get<std::vector<std::string>>(findOutputs->second);
-                    sensorNames.insert(sensorNames.end(), outputs.begin(),
-                                       outputs.end());
+                    outputSensorNames = std::get<std::vector<std::string>>(
+                        getPIDAttribute(base, "Outputs"));
                 }
 
-                std::vector<std::string> inputs;
-                std::vector<std::pair<std::string, std::string>>
-                    sensorInterfaces;
-                for (const std::string& sensorName : sensorNames)
+                std::vector<SensorInterfaceType> inputSensorInterfaces;
+                std::vector<SensorInterfaceType> outputSensorInterfaces;
+                /* populate an interface list for different sensor direction
+                 * types (input,output)
+                 */
+                /* take the Inputs from the configuration and generate
+                 * a list of dbus descriptors (path, interface).
+                 * Mapping can be many-to-one since an element of Inputs can be
+                 * a regex
+                 */
+                for (const std::string& sensorName : inputSensorNames)
                 {
-                    std::string name = sensorName;
+                    std::string sensorNameCopy = sensorName;
                     // replace spaces with underscores to be legal on dbus
-                    std::replace(name.begin(), name.end(), ' ', '_');
-                    findSensors(sensors, name, sensorInterfaces);
+                    std::replace(sensorNameCopy.begin(), sensorNameCopy.end(),
+                                 ' ', '_');
+                    findSensors(sensors, sensorNameCopy, inputSensorInterfaces);
                 }
-
-                for (const auto& sensorPathIfacePair : sensorInterfaces)
+                for (const std::string& sensorName : outputSensorNames)
                 {
+                    std::string sensorNameCopy = sensorName;
+                    // replace spaces with underscores to be legal on dbus
+                    std::replace(sensorNameCopy.begin(), sensorNameCopy.end(),
+                                 ' ', '_');
+                    findSensors(sensors, sensorNameCopy,
+                                outputSensorInterfaces);
+                }
 
-                    if (sensorPathIfacePair.second == sensorInterface)
+                for (const SensorInterfaceType& inputSensorInterface :
+                     inputSensorInterfaces)
+                {
+                    const std::string& dbusInterface =
+                        inputSensorInterface.second;
+                    const std::string& inputSensorPath =
+                        inputSensorInterface.first;
+                    std::string inputSensorName =
+                        getSensorNameFromPath(inputSensorPath);
+                    auto& config = sensorConfig[inputSensorName];
+                    config.type = pidClass;
+                    config.readPath = inputSensorInterface.first;
+                    // todo: maybe un-hardcode this if we run into slower
+                    // timeouts with sensors
+                    if (config.type == "temp")
                     {
-                        size_t idx =
-                            sensorPathIfacePair.first.find_last_of("/") + 1;
-                        std::string shortName =
-                            sensorPathIfacePair.first.substr(idx);
-
-                        inputs.push_back(shortName);
-                        auto& config = sensorConfig[shortName];
-                        config.type = std::get<std::string>(base.at("Class"));
-                        config.readPath = sensorPathIfacePair.first;
-                        // todo: maybe un-hardcode this if we run into slower
-                        // timeouts with sensors
-                        if (config.type == "temp")
-                        {
-                            config.timeout = 0;
-                            config.ignoreDbusMinMax = true;
-                        }
+                        config.timeout = 0;
+                        config.ignoreDbusMinMax = true;
                     }
-                    else if (sensorPathIfacePair.second == pwmInterface)
+                    if (dbusInterface != sensorInterface)
                     {
-                        // copy so we can modify it
-                        for (std::string otherSensor : sensorNames)
-                        {
-                            std::replace(otherSensor.begin(), otherSensor.end(),
-                                         ' ', '_');
-                            if (sensorPathIfacePair.first.find(otherSensor) !=
-                                std::string::npos)
-                            {
-                                continue;
-                            }
-
-                            auto& config = sensorConfig[otherSensor];
-                            config.writePath = sensorPathIfacePair.first;
-                            // todo: un-hardcode this if there are fans with
-                            // different ranges
-                            config.max = 255;
-                            config.min = 0;
-                        }
+                        /* all expected inputs in the configuration are expected
+                         * to be sensor interfaces
+                         */
+                        throw std::runtime_error(
+                            "sensor at dbus path [" + inputSensorPath +
+                            "] has an interface [" + dbusInterface +
+                            "] that does not match the expected interface of " +
+                            sensorInterface);
                     }
                 }
 
+                /* fan pids need to pair up tach sensors with their pwm
+                 * counterparts
+                 */
+                if (pidClass == "fan")
+                {
+                    /* If a PID is a fan there should be either
+                     * (1) one output(pwm) per input(tach)
+                     * OR
+                     * (2) one putput(pwm) for all inputs(tach)
+                     * everything else indicates a bad configuration.
+                     */
+                    bool singlePwm = false;
+                    if (outputSensorInterfaces.size() == 1)
+                    {
+                        /* one pwm, set write paths for all fan sensors to it */
+                        singlePwm = true;
+                    }
+                    else if (inputSensorInterfaces.size() ==
+                             outputSensorInterfaces.size())
+                    {
+                        /* one to one mapping, each fan sensor gets its own pwm
+                         * control */
+                        singlePwm = false;
+                    }
+                    else
+                    {
+                        throw std::runtime_error(
+                            "fan PID has invalid number of Outputs");
+                    }
+                    std::string fanSensorName;
+                    std::string pwmPath;
+                    std::string pwmInterface;
+                    if (singlePwm)
+                    {
+                        /* if just a single output(pwm) is provided then use
+                         * that pwm control path for all the fan sensor write
+                         * path configs
+                         */
+                        pwmPath = outputSensorInterfaces.at(0).first;
+                        pwmInterface = outputSensorInterfaces.at(0).second;
+                    }
+                    for (uint32_t idx = 0; idx < inputSensorInterfaces.size();
+                         idx++)
+                    {
+                        if (!singlePwm)
+                        {
+                            pwmPath = outputSensorInterfaces.at(idx).first;
+                            pwmInterface =
+                                outputSensorInterfaces.at(idx).second;
+                        }
+                        if (pwmInterface != pwmInterface)
+                        {
+                            throw std::runtime_error(
+                                "fan pwm control at dbus path [" + pwmPath +
+                                "] has an interface [" + pwmInterface +
+                                "] that does not match the expected interface "
+                                "of " +
+                                pwmInterface);
+                        }
+                        const std::string& fanPath =
+                            inputSensorInterfaces.at(idx).first;
+                        fanSensorName = getSensorNameFromPath(fanPath);
+                        auto& fanConfig = sensorConfig[fanSensorName];
+                        fanConfig.writePath = pwmPath;
+                        // todo: un-hardcode this if there are fans with
+                        // different ranges
+                        fanConfig.max = 255;
+                        fanConfig.min = 0;
+                    }
+                }
                 // if the sensors aren't available in the current state, don't
                 // add them to the configuration.
-                if (inputs.empty())
+                if (inputSensorNames.empty())
                 {
                     continue;
                 }
@@ -737,14 +818,14 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                 {
                     struct conf::ControllerInfo& info =
                         conf[std::get<std::string>(base.at("Name"))];
-                    info.inputs = std::move(inputs);
+                    info.inputs = std::move(inputSensorNames);
                     populatePidInfo(bus, base, info, nullptr);
                 }
                 else
                 {
                     // we have to split up the inputs, as in practice t-control
                     // values will differ, making setpoints differ
-                    for (const std::string& input : inputs)
+                    for (const std::string& input : inputSensorNames)
                     {
                         struct conf::ControllerInfo& info = conf[input];
                         info.inputs.emplace_back(input);
