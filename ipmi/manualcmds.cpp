@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "manualcmds.hpp"
+
 #include <ipmid/api.h>
 
 #include <ipmid/iana.hpp>
@@ -26,25 +28,10 @@
 #include <tuple>
 #include <variant>
 
-enum ManualSubCmd
+namespace pid_control
 {
-    GET_CONTROL_STATE = 0,
-    SET_CONTROL_STATE = 1,
-    GET_FAILSAFE_STATE = 2,
-};
-
-struct FanCtrlRequest
+namespace ipmi
 {
-    uint8_t command;
-    uint8_t zone;
-} __attribute__((packed));
-
-struct FanCtrlRequestSet
-{
-    uint8_t command;
-    uint8_t zone;
-    uint8_t value;
-} __attribute__((packed));
 
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 static constexpr auto busName = "xyz.openbmc_project.State.FanCtrl";
@@ -235,6 +222,9 @@ static ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
     return rc;
 }
 
+} // namespace ipmi
+} // namespace pid_control
+
 void setupGlobalOemFanControl() __attribute__((constructor));
 
 void setupGlobalOemFanControl()
@@ -246,5 +236,5 @@ void setupGlobalOemFanControl()
             oem::obmcOemNumber, oem::Cmd::fanManualCmd);
 
     router->registerHandler(oem::obmcOemNumber, oem::Cmd::fanManualCmd,
-                            manualModeControl);
+                            pid_control::ipmi::manualModeControl);
 }
