@@ -36,7 +36,7 @@ static std::string getControlPath(int64_t zone)
 }
 
 std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
-    buildZones(std::map<int64_t, conf::PIDConf>& zonePids,
+    buildZones(const std::map<int64_t, conf::PIDConf>& zonePids,
                std::map<int64_t, struct conf::ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus)
 {
