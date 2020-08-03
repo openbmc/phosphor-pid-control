@@ -6,7 +6,7 @@
 class SensorBuildException : public std::exception
 {
   public:
-    SensorBuildException(const std::string& message) : message(message)
+    explicit SensorBuildException(const std::string& message) : message(message)
     {
     }
 
@@ -22,7 +22,8 @@ class SensorBuildException : public std::exception
 class ControllerBuildException : public std::exception
 {
   public:
-    ControllerBuildException(const std::string& message) : message(message)
+    explicit ControllerBuildException(const std::string& message) :
+        message(message)
     {
     }
 
@@ -38,7 +39,8 @@ class ControllerBuildException : public std::exception
 class ConfigurationException : public std::exception
 {
   public:
-    ConfigurationException(const std::string& message) : message(message)
+    explicit ConfigurationException(const std::string& message) :
+        message(message)
     {
     }
 

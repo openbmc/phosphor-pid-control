@@ -31,7 +31,7 @@
 class DbusPassiveRedundancy
 {
   public:
-    DbusPassiveRedundancy(sdbusplus::bus::bus& bus);
+    explicit DbusPassiveRedundancy(sdbusplus::bus::bus& bus);
     const std::set<std::string>& getFailed(void);
 
   private:
