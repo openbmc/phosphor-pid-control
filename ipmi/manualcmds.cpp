@@ -92,7 +92,6 @@ static ipmi_ret_t getFanCtrlProperty(uint8_t zoneId, bool* value,
 static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                        size_t* dataLen)
 {
-    ipmi_ret_t rc = IPMI_CC_OK;
     bool current;
 
     if (*dataLen < sizeof(struct FanCtrlRequest))
@@ -103,7 +102,8 @@ static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
-    rc = getFanCtrlProperty(request->zone, &current, failsafeProperty);
+    ipmi_ret_t rc =
+        getFanCtrlProperty(request->zone, &current, failsafeProperty);
     if (rc)
     {
         return rc;
@@ -111,7 +111,7 @@ static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
 
     *replyBuf = (uint8_t)current;
     *dataLen = sizeof(uint8_t);
-    return rc;
+    return IPMI_CC_OK;
 }
 
 /*
@@ -123,7 +123,6 @@ static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
 static ipmi_ret_t getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                      size_t* dataLen)
 {
-    ipmi_ret_t rc = IPMI_CC_OK;
     bool current;
 
     if (*dataLen < sizeof(struct FanCtrlRequest))
@@ -134,7 +133,7 @@ static ipmi_ret_t getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
-    rc = getFanCtrlProperty(request->zone, &current, manualProperty);
+    ipmi_ret_t rc = getFanCtrlProperty(request->zone, &current, manualProperty);
     if (rc)
     {
         return rc;
@@ -142,7 +141,7 @@ static ipmi_ret_t getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
 
     *replyBuf = (uint8_t)current;
     *dataLen = sizeof(uint8_t);
-    return rc;
+    return IPMI_CC_OK;
 }
 
 /*
@@ -155,7 +154,6 @@ static ipmi_ret_t getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
 static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                      size_t* dataLen)
 {
-    ipmi_ret_t rc = IPMI_CC_OK;
     if (*dataLen < sizeof(struct FanCtrlRequestSet))
     {
         return IPMI_CC_INVALID;
@@ -180,6 +178,8 @@ static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     pimMsg.append(manualProperty);
     pimMsg.append(v);
 
+    ipmi_ret_t rc = IPMI_CC_OK;
+
     try
     {
         PropertyWriteBus.call_noreply(pimMsg);
@@ -197,7 +197,6 @@ static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
 static ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
                                     uint8_t* replyCmdBuf, size_t* dataLen)
 {
-    ipmi_ret_t rc = IPMI_CC_OK;
     // FanCtrlRequest is the smaller of the requests, so it's at a minimum.
     if (*dataLen < sizeof(struct FanCtrlRequest))
     {
@@ -206,6 +205,8 @@ static ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
 
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
+
+    ipmi_ret_t rc = IPMI_CC_OK;
 
     switch (request->command)
     {
