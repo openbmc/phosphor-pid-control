@@ -9,9 +9,9 @@ namespace ipmi
 
 enum ManualSubCmd
 {
-    GET_CONTROL_STATE = 0,
-    SET_CONTROL_STATE = 1,
-    GET_FAILSAFE_STATE = 2,
+    getControlState = 0,
+    setControlState = 1,
+    getFailsafeState = 2,
 };
 
 struct FanCtrlRequest

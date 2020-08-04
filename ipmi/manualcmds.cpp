@@ -211,11 +211,11 @@ static ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
 
     switch (request->command)
     {
-        case GET_CONTROL_STATE:
+        case getControlState:
             return getManualModeState(reqBuf, replyCmdBuf, dataLen);
-        case SET_CONTROL_STATE:
+        case setControlState:
             return setManualModeState(reqBuf, replyCmdBuf, dataLen);
-        case GET_FAILSAFE_STATE:
+        case getFailsafeState:
             return getFailsafeModeState(reqBuf, replyCmdBuf, dataLen);
         default:
             rc = IPMI_CC_INVALID;
