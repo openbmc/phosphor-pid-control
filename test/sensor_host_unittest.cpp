@@ -1,9 +1,10 @@
 #include "sensors/host.hpp"
 #include "test/helpers.hpp"
 
+#include <sdbusplus/test/sdbus_mock.hpp>
+
 #include <chrono>
 #include <memory>
-#include <sdbusplus/test/sdbus_mock.hpp>
 #include <string>
 #include <vector>
 

@@ -18,8 +18,9 @@
 
 #include "conf.hpp"
 
-#include <map>
 #include <nlohmann/json.hpp>
+
+#include <map>
 #include <tuple>
 
 using json = nlohmann::json;

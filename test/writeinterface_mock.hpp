@@ -10,8 +10,7 @@ class WriteInterfaceMock : public WriteInterface
     virtual ~WriteInterfaceMock() = default;
 
     WriteInterfaceMock(int64_t min, int64_t max) : WriteInterface(min, max)
-    {
-    }
+    {}
 
     MOCK_METHOD1(write, void(double));
 };

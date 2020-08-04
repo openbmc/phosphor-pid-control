@@ -5,9 +5,10 @@
 #include "test/helpers.hpp"
 #include "test/sensor_mock.hpp"
 
+#include <sdbusplus/test/sdbus_mock.hpp>
+
 #include <chrono>
 #include <cstring>
-#include <sdbusplus/test/sdbus_mock.hpp>
 #include <vector>
 
 #include <gmock/gmock.h>

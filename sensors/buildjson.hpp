@@ -2,8 +2,9 @@
 
 #include "conf.hpp"
 
-#include <map>
 #include <nlohmann/json.hpp>
+
+#include <map>
 #include <string>
 
 using json = nlohmann::json;

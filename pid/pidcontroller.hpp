@@ -19,12 +19,10 @@ class PIDController : public Controller
   public:
     PIDController(const std::string& id, ZoneInterface* owner) :
         Controller(), _owner(owner), _setpoint(0), _id(id)
-    {
-    }
+    {}
 
     virtual ~PIDController()
-    {
-    }
+    {}
 
     virtual double inputProc(void) override = 0;
     virtual double setptProc(void) = 0;

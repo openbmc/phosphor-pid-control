@@ -1,6 +1,7 @@
-#include <iostream>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
+
+#include <iostream>
 #include <string>
 #include <variant>
 

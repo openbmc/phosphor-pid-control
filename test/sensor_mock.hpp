@@ -11,8 +11,7 @@ class SensorMock : public Sensor
     virtual ~SensorMock() = default;
 
     SensorMock(const std::string& name, int64_t timeout) : Sensor(name, timeout)
-    {
-    }
+    {}
 
     MOCK_METHOD0(read, ReadReturn());
     MOCK_METHOD1(write, void(double));

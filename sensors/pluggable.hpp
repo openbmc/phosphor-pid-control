@@ -3,8 +3,9 @@
 #include "interfaces.hpp"
 #include "sensor.hpp"
 
-#include <memory>
 #include <sdbusplus/bus.hpp>
+
+#include <memory>
 #include <string>
 
 /*
@@ -18,8 +19,7 @@ class PluggableSensor : public Sensor
                     std::unique_ptr<WriteInterface> writer) :
         Sensor(name, timeout),
         _reader(std::move(reader)), _writer(std::move(writer))
-    {
-    }
+    {}
 
     ReadReturn read(void) override;
     void write(double value) override;

@@ -19,8 +19,9 @@
 #include "conf.hpp"
 #include "sensors/sensor.hpp"
 
-#include <cstdio>
 #include <nlohmann/json.hpp>
+
+#include <cstdio>
 
 using json = nlohmann::json;
 

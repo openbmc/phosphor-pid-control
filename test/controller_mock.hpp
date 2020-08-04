@@ -11,8 +11,7 @@ class ControllerMock : public PIDController
 
     ControllerMock(const std::string& id, PIDZone* owner) :
         PIDController(id, owner)
-    {
-    }
+    {}
 
     MOCK_METHOD0(inputProc, double());
     MOCK_METHOD0(setptProc, double());

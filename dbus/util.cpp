@@ -1,8 +1,9 @@
 #include "util.hpp"
 
+#include <phosphor-logging/log.hpp>
+
 #include <cmath>
 #include <iostream>
-#include <phosphor-logging/log.hpp>
 #include <set>
 #include <variant>
 

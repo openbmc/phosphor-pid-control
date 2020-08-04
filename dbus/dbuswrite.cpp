@@ -16,10 +16,11 @@
 
 #include "dbus/dbuswrite.hpp"
 
-#include <iostream>
-#include <memory>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+
+#include <iostream>
+#include <memory>
 #include <string>
 #include <variant>
 

@@ -25,8 +25,7 @@ class FanController : public PIDController
                   ZoneInterface* owner) :
         PIDController(id, owner),
         _inputs(inputs), _direction(FanSpeedDirection::NEUTRAL)
-    {
-    }
+    {}
 
     double inputProc(void) override;
     double setptProc(void) override;

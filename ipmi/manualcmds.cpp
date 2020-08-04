@@ -21,9 +21,10 @@
 #include <ipmid/iana.hpp>
 #include <ipmid/oemopenbmc.hpp>
 #include <ipmid/oemrouter.hpp>
-#include <map>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
+
+#include <map>
 #include <string>
 #include <tuple>
 #include <variant>

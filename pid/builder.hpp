@@ -3,8 +3,9 @@
 #include "pid/zone.hpp"
 #include "sensors/manager.hpp"
 
-#include <memory>
 #include <sdbusplus/bus.hpp>
+
+#include <memory>
 #include <unordered_map>
 
 std::unordered_map<int64_t, std::unique_ptr<PIDZone>>

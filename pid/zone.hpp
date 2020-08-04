@@ -7,15 +7,16 @@
 #include "sensors/sensor.hpp"
 #include "tuning.hpp"
 
+#include <sdbusplus/bus.hpp>
+#include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Control/Mode/server.hpp>
+
 #include <fstream>
 #include <map>
 #include <memory>
-#include <sdbusplus/bus.hpp>
-#include <sdbusplus/server.hpp>
 #include <set>
 #include <string>
 #include <vector>
-#include <xyz/openbmc_project/Control/Mode/server.hpp>
 
 template <typename... T>
 using ServerObject = typename sdbusplus::server::object::object<T...>;

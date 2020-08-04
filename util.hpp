@@ -2,9 +2,10 @@
 
 #include "pid/ec/pid.hpp"
 
-#include <limits>
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+
+#include <limits>
 #include <string>
 
 /* This program assumes sensors use the Sensor.Value interface

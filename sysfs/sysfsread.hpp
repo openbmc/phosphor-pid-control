@@ -13,8 +13,7 @@ class SysFsRead : public ReadInterface
 {
   public:
     SysFsRead(const std::string& path) : ReadInterface(), _path(FixupPath(path))
-    {
-    }
+    {}
 
     ReadReturn read(void) override;
 

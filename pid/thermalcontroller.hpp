@@ -48,8 +48,7 @@ class ThermalController : public PIDController
                       const ThermalType& type, ZoneInterface* owner) :
         PIDController(id, owner),
         _inputs(inputs), type(type)
-    {
-    }
+    {}
 
     double inputProc(void) override;
     double setptProc(void) override;

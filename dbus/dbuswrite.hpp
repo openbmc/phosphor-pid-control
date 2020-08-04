@@ -19,8 +19,9 @@
 #include "interfaces.hpp"
 #include "util.hpp"
 
-#include <memory>
 #include <sdbusplus/bus.hpp>
+
+#include <memory>
 #include <string>
 
 class DbusWritePercent : public WriteInterface
@@ -34,8 +35,7 @@ class DbusWritePercent : public WriteInterface
                      const std::string& connectionName) :
         WriteInterface(min, max),
         path(path), connectionName(connectionName)
-    {
-    }
+    {}
 
     void write(double value) override;
 
@@ -56,8 +56,7 @@ class DbusWrite : public WriteInterface
               const std::string& connectionName) :
         WriteInterface(min, max),
         path(path), connectionName(connectionName)
-    {
-    }
+    {}
 
     void write(double value) override;
 

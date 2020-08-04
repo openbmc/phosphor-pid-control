@@ -22,9 +22,10 @@
 #include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 
+#include <sdbusplus/bus.hpp>
+
 #include <iostream>
 #include <memory>
-#include <sdbusplus/bus.hpp>
 #include <unordered_map>
 
 static constexpr bool deferSignals = true;

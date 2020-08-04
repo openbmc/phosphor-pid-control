@@ -23,8 +23,7 @@ class StepwiseController : public Controller
                        ZoneInterface* owner) :
         Controller(),
         _owner(owner), _id(id), _inputs(inputs)
-    {
-    }
+    {}
 
     double inputProc(void) override;
 

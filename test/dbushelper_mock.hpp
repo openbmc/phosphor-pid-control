@@ -3,6 +3,7 @@
 #include "util.hpp"
 
 #include <sdbusplus/bus.hpp>
+
 #include <string>
 
 #include <gmock/gmock.h>

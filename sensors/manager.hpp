@@ -2,10 +2,11 @@
 
 #include "sensors/sensor.hpp"
 
-#include <map>
-#include <memory>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
+
+#include <map>
+#include <memory>
 #include <string>
 #include <vector>
 

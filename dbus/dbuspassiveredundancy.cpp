@@ -16,9 +16,10 @@
 
 #include "dbuspassiveredundancy.hpp"
 
-#include <iostream>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
+
+#include <iostream>
 #include <set>
 #include <unordered_map>
 #include <variant>

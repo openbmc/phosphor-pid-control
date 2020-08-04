@@ -3,8 +3,9 @@
 #include "interfaces.hpp"
 #include "util.hpp"
 
-#include <memory>
 #include <sdbusplus/bus.hpp>
+
+#include <memory>
 #include <string>
 
 /*
@@ -18,8 +19,7 @@ class DbusActiveRead : public ReadInterface
                    const std::string& service, DbusHelperInterface* helper) :
         ReadInterface(),
         _bus(bus), _path(path), _service(service), _helper(helper)
-    {
-    }
+    {}
 
     ReadReturn read(void) override;
 

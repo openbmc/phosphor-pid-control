@@ -2,8 +2,9 @@
 
 #include "errors/exception.hpp"
 
-#include <fstream>
 #include <nlohmann/json.hpp>
+
+#include <fstream>
 
 using json = nlohmann::json;
 

@@ -2,8 +2,9 @@
 #include "dbus/dbuspassive.hpp"
 #include "test/dbushelper_mock.hpp"
 
-#include <functional>
 #include <sdbusplus/test/sdbus_mock.hpp>
+
+#include <functional>
 #include <string>
 #include <variant>
 

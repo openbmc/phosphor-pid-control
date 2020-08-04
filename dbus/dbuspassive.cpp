@@ -18,11 +18,12 @@
 #include "dbuspassiveredundancy.hpp"
 #include "util.hpp"
 
+#include <sdbusplus/bus.hpp>
+
 #include <chrono>
 #include <cmath>
 #include <memory>
 #include <mutex>
-#include <sdbusplus/bus.hpp>
 #include <string>
 #include <variant>
 

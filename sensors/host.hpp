@@ -2,12 +2,13 @@
 
 #include "sensor.hpp"
 
-#include <memory>
-#include <mutex>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
-#include <type_traits>
 #include <xyz/openbmc_project/Sensor/Value/server.hpp>
+
+#include <memory>
+#include <mutex>
+#include <type_traits>
 
 template <typename... T>
 using ServerObject = typename sdbusplus::server::object::object<T...>;
@@ -45,8 +46,7 @@ class HostSensor : public Sensor, public ValueObject
                sdbusplus::bus::bus& bus, const char* objPath, bool defer) :
         Sensor(name, timeout),
         ValueObject(bus, objPath, defer)
-    {
-    }
+    {}
 
     ValueType value(ValueType value) override;
 
