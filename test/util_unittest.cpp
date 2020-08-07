@@ -1,9 +1,14 @@
-#include "util.hpp"
+#include "sensors/build_utils.hpp"
 
 #include <string>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
+
+namespace pid_control
+{
+namespace
+{
 
 TEST(UtilTest, WriteTypeEmptyString_ReturnsNONE)
 {
@@ -80,3 +85,6 @@ TEST(UtilTest, ReadTypeUnknownDefault_ReturnsUNKNOWN)
     std::string path = "asdf09as0df9a0fd";
     EXPECT_EQ(IOInterfaceType::UNKNOWN, getReadInterfaceType(path));
 }
+
+} // namespace
+} // namespace pid_control
