@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-#include "util.hpp"
+#include "build_utils.hpp"
 
-#include <string>
+namespace pid_control
+{
 
 static constexpr auto external_sensor =
     "/xyz/openbmc_project/extsensors/";                         // type/
@@ -68,3 +69,5 @@ IOInterfaceType getReadInterfaceType(const std::string& path)
 
     return IOInterfaceType::UNKNOWN;
 }
+
+} // namespace pid_control

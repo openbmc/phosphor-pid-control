@@ -56,7 +56,7 @@ setsensor_CXXFLAGS = \
 	$(PHOSPHOR_LOGGING_CFLAGS) \
 	$(CODE_COVERAGE_CXXFLAGS)
 
-swampd_SOURCES = main.cpp util.cpp
+swampd_SOURCES = main.cpp
 swampd_LDADD = \
 	$(SDBUSPLUS_LIBS) \
 	libswampd.la
@@ -94,6 +94,7 @@ libswampd_la_SOURCES = \
 	sensors/builder.cpp \
 	sensors/buildjson.cpp \
 	sensors/manager.cpp \
+	sensors/build_utils.cpp \
 	pid/ec/pid.cpp \
 	pid/ec/stepwise.cpp \
 	pid/fancontroller.cpp \

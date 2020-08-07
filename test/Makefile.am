@@ -40,7 +40,7 @@ sensor_host_unittest_SOURCES = sensor_host_unittest.cpp
 sensor_host_unittest_LDADD = $(top_builddir)/sensors/host.o
 
 util_unittest_SOURCES = util_unittest.cpp
-util_unittest_LDADD = $(top_builddir)/util.o
+util_unittest_LDADD = $(top_builddir)/sensors/build_utils.o
 
 pid_zone_unittest_SOURCES = pid_zone_unittest.cpp
 pid_zone_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \

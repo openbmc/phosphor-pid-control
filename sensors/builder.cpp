@@ -26,6 +26,7 @@
 #include "interfaces.hpp"
 #include "notimpl/readonly.hpp"
 #include "notimpl/writeonly.hpp"
+#include "sensors/build_utils.hpp"
 #include "sensors/builder.hpp"
 #include "sensors/host.hpp"
 #include "sensors/manager.hpp"
@@ -36,6 +37,10 @@
 
 static constexpr bool deferSignals = true;
 static DbusHelper helper;
+
+using ::pid_control::getReadInterfaceType;
+using ::pid_control::getWriteInterfaceType;
+using ::pid_control::IOInterfaceType;
 
 SensorManager
     buildSensors(const std::map<std::string, struct conf::SensorConfig>& config,
