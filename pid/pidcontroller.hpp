@@ -8,6 +8,9 @@
 #include <memory>
 #include <vector>
 
+namespace pid_control
+{
+
 class ZoneInterface;
 
 /*
@@ -63,3 +66,5 @@ class PIDController : public Controller
     std::string _id;
     double lastInput = std::numeric_limits<double>::quiet_NaN();
 };
+
+} // namespace pid_control

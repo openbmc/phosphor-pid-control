@@ -8,6 +8,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::NotNull;
@@ -52,3 +57,6 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
 
 // WARN: getProperties will raise an exception on failure
 // Instead of just not updating the value.
+
+} // namespace
+} // namespace pid_control

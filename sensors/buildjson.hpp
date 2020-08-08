@@ -9,6 +9,9 @@
 
 using json = nlohmann::json;
 
+namespace pid_control
+{
+
 /**
  * Given a json object generated from a configuration file, build the sensor
  * configuration representation. This expecteds the json configuration to be
@@ -19,3 +22,5 @@ using json = nlohmann::json;
  */
 std::map<std::string, struct conf::SensorConfig>
     buildSensorsFromJson(const json& data);
+
+} // namespace pid_control

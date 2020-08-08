@@ -23,6 +23,9 @@
 #include <map>
 #include <tuple>
 
+namespace pid_control
+{
+
 using json = nlohmann::json;
 
 namespace conf
@@ -152,3 +155,5 @@ std::pair<std::map<int64_t, conf::PIDConf>,
 
     return std::make_pair(pidConfig, zoneConfig);
 }
+
+} // namespace pid_control

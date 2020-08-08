@@ -30,6 +30,9 @@
 #include <thread>
 #include <vector>
 
+namespace pid_control
+{
+
 void StepwiseController::process(void)
 {
     // Get input value
@@ -105,3 +108,5 @@ void StepwiseController::outputProc(double value)
     }
     return;
 }
+
+} // namespace pid_control

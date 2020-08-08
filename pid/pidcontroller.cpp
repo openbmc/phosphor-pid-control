@@ -27,6 +27,9 @@
 #include <thread>
 #include <vector>
 
+namespace pid_control
+{
+
 void PIDController::process(void)
 {
     double input;
@@ -78,3 +81,5 @@ void PIDController::process(void)
 
     return;
 }
+
+} // namespace pid_control

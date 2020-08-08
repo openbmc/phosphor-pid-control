@@ -20,8 +20,11 @@
 #include <cstddef>
 #include <limits>
 
+namespace pid_control
+{
 namespace ec
 {
+
 double stepwise(const ec::StepwiseInfo& info, double input)
 {
     double value = info.output[0]; // if we are below the lowest
@@ -43,4 +46,6 @@ double stepwise(const ec::StepwiseInfo& info, double input)
 
     return value;
 }
+
 } // namespace ec
+} // namespace pid_control

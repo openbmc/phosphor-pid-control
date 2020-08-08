@@ -9,6 +9,9 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+
 using ::testing::_;
 using ::testing::Invoke;
 using ::testing::IsNull;
@@ -67,3 +70,5 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
 
     return;
 }
+
+} // namespace pid_control

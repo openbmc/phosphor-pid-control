@@ -27,6 +27,9 @@
 #include <string>
 #include <variant>
 
+namespace pid_control
+{
+
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
     DbusHelperInterface* helper, const conf::SensorConfig* info,
@@ -220,3 +223,5 @@ int dbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
 
     return handleSensorValue(sdbpMsg, obj);
 }
+
+} // namespace pid_control

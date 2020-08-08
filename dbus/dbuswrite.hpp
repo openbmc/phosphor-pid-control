@@ -24,6 +24,9 @@
 #include <memory>
 #include <string>
 
+namespace pid_control
+{
+
 class DbusWritePercent : public WriteInterface
 {
   public:
@@ -65,3 +68,5 @@ class DbusWrite : public WriteInterface
     std::string connectionName;
     int64_t oldValue = -1;
 };
+
+} // namespace pid_control

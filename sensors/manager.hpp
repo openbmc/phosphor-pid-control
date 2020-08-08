@@ -10,6 +10,9 @@
 #include <string>
 #include <vector>
 
+namespace pid_control
+{
+
 /*
  * The SensorManager holds all sensors across all zones.
  */
@@ -61,3 +64,5 @@ class SensorManager
 
     static constexpr auto SensorRoot = "/xyz/openbmc_project/extsensors";
 };
+
+} // namespace pid_control

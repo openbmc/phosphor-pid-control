@@ -4,6 +4,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 TEST(SensorsFromJson, emptyJsonNoSensors)
 {
     // If the json has no sensors, the map is empty.
@@ -127,3 +132,6 @@ TEST(SensorsFromJson, twoSensors)
     auto output = buildSensorsFromJson(j2);
     EXPECT_EQ(2, output.size());
 }
+
+} // namespace
+} // namespace pid_control

@@ -4,6 +4,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 TEST(ConfigurationVerificationTest, VerifyHappy)
 {
     /* Verify a happy configuration throws no exceptions. */
@@ -152,3 +157,6 @@ TEST(ConfigurationVerificationTest, VerifyNoPidInZone)
 
     EXPECT_THROW(validateJson(j2), ConfigurationException);
 }
+
+} // namespace
+} // namespace pid_control

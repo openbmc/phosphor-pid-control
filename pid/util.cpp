@@ -21,6 +21,9 @@
 #include <cstring>
 #include <iostream>
 
+namespace pid_control
+{
+
 void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
 {
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
@@ -57,3 +60,5 @@ void dumpPIDStruct(ec::pid_info_t* info)
 
     return;
 }
+
+} // namespace pid_control

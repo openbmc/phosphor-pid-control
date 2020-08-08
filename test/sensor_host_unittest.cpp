@@ -11,6 +11,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::IsNull;
 using ::testing::Return;
 using ::testing::StrEq;
@@ -105,3 +110,6 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     // Verify it was updated within the last second.
     EXPECT_TRUE(duration < 1);
 }
+
+} // namespace
+} // namespace pid_control

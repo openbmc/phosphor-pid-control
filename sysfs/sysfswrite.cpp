@@ -19,6 +19,9 @@
 #include <fstream>
 #include <iostream>
 
+namespace pid_control
+{
+
 void SysFsWritePercent::write(double value)
 {
     double minimum = getMin();
@@ -45,3 +48,5 @@ void SysFsWrite::write(double value)
 
     return;
 }
+
+} // namespace pid_control

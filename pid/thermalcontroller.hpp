@@ -7,6 +7,9 @@
 #include <string>
 #include <vector>
 
+namespace pid_control
+{
+
 /*
  * A ThermalController is a PID controller that reads a number of sensors and
  * provides the setpoints for the fans.
@@ -58,3 +61,5 @@ class ThermalController : public PIDController
     std::vector<std::string> _inputs;
     ThermalType type;
 };
+
+} // namespace pid_control

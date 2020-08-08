@@ -2,6 +2,8 @@
 
 #include <cstdint>
 
+namespace pid_control
+{
 namespace ec
 {
 
@@ -54,3 +56,4 @@ struct pidinfo
 };
 
 } // namespace ec
+} // namespace pid_control

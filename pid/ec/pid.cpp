@@ -16,6 +16,8 @@
 
 #include "pid.hpp"
 
+namespace pid_control
+{
 namespace ec
 {
 
@@ -119,3 +121,4 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 }
 
 } // namespace ec
+} // namespace pid_control

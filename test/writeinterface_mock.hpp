@@ -4,6 +4,9 @@
 
 #include <gmock/gmock.h>
 
+namespace pid_control
+{
+
 class WriteInterfaceMock : public WriteInterface
 {
   public:
@@ -14,3 +17,5 @@ class WriteInterfaceMock : public WriteInterface
 
     MOCK_METHOD1(write, void(double));
 };
+
+} // namespace pid_control

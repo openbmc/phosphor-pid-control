@@ -3,10 +3,11 @@
 #include "interfaces.hpp"
 #include "sensor.hpp"
 
-#include <sdbusplus/bus.hpp>
-
 #include <memory>
 #include <string>
+
+namespace pid_control
+{
 
 /*
  * A Sensor that can use any reader or writer you provide.
@@ -29,3 +30,5 @@ class PluggableSensor : public Sensor
     std::unique_ptr<ReadInterface> _reader;
     std::unique_ptr<WriteInterface> _writer;
 };
+
+} // namespace pid_control

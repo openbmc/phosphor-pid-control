@@ -8,6 +8,9 @@
 #include <memory>
 #include <string>
 
+namespace pid_control
+{
+
 /*
  * This ReadInterface will actively reach out over dbus upon calling read to
  * get the value from whomever owns the associated dbus path.
@@ -29,3 +32,5 @@ class DbusActiveRead : public ReadInterface
     const std::string _service; // the sensor service.
     DbusHelperInterface* _helper;
 };
+
+} // namespace pid_control

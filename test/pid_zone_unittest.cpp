@@ -14,6 +14,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::_;
 using ::testing::IsNull;
 using ::testing::Return;
@@ -538,3 +543,6 @@ TEST_F(PidZoneTest, FailsafeDbusTest_VerifiesReturnsExpected)
     // write to it will have no effect.
     EXPECT_EQ(zone->failSafe(), zone->getFailSafeMode());
 }
+
+} // namespace
+} // namespace pid_control

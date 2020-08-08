@@ -2,6 +2,9 @@
 
 #include <chrono>
 
+namespace pid_control
+{
+
 struct ReadReturn
 {
     double value;
@@ -66,3 +69,5 @@ class WriteInterface
     int64_t _min;
     int64_t _max;
 };
+
+} // namespace pid_control

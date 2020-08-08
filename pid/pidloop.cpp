@@ -28,6 +28,9 @@
 #include <thread>
 #include <vector>
 
+namespace pid_control
+{
+
 static void processThermals(PIDZone* zone)
 {
     // Get the latest margins.
@@ -121,3 +124,5 @@ void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer, bool first,
             pidControlLoop(zone, timer, false, ms100cnt);
         });
 }
+
+} // namespace pid_control

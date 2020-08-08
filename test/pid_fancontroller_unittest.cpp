@@ -9,6 +9,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::_;
 using ::testing::DoubleEq;
 using ::testing::Invoke;
@@ -245,3 +250,6 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     // to the sensors.
     p->outputProc(percent);
 }
+
+} // namespace
+} // namespace pid_control

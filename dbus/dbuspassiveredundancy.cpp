@@ -24,6 +24,9 @@
 #include <unordered_map>
 #include <variant>
 
+namespace pid_control
+{
+
 namespace properties
 {
 
@@ -176,3 +179,5 @@ const std::set<std::string>& DbusPassiveRedundancy::getFailed()
 {
     return failed;
 }
+
+} // namespace pid_control

@@ -22,6 +22,9 @@
 
 #include <algorithm>
 
+namespace pid_control
+{
+
 ThermalType getThermalType(const std::string& typeString)
 {
     /* Currently it only supports the two types. */
@@ -106,3 +109,5 @@ void ThermalController::outputProc(double value)
 
     return;
 }
+
+} // namespace pid_control

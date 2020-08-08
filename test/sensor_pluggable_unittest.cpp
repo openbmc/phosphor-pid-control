@@ -7,6 +7,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::Invoke;
 
 TEST(PluggableSensorTest, BoringConstructorTest)
@@ -80,3 +85,6 @@ TEST(PluggableSensorTest, TryWritingTest)
     EXPECT_CALL(*wip, write(value));
     p.write(value);
 }
+
+} // namespace
+} // namespace pid_control

@@ -3,6 +3,9 @@
 
 #include "interfaces.hpp"
 
+namespace pid_control
+{
+
 class WriteOnly : public ReadInterface
 {
   public:
@@ -11,3 +14,5 @@ class WriteOnly : public ReadInterface
 
     ReadReturn read(void) override;
 };
+
+} // namespace pid_control

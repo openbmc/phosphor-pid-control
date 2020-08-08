@@ -20,6 +20,9 @@
 #include <iostream>
 #include <string>
 
+namespace pid_control
+{
+
 /*
  * There are two basic paths I want to support:
  * 1. /sys/class/hwmon/hwmon0/pwm1
@@ -68,3 +71,5 @@ std::string FixupPath(std::string original)
         return original;
     }
 }
+
+} // namespace pid_control

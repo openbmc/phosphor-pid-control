@@ -4,6 +4,9 @@
 
 #include <gmock/gmock.h>
 
+namespace pid_control
+{
+
 class ControllerMock : public PIDController
 {
   public:
@@ -17,3 +20,5 @@ class ControllerMock : public PIDController
     MOCK_METHOD0(setptProc, double());
     MOCK_METHOD1(outputProc, void(double));
 };
+
+} // namespace pid_control

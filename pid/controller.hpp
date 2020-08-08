@@ -5,6 +5,9 @@
 
 #include <string>
 
+namespace pid_control
+{
+
 /*
  * Base class for controllers.  Each controller that implements this needs to
  * provide an inputProc, process, and outputProc.
@@ -23,3 +26,5 @@ struct Controller
 
     virtual std::string getID(void) = 0;
 };
+
+} // namespace pid_control

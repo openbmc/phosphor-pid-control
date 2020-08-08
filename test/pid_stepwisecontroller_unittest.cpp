@@ -9,6 +9,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::Return;
 using ::testing::StrEq;
 
@@ -83,3 +88,6 @@ TEST(StepwiseControllerTest, HysteresisTestNegative)
         p->process();
     }
 }
+
+} // namespace
+} // namespace pid_control

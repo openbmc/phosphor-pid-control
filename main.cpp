@@ -49,12 +49,17 @@
 #include "dbus/dbusconfiguration.hpp"
 #endif
 
+namespace pid_control
+{
+
 /* The configuration converted sensor list. */
 std::map<std::string, struct conf::SensorConfig> sensorConfig = {};
 /* The configuration converted PID list. */
 std::map<int64_t, conf::PIDConf> zoneConfig = {};
 /* The configuration converted Zone configuration. */
 std::map<int64_t, struct conf::ZoneConfig> zoneDetailsConfig = {};
+
+} // namespace pid_control
 
 /** the swampd daemon will check for the existence of this file. */
 constexpr auto jsonConfigurationPath = "/usr/share/swampd/config.json";
@@ -69,6 +74,9 @@ static sdbusplus::asio::connection
     hostBus(io, sdbusplus::bus::new_system().release());
 static sdbusplus::asio::connection
     passiveBus(io, sdbusplus::bus::new_system().release());
+
+namespace pid_control
+{
 
 void restartControlLoops()
 {
@@ -150,6 +158,8 @@ void tryRestartControlLoops()
     return;
 }
 
+} // namespace pid_control
+
 int main(int argc, char* argv[])
 {
     loggingPath = "";
@@ -182,7 +192,7 @@ int main(int argc, char* argv[])
      * it.
      */
 
-    tryRestartControlLoops();
+    pid_control::tryRestartControlLoops();
 
     io.run();
     return 0;

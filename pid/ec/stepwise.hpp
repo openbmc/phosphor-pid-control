@@ -20,6 +20,8 @@
 #include <cstddef>
 #include <vector>
 
+namespace pid_control
+{
 namespace ec
 {
 constexpr size_t maxStepwisePoints = 20;
@@ -37,3 +39,4 @@ struct StepwiseInfo
 double stepwise(const ec::StepwiseInfo& info, double value);
 
 } // namespace ec
+} // namespace pid_control
