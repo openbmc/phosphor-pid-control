@@ -4,6 +4,9 @@
 
 #include <boost/asio/steady_timer.hpp>
 
+namespace pid_control
+{
+
 /**
  * Main pid control loop for a given zone.
  * This function calls itself indefinitely in an async loop to calculate
@@ -16,3 +19,5 @@
  */
 void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer,
                     bool first = true, int ms100cnt = 0);
+
+} // namespace pid_control

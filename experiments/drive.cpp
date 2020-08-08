@@ -25,6 +25,9 @@
 #include <memory>
 #include <tuple>
 
+namespace pid_control
+{
+
 using tstamp = std::chrono::high_resolution_clock::time_point;
 
 #define DRIVE_TIME 1
@@ -259,3 +262,5 @@ int driveMain(void)
 
     return 0;
 }
+
+} // namespace pid_control

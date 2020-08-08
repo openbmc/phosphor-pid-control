@@ -22,6 +22,9 @@
 #include <cmath>
 #include <iostream>
 
+namespace pid_control
+{
+
 ReadReturn DbusActiveRead::read(void)
 {
     struct SensorProperties settings;
@@ -39,3 +42,5 @@ ReadReturn DbusActiveRead::read(void)
 
     return r;
 }
+
+} // namespace pid_control

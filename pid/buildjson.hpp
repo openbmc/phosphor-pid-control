@@ -7,6 +7,9 @@
 #include <map>
 #include <tuple>
 
+namespace pid_control
+{
+
 using json = nlohmann::json;
 
 /**
@@ -18,3 +21,5 @@ using json = nlohmann::json;
 std::pair<std::map<int64_t, conf::PIDConf>,
           std::map<int64_t, struct conf::ZoneConfig>>
     buildPIDsFromJson(const json& data);
+
+} // namespace pid_control

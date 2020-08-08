@@ -18,6 +18,9 @@
 
 #include <stdexcept>
 
+namespace pid_control
+{
+
 void ReadOnly::write(double value)
 {
     throw std::runtime_error("Not supported.");
@@ -27,3 +30,5 @@ void ReadOnlyNoExcept::write(double value)
 {
     return;
 }
+
+} // namespace pid_control

@@ -8,6 +8,9 @@
 #include <limits>
 #include <string>
 
+namespace pid_control
+{
+
 void tryRestartControlLoops(void);
 
 /*
@@ -152,3 +155,5 @@ struct VariantToDoubleVisitor
  * Given a path that optionally has a glob portion, fill it out.
  */
 std::string FixupPath(std::string original);
+
+} // namespace pid_control

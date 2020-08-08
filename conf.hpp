@@ -7,6 +7,8 @@
 #include <string>
 #include <vector>
 
+namespace pid_control
+{
 namespace conf
 {
 
@@ -59,3 +61,4 @@ struct ZoneConfig
 using PIDConf = std::map<std::string, struct ControllerInfo>;
 
 } // namespace conf
+} // namespace pid_control

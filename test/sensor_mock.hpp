@@ -5,6 +5,9 @@
 
 #include <gmock/gmock.h>
 
+namespace pid_control
+{
+
 class SensorMock : public Sensor
 {
   public:
@@ -16,3 +19,5 @@ class SensorMock : public Sensor
     MOCK_METHOD0(read, ReadReturn());
     MOCK_METHOD1(write, void(double));
 };
+
+} // namespace pid_control

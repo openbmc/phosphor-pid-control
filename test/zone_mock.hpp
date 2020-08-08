@@ -6,6 +6,9 @@
 
 #include <gmock/gmock.h>
 
+namespace pid_control
+{
+
 class ZoneMock : public ZoneInterface
 {
   public:
@@ -19,3 +22,5 @@ class ZoneMock : public ZoneInterface
     MOCK_CONST_METHOD0(getFailSafePercent, double());
     MOCK_METHOD1(getSensor, Sensor*(const std::string&));
 };
+
+} // namespace pid_control

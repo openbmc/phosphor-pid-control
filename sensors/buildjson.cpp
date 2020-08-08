@@ -25,6 +25,8 @@
 
 using json = nlohmann::json;
 
+namespace pid_control
+{
 namespace conf
 {
 void from_json(const json& j, conf::SensorConfig& s)
@@ -113,3 +115,4 @@ std::map<std::string, struct conf::SensorConfig>
 
     return config;
 }
+} // namespace pid_control

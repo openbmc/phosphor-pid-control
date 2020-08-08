@@ -28,6 +28,9 @@
 #include <memory>
 #include <unordered_map>
 
+namespace pid_control
+{
+
 static constexpr bool deferSignals = true;
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 
@@ -135,3 +138,5 @@ std::unordered_map<int64_t, std::unique_ptr<PIDZone>>
 
     return zones;
 }
+
+} // namespace pid_control

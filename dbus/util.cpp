@@ -11,6 +11,9 @@ using Property = std::string;
 using Value = std::variant<int64_t, double, std::string, bool>;
 using PropertyMap = std::map<Property, Value>;
 
+namespace pid_control
+{
+
 using namespace phosphor::logging;
 
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
@@ -194,3 +197,5 @@ void scaleSensorReading(const double min, const double max, double& value)
     }
     value /= (max - min);
 }
+
+} // namespace pid_control

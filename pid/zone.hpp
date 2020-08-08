@@ -23,6 +23,9 @@ using ServerObject = typename sdbusplus::server::object::object<T...>;
 using ModeInterface = sdbusplus::xyz::openbmc_project::Control::server::Mode;
 using ModeObject = ServerObject<ModeInterface>;
 
+namespace pid_control
+{
+
 class ZoneInterface
 {
   public:
@@ -119,3 +122,5 @@ class PIDZone : public ZoneInterface, public ModeObject
     std::vector<std::unique_ptr<Controller>> _fans;
     std::vector<std::unique_ptr<Controller>> _thermals;
 };
+
+} // namespace pid_control

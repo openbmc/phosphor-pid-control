@@ -21,6 +21,8 @@
 
 #include <set>
 
+namespace pid_control
+{
 /*
  * DbusPassiveRedundancy monitors the fan redundancy interface via dbus match
  * for changes. When the "Status" property changes to  Failed, all sensors in
@@ -42,3 +44,5 @@ class DbusPassiveRedundancy
     std::set<std::string> failed;
     sdbusplus::bus::bus& passiveBus;
 };
+
+} // namespace pid_control

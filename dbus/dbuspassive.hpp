@@ -20,6 +20,9 @@
 #include <tuple>
 #include <vector>
 
+namespace pid_control
+{
+
 int dbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
 
 /*
@@ -80,3 +83,5 @@ class DbusPassive : public ReadInterface
 };
 
 int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner);
+
+} // namespace pid_control

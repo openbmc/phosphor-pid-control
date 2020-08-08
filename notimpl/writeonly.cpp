@@ -18,7 +18,12 @@
 
 #include <stdexcept>
 
+namespace pid_control
+{
+
 ReadReturn WriteOnly::read(void)
 {
     throw std::runtime_error("Not supported.");
 }
+
+} // namespace pid_control

@@ -8,6 +8,9 @@
 #include <memory>
 #include <vector>
 
+namespace pid_control
+{
+
 class ZoneInterface;
 
 class StepwiseController : public Controller
@@ -52,3 +55,5 @@ class StepwiseController : public Controller
     double lastInput = std::numeric_limits<double>::quiet_NaN();
     double lastOutput = std::numeric_limits<double>::quiet_NaN();
 };
+
+} // namespace pid_control

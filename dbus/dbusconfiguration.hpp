@@ -19,7 +19,10 @@
 
 #include <sdbusplus/bus.hpp>
 
+namespace pid_control
+{
 namespace dbus_configuration
 {
 bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer);
 } // namespace dbus_configuration
+} // namespace pid_control

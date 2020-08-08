@@ -21,6 +21,9 @@
 #include <memory>
 #include <mutex>
 
+namespace pid_control
+{
+
 template <typename T>
 void scaleHelper(T& ptr, int64_t value)
 {
@@ -92,3 +95,5 @@ void HostSensor::write(double value)
 {
     throw std::runtime_error("Not Implemented.");
 }
+
+} // namespace pid_control

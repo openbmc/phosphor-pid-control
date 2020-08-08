@@ -35,12 +35,11 @@
 #include "sysfs/sysfswrite.hpp"
 #include "util.hpp"
 
+namespace pid_control
+{
+
 static constexpr bool deferSignals = true;
 static DbusHelper helper;
-
-using ::pid_control::getReadInterfaceType;
-using ::pid_control::getWriteInterfaceType;
-using ::pid_control::IOInterfaceType;
 
 SensorManager
     buildSensors(const std::map<std::string, struct conf::SensorConfig>& config,
@@ -186,3 +185,5 @@ SensorManager
 
     return mgmr;
 }
+
+} // namespace pid_control

@@ -3,6 +3,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 TEST(ZoneFromJson, emptyZone)
 {
     // There is a zone key, but it's empty.
@@ -200,3 +205,6 @@ TEST(ZoneFromJson, oneZoneOneStepwiseWithHysteresis)
 
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
 }
+
+} // namespace
+} // namespace pid_control

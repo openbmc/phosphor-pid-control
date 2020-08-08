@@ -24,6 +24,9 @@
 #include <string>
 #include <variant>
 
+namespace pid_control
+{
+
 constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 using namespace phosphor::logging;
@@ -128,3 +131,5 @@ void DbusWrite::write(double value)
     oldValue = static_cast<int64_t>(value);
     return;
 }
+
+} // namespace pid_control

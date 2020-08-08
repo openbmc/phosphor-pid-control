@@ -5,6 +5,9 @@
 
 #include <string>
 
+namespace pid_control
+{
+
 /*
  * A ReadInterface that is expecting a path that's sysfs, but really could be
  * any filesystem path.
@@ -21,3 +24,5 @@ class SysFsRead : public ReadInterface
   private:
     const std::string _path;
 };
+
+} // namespace pid_control

@@ -23,6 +23,9 @@
 #include <algorithm>
 #include <iostream>
 
+namespace pid_control
+{
+
 std::unique_ptr<PIDController>
     FanController::createFanPid(ZoneInterface* owner, const std::string& id,
                                 const std::vector<std::string>& inputs,
@@ -140,3 +143,5 @@ void FanController::outputProc(double value)
 
     return;
 }
+
+} // namespace pid_control

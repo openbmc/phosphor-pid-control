@@ -16,6 +16,9 @@ using ServerObject = typename sdbusplus::server::object::object<T...>;
 using ValueInterface = sdbusplus::xyz::openbmc_project::Sensor::server::Value;
 using ValueObject = ServerObject<ValueInterface>;
 
+namespace pid_control
+{
+
 class ValueHelper : public ValueInterface
 {
 
@@ -62,3 +65,5 @@ class HostSensor : public Sensor, public ValueObject
     std::chrono::high_resolution_clock::time_point _updated;
     double _value = 0;
 };
+
+} // namespace pid_control

@@ -11,6 +11,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::_;
 using ::testing::InSequence;
 using ::testing::Invoke;
@@ -529,3 +534,6 @@ TEST_F(DbusPassiveTest3kMaxIgnoredObj, ReadMinAndMaxReturnsExpected)
     EXPECT_DOUBLE_EQ(0, passive->getMin());
     EXPECT_DOUBLE_EQ(0, passive->getMax());
 }
+
+} // namespace
+} // namespace pid_control

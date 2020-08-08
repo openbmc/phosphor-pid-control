@@ -8,6 +8,9 @@
 #include <string>
 #include <vector>
 
+namespace pid_control
+{
+
 /*
  * A FanController is a PID controller that reads a number of fans and given
  * the output then tries to set them to the goal values set by the thermal
@@ -45,3 +48,5 @@ class FanController : public PIDController
     std::vector<std::string> _inputs;
     FanSpeedDirection _direction;
 };
+
+} // namespace pid_control

@@ -4,6 +4,9 @@
 
 #include "interfaces.hpp"
 
+namespace pid_control
+{
+
 class ReadOnly : public WriteInterface
 {
   public:
@@ -21,3 +24,5 @@ class ReadOnlyNoExcept : public WriteInterface
 
     void write(double value) override;
 };
+
+} // namespace pid_control

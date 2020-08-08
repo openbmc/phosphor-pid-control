@@ -20,6 +20,9 @@
 #include <fstream>
 #include <iostream>
 
+namespace pid_control
+{
+
 ReadReturn SysFsRead::read(void)
 {
     int64_t value;
@@ -34,3 +37,5 @@ ReadReturn SysFsRead::read(void)
 
     return r;
 }
+
+} // namespace pid_control

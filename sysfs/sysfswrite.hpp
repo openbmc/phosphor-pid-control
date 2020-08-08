@@ -5,6 +5,9 @@
 
 #include <string>
 
+namespace pid_control
+{
+
 /*
  * A WriteInterface that is expecting a path that's sysfs, but really could be
  * any filesystem path.
@@ -34,3 +37,5 @@ class SysFsWrite : public WriteInterface
   private:
     std::string _writePath;
 };
+
+} // namespace pid_control

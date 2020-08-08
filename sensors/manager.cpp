@@ -19,6 +19,12 @@
 
 #include "conf.hpp"
 
+#include <memory>
+#include <string>
+
+namespace pid_control
+{
+
 void SensorManager::addSensor(const std::string& type, const std::string& name,
                               std::unique_ptr<Sensor> sensor)
 {
@@ -32,3 +38,5 @@ void SensorManager::addSensor(const std::string& type, const std::string& name,
 
     _sensorTypeList[type].push_back(name);
 }
+
+} // namespace pid_control

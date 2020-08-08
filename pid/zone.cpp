@@ -32,6 +32,9 @@
 #include <iostream>
 #include <memory>
 
+namespace pid_control
+{
+
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
 
@@ -380,3 +383,5 @@ bool PIDZone::failSafe() const
 {
     return getFailSafeMode();
 }
+
+} // namespace pid_control

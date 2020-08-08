@@ -6,6 +6,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::_;
 using ::testing::IsNull;
 using ::testing::Return;
@@ -55,3 +60,6 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest)
     s.addSensor(type, name, std::move(sensor));
     EXPECT_EQ(s.getSensor(name), sensor_ptr);
 }
+
+} // namespace
+} // namespace pid_control

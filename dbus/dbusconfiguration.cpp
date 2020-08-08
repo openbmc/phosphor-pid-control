@@ -32,6 +32,9 @@
 #include <unordered_map>
 #include <variant>
 
+namespace pid_control
+{
+
 static constexpr bool DEBUG = false; // enable to print found configuration
 
 extern std::map<std::string, struct conf::SensorConfig> sensorConfig;
@@ -957,4 +960,6 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
     }
     return true;
 }
+
 } // namespace dbus_configuration
+} // namespace pid_control

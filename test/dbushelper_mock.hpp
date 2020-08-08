@@ -8,6 +8,9 @@
 
 #include <gmock/gmock.h>
 
+namespace pid_control
+{
+
 class DbusHelperMock : public DbusHelperInterface
 {
   public:
@@ -24,3 +27,5 @@ class DbusHelperMock : public DbusHelperInterface
                  bool(sdbusplus::bus::bus& bus, const std::string& service,
                       const std::string& path));
 };
+
+} // namespace pid_control

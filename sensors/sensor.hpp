@@ -4,6 +4,9 @@
 
 #include <string>
 
+namespace pid_control
+{
+
 /**
  * Abstract base class for all sensors.
  */
@@ -55,3 +58,5 @@ class Sensor
     std::string _name;
     int64_t _timeout;
 };
+
+} // namespace pid_control

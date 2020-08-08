@@ -16,12 +16,8 @@
 
 #include "pluggable.hpp"
 
-#include "dbus/dbuspassive.hpp"
-#include "sysfs/sysfswrite.hpp"
-
-#include <iostream>
-#include <memory>
-#include <string>
+namespace pid_control
+{
 
 ReadReturn PluggableSensor::read(void)
 {
@@ -37,3 +33,5 @@ bool PluggableSensor::getFailed(void)
 {
     return _reader->getFailed();
 }
+
+} // namespace pid_control

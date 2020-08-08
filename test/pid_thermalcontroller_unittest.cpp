@@ -8,6 +8,11 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+namespace pid_control
+{
+namespace
+{
+
 using ::testing::_;
 using ::testing::Return;
 using ::testing::StrEq;
@@ -212,3 +217,6 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
         EXPECT_EQ(p->getLastInput(), reading);
     }
 }
+
+} // namespace
+} // namespace pid_control
