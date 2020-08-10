@@ -34,7 +34,7 @@ namespace pid_control
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
-    DbusHelperInterface* helper, const conf::SensorConfig* info,
+    std::unique_ptr<DbusHelperInterface> helper, const conf::SensorConfig* info,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy)
 {
     if (helper == nullptr)
@@ -74,18 +74,19 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         settings.max = 0;
     }
 
-    return std::make_unique<DbusPassive>(bus, type, id, helper, settings,
-                                         failed, path, redundancy);
+    return std::make_unique<DbusPassive>(bus, type, id, std::move(helper),
+                                         settings, failed, path, redundancy);
 }
 
 DbusPassive::DbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
-    DbusHelperInterface* helper, const struct SensorProperties& settings,
-    bool failed, const std::string& path,
+    std::unique_ptr<DbusHelperInterface> helper,
+    const struct SensorProperties& settings, bool failed,
+    const std::string& path,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
     ReadInterface(),
     _bus(bus), _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
-    _id(id), _helper(helper), _failed(failed), path(path),
+    _id(id), _helper(std::move(helper)), _failed(failed), path(path),
     redundancy(redundancy)
 
 {
