@@ -41,10 +41,10 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
     std::string path = "/asdf";
     std::string service = "asdfasdf.asdfasdf";
 
-    EXPECT_CALL(*helper, getProperties(_, service, path, NotNull()))
+    EXPECT_CALL(*helper, getProperties(service, path, NotNull()))
         .WillOnce(
-            Invoke([&](sdbusplus::bus::bus& bus, const std::string& service,
-                       const std::string& path, struct SensorProperties* prop) {
+            Invoke([&](const std::string& service, const std::string& path,
+                       struct SensorProperties* prop) {
                 prop->scale = -3;
                 prop->value = 10000;
                 prop->unit = "x";

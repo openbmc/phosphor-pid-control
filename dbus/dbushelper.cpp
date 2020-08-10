@@ -39,8 +39,7 @@ using namespace phosphor::logging;
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
  * part of sdbusplus.  There is an old version in libmapper.
  */
-std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
-                                   const std::string& intf,
+std::string DbusHelper::getService(const std::string& intf,
                                    const std::string& path)
 {
     auto mapper =
@@ -74,8 +73,7 @@ std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
     return response.begin()->first;
 }
 
-void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
-                               const std::string& service,
+void DbusHelper::getProperties(const std::string& service,
                                const std::string& path,
                                struct SensorProperties* prop)
 {
@@ -136,8 +134,7 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
     return;
 }
 
-bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
-                                    const std::string& service,
+bool DbusHelper::thresholdsAsserted(const std::string& service,
                                     const std::string& path)
 {
 
