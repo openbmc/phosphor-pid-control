@@ -54,7 +54,8 @@ constexpr const char* stepwiseConfigurationInterface =
 constexpr const char* thermalControlIface =
     "xyz.openbmc_project.Control.ThermalMode";
 constexpr const char* sensorInterface = "xyz.openbmc_project.Sensor.Value";
-constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
+constexpr const char* defaultPwmInterface =
+    "xyz.openbmc_project.Control.FanPwm";
 
 using Association = std::tuple<std::string, std::string, std::string>;
 using Associations = std::vector<Association>;
@@ -472,11 +473,11 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                             "/xyz/openbmc_project/object_mapper",
                             "xyz.openbmc_project.ObjectMapper", "GetSubTree");
     mapper.append("/", 0,
-                  std::array<const char*, 6>{objectManagerInterface,
-                                             pidConfigurationInterface,
-                                             pidZoneConfigurationInterface,
-                                             stepwiseConfigurationInterface,
-                                             sensorInterface, pwmInterface});
+                  std::array<const char*, 6>{
+                      objectManagerInterface, pidConfigurationInterface,
+                      pidZoneConfigurationInterface,
+                      stepwiseConfigurationInterface, sensorInterface,
+                      defaultPwmInterface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
         respData;
@@ -518,7 +519,8 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                 {
                     owner.first = true;
                 }
-                if (interface == sensorInterface || interface == pwmInterface)
+                if (interface == sensorInterface ||
+                    interface == defaultPwmInterface)
                 {
                     // we're not interested in pwm sensors, just pwm control
                     if (interface == sensorInterface &&
@@ -776,14 +778,14 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                             pwmInterface =
                                 outputSensorInterfaces.at(idx).second;
                         }
-                        if (pwmInterface != pwmInterface)
+                        if (defaultPwmInterface != pwmInterface)
                         {
                             throw std::runtime_error(
                                 "fan pwm control at dbus path [" + pwmPath +
                                 "] has an interface [" + pwmInterface +
                                 "] that does not match the expected interface "
                                 "of " +
-                                pwmInterface);
+                                defaultPwmInterface);
                         }
                         const std::string& fanPath =
                             inputSensorInterfaces.at(idx).first;
