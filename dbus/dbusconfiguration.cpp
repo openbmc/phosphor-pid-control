@@ -390,12 +390,12 @@ void populatePidInfo(
         const std::string& path = sensorConfig[info.inputs.front()].readPath;
 
         DbusHelper helper(sdbusplus::bus::new_system());
-        std::string service = helper.getService(bus, interface, path);
+        std::string service = helper.getService(interface, path);
         double reading = 0;
         try
         {
-            helper.getProperty(bus, service, path, interface,
-                               *thresholdProperty, reading);
+            helper.getProperty(service, path, interface, *thresholdProperty,
+                               reading);
         }
         catch (const sdbusplus::exception::SdBusError& ex)
         {
