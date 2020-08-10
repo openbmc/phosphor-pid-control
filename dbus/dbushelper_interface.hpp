@@ -1,7 +1,5 @@
 #pragma once
 
-#include <sdbusplus/bus.hpp>
-
 #include <cstdint>
 #include <string>
 
@@ -26,8 +24,7 @@ class DbusHelperInterface
      *
      * @warning Throws exception on dbus failure.
      */
-    virtual std::string getService(sdbusplus::bus::bus& bus,
-                                   const std::string& intf,
+    virtual std::string getService(const std::string& intf,
                                    const std::string& path) = 0;
 
     /** @brief Get all Sensor.Value properties for a service and path.
@@ -39,8 +36,7 @@ class DbusHelperInterface
      *
      * @warning Throws exception on dbus failure.
      */
-    virtual void getProperties(sdbusplus::bus::bus& bus,
-                               const std::string& service,
+    virtual void getProperties(const std::string& service,
                                const std::string& path,
                                struct SensorProperties* prop) = 0;
 
@@ -50,8 +46,7 @@ class DbusHelperInterface
      * @param[in] service - The service providing the interface.
      * @param[in] path - The dbus path.
      */
-    virtual bool thresholdsAsserted(sdbusplus::bus::bus& bus,
-                                    const std::string& service,
+    virtual bool thresholdsAsserted(const std::string& service,
                                     const std::string& path) = 0;
 };
 
