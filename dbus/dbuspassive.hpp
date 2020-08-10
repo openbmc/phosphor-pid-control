@@ -42,12 +42,13 @@ class DbusPassive : public ReadInterface
   public:
     static std::unique_ptr<ReadInterface> createDbusPassive(
         sdbusplus::bus::bus& bus, const std::string& type,
-        const std::string& id, DbusHelperInterface* helper,
+        const std::string& id, std::unique_ptr<DbusHelperInterface> helper,
         const conf::SensorConfig* info,
         const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
 
     DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
-                const std::string& id, DbusHelperInterface* helper,
+                const std::string& id,
+                std::unique_ptr<DbusHelperInterface> helper,
                 const struct SensorProperties& settings, bool failed,
                 const std::string& path,
                 const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
@@ -68,7 +69,7 @@ class DbusPassive : public ReadInterface
     sdbusplus::server::match::match _signal;
     int64_t _scale;
     std::string _id; // for debug identification
-    DbusHelperInterface* _helper;
+    std::unique_ptr<DbusHelperInterface> _helper;
 
     std::mutex _lock;
     double _value = 0;

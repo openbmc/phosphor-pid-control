@@ -44,9 +44,9 @@ std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
                                    const std::string& path)
 {
     auto mapper =
-        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                            "/xyz/openbmc_project/object_mapper",
-                            "xyz.openbmc_project.ObjectMapper", "GetObject");
+        _bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                             "/xyz/openbmc_project/object_mapper",
+                             "xyz.openbmc_project.ObjectMapper", "GetObject");
 
     mapper.append(path);
     mapper.append(std::vector<std::string>({intf}));
@@ -55,7 +55,7 @@ std::string DbusHelper::getService(sdbusplus::bus::bus& bus,
 
     try
     {
-        auto responseMsg = bus.call(mapper);
+        auto responseMsg = _bus.call(mapper);
 
         responseMsg.read(response);
     }
@@ -79,8 +79,8 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
                                const std::string& path,
                                struct SensorProperties* prop)
 {
-    auto pimMsg = bus.new_method_call(service.c_str(), path.c_str(),
-                                      propertiesintf, "GetAll");
+    auto pimMsg = _bus.new_method_call(service.c_str(), path.c_str(),
+                                       propertiesintf, "GetAll");
 
     pimMsg.append(sensorintf);
 
@@ -88,7 +88,7 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
 
     try
     {
-        auto valueResponseMsg = bus.call(pimMsg);
+        auto valueResponseMsg = _bus.call(pimMsg);
         valueResponseMsg.read(propMap);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
@@ -141,14 +141,14 @@ bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
                                     const std::string& path)
 {
 
-    auto critical = bus.new_method_call(service.c_str(), path.c_str(),
-                                        propertiesintf, "GetAll");
+    auto critical = _bus.new_method_call(service.c_str(), path.c_str(),
+                                         propertiesintf, "GetAll");
     critical.append(criticalThreshInf);
     PropertyMap criticalMap;
 
     try
     {
-        auto msg = bus.call(critical);
+        auto msg = _bus.call(critical);
         msg.read(criticalMap);
     }
     catch (sdbusplus::exception_t&)
