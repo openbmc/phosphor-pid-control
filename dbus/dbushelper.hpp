@@ -19,10 +19,13 @@ class DbusHelper : public DbusHelperInterface
     static constexpr char criticalThreshInf[] =
         "xyz.openbmc_project.Sensor.Threshold.Critical";
 
-    DbusHelper() = default;
+    explicit DbusHelper(sdbusplus::bus::bus bus) : _bus(std::move(bus))
+    {}
     ~DbusHelper() = default;
-    DbusHelper(const DbusHelper&) = default;
-    DbusHelper& operator=(const DbusHelper&) = default;
+
+    DbusHelper(const DbusHelper&) = delete;
+    DbusHelper& operator=(const DbusHelper&) = delete;
+
     DbusHelper(DbusHelper&&) = default;
     DbusHelper& operator=(DbusHelper&&) = default;
 
@@ -44,15 +47,15 @@ class DbusHelper : public DbusHelperInterface
     {
         namespace log = phosphor::logging;
 
-        auto msg = bus.new_method_call(service.c_str(), path.c_str(),
-                                       propertiesintf, "Get");
+        auto msg = _bus.new_method_call(service.c_str(), path.c_str(),
+                                        propertiesintf, "Get");
 
         msg.append(interface, propertyName);
 
         std::variant<T> result;
         try
         {
-            auto valueResponseMsg = bus.call(msg);
+            auto valueResponseMsg = _bus.call(msg);
             valueResponseMsg.read(result);
         }
         catch (const sdbusplus::exception::SdBusError& ex)
@@ -64,6 +67,9 @@ class DbusHelper : public DbusHelperInterface
 
         prop = std::get<T>(result);
     }
+
+  private:
+    sdbusplus::bus::bus _bus;
 };
 
 } // namespace pid_control
