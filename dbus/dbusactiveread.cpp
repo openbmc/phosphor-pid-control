@@ -16,6 +16,7 @@
 
 #include "dbusactiveread.hpp"
 
+#include "dbushelper_interface.hpp"
 #include "util.hpp"
 
 #include <chrono>

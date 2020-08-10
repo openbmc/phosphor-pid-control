@@ -81,7 +81,8 @@ libswampd_la_CXXFLAGS = \
 libswampd_la_SOURCES = \
 	notimpl/readonly.cpp \
 	notimpl/writeonly.cpp \
-	dbus/util.cpp \
+	dbus/dbusutil.cpp \
+	dbus/dbushelper.cpp \
 	dbus/dbuspassiveredundancy.cpp \
 	dbus/dbuspassive.cpp \
 	dbus/dbusactiveread.cpp \

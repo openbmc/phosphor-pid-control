@@ -20,6 +20,7 @@
 
 /* Configuration. */
 #include "conf.hpp"
+#include "dbus/dbushelper.hpp"
 #include "dbus/dbuspassive.hpp"
 #include "dbus/dbuswrite.hpp"
 #include "errors/exception.hpp"
