@@ -33,7 +33,7 @@ class DbusWritePercent : public WriteInterface
   public:
     static std::unique_ptr<WriteInterface>
         createDbusWrite(const std::string& path, int64_t min, int64_t max,
-                        DbusHelperInterface& helper);
+                        std::unique_ptr<DbusHelperInterface> helper);
 
     DbusWritePercent(const std::string& path, int64_t min, int64_t max,
                      const std::string& connectionName) :
@@ -54,7 +54,7 @@ class DbusWrite : public WriteInterface
   public:
     static std::unique_ptr<WriteInterface>
         createDbusWrite(const std::string& path, int64_t min, int64_t max,
-                        DbusHelperInterface& helper);
+                        std::unique_ptr<DbusHelperInterface> helper);
 
     DbusWrite(const std::string& path, int64_t min, int64_t max,
               const std::string& connectionName) :

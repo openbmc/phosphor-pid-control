@@ -20,9 +20,10 @@ class DbusActiveRead : public ReadInterface
 {
   public:
     DbusActiveRead(sdbusplus::bus::bus& bus, const std::string& path,
-                   const std::string& service, DbusHelperInterface* helper) :
+                   const std::string& service,
+                   std::unique_ptr<DbusHelperInterface> helper) :
         ReadInterface(),
-        _bus(bus), _path(path), _service(service), _helper(helper)
+        _bus(bus), _path(path), _service(service), _helper(std::move(helper))
     {}
 
     ReadReturn read(void) override;
@@ -31,7 +32,7 @@ class DbusActiveRead : public ReadInterface
     sdbusplus::bus::bus& _bus;
     const std::string _path;
     const std::string _service; // the sensor service.
-    DbusHelperInterface* _helper;
+    std::unique_ptr<DbusHelperInterface> _helper;
 };
 
 } // namespace pid_control
