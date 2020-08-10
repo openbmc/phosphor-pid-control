@@ -47,8 +47,6 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     }
 
     /* Need to get the scale and initial value */
-    auto tempBus = sdbusplus::bus::new_system();
-
     /* service == busname */
     std::string path = getSensorPath(type, id);
 
@@ -57,10 +55,10 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 
     try
     {
-        std::string service = helper->getService(tempBus, sensorintf, path);
+        std::string service = helper->getService(sensorintf, path);
 
-        helper->getProperties(tempBus, service, path, &settings);
-        failed = helper->thresholdsAsserted(tempBus, service, path);
+        helper->getProperties(service, path, &settings);
+        failed = helper->thresholdsAsserted(service, path);
     }
     catch (const std::exception& e)
     {

@@ -38,12 +38,11 @@ std::unique_ptr<WriteInterface> DbusWritePercent::createDbusWrite(
     const std::string& path, int64_t min, int64_t max,
     std::unique_ptr<DbusHelperInterface> helper)
 {
-    auto tempBus = sdbusplus::bus::new_system();
     std::string connectionName;
 
     try
     {
-        connectionName = helper->getService(tempBus, pwmInterface, path);
+        connectionName = helper->getService(pwmInterface, path);
     }
     catch (const std::exception& e)
     {
@@ -93,12 +92,11 @@ std::unique_ptr<WriteInterface>
                                int64_t max,
                                std::unique_ptr<DbusHelperInterface> helper)
 {
-    auto tempBus = sdbusplus::bus::new_system();
     std::string connectionName;
 
     try
     {
-        connectionName = helper->getService(tempBus, pwmInterface, path);
+        connectionName = helper->getService(pwmInterface, path);
     }
     catch (const std::exception& e)
     {

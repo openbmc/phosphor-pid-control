@@ -71,21 +71,21 @@ class DbusPassiveTestObj : public ::testing::Test
         bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
         helper(std::make_unique<DbusHelperMock>())
     {
-        EXPECT_CALL(*helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+        EXPECT_CALL(*helper, getService(StrEq(SensorIntf), StrEq(path)))
             .WillOnce(Return("asdf"));
 
         EXPECT_CALL(*helper,
-                    getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
-            .WillOnce(Invoke(
-                [&](sdbusplus::bus::bus& bus, const std::string& service,
-                    const std::string& path, struct SensorProperties* prop) {
+                    getProperties(StrEq("asdf"), StrEq(path), NotNull()))
+            .WillOnce(
+                Invoke([&](const std::string& service, const std::string& path,
+                           struct SensorProperties* prop) {
                     prop->scale = _scale;
                     prop->value = _value;
                     prop->unit = "x";
                     prop->min = 0;
                     prop->max = 0;
                 }));
-        EXPECT_CALL(*helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        EXPECT_CALL(*helper, thresholdsAsserted(StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
         auto info = conf::SensorConfig();
@@ -436,8 +436,8 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
     EXPECT_EQ(failed, false);
 }
 
-void GetPropertiesMax3k(sdbusplus::bus::bus& bus, const std::string& service,
-                        const std::string& path, SensorProperties* prop)
+void GetPropertiesMax3k(const std::string& service, const std::string& path,
+                        SensorProperties* prop)
 {
     prop->scale = -3;
     prop->value = 10;
@@ -446,9 +446,8 @@ void GetPropertiesMax3k(sdbusplus::bus::bus& bus, const std::string& service,
     prop->max = 3000;
 }
 
-using GetPropertiesFunction =
-    std::function<void(sdbusplus::bus::bus&, const std::string&,
-                       const std::string&, SensorProperties*)>;
+using GetPropertiesFunction = std::function<void(
+    const std::string&, const std::string&, SensorProperties*)>;
 
 // TODO: There is definitely a cleaner way to do this.
 class DbusPassiveTest3kMaxObj : public ::testing::Test
@@ -459,13 +458,13 @@ class DbusPassiveTest3kMaxObj : public ::testing::Test
         bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
         helper(std::make_unique<DbusHelperMock>())
     {
-        EXPECT_CALL(*helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+        EXPECT_CALL(*helper, getService(StrEq(SensorIntf), StrEq(path)))
             .WillOnce(Return("asdf"));
 
         EXPECT_CALL(*helper,
-                    getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
+                    getProperties(StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(_getProps);
-        EXPECT_CALL(*helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        EXPECT_CALL(*helper, thresholdsAsserted(StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
         auto info = conf::SensorConfig();
@@ -503,13 +502,13 @@ class DbusPassiveTest3kMaxIgnoredObj : public ::testing::Test
         bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
         helper(std::make_unique<DbusHelperMock>())
     {
-        EXPECT_CALL(*helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+        EXPECT_CALL(*helper, getService(StrEq(SensorIntf), StrEq(path)))
             .WillOnce(Return("asdf"));
 
         EXPECT_CALL(*helper,
-                    getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
+                    getProperties(StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(_getProps);
-        EXPECT_CALL(*helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        EXPECT_CALL(*helper, thresholdsAsserted(StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
         auto info = conf::SensorConfig();
