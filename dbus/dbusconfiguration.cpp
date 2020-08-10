@@ -389,7 +389,7 @@ void populatePidInfo(
         }
         const std::string& path = sensorConfig[info.inputs.front()].readPath;
 
-        DbusHelper helper;
+        DbusHelper helper(sdbusplus::bus::new_system());
         std::string service = helper.getService(bus, interface, path);
         double reading = 0;
         try

@@ -16,6 +16,7 @@
 
 #include <iostream>
 #include <map>
+#include <memory>
 #include <string>
 
 /* Configuration. */
@@ -40,7 +41,6 @@ namespace pid_control
 {
 
 static constexpr bool deferSignals = true;
-static DbusHelper helper;
 
 SensorManager
     buildSensors(const std::map<std::string, struct conf::SensorConfig>& config,
@@ -81,14 +81,18 @@ SensorManager
                 if (info->type == "fan")
                 {
                     ri = DbusPassive::createDbusPassive(
-                        passiveListeningBus, info->type, name, &helper, info,
-                        redundancy);
+                        passiveListeningBus, info->type, name,
+                        std::make_unique<DbusHelper>(
+                            sdbusplus::bus::new_system()),
+                        info, redundancy);
                 }
                 else
                 {
-                    ri = DbusPassive::createDbusPassive(passiveListeningBus,
-                                                        info->type, name,
-                                                        &helper, info, nullptr);
+                    ri = DbusPassive::createDbusPassive(
+                        passiveListeningBus, info->type, name,
+                        std::make_unique<DbusHelper>(
+                            sdbusplus::bus::new_system()),
+                        info, nullptr);
                 }
                 if (ri == nullptr)
                 {
@@ -129,12 +133,16 @@ SensorManager
                     if (info->max > 0)
                     {
                         wi = DbusWritePercent::createDbusWrite(
-                            info->writePath, info->min, info->max, helper);
+                            info->writePath, info->min, info->max,
+                            std::make_unique<DbusHelper>(
+                                sdbusplus::bus::new_system()));
                     }
                     else
                     {
                         wi = DbusWrite::createDbusWrite(
-                            info->writePath, info->min, info->max, helper);
+                            info->writePath, info->min, info->max,
+                            std::make_unique<DbusHelper>(
+                                sdbusplus::bus::new_system()));
                     }
 
                     if (wi == nullptr)

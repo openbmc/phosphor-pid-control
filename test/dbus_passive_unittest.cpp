@@ -5,6 +5,7 @@
 #include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <functional>
+#include <memory>
 #include <string>
 #include <variant>
 
@@ -35,11 +36,11 @@ TEST(DbusPassiveTest, FactoryFailsWithInvalidType)
     std::string type = "invalid";
     std::string id = "id";
 
-    DbusHelperMock helper;
+    auto helper = std::make_unique<DbusHelperMock>();
     auto info = conf::SensorConfig();
 
     std::unique_ptr<ReadInterface> ri = DbusPassive::createDbusPassive(
-        bus_mock, type, id, &helper, &info, nullptr);
+        bus_mock, type, id, std::move(helper), &info, nullptr);
 
     EXPECT_EQ(ri, nullptr);
 }
@@ -54,10 +55,11 @@ TEST(DbusPassiveTest, BoringConstructorTest)
     std::string id = "id";
     std::string path = "/xyz/openbmc_project/sensors/unknown/id";
 
-    DbusHelperMock helper;
+    auto helper = std::make_unique<DbusHelperMock>();
     struct SensorProperties properties;
 
-    DbusPassive(bus_mock, type, id, &helper, properties, false, path, nullptr);
+    DbusPassive(bus_mock, type, id, std::move(helper), properties, false, path,
+                nullptr);
     // Success
 }
 
@@ -66,12 +68,13 @@ class DbusPassiveTestObj : public ::testing::Test
   protected:
     DbusPassiveTestObj() :
         sdbus_mock(),
-        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))), helper()
+        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
+        helper(std::make_unique<DbusHelperMock>())
     {
-        EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+        EXPECT_CALL(*helper, getService(_, StrEq(SensorIntf), StrEq(path)))
             .WillOnce(Return("asdf"));
 
-        EXPECT_CALL(helper,
+        EXPECT_CALL(*helper,
                     getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(Invoke(
                 [&](sdbusplus::bus::bus& bus, const std::string& service,
@@ -82,19 +85,19 @@ class DbusPassiveTestObj : public ::testing::Test
                     prop->min = 0;
                     prop->max = 0;
                 }));
-        EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        EXPECT_CALL(*helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
         auto info = conf::SensorConfig();
-        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info,
-                                            nullptr);
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id,
+                                            std::move(helper), &info, nullptr);
         passive = reinterpret_cast<DbusPassive*>(ri.get());
         EXPECT_FALSE(passive == nullptr);
     }
 
     sdbusplus::SdBusMock sdbus_mock;
     sdbusplus::bus::bus bus_mock;
-    DbusHelperMock helper;
+    std::unique_ptr<DbusHelperMock> helper;
     std::string type = "temp";
     std::string id = "id";
     std::string path = "/xyz/openbmc_project/sensors/temperature/id";
@@ -453,27 +456,28 @@ class DbusPassiveTest3kMaxObj : public ::testing::Test
   protected:
     DbusPassiveTest3kMaxObj() :
         sdbus_mock(),
-        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))), helper()
+        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
+        helper(std::make_unique<DbusHelperMock>())
     {
-        EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+        EXPECT_CALL(*helper, getService(_, StrEq(SensorIntf), StrEq(path)))
             .WillOnce(Return("asdf"));
 
-        EXPECT_CALL(helper,
+        EXPECT_CALL(*helper,
                     getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(_getProps);
-        EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        EXPECT_CALL(*helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
         auto info = conf::SensorConfig();
-        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info,
-                                            nullptr);
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id,
+                                            std::move(helper), &info, nullptr);
         passive = reinterpret_cast<DbusPassive*>(ri.get());
         EXPECT_FALSE(passive == nullptr);
     }
 
     sdbusplus::SdBusMock sdbus_mock;
     sdbusplus::bus::bus bus_mock;
-    DbusHelperMock helper;
+    std::unique_ptr<DbusHelperMock> helper;
     std::string type = "temp";
     std::string id = "id";
     std::string path = "/xyz/openbmc_project/sensors/temperature/id";
@@ -496,28 +500,29 @@ class DbusPassiveTest3kMaxIgnoredObj : public ::testing::Test
   protected:
     DbusPassiveTest3kMaxIgnoredObj() :
         sdbus_mock(),
-        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))), helper()
+        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
+        helper(std::make_unique<DbusHelperMock>())
     {
-        EXPECT_CALL(helper, getService(_, StrEq(SensorIntf), StrEq(path)))
+        EXPECT_CALL(*helper, getService(_, StrEq(SensorIntf), StrEq(path)))
             .WillOnce(Return("asdf"));
 
-        EXPECT_CALL(helper,
+        EXPECT_CALL(*helper,
                     getProperties(_, StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(_getProps);
-        EXPECT_CALL(helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
+        EXPECT_CALL(*helper, thresholdsAsserted(_, StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
         auto info = conf::SensorConfig();
         info.ignoreDbusMinMax = true;
-        ri = DbusPassive::createDbusPassive(bus_mock, type, id, &helper, &info,
-                                            nullptr);
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id,
+                                            std::move(helper), &info, nullptr);
         passive = reinterpret_cast<DbusPassive*>(ri.get());
         EXPECT_FALSE(passive == nullptr);
     }
 
     sdbusplus::SdBusMock sdbus_mock;
     sdbusplus::bus::bus bus_mock;
-    DbusHelperMock helper;
+    std::unique_ptr<DbusHelperMock> helper;
     std::string type = "temp";
     std::string id = "id";
     std::string path = "/xyz/openbmc_project/sensors/temperature/id";
