@@ -15,7 +15,9 @@
  */
 #include "dbuspassive.hpp"
 
+#include "dbushelper_interface.hpp"
 #include "dbuspassiveredundancy.hpp"
+#include "dbusutil.hpp"
 #include "util.hpp"
 
 #include <sdbusplus/bus.hpp>

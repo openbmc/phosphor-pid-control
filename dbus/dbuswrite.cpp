@@ -14,7 +14,9 @@
 // limitations under the License.
 */
 
-#include "dbus/dbuswrite.hpp"
+#include "dbuswrite.hpp"
+
+#include "dbushelper_interface.hpp"
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>

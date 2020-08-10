@@ -1,6 +1,7 @@
 #pragma once
 
 #include "conf.hpp"
+#include "dbushelper_interface.hpp"
 #include "dbuspassiveredundancy.hpp"
 #include "interfaces.hpp"
 #include "util.hpp"

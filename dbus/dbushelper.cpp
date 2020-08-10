@@ -1,18 +1,38 @@
-#include "util.hpp"
+/**
+ * Copyright 2017 Google Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "dbushelper.hpp"
+
+#include "dbushelper_interface.hpp"
+#include "dbusutil.hpp"
 
 #include <phosphor-logging/log.hpp>
+#include <sdbusplus/bus.hpp>
 
-#include <cmath>
-#include <iostream>
-#include <set>
+#include <map>
+#include <string>
 #include <variant>
+#include <vector>
+
+namespace pid_control
+{
 
 using Property = std::string;
 using Value = std::variant<int64_t, double, std::string, bool>;
 using PropertyMap = std::map<Property, Value>;
-
-namespace pid_control
-{
 
 using namespace phosphor::logging;
 
@@ -60,7 +80,7 @@ void DbusHelper::getProperties(sdbusplus::bus::bus& bus,
                                struct SensorProperties* prop)
 {
     auto pimMsg = bus.new_method_call(service.c_str(), path.c_str(),
-                                      propertiesintf.c_str(), "GetAll");
+                                      propertiesintf, "GetAll");
 
     pimMsg.append(sensorintf);
 
@@ -122,7 +142,7 @@ bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
 {
 
     auto critical = bus.new_method_call(service.c_str(), path.c_str(),
-                                        propertiesintf.c_str(), "GetAll");
+                                        propertiesintf, "GetAll");
     critical.append(criticalThreshInf);
     PropertyMap criticalMap;
 
@@ -153,49 +173,6 @@ bool DbusHelper::thresholdsAsserted(sdbusplus::bus::bus& bus,
         asserted = std::get<bool>(findCriticalHigh->second);
     }
     return asserted;
-}
-
-std::string getSensorPath(const std::string& type, const std::string& id)
-{
-    std::string layer = type;
-    if (type == "fan")
-    {
-        layer = "fan_tach";
-    }
-    else if (type == "temp")
-    {
-        layer = "temperature";
-    }
-    else
-    {
-        layer = "unknown"; // TODO(venture): Need to handle.
-    }
-
-    return std::string("/xyz/openbmc_project/sensors/" + layer + "/" + id);
-}
-
-std::string getMatch(const std::string& type, const std::string& id)
-{
-    return std::string("type='signal',"
-                       "interface='org.freedesktop.DBus.Properties',"
-                       "member='PropertiesChanged',"
-                       "path='" +
-                       getSensorPath(type, id) + "'");
-}
-
-bool validType(const std::string& type)
-{
-    static std::set<std::string> valid = {"fan", "temp"};
-    return (valid.find(type) != valid.end());
-}
-
-void scaleSensorReading(const double min, const double max, double& value)
-{
-    if (max <= 0 || max <= min)
-    {
-        return;
-    }
-    value /= (max - min);
 }
 
 } // namespace pid_control
