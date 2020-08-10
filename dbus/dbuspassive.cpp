@@ -83,8 +83,8 @@ DbusPassive::DbusPassive(
     const std::string& path,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
     ReadInterface(),
-    _bus(bus), _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this),
-    _id(id), _helper(std::move(helper)), _failed(failed), path(path),
+    _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this), _id(id),
+    _helper(std::move(helper)), _failed(failed), path(path),
     redundancy(redundancy)
 
 {
