@@ -19,10 +19,13 @@ class DbusHelper : public DbusHelperInterface
     static constexpr char criticalThreshInf[] =
         "xyz.openbmc_project.Sensor.Threshold.Critical";
 
-    DbusHelper() = default;
+    explicit DbusHelper(sdbusplus::bus::bus bus) : bus_(std::move(bus))
+    {}
     ~DbusHelper() = default;
-    DbusHelper(const DbusHelper&) = default;
-    DbusHelper& operator=(const DbusHelper&) = default;
+
+    DbusHelper(const DbusHelper&) = delete;
+    DbusHelper& operator=(const DbusHelper&) = delete;
+
     DbusHelper(DbusHelper&&) = default;
     DbusHelper& operator=(DbusHelper&&) = default;
 
@@ -64,6 +67,9 @@ class DbusHelper : public DbusHelperInterface
 
         prop = std::get<T>(result);
     }
+
+  private:
+    sdbusplus::bus::bus bus_;
 };
 
 } // namespace pid_control
