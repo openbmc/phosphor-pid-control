@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include "dbushelper_interface.hpp"
 #include "interfaces.hpp"
 #include "util.hpp"
 

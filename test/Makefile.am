@@ -62,7 +62,7 @@ pid_fancontroller_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
  $(top_builddir)/pid/fancontroller.o $(top_builddir)/pid/tuning.o
 
 dbus_passive_unittest_SOURCES = dbus_passive_unittest.cpp
-dbus_passive_unittest_LDADD = $(top_builddir)/dbus/util.o \
+dbus_passive_unittest_LDADD = $(top_builddir)/dbus/dbusutil.o \
  $(top_builddir)/dbus/dbuspassive.o $(top_builddir)/dbus/dbuspassiveredundancy.o
 
 dbus_active_unittest_SOURCES = dbus_active_unittest.cpp

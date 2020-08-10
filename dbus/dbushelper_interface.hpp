@@ -1,0 +1,58 @@
+#pragma once
+
+#include <sdbusplus/bus.hpp>
+
+#include <cstdint>
+#include <string>
+
+namespace pid_control
+{
+
+struct SensorProperties
+{
+    int64_t scale;
+    double value;
+    double min;
+    double max;
+    std::string unit;
+};
+
+class DbusHelperInterface
+{
+  public:
+    virtual ~DbusHelperInterface() = default;
+
+    /** @brief Get the service providing the interface for the path.
+     *
+     * @warning Throws exception on dbus failure.
+     */
+    virtual std::string getService(sdbusplus::bus::bus& bus,
+                                   const std::string& intf,
+                                   const std::string& path) = 0;
+
+    /** @brief Get all Sensor.Value properties for a service and path.
+     *
+     * @param[in] bus - A bus to use for the call.
+     * @param[in] service - The service providing the interface.
+     * @param[in] path - The dbus path.
+     * @param[out] prop - A pointer to a properties struct to fill out.
+     *
+     * @warning Throws exception on dbus failure.
+     */
+    virtual void getProperties(sdbusplus::bus::bus& bus,
+                               const std::string& service,
+                               const std::string& path,
+                               struct SensorProperties* prop) = 0;
+
+    /** @brief Get Critical Threshold current assert status
+     *
+     * @param[in] bus - A bus to use for the call.
+     * @param[in] service - The service providing the interface.
+     * @param[in] path - The dbus path.
+     */
+    virtual bool thresholdsAsserted(sdbusplus::bus::bus& bus,
+                                    const std::string& service,
+                                    const std::string& path) = 0;
+};
+
+} // namespace pid_control
