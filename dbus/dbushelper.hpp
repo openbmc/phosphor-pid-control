@@ -29,20 +29,18 @@ class DbusHelper : public DbusHelperInterface
     DbusHelper(DbusHelper&&) = default;
     DbusHelper& operator=(DbusHelper&&) = default;
 
-    std::string getService(sdbusplus::bus::bus& bus, const std::string& intf,
+    std::string getService(const std::string& intf,
                            const std::string& path) override;
 
-    void getProperties(sdbusplus::bus::bus& bus, const std::string& service,
-                       const std::string& path,
+    void getProperties(const std::string& service, const std::string& path,
                        struct SensorProperties* prop) override;
 
-    bool thresholdsAsserted(sdbusplus::bus::bus& bus,
-                            const std::string& service,
+    bool thresholdsAsserted(const std::string& service,
                             const std::string& path) override;
 
     template <typename T>
-    void getProperty(sdbusplus::bus::bus& bus, const std::string& service,
-                     const std::string& path, const std::string& interface,
+    void getProperty(const std::string& service, const std::string& path,
+                     const std::string& interface,
                      const std::string& propertyName, T& prop)
     {
         namespace log = phosphor::logging;
