@@ -21,6 +21,7 @@
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 
+#include <exception>
 #include <iostream>
 #include <memory>
 #include <string>
@@ -33,16 +34,16 @@ constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 using namespace phosphor::logging;
 
-std::unique_ptr<WriteInterface>
-    DbusWritePercent::createDbusWrite(const std::string& path, int64_t min,
-                                      int64_t max, DbusHelperInterface& helper)
+std::unique_ptr<WriteInterface> DbusWritePercent::createDbusWrite(
+    const std::string& path, int64_t min, int64_t max,
+    std::unique_ptr<DbusHelperInterface> helper)
 {
     auto tempBus = sdbusplus::bus::new_system();
     std::string connectionName;
 
     try
     {
-        connectionName = helper.getService(tempBus, pwmInterface, path);
+        connectionName = helper->getService(tempBus, pwmInterface, path);
     }
     catch (const std::exception& e)
     {
@@ -89,14 +90,15 @@ void DbusWritePercent::write(double value)
 
 std::unique_ptr<WriteInterface>
     DbusWrite::createDbusWrite(const std::string& path, int64_t min,
-                               int64_t max, DbusHelperInterface& helper)
+                               int64_t max,
+                               std::unique_ptr<DbusHelperInterface> helper)
 {
     auto tempBus = sdbusplus::bus::new_system();
     std::string connectionName;
 
     try
     {
-        connectionName = helper.getService(tempBus, pwmInterface, path);
+        connectionName = helper->getService(tempBus, pwmInterface, path);
     }
     catch (const std::exception& e)
     {

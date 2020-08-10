@@ -3,6 +3,7 @@
 
 #include <sdbusplus/test/sdbus_mock.hpp>
 
+#include <memory>
 #include <string>
 
 #include <gmock/gmock.h>
@@ -23,11 +24,11 @@ TEST(DbusActiveReadTest, BoringConstructorTest)
 
     sdbusplus::SdBusMock sdbus_mock;
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
-    DbusHelperMock helper;
+    auto helper = std::make_unique<DbusHelperMock>();
     std::string path = "/asdf";
     std::string service = "asdfasdf.asdfasdf";
 
-    DbusActiveRead ar(bus_mock, path, service, &helper);
+    DbusActiveRead ar(bus_mock, path, service, std::move(helper));
 }
 
 TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
@@ -36,13 +37,11 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
 
     sdbusplus::SdBusMock sdbus_mock;
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
-    DbusHelperMock helper;
+    auto helper = std::make_unique<DbusHelperMock>();
     std::string path = "/asdf";
     std::string service = "asdfasdf.asdfasdf";
 
-    DbusActiveRead ar(bus_mock, path, service, &helper);
-
-    EXPECT_CALL(helper, getProperties(_, service, path, NotNull()))
+    EXPECT_CALL(*helper, getProperties(_, service, path, NotNull()))
         .WillOnce(
             Invoke([&](sdbusplus::bus::bus& bus, const std::string& service,
                        const std::string& path, struct SensorProperties* prop) {
@@ -50,6 +49,8 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
                 prop->value = 10000;
                 prop->unit = "x";
             }));
+
+    DbusActiveRead ar(bus_mock, path, service, std::move(helper));
 
     ReadReturn r = ar.read();
     EXPECT_EQ(10, r.value);
