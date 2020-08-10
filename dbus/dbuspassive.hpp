@@ -65,7 +65,6 @@ class DbusPassive : public ReadInterface
     double getMin(void);
 
   private:
-    sdbusplus::bus::bus& _bus;
     sdbusplus::server::match::match _signal;
     int64_t _scale;
     std::string _id; // for debug identification
