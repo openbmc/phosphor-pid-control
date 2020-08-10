@@ -32,11 +32,6 @@ const std::string criticalThreshInf =
     "xyz.openbmc_project.Sensor.Threshold.Critical";
 const std::string propertiesintf = "org.freedesktop.DBus.Properties";
 
-std::string getSensorPath(const std::string& type, const std::string& id);
-std::string getMatch(const std::string& type, const std::string& id);
-void scaleSensorReading(const double min, const double max, double& value);
-bool validType(const std::string& type);
-
 /*
  * Given a path that optionally has a glob portion, fill it out.
  */
