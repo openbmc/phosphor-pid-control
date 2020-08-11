@@ -31,7 +31,7 @@
 namespace pid_control
 {
 
-static void processThermals(PIDZone* zone)
+static void processThermals(DbusPidZone* zone)
 {
     // Get the latest margins.
     zone->updateSensors();
@@ -44,8 +44,8 @@ static void processThermals(PIDZone* zone)
     zone->determineMaxSetPointRequest();
 }
 
-void pidControlLoop(PIDZone* zone, boost::asio::steady_timer& timer, bool first,
-                    int ms100cnt)
+void pidControlLoop(DbusPidZone* zone, boost::asio::steady_timer& timer,
+                    bool first, int ms100cnt)
 {
     if (first)
     {

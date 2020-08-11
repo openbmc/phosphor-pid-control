@@ -38,88 +38,88 @@ namespace pid_control
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
 
-double PIDZone::getMaxSetPointRequest(void) const
+double DbusPidZone::getMaxSetPointRequest(void) const
 {
     return _maximumSetPoint;
 }
 
-bool PIDZone::getManualMode(void) const
+bool DbusPidZone::getManualMode(void) const
 {
     return _manualMode;
 }
 
-void PIDZone::setManualMode(bool mode)
+void DbusPidZone::setManualMode(bool mode)
 {
     _manualMode = mode;
 }
 
-bool PIDZone::getFailSafeMode(void) const
+bool DbusPidZone::getFailSafeMode(void) const
 {
     // If any keys are present at least one sensor is in fail safe mode.
     return !_failSafeSensors.empty();
 }
 
-int64_t PIDZone::getZoneID(void) const
+int64_t DbusPidZone::getZoneID(void) const
 {
     return _zoneId;
 }
 
-void PIDZone::addSetPoint(double setpoint)
+void DbusPidZone::addSetPoint(double setpoint)
 {
     _SetPoints.push_back(setpoint);
 }
 
-void PIDZone::addRPMCeiling(double ceiling)
+void DbusPidZone::addRPMCeiling(double ceiling)
 {
     _RPMCeilings.push_back(ceiling);
 }
 
-void PIDZone::clearRPMCeilings(void)
+void DbusPidZone::clearRPMCeilings(void)
 {
     _RPMCeilings.clear();
 }
 
-void PIDZone::clearSetPoints(void)
+void DbusPidZone::clearSetPoints(void)
 {
     _SetPoints.clear();
 }
 
-double PIDZone::getFailSafePercent(void) const
+double DbusPidZone::getFailSafePercent(void) const
 {
     return _failSafePercent;
 }
 
-double PIDZone::getMinThermalSetpoint(void) const
+double DbusPidZone::getMinThermalSetpoint(void) const
 {
     return _minThermalOutputSetPt;
 }
 
-void PIDZone::addFanPID(std::unique_ptr<Controller> pid)
+void DbusPidZone::addFanPID(std::unique_ptr<Controller> pid)
 {
     _fans.push_back(std::move(pid));
 }
 
-void PIDZone::addThermalPID(std::unique_ptr<Controller> pid)
+void DbusPidZone::addThermalPID(std::unique_ptr<Controller> pid)
 {
     _thermals.push_back(std::move(pid));
 }
 
-double PIDZone::getCachedValue(const std::string& name)
+double DbusPidZone::getCachedValue(const std::string& name)
 {
     return _cachedValuesByName.at(name);
 }
 
-void PIDZone::addFanInput(const std::string& fan)
+void DbusPidZone::addFanInput(const std::string& fan)
 {
     _fanInputs.push_back(fan);
 }
 
-void PIDZone::addThermalInput(const std::string& therm)
+void DbusPidZone::addThermalInput(const std::string& therm)
 {
     _thermalInputs.push_back(therm);
 }
 
-void PIDZone::determineMaxSetPointRequest(void)
+void DbusPidZone::determineMaxSetPointRequest(void)
 {
     double max = 0;
     std::vector<double>::iterator result;
@@ -174,7 +174,7 @@ void PIDZone::determineMaxSetPointRequest(void)
     return;
 }
 
-void PIDZone::initializeLog(void)
+void DbusPidZone::initializeLog(void)
 {
     /* Print header for log file:
      * epoch_ms,setpt,fan1,fan2,fanN,sensor1,sensor2,sensorN,failsafe
@@ -196,7 +196,7 @@ void PIDZone::initializeLog(void)
     return;
 }
 
-std::ofstream& PIDZone::getLogHandle(void)
+std::ofstream& DbusPidZone::getLogHandle(void)
 {
     return _log;
 }
@@ -214,7 +214,7 @@ std::ofstream& PIDZone::getLogHandle(void)
  * We want the PID loop to run with values cached, so this will get all the
  * fan tachs for the loop.
  */
-void PIDZone::updateFanTelemetry(void)
+void DbusPidZone::updateFanTelemetry(void)
 {
     /* TODO(venture): Should I just make _log point to /dev/null when logging
      * is disabled?  I think it's a waste to try and log things even if the
@@ -282,7 +282,7 @@ void PIDZone::updateFanTelemetry(void)
     return;
 }
 
-void PIDZone::updateSensors(void)
+void DbusPidZone::updateSensors(void)
 {
     using namespace std::chrono;
     /* margin and temp are stored as temp */
@@ -323,7 +323,7 @@ void PIDZone::updateSensors(void)
     return;
 }
 
-void PIDZone::initializeCache(void)
+void DbusPidZone::initializeCache(void)
 {
     for (const auto& f : _fanInputs)
     {
@@ -342,7 +342,7 @@ void PIDZone::initializeCache(void)
     }
 }
 
-void PIDZone::dumpCache(void)
+void DbusPidZone::dumpCache(void)
 {
     std::cerr << "Cache values now: \n";
     for (const auto& k : _cachedValuesByName)
@@ -351,7 +351,7 @@ void PIDZone::dumpCache(void)
     }
 }
 
-void PIDZone::processFans(void)
+void DbusPidZone::processFans(void)
 {
     for (auto& p : _fans)
     {
@@ -359,7 +359,7 @@ void PIDZone::processFans(void)
     }
 }
 
-void PIDZone::processThermals(void)
+void DbusPidZone::processThermals(void)
 {
     for (auto& p : _thermals)
     {
@@ -367,19 +367,19 @@ void PIDZone::processThermals(void)
     }
 }
 
-Sensor* PIDZone::getSensor(const std::string& name)
+Sensor* DbusPidZone::getSensor(const std::string& name)
 {
     return _mgr.getSensor(name);
 }
 
-bool PIDZone::manual(bool value)
+bool DbusPidZone::manual(bool value)
 {
     std::cerr << "manual: " << value << std::endl;
     setManualMode(value);
     return ModeObject::manual(value);
 }
 
-bool PIDZone::failSafe() const
+bool DbusPidZone::failSafe() const
 {
     return getFailSafeMode();
 }

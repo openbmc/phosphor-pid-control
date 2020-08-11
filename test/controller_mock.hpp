@@ -12,7 +12,7 @@ class ControllerMock : public PIDController
   public:
     virtual ~ControllerMock() = default;
 
-    ControllerMock(const std::string& id, PIDZone* owner) :
+    ControllerMock(const std::string& id, DbusPidZone* owner) :
         PIDController(id, owner)
     {}
 
