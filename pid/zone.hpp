@@ -28,16 +28,16 @@ namespace pid_control
 {
 
 /*
- * The PIDZone inherits from the Mode object so that it can listen for control
- * mode changes.  It primarily holds all PID loops and holds the sensor value
- * cache that's used per iteration of the PID loops.
+ * The DbusPidZone inherits from the Mode object so that it can listen for
+ * control mode changes.  It primarily holds all PID loops and holds the sensor
+ * value cache that's used per iteration of the PID loops.
  */
-class PIDZone : public ZoneInterface, public ModeObject
+class DbusPidZone : public ZoneInterface, public ModeObject
 {
   public:
-    PIDZone(int64_t zone, double minThermalOutput, double failSafePercent,
-            const SensorManager& mgr, sdbusplus::bus::bus& bus,
-            const char* objPath, bool defer) :
+    DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
+                const SensorManager& mgr, sdbusplus::bus::bus& bus,
+                const char* objPath, bool defer) :
         ModeObject(bus, objPath, defer),
         _zoneId(zone), _maximumSetPoint(),
         _minThermalOutputSetPt(minThermalOutput),
