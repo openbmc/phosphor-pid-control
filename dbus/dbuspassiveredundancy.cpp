@@ -21,8 +21,10 @@
 
 #include <iostream>
 #include <set>
+#include <string>
 #include <unordered_map>
 #include <variant>
+#include <vector>
 
 namespace pid_control
 {
@@ -46,69 +48,69 @@ constexpr const char* interface = "xyz.openbmc_project.Control.FanRedundancy";
 } // namespace redundancy
 
 DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus::bus& bus) :
-    match(bus,
-          "type='signal',member='PropertiesChanged',arg0namespace='" +
-              std::string(redundancy::interface) + "'",
-          std::move([this](sdbusplus::message::message& message) {
-              std::string objectName;
-              std::unordered_map<
-                  std::string,
-                  std::variant<std::string, std::vector<std::string>>>
-                  result;
-              try
-              {
-                  message.read(objectName, result);
-              }
-              catch (sdbusplus::exception_t&)
-              {
-                  std::cerr << "Error reading match data";
-                  return;
-              }
-              auto findStatus = result.find("Status");
-              if (findStatus == result.end())
-              {
-                  return;
-              }
-              std::string status = std::get<std::string>(findStatus->second);
+    _match(bus,
+           "type='signal',member='PropertiesChanged',arg0namespace='" +
+               std::string(redundancy::interface) + "'",
+           std::move([this](sdbusplus::message::message& message) {
+               std::string objectName;
+               std::unordered_map<
+                   std::string,
+                   std::variant<std::string, std::vector<std::string>>>
+                   result;
+               try
+               {
+                   message.read(objectName, result);
+               }
+               catch (sdbusplus::exception_t&)
+               {
+                   std::cerr << "Error reading match data";
+                   return;
+               }
+               auto findStatus = result.find("Status");
+               if (findStatus == result.end())
+               {
+                   return;
+               }
+               std::string status = std::get<std::string>(findStatus->second);
 
-              auto methodCall = passiveBus.new_method_call(
-                  message.get_sender(), message.get_path(),
-                  properties::interface, properties::get);
-              methodCall.append(redundancy::interface, redundancy::collection);
-              std::variant<std::vector<std::string>> collection;
+               auto methodCall = _passiveBus.new_method_call(
+                   message.get_sender(), message.get_path(),
+                   properties::interface, properties::get);
+               methodCall.append(redundancy::interface, redundancy::collection);
+               std::variant<std::vector<std::string>> collection;
 
-              try
-              {
-                  auto reply = passiveBus.call(methodCall);
-                  reply.read(collection);
-              }
-              catch (sdbusplus::exception_t&)
-              {
-                  std::cerr << "Error reading match data";
-                  return;
-              }
+               try
+               {
+                   auto reply = _passiveBus.call(methodCall);
+                   reply.read(collection);
+               }
+               catch (sdbusplus::exception_t&)
+               {
+                   std::cerr << "Error reading match data";
+                   return;
+               }
 
-              auto data = std::get<std::vector<std::string>>(collection);
-              if (status.rfind("Failed") != std::string::npos)
-              {
-                  failed.insert(data.begin(), data.end());
-              }
-              else
-              {
-                  for (const auto& d : data)
-                  {
-                      failed.erase(d);
-                  }
-              }
-          })),
-    passiveBus(bus)
+               auto data = std::get<std::vector<std::string>>(collection);
+               if (status.rfind("Failed") != std::string::npos)
+               {
+                   _failed.insert(data.begin(), data.end());
+               }
+               else
+               {
+                   for (const auto& d : data)
+                   {
+                       _failed.erase(d);
+                   }
+               }
+           })),
+    _passiveBus(bus)
 {
     populateFailures();
 }
 
 void DbusPassiveRedundancy::populateFailures(void)
 {
-    auto mapper = passiveBus.new_method_call(
+    auto mapper = _passiveBus.new_method_call(
         "xyz.openbmc_project.ObjectMapper",
         "/xyz/openbmc_project/object_mapper",
         "xyz.openbmc_project.ObjectMapper", "GetSubTree");
@@ -118,7 +120,7 @@ void DbusPassiveRedundancy::populateFailures(void)
         respData;
     try
     {
-        auto resp = passiveBus.call(mapper);
+        auto resp = _passiveBus.call(mapper);
         resp.read(respData);
     }
     catch (sdbusplus::exception_t&)
@@ -142,9 +144,9 @@ void DbusPassiveRedundancy::populateFailures(void)
     {
         for (const auto& [owner, _] : interfaceDict)
         {
-            auto call = passiveBus.new_method_call(owner.c_str(), path.c_str(),
-                                                   properties::interface,
-                                                   properties::getAll);
+            auto call = _passiveBus.new_method_call(owner.c_str(), path.c_str(),
+                                                    properties::interface,
+                                                    properties::getAll);
             call.append(redundancy::interface);
 
             std::unordered_map<
@@ -153,7 +155,7 @@ void DbusPassiveRedundancy::populateFailures(void)
                 getAll;
             try
             {
-                auto data = passiveBus.call(call);
+                auto data = _passiveBus.call(call);
                 data.read(getAll);
             }
             catch (sdbusplus::exception_t&)
@@ -170,14 +172,14 @@ void DbusPassiveRedundancy::populateFailures(void)
             std::vector<std::string> collection =
                 std::get<std::vector<std::string>>(
                     getAll[redundancy::collection]);
-            failed.insert(collection.begin(), collection.end());
+            _failed.insert(collection.begin(), collection.end());
         }
     }
 }
 
 const std::set<std::string>& DbusPassiveRedundancy::getFailed()
 {
-    return failed;
+    return _failed;
 }
 
 } // namespace pid_control

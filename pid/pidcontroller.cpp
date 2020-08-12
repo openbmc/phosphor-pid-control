@@ -52,28 +52,28 @@ void PIDController::process(void)
 
         // this variable isn't actually used in this context, but we're setting
         // it here incase somebody uses it later it's the correct value
-        lastInput = input;
+        _lastInput = input;
     }
     else
     {
         // initialize if not set yet
-        if (std::isnan(lastInput))
+        if (std::isnan(_lastInput))
         {
-            lastInput = input;
+            _lastInput = input;
         }
 
         // if reading is outside of hysteresis bounds, use it for reading,
         // otherwise use last reading without updating it first
-        else if ((input - lastInput) > info->positiveHysteresis)
+        else if ((input - _lastInput) > info->positiveHysteresis)
         {
-            lastInput = input;
+            _lastInput = input;
         }
-        else if ((lastInput - input) > info->negativeHysteresis)
+        else if ((_lastInput - input) > info->negativeHysteresis)
         {
-            lastInput = input;
+            _lastInput = input;
         }
 
-        output = ec::pid(info, lastInput, setpt);
+        output = ec::pid(info, _lastInput, setpt);
     }
 
     // Output new value

@@ -64,7 +64,7 @@ double ThermalController::inputProc(void)
 {
     double value;
     const double& (*compare)(const double&, const double&);
-    if (type == ThermalType::margin)
+    if (_type == ThermalType::margin)
     {
         value = std::numeric_limits<double>::max();
         compare = std::min<double>;

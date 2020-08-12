@@ -77,8 +77,8 @@ class DbusPassive : public ReadInterface
     bool _failed = false;
     bool _functional = true;
 
-    std::string path;
-    std::shared_ptr<DbusPassiveRedundancy> redundancy;
+    std::string _path;
+    std::shared_ptr<DbusPassiveRedundancy> _redundancy;
     /* The last time the value was refreshed, not necessarily changed. */
     std::chrono::high_resolution_clock::time_point _updated;
 };
