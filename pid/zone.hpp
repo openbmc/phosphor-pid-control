@@ -49,30 +49,30 @@ class DbusPidZone : public ZoneInterface, public ModeObject
         }
     }
 
-    double getMaxSetPointRequest(void) const override;
-    bool getManualMode(void) const;
-
+    bool getManualMode(void) const override;
     /* Could put lock around this since it's accessed from two threads, but
      * only one reader/one writer.
      */
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
+
     int64_t getZoneID(void) const;
     void addSetPoint(double setpoint) override;
+    double getMaxSetPointRequest(void) const override;
     void addRPMCeiling(double ceiling) override;
-    void clearSetPoints(void);
-    void clearRPMCeilings(void);
+    void clearSetPoints(void) override;
+    void clearRPMCeilings(void) override;
     double getFailSafePercent(void) const override;
     double getMinThermalSetpoint(void) const;
 
     Sensor* getSensor(const std::string& name) override;
-    void determineMaxSetPointRequest(void);
-    void updateFanTelemetry(void);
-    void updateSensors(void);
-    void initializeCache(void);
+    void determineMaxSetPointRequest(void) override;
+    void updateFanTelemetry(void) override;
+    void updateSensors(void) override;
+    void initializeCache(void) override;
     void dumpCache(void);
-    void processFans(void);
-    void processThermals(void);
+    void processFans(void) override;
+    void processThermals(void) override;
 
     void addFanPID(std::unique_ptr<Controller> pid);
     void addThermalPID(std::unique_ptr<Controller> pid);
@@ -80,8 +80,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void addFanInput(const std::string& fan);
     void addThermalInput(const std::string& therm);
 
-    void initializeLog(void);
-    std::ofstream& getLogHandle(void);
+    void initializeLog(void) override;
+    void writeLog(const std::string& value) override;
 
     /* Method for setting the manual mode over dbus */
     bool manual(bool value) override;
