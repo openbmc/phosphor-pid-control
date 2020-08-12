@@ -18,6 +18,7 @@
 
 #include "pid/pidcontroller.hpp"
 #include "pid/tuning.hpp"
+#include "pid/zone_interface.hpp"
 #include "sensors/sensor.hpp"
 
 #include <boost/asio/steady_timer.hpp>
@@ -25,13 +26,14 @@
 #include <chrono>
 #include <map>
 #include <memory>
+#include <sstream>
 #include <thread>
 #include <vector>
 
 namespace pid_control
 {
 
-static void processThermals(DbusPidZone* zone)
+static void processThermals(ZoneInterface* zone)
 {
     // Get the latest margins.
     zone->updateSensors();
@@ -44,7 +46,7 @@ static void processThermals(DbusPidZone* zone)
     zone->determineMaxSetPointRequest();
 }
 
-void pidControlLoop(DbusPidZone* zone, boost::asio::steady_timer& timer,
+void pidControlLoop(ZoneInterface* zone, boost::asio::steady_timer& timer,
                     bool first, int ms100cnt)
 {
     if (first)
@@ -115,8 +117,9 @@ void pidControlLoop(DbusPidZone* zone, boost::asio::steady_timer& timer,
 
             if (loggingEnabled)
             {
-                zone->getLogHandle() << "," << zone->getFailSafeMode();
-                zone->getLogHandle() << std::endl;
+                std::ostringstream out;
+                out << "," << zone->getFailSafeMode() << std::endl;
+                zone->writeLog(out.str());
             }
 
             ms100cnt += 1;
