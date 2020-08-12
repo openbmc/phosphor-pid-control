@@ -31,6 +31,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <string>
 
 namespace pid_control
 {
@@ -196,9 +197,10 @@ void DbusPidZone::initializeLog(void)
     return;
 }
 
-std::ofstream& DbusPidZone::getLogHandle(void)
+void DbusPidZone::writeLog(const std::string& value)
 {
-    return _log;
+    _log << value;
+    return;
 }
 
 /*

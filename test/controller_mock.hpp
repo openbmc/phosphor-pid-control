@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pid/controller.hpp"
+#include "pid/zone_interface.hpp"
 
 #include <gmock/gmock.h>
 
@@ -12,7 +13,7 @@ class ControllerMock : public PIDController
   public:
     virtual ~ControllerMock() = default;
 
-    ControllerMock(const std::string& id, DbusPidZone* owner) :
+    ControllerMock(const std::string& id, ZoneInterface* owner) :
         PIDController(id, owner)
     {}
 

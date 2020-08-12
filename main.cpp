@@ -81,7 +81,7 @@ namespace pid_control
 void restartControlLoops()
 {
     static SensorManager mgmr;
-    static std::unordered_map<int64_t, std::unique_ptr<DbusPidZone>> zones;
+    static std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>> zones;
     static std::list<boost::asio::steady_timer> timers;
 
     timers.clear();

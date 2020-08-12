@@ -1,6 +1,7 @@
 #pragma once
 
-#include "pid/zone.hpp"
+#include "conf.hpp"
+#include "pid/zone_interface.hpp"
 #include "sensors/manager.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -11,7 +12,7 @@
 namespace pid_control
 {
 
-std::unordered_map<int64_t, std::unique_ptr<DbusPidZone>>
+std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>>
     buildZones(const std::map<int64_t, conf::PIDConf>& zonePids,
                std::map<int64_t, struct conf::ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus);
