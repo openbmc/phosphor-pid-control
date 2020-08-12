@@ -21,6 +21,8 @@
 #include "pid/fancontroller.hpp"
 #include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
+#include "pid/zone.hpp"
+#include "pid/zone_interface.hpp"
 
 #include <sdbusplus/bus.hpp>
 
@@ -39,12 +41,12 @@ static std::string getControlPath(int64_t zone)
     return std::string(objectPath) + std::to_string(zone);
 }
 
-std::unordered_map<int64_t, std::unique_ptr<DbusPidZone>>
+std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>>
     buildZones(const std::map<int64_t, conf::PIDConf>& zonePids,
                std::map<int64_t, struct conf::ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus)
 {
-    std::unordered_map<int64_t, std::unique_ptr<DbusPidZone>> zones;
+    std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>> zones;
 
     for (const auto& zi : zonePids)
     {
