@@ -99,8 +99,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
     std::set<std::string> _failSafeSensors;
 
-    std::vector<double> _SetPoints;
-    std::vector<double> _RPMCeilings;
+    std::vector<double> _setPoints;
+    std::vector<double> _rpmCeilings;
     std::vector<std::string> _fanInputs;
     std::vector<std::string> _thermalInputs;
     std::map<std::string, double> _cachedValuesByName;
