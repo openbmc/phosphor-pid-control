@@ -20,6 +20,7 @@
 #include <sdbusplus/bus/match.hpp>
 
 #include <set>
+#include <string>
 
 namespace pid_control
 {
@@ -40,9 +41,9 @@ class DbusPassiveRedundancy
   private:
     void populateFailures(void);
 
-    sdbusplus::bus::match::match match;
-    std::set<std::string> failed;
-    sdbusplus::bus::bus& passiveBus;
+    sdbusplus::bus::match::match _match;
+    std::set<std::string> _failed;
+    sdbusplus::bus::bus& _passiveBus;
 };
 
 } // namespace pid_control

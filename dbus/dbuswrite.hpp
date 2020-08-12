@@ -38,15 +38,15 @@ class DbusWritePercent : public WriteInterface
     DbusWritePercent(const std::string& path, int64_t min, int64_t max,
                      const std::string& connectionName) :
         WriteInterface(min, max),
-        path(path), connectionName(connectionName)
+        _path(path), _connectionName(connectionName)
     {}
 
     void write(double value) override;
 
   private:
-    std::string path;
-    std::string connectionName;
-    int64_t oldValue = -1;
+    std::string _path;
+    std::string _connectionName;
+    int64_t _oldValue = -1;
 };
 
 class DbusWrite : public WriteInterface
@@ -59,15 +59,15 @@ class DbusWrite : public WriteInterface
     DbusWrite(const std::string& path, int64_t min, int64_t max,
               const std::string& connectionName) :
         WriteInterface(min, max),
-        path(path), connectionName(connectionName)
+        _path(path), _connectionName(connectionName)
     {}
 
     void write(double value) override;
 
   private:
-    std::string path;
-    std::string connectionName;
-    int64_t oldValue = -1;
+    std::string _path;
+    std::string _connectionName;
+    int64_t _oldValue = -1;
 };
 
 } // namespace pid_control
