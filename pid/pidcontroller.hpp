@@ -24,8 +24,7 @@ class PIDController : public Controller
         Controller(), _owner(owner), _setpoint(0), _id(id)
     {}
 
-    virtual ~PIDController()
-    {}
+    virtual ~PIDController() = default;
 
     virtual double inputProc(void) override = 0;
     virtual double setptProc(void) = 0;
@@ -48,12 +47,12 @@ class PIDController : public Controller
 
     ec::pid_info_t* getPIDInfo(void)
     {
-        return &_pid_info;
+        return &_pidInfo;
     }
 
     double getLastInput(void)
     {
-        return lastInput;
+        return _lastInput;
     }
 
   protected:
@@ -61,10 +60,10 @@ class PIDController : public Controller
 
   private:
     // parameters
-    ec::pid_info_t _pid_info;
+    ec::pid_info_t _pidInfo;
     double _setpoint;
     std::string _id;
-    double lastInput = std::numeric_limits<double>::quiet_NaN();
+    double _lastInput = std::numeric_limits<double>::quiet_NaN();
 };
 
 } // namespace pid_control

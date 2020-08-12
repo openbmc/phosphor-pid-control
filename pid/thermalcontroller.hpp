@@ -50,7 +50,7 @@ class ThermalController : public PIDController
                       const std::vector<std::string>& inputs,
                       const ThermalType& type, ZoneInterface* owner) :
         PIDController(id, owner),
-        _inputs(inputs), type(type)
+        _inputs(inputs), _type(type)
     {}
 
     double inputProc(void) override;
@@ -59,7 +59,7 @@ class ThermalController : public PIDController
 
   private:
     std::vector<std::string> _inputs;
-    ThermalType type;
+    ThermalType _type;
 };
 
 } // namespace pid_control
