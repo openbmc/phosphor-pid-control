@@ -84,8 +84,8 @@ DbusPassive::DbusPassive(
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
     ReadInterface(),
     _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this), _id(id),
-    _helper(std::move(helper)), _failed(failed), path(path),
-    redundancy(redundancy)
+    _helper(std::move(helper)), _failed(failed), _path(path),
+    _redundancy(redundancy)
 
 {
     _scale = settings.scale;
@@ -114,10 +114,10 @@ void DbusPassive::setValue(double value)
 
 bool DbusPassive::getFailed(void) const
 {
-    if (redundancy)
+    if (_redundancy)
     {
-        const std::set<std::string>& failures = redundancy->getFailed();
-        if (failures.find(path) != failures.end())
+        const std::set<std::string>& failures = _redundancy->getFailed();
+        if (failures.find(_path) != failures.end())
         {
             return true;
         }
