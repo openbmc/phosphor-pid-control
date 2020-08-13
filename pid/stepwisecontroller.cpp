@@ -78,10 +78,7 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
     }
 
     auto thermal = std::make_unique<StepwiseController>(id, inputs, owner);
-
-    ec::StepwiseInfo& info = thermal->getStepwiseInfo();
-
-    info = initial;
+    thermal->setStepwiseInfo(initial);
 
     return thermal;
 }
