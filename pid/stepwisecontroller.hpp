@@ -44,6 +44,11 @@ class StepwiseController : public Controller
         return _stepwiseInfo;
     }
 
+    void setStepwiseInfo(const ec::StepwiseInfo& value)
+    {
+        _stepwiseInfo = value;
+    }
+
   protected:
     ZoneInterface* _owner;
 
