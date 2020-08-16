@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "dbus_mode.hpp"
+
 #include <ipmid/api.h>
 
 #include <sdbusplus/bus.hpp>
@@ -21,6 +23,7 @@
 
 #include <cstdint>
 #include <string>
+#include <variant>
 
 namespace pid_control
 {
@@ -44,8 +47,8 @@ static std::string getControlPath(int8_t zone)
     return std::string(objectPath) + std::to_string(zone);
 }
 
-uint8_t getFanCtrlProperty(uint8_t zoneId, bool* value,
-                           const std::string& property)
+uint8_t DbusZoneControl::getFanCtrlProperty(uint8_t zoneId, bool* value,
+                                            const std::string& property)
 {
     std::string path = getControlPath(zoneId);
 
@@ -70,6 +73,34 @@ uint8_t getFanCtrlProperty(uint8_t zoneId, bool* value,
         return IPMI_CC_INVALID;
     }
 
+    return IPMI_CC_OK;
+}
+
+uint8_t DbusZoneControl::setFanCtrlProperty(uint8_t zoneId, bool value,
+                                            const std::string& property)
+{
+    using Value = std::variant<bool>;
+    Value v{value};
+
+    std::string path = getControlPath(zoneId);
+
+    auto PropertyWriteBus = sdbusplus::bus::new_system();
+    auto pimMsg = PropertyWriteBus.new_method_call(busName, path.c_str(),
+                                                   propertiesintf, "Set");
+    pimMsg.append(intf);
+    pimMsg.append(property);
+    pimMsg.append(v);
+
+    try
+    {
+        PropertyWriteBus.call_noreply(pimMsg);
+    }
+    catch (const sdbusplus::exception::SdBusError& ex)
+    {
+        return IPMI_CC_INVALID;
+    }
+
+    /* TODO(venture): Should sanity check the result. */
     return IPMI_CC_OK;
 }
 
