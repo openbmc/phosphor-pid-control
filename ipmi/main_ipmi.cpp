@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "control.hpp"
+#include "dbus_mode.hpp"
 #include "manualcmds.hpp"
 
 #include <ipmid/iana.hpp>
@@ -21,6 +23,18 @@
 #include <ipmid/oemrouter.hpp>
 
 #include <cstdio>
+#include <functional>
+#include <memory>
+
+namespace pid_control
+{
+namespace ipmi
+{
+
+ZoneControlIpmiHandler handler(std::make_unique<DbusZoneControl>());
+
+}
+} // namespace pid_control
 
 void setupGlobalOemFanControl() __attribute__((constructor));
 
@@ -33,6 +47,9 @@ void setupGlobalOemFanControl()
         "Registering OEM:[%#08X], Cmd:[%#04X] for Manual Zone Control\n",
         oem::obmcOemNumber, oem::Cmd::fanManualCmd);
 
+    using namespace std::placeholders;
     router->registerHandler(oem::obmcOemNumber, oem::Cmd::fanManualCmd,
-                            pid_control::ipmi::manualModeControl);
+                            std::bind(pid_control::ipmi::manualModeControl,
+                                      &pid_control::ipmi::handler, _1, _2, _3,
+                                      _4));
 }
