@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ipmid/api.h>
+
 #include <cstdint>
 
 namespace pid_control
@@ -7,25 +9,8 @@ namespace pid_control
 namespace ipmi
 {
 
-enum ManualSubCmd
-{
-    getControlState = 0,
-    setControlState = 1,
-    getFailsafeState = 2,
-};
-
-struct FanCtrlRequest
-{
-    uint8_t command;
-    uint8_t zone;
-} __attribute__((packed));
-
-struct FanCtrlRequestSet
-{
-    uint8_t command;
-    uint8_t zone;
-    uint8_t value;
-} __attribute__((packed));
+ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
+                             uint8_t* replyCmdBuf, size_t* dataLen);
 
 } // namespace ipmi
 } // namespace pid_control

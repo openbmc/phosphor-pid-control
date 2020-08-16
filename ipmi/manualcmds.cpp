@@ -16,11 +16,10 @@
 
 #include "manualcmds.hpp"
 
+#include "manual_messages.hpp"
+
 #include <ipmid/api.h>
 
-#include <ipmid/iana.hpp>
-#include <ipmid/oemopenbmc.hpp>
-#include <ipmid/oemrouter.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
 
@@ -195,8 +194,8 @@ static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
 }
 
 /* Three command packages: get, set true, set false */
-static ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
-                                    uint8_t* replyCmdBuf, size_t* dataLen)
+ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
+                             uint8_t* replyCmdBuf, size_t* dataLen)
 {
     // FanCtrlRequest is the smaller of the requests, so it's at a minimum.
     if (*dataLen < sizeof(struct FanCtrlRequest))
@@ -226,17 +225,3 @@ static ipmi_ret_t manualModeControl(ipmi_cmd_t cmd, const uint8_t* reqBuf,
 
 } // namespace ipmi
 } // namespace pid_control
-
-void setupGlobalOemFanControl() __attribute__((constructor));
-
-void setupGlobalOemFanControl()
-{
-    oem::Router* router = oem::mutableRouter();
-
-    fprintf(stderr,
-            "Registering OEM:[%#08X], Cmd:[%#04X] for Manual Zone Control\n",
-            oem::obmcOemNumber, oem::Cmd::fanManualCmd);
-
-    router->registerHandler(oem::obmcOemNumber, oem::Cmd::fanManualCmd,
-                            pid_control::ipmi::manualModeControl);
-}
