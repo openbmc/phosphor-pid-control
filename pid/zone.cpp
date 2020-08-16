@@ -347,9 +347,9 @@ void DbusPidZone::initializeCache(void)
 void DbusPidZone::dumpCache(void)
 {
     std::cerr << "Cache values now: \n";
-    for (const auto& k : _cachedValuesByName)
+    for (const auto& [name, value] : _cachedValuesByName)
     {
-        std::cerr << k.first << ": " << k.second << "\n";
+        std::cerr << name << ": " << value << "\n";
     }
 }
 
