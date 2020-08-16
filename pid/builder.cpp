@@ -26,9 +26,12 @@
 
 #include <sdbusplus/bus.hpp>
 
+#include <cstdint>
 #include <iostream>
 #include <memory>
+#include <string>
 #include <unordered_map>
+#include <vector>
 
 namespace pid_control
 {
