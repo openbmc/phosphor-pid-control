@@ -48,14 +48,12 @@ std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>>
 {
     std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>> zones;
 
-    for (const auto& zi : zonePids)
+    for (const auto& [zoneId, pidConfig] : zonePids)
     {
-        auto zoneId = static_cast<int64_t>(zi.first);
         /* The above shouldn't be necessary but is, and I am having trouble
          * locating my notes on why.  If I recall correctly it was casting it
          * down to a byte in at least some cases causing weird behaviors.
          */
-
         auto zoneConf = zoneConfigs.find(zoneId);
         if (zoneConf == zoneConfigs.end())
         {
@@ -66,63 +64,58 @@ std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>>
             throw std::runtime_error(err);
         }
 
-        const conf::PIDConf& pidConfig = zi.second;
-
         auto zone = std::make_unique<DbusPidZone>(
             zoneId, zoneConf->second.minThermalOutput,
             zoneConf->second.failsafePercent, mgr, modeControlBus,
-            getControlPath(zi.first).c_str(), deferSignals);
+            getControlPath(zoneId).c_str(), deferSignals);
 
         std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
 
         // For each PID create a Controller and a Sensor.
-        for (const auto& pit : pidConfig)
+        for (const auto& [name, info] : pidConfig)
         {
             std::vector<std::string> inputs;
-            std::string name = pit.first;
-            const struct conf::ControllerInfo* info = &pit.second;
-
             std::cerr << "PID name: " << name << "\n";
 
             /*
              * TODO(venture): Need to check if input is known to the
              * SensorManager.
              */
-            if (info->type == "fan")
+            if (info.type == "fan")
             {
-                for (const auto& i : info->inputs)
+                for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
                     zone->addFanInput(i);
                 }
 
                 auto pid = FanController::createFanPid(zone.get(), name, inputs,
-                                                       info->pidInfo);
+                                                       info.pidInfo);
                 zone->addFanPID(std::move(pid));
             }
-            else if (isThermalType(info->type))
+            else if (isThermalType(info.type))
             {
-                for (const auto& i : info->inputs)
+                for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
                     zone->addThermalInput(i);
                 }
 
                 auto pid = ThermalController::createThermalPid(
-                    zone.get(), name, inputs, info->setpoint, info->pidInfo,
-                    getThermalType(info->type));
+                    zone.get(), name, inputs, info.setpoint, info.pidInfo,
+                    getThermalType(info.type));
 
                 zone->addThermalPID(std::move(pid));
             }
-            else if (info->type == "stepwise")
+            else if (info.type == "stepwise")
             {
-                for (const auto& i : info->inputs)
+                for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
                     zone->addThermalInput(i);
                 }
                 auto stepwise = StepwiseController::createStepwiseController(
-                    zone.get(), name, inputs, info->stepwiseInfo);
+                    zone.get(), name, inputs, info.stepwiseInfo);
                 zone->addThermalPID(std::move(stepwise));
             }
 
