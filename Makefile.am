@@ -119,7 +119,8 @@ libmanualcmdsdir = ${libdir}/ipmid-providers
 libmanualcmds_LTLIBRARIES = libmanualcmds.la
 libmanualcmds_la_SOURCES = \
 	ipmi/main_ipmi.cpp \
-	ipmi/manualcmds.cpp
+	ipmi/manualcmds.cpp \
+	ipmi/dbus_mode.cpp
 libmanualcmds_la_LDFLAGS = \
 	$(SYSTEMD_LIBS) \
 	$(PHOSPHOR_DBUS_INTERFACES_LIBS) \
