@@ -16,6 +16,7 @@
 
 #include "manualcmds.hpp"
 
+#include "dbus_mode.hpp"
 #include "manual_messages.hpp"
 
 #include <ipmid/api.h>
@@ -48,45 +49,6 @@ using PropertyMap = std::map<Property, Value>;
 static std::string getControlPath(int8_t zone)
 {
     return std::string(objectPath) + std::to_string(zone);
-}
-
-/*
- * busctl call xyz.openbmc_project.State.FanCtrl \
- *     /xyz/openbmc_project/settings/fanctrl/zone1 \
- *     org.freedesktop.DBus.Properties \
- *     GetAll \
- *     s \
- *     xyz.openbmc_project.Control.Mode
- * a{sv} 2 "Manual" b false "FailSafe" b false
- */
-
-static ipmi_ret_t getFanCtrlProperty(uint8_t zoneId, bool* value,
-                                     const std::string& property)
-{
-    std::string path = getControlPath(zoneId);
-
-    auto propertyReadBus = sdbusplus::bus::new_system();
-    auto pimMsg = propertyReadBus.new_method_call(busName, path.c_str(),
-                                                  propertiesintf, "GetAll");
-    pimMsg.append(intf);
-
-    try
-    {
-        PropertyMap propMap;
-
-        /* a method could error but the call not error. */
-        auto valueResponseMsg = propertyReadBus.call(pimMsg);
-
-        valueResponseMsg.read(propMap);
-
-        *value = std::get<bool>(propMap[property]);
-    }
-    catch (const sdbusplus::exception::SdBusError& ex)
-    {
-        return IPMI_CC_INVALID;
-    }
-
-    return IPMI_CC_OK;
 }
 
 static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
