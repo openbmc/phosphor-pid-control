@@ -34,22 +34,8 @@ namespace pid_control
 namespace ipmi
 {
 
-static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
-static constexpr auto busName = "xyz.openbmc_project.State.FanCtrl";
-static constexpr auto intf = "xyz.openbmc_project.Control.Mode";
 static constexpr auto manualProperty = "Manual";
 static constexpr auto failsafeProperty = "FailSafe";
-static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
-
-using Property = std::string;
-using Value = std::variant<bool>;
-using PropertyMap = std::map<Property, Value>;
-
-/* The following was copied directly from my manual thread handler. */
-static std::string getControlPath(int8_t zone)
-{
-    return std::string(objectPath) + std::to_string(zone);
-}
 
 static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                        size_t* dataLen)
@@ -64,8 +50,9 @@ static ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
+    DbusZoneControl control;
     ipmi_ret_t rc =
-        getFanCtrlProperty(request->zone, &current, failsafeProperty);
+        control.getFanCtrlProperty(request->zone, &current, failsafeProperty);
     if (rc)
     {
         return rc;
@@ -95,7 +82,9 @@ static ipmi_ret_t getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
-    ipmi_ret_t rc = getFanCtrlProperty(request->zone, &current, manualProperty);
+    DbusZoneControl control;
+    ipmi_ret_t rc =
+        control.getFanCtrlProperty(request->zone, &current, manualProperty);
     if (rc)
     {
         return rc;
@@ -121,37 +110,13 @@ static ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
         return IPMI_CC_INVALID;
     }
 
-    using Value = std::variant<bool>;
-
     const auto request =
         reinterpret_cast<const struct FanCtrlRequestSet*>(&reqBuf[0]);
 
     /* 0 is false, 1 is true */
-    bool setValue = static_cast<bool>(request->value);
-    Value v{setValue};
-
-    auto PropertyWriteBus = sdbusplus::bus::new_system();
-
-    std::string path = getControlPath(request->zone);
-
-    auto pimMsg = PropertyWriteBus.new_method_call(busName, path.c_str(),
-                                                   propertiesintf, "Set");
-    pimMsg.append(intf);
-    pimMsg.append(manualProperty);
-    pimMsg.append(v);
-
-    ipmi_ret_t rc = IPMI_CC_OK;
-
-    try
-    {
-        PropertyWriteBus.call_noreply(pimMsg);
-    }
-    catch (const sdbusplus::exception::SdBusError& ex)
-    {
-        rc = IPMI_CC_INVALID;
-    }
-    /* TODO(venture): Should sanity check the result. */
-
+    DbusZoneControl control;
+    ipmi_ret_t rc = control.setFanCtrlProperty(
+        request->zone, static_cast<bool>(request->value), manualProperty);
     return rc;
 }
 
