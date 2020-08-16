@@ -118,6 +118,7 @@ endif
 libmanualcmdsdir = ${libdir}/ipmid-providers
 libmanualcmds_LTLIBRARIES = libmanualcmds.la
 libmanualcmds_la_SOURCES = \
+	ipmi/main_ipmi.cpp \
 	ipmi/manualcmds.cpp
 libmanualcmds_la_LDFLAGS = \
 	$(SYSTEMD_LIBS) \
