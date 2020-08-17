@@ -15,6 +15,8 @@
 */
 
 #include "conf.hpp"
+#include "dbushelper.hpp"
+#include "dbusutil.hpp"
 #include "util.hpp"
 
 #include <boost/asio/steady_timer.hpp>
