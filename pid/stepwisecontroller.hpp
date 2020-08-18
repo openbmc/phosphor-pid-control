@@ -39,7 +39,7 @@ class StepwiseController : public Controller
         return _id;
     }
 
-    ec::StepwiseInfo& get_stepwise_info(void)
+    ec::StepwiseInfo& getStepwiseInfo(void)
     {
         return _stepwise_info;
     }
