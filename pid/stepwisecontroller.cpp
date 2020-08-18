@@ -38,7 +38,7 @@ void StepwiseController::process(void)
     // Get input value
     double input = inputProc();
 
-    ec::StepwiseInfo info = get_stepwise_info();
+    ec::StepwiseInfo info = getStepwiseInfo();
 
     double output = lastOutput;
 
@@ -79,7 +79,7 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
 
     auto thermal = std::make_unique<StepwiseController>(id, inputs, owner);
 
-    ec::StepwiseInfo& info = thermal->get_stepwise_info();
+    ec::StepwiseInfo& info = thermal->getStepwiseInfo();
 
     info = initial;
 
@@ -98,7 +98,7 @@ double StepwiseController::inputProc(void)
 
 void StepwiseController::outputProc(double value)
 {
-    if (get_stepwise_info().isCeiling)
+    if (getStepwiseInfo().isCeiling)
     {
         _owner->addRPMCeiling(value);
     }
