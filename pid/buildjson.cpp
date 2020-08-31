@@ -135,8 +135,12 @@ std::pair<std::map<int64_t, conf::PIDConf>,
         conf::PIDConf thisZone;
         struct conf::ZoneConfig thisZoneConfig;
 
-        /* TODO: using at() throws a specific exception we can catch */
-        id = zone["id"];
+        try {
+            id = zone.at("id");
+	}
+	catch (const std::out_of_range&) {
+            std::cerr << "Out_of_range exception while parsing json";
+	}
         thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
         thisZoneConfig.failsafePercent = zone["failsafePercent"];
 
