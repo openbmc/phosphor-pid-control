@@ -19,6 +19,7 @@
 #include "conf.hpp"
 
 #include <nlohmann/json.hpp>
+#include <phosphor-logging/log.hpp>
 
 #include <map>
 #include <tuple>
@@ -27,6 +28,7 @@ namespace pid_control
 {
 
 using json = nlohmann::json;
+using namespace phosphor::logging;
 
 namespace conf
 {
@@ -127,33 +129,39 @@ std::pair<std::map<int64_t, conf::PIDConf>,
     // zone -> configs
     std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
 
-    /* TODO: if zones is empty, that's invalid. */
-    auto zones = data["zones"];
-    for (const auto& zone : zones)
+    if (data.contains("zones"))
     {
-        int64_t id;
-        conf::PIDConf thisZone;
-        struct conf::ZoneConfig thisZoneConfig;
-
-        /* TODO: using at() throws a specific exception we can catch */
-        id = zone["id"];
-        thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
-        thisZoneConfig.failsafePercent = zone["failsafePercent"];
-
-        auto pids = zone["pids"];
-        for (const auto& pid : pids)
+        auto zones = data["zones"];
+        for (const auto& zone : zones)
         {
-            auto name = pid["name"];
-            auto item = pid.get<conf::ControllerInfo>();
+            int64_t id;
+            conf::PIDConf thisZone;
+            struct conf::ZoneConfig thisZoneConfig;
 
-            thisZone[name] = item;
+            id = zone.at("id");
+            thisZoneConfig.minThermalOutput = zone.at("minThermalOutput");
+            thisZoneConfig.failsafePercent = zone.at("failsafePercent");
+
+            auto pids = zone.at("pids");
+            for (const auto& pid : pids)
+            {
+                auto name = pid.at("name");
+                auto item = pid.get<conf::ControllerInfo>();
+
+                thisZone[name] = item;
+            }
+
+            pidConfig[id] = thisZone;
+            zoneConfig[id] = thisZoneConfig;
         }
 
-        pidConfig[id] = thisZone;
-        zoneConfig[id] = thisZoneConfig;
-    }
+        else
+        {
+            log<level::ERR>("Error while parsing JSON");
+            throw;
+        }
 
-    return std::make_pair(pidConfig, zoneConfig);
-}
+        return std::make_pair(pidConfig, zoneConfig);
+    }
 
 } // namespace pid_control
