@@ -18,6 +18,7 @@
 
 #include "build/buildjson.hpp"
 #include "conf.hpp"
+#include "dbus/dbusconfiguration.hpp"
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
@@ -36,6 +37,7 @@
 #include <sdbusplus/bus.hpp>
 
 #include <chrono>
+#include <filesystem>
 #include <iostream>
 #include <list>
 #include <map>
@@ -44,10 +46,6 @@
 #include <unordered_map>
 #include <utility>
 #include <vector>
-
-#if CONFIGURE_DBUS
-#include "dbus/dbusconfiguration.hpp"
-#endif
 
 namespace pid_control
 {
@@ -86,34 +84,36 @@ void restartControlLoops()
 
     timers.clear();
 
-#if CONFIGURE_DBUS
-
-    static boost::asio::steady_timer reloadTimer(io);
-    if (!dbus_configuration::init(modeControlBus, reloadTimer))
-    {
-        return; // configuration not ready
-    }
-
-#else
     const std::string& path =
         (configPath.length() > 0) ? configPath : jsonConfigurationPath;
 
-    /*
-     * When building the sensors, if any of the dbus passive ones aren't on the
-     * bus, it'll fail immediately.
-     */
-    try
+    if (std::filesystem::exists(path))
     {
-        auto jsonData = parseValidateJson(path);
-        sensorConfig = buildSensorsFromJson(jsonData);
-        std::tie(zoneConfig, zoneDetailsConfig) = buildPIDsFromJson(jsonData);
+        /*
+         * When building the sensors, if any of the dbus passive ones aren't on
+         * the bus, it'll fail immediately.
+         */
+        try
+        {
+            auto jsonData = parseValidateJson(path);
+            sensorConfig = buildSensorsFromJson(jsonData);
+            std::tie(zoneConfig, zoneDetailsConfig) =
+                buildPIDsFromJson(jsonData);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Failed during building: " << e.what() << "\n";
+            exit(EXIT_FAILURE); /* fatal error. */
+        }
     }
-    catch (const std::exception& e)
+    else
     {
-        std::cerr << "Failed during building: " << e.what() << "\n";
-        exit(EXIT_FAILURE); /* fatal error. */
+        static boost::asio::steady_timer reloadTimer(io);
+        if (!dbus_configuration::init(modeControlBus, reloadTimer))
+        {
+            return; // configuration not ready
+        }
     }
-#endif
 
     mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
     zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);

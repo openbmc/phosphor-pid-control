@@ -203,11 +203,6 @@ AC_ARG_ENABLE([configure-dbus],
         [--enable-configure-dbus], [Enable configuring pid from D-Bus.]
     )
 )
-AM_CONDITIONAL(CONFIGURE_DBUS, [test "x$enable_configure_dbus" = "xyes"])
-AS_IF([test "x$enable_configure_dbus" = "xyes"],
-    [AC_DEFINE(CONFIGURE_DBUS, [1], [Read configuration from D-Bus.])],
-    [AC_DEFINE(CONFIGURE_DBUS, [0], [Do not read configuration from D-Bus.])]
-)
 
 AC_ARG_VAR(SYSTEMD_TARGET, "Target for starting this service")
 AS_IF([test "x$SYSTEMD_TARGET" == "x"], [SYSTEMD_TARGET="multi-user.target"])
