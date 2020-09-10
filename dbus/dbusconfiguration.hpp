@@ -17,6 +17,7 @@
 #pragma once
 #include "conf.hpp"
 
+#include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/bus.hpp>
 
 namespace pid_control
