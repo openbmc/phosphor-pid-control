@@ -81,6 +81,7 @@ libswampd_la_CXXFLAGS = \
 libswampd_la_SOURCES = \
 	notimpl/readonly.cpp \
 	notimpl/writeonly.cpp \
+	dbus/dbusconfiguration.cpp \
 	dbus/dbusutil.cpp \
 	dbus/dbushelper.cpp \
 	dbus/dbuspassiveredundancy.cpp \
@@ -110,10 +111,6 @@ libswampd_la_SOURCES = \
 	pid/tuning.cpp \
 	build/buildjson.cpp \
 	experiments/drive.cpp
-
-if CONFIGURE_DBUS
-libswampd_la_SOURCES += dbus/dbusconfiguration.cpp
-endif
 
 libmanualcmdsdir = ${libdir}/ipmid-providers
 libmanualcmds_LTLIBRARIES = libmanualcmds.la
