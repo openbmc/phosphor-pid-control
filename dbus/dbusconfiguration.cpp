@@ -17,6 +17,7 @@
 #include "conf.hpp"
 #include "dbushelper.hpp"
 #include "dbusutil.hpp"
+#include "sensors/build_utils.hpp"
 #include "util.hpp"
 
 #include <boost/asio/steady_timer.hpp>
@@ -708,9 +709,27 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                     inputSensorNames.push_back(inputSensorName);
                     config.type = pidClass;
                     config.readPath = inputSensorInterface.first;
-                    // todo: maybe un-hardcode this if we run into slower
-                    // timeouts with sensors
-                    if (config.type == "temp")
+
+                    // Intentionally disable the timeout feature for D-Bus
+                    // passive sensors, Because D-Bus passive sensors remain
+                    // unchanged if their owning service believes the sensor
+                    // value to be unchanged, we can not distinguish a stuck
+                    // sensor from a good sensor that is simply providing a
+                    // reading that is unchanged from before. This needs a
+                    // longer-term rethink, perhaps by having the owning service
+                    // update a timestamp, even if the sensor value is
+                    // unchanged, just to show that the sensor hardware is still
+                    // alive. Then, we could react to sensor failures and throw
+                    // the zone to the failsafe setting, as we should be doing.
+                    // Intentionally enable "ignoreDbusMinMax" similarly,
+                    // because D-Bus sensor minimum and maximum are mostly just
+                    // hints for IPMI byte scaling, and many systems provide
+                    // some headroom in case a fan overperforms. It is also more
+                    // robust and transparent to simply use the values directly
+                    // from D-Bus, instead of trying to scale them again, when
+                    // there is really no reason to do this.
+                    if (getReadInterfaceType(config.readPath) ==
+                        IOInterfaceType::DBUSPASSIVE)
                     {
                         config.timeout = 0;
                         config.ignoreDbusMinMax = true;
