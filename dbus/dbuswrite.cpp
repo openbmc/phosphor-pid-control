@@ -61,16 +61,24 @@ void DbusWritePercent::write(double value)
     double offset = range * value;
     double ovalue = offset + minimum;
 
-    if (oldValue == static_cast<int64_t>(ovalue))
+    // If min and max are messed up or not given,
+    // just pass throgh the value directly.
+    if (range <= 0.0)
+    {
+        ovalue = value;
+    }
+
+    auto newValue = static_cast<int64_t>(ovalue);
+    if (oldValue == newValue)
     {
         return;
     }
+
     auto writeBus = sdbusplus::bus::new_default();
     auto mesg =
         writeBus.new_method_call(connectionName.c_str(), path.c_str(),
                                  "org.freedesktop.DBus.Properties", "Set");
-    mesg.append(pwmInterface, "Target",
-                std::variant<uint64_t>(static_cast<uint64_t>(ovalue)));
+    mesg.append(pwmInterface, "Target", std::variant<uint64_t>(newValue));
 
     try
     {
@@ -81,9 +89,10 @@ void DbusWritePercent::write(double value)
     {
         log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
                         entry("WHAT=%s", ex.what()));
+        return;
     }
 
-    oldValue = static_cast<int64_t>(ovalue);
+    oldValue = newValue;
     return;
 }
 
@@ -108,7 +117,8 @@ std::unique_ptr<WriteInterface>
 
 void DbusWrite::write(double value)
 {
-    if (oldValue == static_cast<int64_t>(value))
+    auto newValue = static_cast<int64_t>(value);
+    if (oldValue == newValue)
     {
         return;
     }
@@ -116,8 +126,7 @@ void DbusWrite::write(double value)
     auto mesg =
         writeBus.new_method_call(connectionName.c_str(), path.c_str(),
                                  "org.freedesktop.DBus.Properties", "Set");
-    mesg.append(pwmInterface, "Target",
-                std::variant<uint64_t>(static_cast<uint64_t>(value)));
+    mesg.append(pwmInterface, "Target", std::variant<uint64_t>(newValue));
 
     try
     {
@@ -128,9 +137,10 @@ void DbusWrite::write(double value)
     {
         log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
                         entry("WHAT=%s", ex.what()));
+        return;
     }
 
-    oldValue = static_cast<int64_t>(value);
+    oldValue = newValue;
     return;
 }
 
