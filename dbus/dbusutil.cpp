@@ -23,6 +23,10 @@ std::string getSensorPath(const std::string& type, const std::string& id)
     {
         layer = "temperature";
     }
+    else if (type == "margin")
+    {
+        layer = "temperature";
+    }
     else
     {
         layer = "unknown"; // TODO(venture): Need to handle.
@@ -42,7 +46,7 @@ std::string getMatch(const std::string& type, const std::string& id)
 
 bool validType(const std::string& type)
 {
-    static std::set<std::string> valid = {"fan", "temp"};
+    static std::set<std::string> valid = {"fan", "temp", "margin"};
     return (valid.find(type) != valid.end());
 }
 
