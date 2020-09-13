@@ -56,6 +56,7 @@ void scaleSensorReading(const double min, const double max, double& value)
     {
         return;
     }
+    value -= min;
     value /= (max - min);
 }
 
