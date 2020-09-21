@@ -18,6 +18,7 @@
 #include "conf.hpp"
 #include "dbushelper.hpp"
 #include "dbusutil.hpp"
+#include "sensors/build_utils.hpp"
 #include "util.hpp"
 
 #include <boost/asio/steady_timer.hpp>
@@ -634,13 +635,33 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                     inputSensorNames.push_back(inputSensorName);
                     config.type = pidClass;
                     config.readPath = inputSensorInterface.first;
-                    // todo: maybe un-hardcode this if we run into slower
-                    // timeouts with sensors
-                    if (config.type == "temp")
+
+                    // Intentionally disable the timeout feature for D-Bus
+                    // passive sensors, Because D-Bus passive sensors remain
+                    // unchanged if their owning service believes the sensor
+                    // value to be unchanged, we can not distinguish a stuck
+                    // sensor from a good sensor that is simply providing a
+                    // reading that is unchanged from before. This needs a
+                    // longer-term rethink, to provide this feature.
+                    // Then, we could react to sensor failures and throw
+                    // the zone to the failsafe setting, as we should be doing.
+                    if (getReadInterfaceType(config.readPath) ==
+                        IOInterfaceType::DBUSPASSIVE)
                     {
                         config.timeout = 0;
+                    }
+
+                    // Existing code forced this setting to be true for
+                    // temp, so when margin was added, preserve existing
+                    // behavior. This also works around a bug in which
+                    // the temp/margin would be normalized to (0.0, 1.0)
+                    // range, but the setpoint would not be, resulting
+                    // in incorrect PID math.
+                    if ((config.type == "temp") || (config.type == "margin"))
+                    {
                         config.ignoreDbusMinMax = true;
                     }
+
                     if (dbusInterface != sensorInterface)
                     {
                         /* all expected inputs in the configuration are expected
