@@ -107,6 +107,11 @@ void DbusPidZone::addThermalPID(std::unique_ptr<Controller> pid)
 
 double DbusPidZone::getCachedValue(const std::string& name)
 {
+    return _cachedValuesByName.at(name).first;
+}
+
+std::pair<double, double> DbusPidZone::getCachedValues(const std::string& name)
+{
     return _cachedValuesByName.at(name);
 }
 
@@ -178,23 +183,22 @@ void DbusPidZone::determineMaxSetPointRequest(void)
 void DbusPidZone::initializeLog(void)
 {
     /* Print header for log file:
-     * epoch_ms,setpt,fan1,fan2,fanN,sensor1,sensor2,sensorN,failsafe
+     * epoch_ms,setpt,fan1,fan1_raw,fan2,fan2_raw,fanN,fanN_raw,sensor1,sensor1_raw,sensor2,sensor2_raw,sensorN,sensorN_raw,failsafe
      */
 
     _log << "epoch_ms,setpt";
 
     for (const auto& f : _fanInputs)
     {
-        _log << "," << f;
+        _log << "," << f << "," << f << "_raw";
     }
     for (const auto& t : _thermalInputs)
     {
-        _log << "," << t;
+        _log << "," << t << "," << t << "_raw";
     }
+
     _log << ",failsafe";
     _log << std::endl;
-
-    return;
 }
 
 void DbusPidZone::writeLog(const std::string& value)
@@ -235,7 +239,7 @@ void DbusPidZone::updateFanTelemetry(void)
     {
         auto sensor = _mgr.getSensor(f);
         ReadReturn r = sensor->read();
-        _cachedValuesByName[f] = r.value;
+        _cachedValuesByName[f] = std::make_pair(r.value, r.unscaled);
         int64_t timeout = sensor->getTimeout();
         tstamp then = r.updated;
 
@@ -250,7 +254,8 @@ void DbusPidZone::updateFanTelemetry(void)
          */
         if (loggingEnabled)
         {
-            _log << "," << r.value;
+            const auto& v = getCachedValues(f);
+            _log << "," << v.first << "," << v.second;
         }
 
         // check if fan fail.
@@ -277,7 +282,8 @@ void DbusPidZone::updateFanTelemetry(void)
     {
         for (const auto& t : _thermalInputs)
         {
-            _log << "," << _cachedValuesByName[t];
+            const auto& v = getCachedValues(t);
+            _log << "," << v.first << "," << v.second;
         }
     }
 
@@ -296,7 +302,7 @@ void DbusPidZone::updateSensors(void)
         ReadReturn r = sensor->read();
         int64_t timeout = sensor->getTimeout();
 
-        _cachedValuesByName[t] = r.value;
+        _cachedValuesByName[t] = std::make_pair(r.value, r.unscaled);
         tstamp then = r.updated;
 
         auto duration = duration_cast<std::chrono::seconds>(now - then).count();
@@ -329,7 +335,7 @@ void DbusPidZone::initializeCache(void)
 {
     for (const auto& f : _fanInputs)
     {
-        _cachedValuesByName[f] = 0;
+        _cachedValuesByName[f] = std::make_pair(0, 0);
 
         // Start all fans in fail-safe mode.
         _failSafeSensors.insert(f);
@@ -337,7 +343,7 @@ void DbusPidZone::initializeCache(void)
 
     for (const auto& t : _thermalInputs)
     {
-        _cachedValuesByName[t] = 0;
+        _cachedValuesByName[t] = std::make_pair(0, 0);
 
         // Start all sensors in fail-safe mode.
         _failSafeSensors.insert(t);
@@ -349,7 +355,7 @@ void DbusPidZone::dumpCache(void)
     std::cerr << "Cache values now: \n";
     for (const auto& [name, value] : _cachedValuesByName)
     {
-        std::cerr << name << ": " << value << "\n";
+        std::cerr << name << ": " << value.first << " " << value.second << "\n";
     }
 }
 
