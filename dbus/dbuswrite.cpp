@@ -32,6 +32,20 @@ namespace pid_control
 
 constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
+// Because the PWM interface is treated as write-only,
+// it has no way of knowing the fan PWM was changed by another D-Bus user,
+// perhaps somebody setting the fans into manual mode,
+// which can be done externally over IPMI.
+// Because we cache the last written PWM setpoint,
+// this means that we could be fooled into thinking the PWM was already set,
+// when in fact, the fan is at a different PWM.
+// This would cause us to appear to get stuck,
+// never updating the fan PWM,
+// even though it needed to be updated.
+// So, as a workaround, every so often, make a redundant PWM write,
+// but not so often that it generates excessive D-Bus traffic.
+constexpr int maxDupes = 60;
+
 using namespace phosphor::logging;
 
 std::unique_ptr<WriteInterface> DbusWritePercent::createDbusWrite(
@@ -63,8 +77,13 @@ void DbusWritePercent::write(double value)
 
     if (oldValue == static_cast<int64_t>(ovalue))
     {
-        return;
+        ++dupeCount;
+        if (dupeCount < maxDupes)
+        {
+            return;
+        }
     }
+
     auto writeBus = sdbusplus::bus::new_default();
     auto mesg =
         writeBus.new_method_call(connectionName.c_str(), path.c_str(),
@@ -81,10 +100,11 @@ void DbusWritePercent::write(double value)
     {
         log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
                         entry("WHAT=%s", ex.what()));
+        return;
     }
 
     oldValue = static_cast<int64_t>(ovalue);
-    return;
+    dupeCount = 0;
 }
 
 std::unique_ptr<WriteInterface>
@@ -110,8 +130,13 @@ void DbusWrite::write(double value)
 {
     if (oldValue == static_cast<int64_t>(value))
     {
-        return;
+        ++dupeCount;
+        if (dupeCount < maxDupes)
+        {
+            return;
+        }
     }
+
     auto writeBus = sdbusplus::bus::new_default();
     auto mesg =
         writeBus.new_method_call(connectionName.c_str(), path.c_str(),
@@ -128,10 +153,11 @@ void DbusWrite::write(double value)
     {
         log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
                         entry("WHAT=%s", ex.what()));
+        return;
     }
 
     oldValue = static_cast<int64_t>(value);
-    return;
+    dupeCount = 0;
 }
 
 } // namespace pid_control
