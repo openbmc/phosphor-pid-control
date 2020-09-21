@@ -31,13 +31,43 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
-
-namespace pid_control
-{
 
 using tstamp = std::chrono::high_resolution_clock::time_point;
 using namespace std::literals::chrono_literals;
+
+// Enforces minimum duration between events
+// Rreturns true if event should be allowed, false if disallowed
+bool allowThrottle(const tstamp& now, const std::chrono::seconds& pace)
+{
+    static tstamp then;
+    static bool first = true;
+
+    if (first)
+    {
+        // Special case initialization
+        then = now;
+        first = false;
+
+        // Initialization, always allow
+        return true;
+    }
+
+    auto elapsed = now - then;
+    if (elapsed < pace)
+    {
+        // Too soon since last time, disallow
+        return false;
+    }
+
+    // It has been long enough, allow
+    then = now;
+    return true;
+}
+
+namespace pid_control
+{
 
 double DbusPidZone::getMaxSetPointRequest(void) const
 {
@@ -120,6 +150,58 @@ void DbusPidZone::addThermalInput(const std::string& therm)
     _thermalInputs.push_back(therm);
 }
 
+// Updates desired RPM setpoint from optional text file
+// Returns true if rpmValue updated, false if left unchanged
+static bool fileParseRpm(const std::string& fileName, double& rpmValue)
+{
+    static constexpr std::chrono::seconds throttlePace{3};
+
+    std::string errText;
+
+    try
+    {
+        std::ifstream ifs;
+        ifs.open(fileName);
+        if (ifs)
+        {
+            int value;
+            ifs >> value;
+
+            if (value <= 0)
+            {
+                errText = "File content could not be parsed to a number";
+            }
+            else if (value <= 100)
+            {
+                errText = "File must contain RPM value, not PWM value";
+            }
+            else
+            {
+                rpmValue = static_cast<double>(value);
+                return true;
+            }
+        }
+    }
+    catch (const std::exception& e)
+    {
+        errText = "Exception: ";
+        errText += e.what();
+    }
+
+    // The file is optional, intentionally not an error if file not found
+    if (!(errText.empty()))
+    {
+        tstamp now = std::chrono::high_resolution_clock::now();
+        if (allowThrottle(now, throttlePace))
+        {
+            std::cerr << "Unable to read from '" << fileName << "': " << errText
+                      << "\n";
+        }
+    }
+
+    return false;
+}
+
 void DbusPidZone::determineMaxSetPointRequest(void)
 {
     double max = 0;
@@ -151,24 +233,15 @@ void DbusPidZone::determineMaxSetPointRequest(void)
          * fan sensors and one large fan PID for all the fans.
          */
         static constexpr auto setpointpath = "/etc/thermal.d/setpoint";
-        try
-        {
-            std::ifstream ifs;
-            ifs.open(setpointpath);
-            if (ifs.good())
-            {
-                int value;
-                ifs >> value;
 
-                /* expecting RPM setpoint, not pwm% */
-                max = static_cast<double>(value);
-            }
-        }
-        catch (const std::exception& e)
-        {
-            /* This exception is uninteresting. */
-            std::cerr << "Unable to read from '" << setpointpath << "'\n";
-        }
+        fileParseRpm(setpointpath, max);
+
+        // Allow per-zone setpoint files to override overall setpoint file
+        std::ostringstream zoneSuffix;
+        zoneSuffix << ".zone" << _zoneId;
+        std::string zoneSetpointPath = setpointpath + zoneSuffix.str();
+
+        fileParseRpm(zoneSetpointPath, max);
     }
 
     _maximumSetPoint = max;
