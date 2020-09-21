@@ -21,6 +21,8 @@
 #include "zone.hpp"
 
 #include <algorithm>
+#include <cmath>
+#include <iostream>
 
 namespace pid_control
 {
@@ -75,9 +77,36 @@ double ThermalController::inputProc(void)
         compare = std::max<double>;
     }
 
+    bool acceptable = false;
     for (const auto& in : _inputs)
     {
-        value = compare(value, _owner->getCachedValue(in));
+        double cachedValue = _owner->getCachedValue(in);
+
+        // Less than 0 is perfectly OK for temperature, but must not be NAN
+        if (!(std::isfinite(cachedValue)))
+        {
+            continue;
+        }
+
+        value = compare(value, cachedValue);
+        acceptable = true;
+    }
+
+    if (type == ThermalType::margin)
+    {
+        // Flip the sign of the final computed margin value,
+        // to make the PID coefficients look substantially better,
+        // as this avoids having to flip the sign during PID computation.
+        // In other words, it preserves the relation of matching up
+        // a numerically increasing input number (system heat) with
+        // a numerically increasing output number (fan RPM and thus PWM).
+        value = 0 - value;
+    }
+
+    if (!acceptable)
+    {
+        // While not optimal, zero is better than garbage
+        value = 0;
     }
 
     return value;
