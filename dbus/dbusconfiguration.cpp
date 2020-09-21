@@ -172,16 +172,57 @@ void debugPrint(void)
     std::cout << "}\n\n";
 }
 
-size_t getZoneIndex(const std::string& name, std::vector<std::string>& zones)
+int64_t setZoneIndex(const std::string& name,
+                     std::map<std::string, int64_t>& zones, int64_t index)
 {
-    auto it = std::find(zones.begin(), zones.end(), name);
-    if (it == zones.end())
+    auto it = zones.find(name);
+    if (it != zones.end())
     {
-        zones.emplace_back(name);
-        it = zones.end() - 1;
+        // Name already allocated, make no change, return existing
+        return it->second;
     }
 
-    return it - zones.begin();
+    // The zone name is known not to exist yet
+    for (;;)
+    {
+        bool usedIndex = false;
+
+        // See if desired index number is free
+        for (const auto& zi : zones)
+        {
+            if (index == zi.second)
+            {
+                usedIndex = true;
+                break;
+            }
+        }
+
+        // Increment until a free index number is found
+        if (usedIndex)
+        {
+            ++index;
+            continue;
+        }
+
+        break;
+    }
+
+    // Allocate and return new zone index number for this name
+    zones[name] = index;
+    return index;
+}
+
+int64_t getZoneIndex(const std::string& name,
+                     std::map<std::string, int64_t>& zones)
+{
+    auto it = zones.find(name);
+    if (it != zones.end())
+    {
+        return it->second;
+    }
+
+    // Auto-assign next unused zone number, using 0-based numbering
+    return setZoneIndex(name, zones, 0);
 }
 
 std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
@@ -615,9 +656,14 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
         }
     }
 
-    // on dbus having an index field is a bit strange, so randomly
-    // assign index based on name property
-    std::vector<std::string> foundZones;
+    // On D-Bus, although not necessary,
+    // having the "zoneID" field can still be useful,
+    // as it is used for diagnostic messages,
+    // logging file names, and so on.
+    // Accept optional "ZoneIndex" parameter to explicitly specify.
+    // If not present, or not unique, auto-assign index,
+    // using 0-based numbering, ensuring uniqueness.
+    std::map<std::string, int64_t> foundZones;
     for (const auto& configuration : configurations)
     {
         auto findZone =
@@ -627,9 +673,40 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
             const auto& zone = findZone->second;
 
             const std::string& name = std::get<std::string>(zone.at("Name"));
-            size_t index = getZoneIndex(name, foundZones);
+
+            auto findZoneIndex = zone.find("ZoneIndex");
+            if (findZoneIndex == zone.end())
+            {
+                continue;
+            }
+
+            auto ptrZoneIndex = std::get_if<double>(&(findZoneIndex->second));
+            if (!ptrZoneIndex)
+            {
+                continue;
+            }
+
+            auto desiredIndex = static_cast<int64_t>(*ptrZoneIndex);
+            auto grantedIndex = setZoneIndex(name, foundZones, desiredIndex);
+            std::cout << "Zone " << name << " is at ZoneIndex " << grantedIndex
+                      << "\n";
+        }
+    }
+
+    for (const auto& configuration : configurations)
+    {
+        auto findZone =
+            configuration.second.find(pidZoneConfigurationInterface);
+        if (findZone != configuration.second.end())
+        {
+            const auto& zone = findZone->second;
+
+            const std::string& name = std::get<std::string>(zone.at("Name"));
+
+            auto index = getZoneIndex(name, foundZones);
 
             auto& details = zoneDetailsConfig[index];
+
             details.minThermalOutput = std::visit(VariantToDoubleVisitor(),
                                                   zone.at("MinThermalOutput"));
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
@@ -639,7 +716,6 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
         // loop through all the PID configurations and fill out a sensor config
         if (findBase != configuration.second.end())
         {
-
             const auto& base =
                 configuration.second.at(pidConfigurationInterface);
             const std::string pidName = std::get<std::string>(base.at("Name"));
@@ -649,7 +725,8 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                 std::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
-                size_t index = getZoneIndex(zone, foundZones);
+                auto index = getZoneIndex(zone, foundZones);
+
                 conf::PIDConf& conf = zoneConfig[index];
                 std::vector<std::string> inputSensorNames(
                     std::get<std::vector<std::string>>(base.at("Inputs")));
@@ -842,7 +919,8 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                 std::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
             {
-                size_t index = getZoneIndex(zone, foundZones);
+                auto index = getZoneIndex(zone, foundZones);
+
                 conf::PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> inputs;
