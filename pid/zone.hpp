@@ -71,6 +71,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void updateSensors(void) override;
     void initializeCache(void) override;
     void dumpCache(void);
+    void setOutputCache(const std::string& name,
+                        std::pair<double, double> values) override;
 
     void processFans(void) override;
     void processThermals(void) override;
@@ -78,6 +80,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void addFanPID(std::unique_ptr<Controller> pid);
     void addThermalPID(std::unique_ptr<Controller> pid);
     double getCachedValue(const std::string& name) override;
+    std::pair<double, double> getCachedValues(const std::string& name) override;
+
     void addFanInput(const std::string& fan);
     void addThermalInput(const std::string& therm);
 
@@ -107,7 +111,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     std::vector<double> _RPMCeilings;
     std::vector<std::string> _fanInputs;
     std::vector<std::string> _thermalInputs;
-    std::map<std::string, double> _cachedValuesByName;
+    std::map<std::string, std::pair<double, double>> _cachedValuesByName;
+    std::map<std::string, std::pair<double, double>> _cachedFanOutputs;
     const SensorManager& _mgr;
 
     std::vector<std::unique_ptr<Controller>> _fans;
