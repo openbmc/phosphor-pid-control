@@ -89,10 +89,14 @@ DbusPassive::DbusPassive(
 
 {
     _scale = settings.scale;
-    _value = settings.value * pow(10, _scale);
-    _min = settings.min * pow(10, _scale);
-    _max = settings.max * pow(10, _scale);
-    _updated = std::chrono::high_resolution_clock::now();
+    _min = settings.min * std::pow(10.0, _scale);
+    _max = settings.max * std::pow(10.0, _scale);
+
+    // Cache this type knowledge, to avoid repeated string comparison
+    _typeMargin = (type == "margin");
+
+    // Force value to be stored, otherwise member would be uninitialized
+    updateValue(settings.value, true);
 }
 
 ReadReturn DbusPassive::read(void)
@@ -121,6 +125,17 @@ bool DbusPassive::getFailed(void) const
         {
             return true;
         }
+    }
+
+    // If a reading has came in,
+    // but its value bad in some way (determined by sensor type),
+    // indicate this sensor has failed,
+    // until another value comes in that is no longer bad.
+    // This is different from the overall _failed flag,
+    // which is set and cleared by other causes.
+    if (_badReading)
+    {
+        return true;
     }
 
     return _failed || !_functional;
@@ -156,6 +171,53 @@ double DbusPassive::getMin(void)
     return _min;
 }
 
+void DbusPassive::updateValue(double value, bool force)
+{
+    _badReading = false;
+
+    // Do not let a NAN, or other floating-point oddity, be used to update
+    // the value, as that indicates the sensor has no valid reading.
+    if (!(std::isfinite(value)))
+    {
+        _badReading = true;
+
+        // Do not continue with a bad reading, unless caller forcing
+        if (!force)
+        {
+            return;
+        }
+    }
+
+    value *= std::pow(10.0, _scale);
+
+    auto unscaled = value;
+    scaleSensorReading(_min, _max, value);
+
+    if (_typeMargin)
+    {
+        // Unlike an absolute temperature sensor,
+        // where 0 degrees C is a viable reading,
+        // a raw value received of 0 (or negative) margin is bad.
+        // Either it indicates margin not calculated properly,
+        // or somebody forgot to set the margin-zero setpoint,
+        // or the system is really overheating that much.
+        // Either way, indicate sensor failure when this happens,
+        // so that we know to go into failsafe mode.
+        if (unscaled <= 0.0)
+        {
+            _badReading = true;
+
+            // Do not continue with a bad reading, unless caller forcing
+            if (!force)
+            {
+                return;
+            }
+        }
+    }
+
+    setValue(value);
+}
+
 int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 {
     std::string msgSensor;
@@ -171,11 +233,7 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
             double value =
                 std::visit(VariantToDoubleVisitor(), valPropMap->second);
 
-            value *= std::pow(10, owner->getScale());
-
-            scaleSensorReading(owner->getMin(), owner->getMax(), value);
-
-            owner->setValue(value);
+            owner->updateValue(value, false);
         }
     }
     else if (msgSensor == "xyz.openbmc_project.Sensor.Threshold.Critical")

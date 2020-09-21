@@ -56,9 +56,12 @@ class DbusPassive : public ReadInterface
     ReadReturn read(void) override;
     bool getFailed(void) const override;
 
+    void updateValue(double value, bool force);
     void setValue(double value);
+
     void setFailed(bool value);
     void setFunctional(bool value);
+
     int64_t getScale(void);
     std::string getID(void);
     double getMax(void);
@@ -76,6 +79,9 @@ class DbusPassive : public ReadInterface
     double _min = 0;
     bool _failed = false;
     bool _functional = true;
+
+    bool _typeMargin = false;
+    bool _badReading = false;
 
     std::string path;
     std::shared_ptr<DbusPassiveRedundancy> redundancy;
