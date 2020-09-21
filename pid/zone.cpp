@@ -31,6 +31,7 @@
 #include <fstream>
 #include <iostream>
 #include <memory>
+#include <sstream>
 #include <string>
 
 namespace pid_control
@@ -168,6 +169,30 @@ void DbusPidZone::determineMaxSetPointRequest(void)
         {
             /* This exception is uninteresting. */
             std::cerr << "Unable to read from '" << setpointpath << "'\n";
+        }
+
+        // Allow per-zone setpoint files to override overall setpoint file
+        std::string zoneSetpointPath = setpointpath;
+        std::ostringstream zoneSuffix;
+        zoneSuffix << ".zone" << _zoneId;
+        zoneSetpointPath += zoneSuffix.str();
+        try
+        {
+            std::ifstream ifs;
+            ifs.open(zoneSetpointPath);
+            if (ifs.good())
+            {
+                int value;
+                ifs >> value;
+
+                /* expecting RPM setpoint, not pwm% */
+                max = static_cast<double>(value);
+            }
+        }
+        catch (const std::exception& e)
+        {
+            /* This exception is uninteresting. */
+            std::cerr << "Unable to read from '" << zoneSetpointPath << "'\n";
         }
     }
 
