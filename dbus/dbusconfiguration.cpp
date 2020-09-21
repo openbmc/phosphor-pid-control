@@ -18,6 +18,7 @@
 #include "conf.hpp"
 #include "dbushelper.hpp"
 #include "dbusutil.hpp"
+#include "sensors/build_utils.hpp"
 #include "util.hpp"
 
 #include <boost/asio/steady_timer.hpp>
@@ -637,9 +638,16 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         inputSensorInterface.second;
                     const std::string& inputSensorPath =
                         inputSensorInterface.first;
-                    // todo: maybe un-hardcode this if we run into slower
-                    // timeouts with sensors
-                    if (pidClass == "temp")
+
+                    // Setting timeout to 0 is intentional, as D-Bus passive
+                    // sensor updates are pushed in, not pulled by timer poll.
+                    // Setting ignoreDbusMinMax is intentional, as this
+                    // prevents normalization of values to [0.0, 1.0] range,
+                    // which would mess up the PID loop math.
+                    // All non-fan PID classes should be initialized this way.
+                    // As for why a fan should not use this code path, see
+                    // the ed1dafdf168def37c65bfb7a5efd18d9dbe04727 commit.
+                    if ((pidClass == "temp") || (pidClass == "margin"))
                     {
                         std::string inputSensorName =
                             getSensorNameFromPath(inputSensorPath);
@@ -651,6 +659,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         config.ignoreDbusMinMax = true;
                         config.unavailableAsFailed = unavailableAsFailed;
                     }
+
                     if (dbusInterface != sensorInterface)
                     {
                         /* all expected inputs in the configuration are expected
