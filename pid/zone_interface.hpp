@@ -41,8 +41,18 @@ class ZoneInterface
      * starts processing values to control fans.
      */
     virtual void initializeCache(void) = 0;
+
     /** Return cached value for sensor by name. */
     virtual double getCachedValue(const std::string& name) = 0;
+    /** Return cached values, both scaled and original unscaled values,
+     * for sensor by name. A compatibility interface is provided here,
+     * for subclasses that only implement getCachedValue() and do not care
+     * about maintaining the distinction between scaled and unscaled values.
+     */
+    virtual std::pair<double, double> getCachedValues(const std::string& name)
+    {
+        return std::make_pair(getCachedValue(name), getCachedValue(name));
+    }
 
     /** Add a set point value for the Max Set Point computation. */
     virtual void addSetPoint(double setpoint) = 0;
