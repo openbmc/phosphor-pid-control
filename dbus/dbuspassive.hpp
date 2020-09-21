@@ -57,6 +57,7 @@ class DbusPassive : public ReadInterface
     bool getFailed(void) const override;
 
     void updateValue(double value, bool force);
+    void setValue(double value, double unscaled);
     void setValue(double value);
 
     void setFailed(bool value);
@@ -75,6 +76,7 @@ class DbusPassive : public ReadInterface
 
     std::mutex _lock;
     double _value = 0;
+    double _unscaled = 0;
     double _max = 0;
     double _min = 0;
     bool _failed = false;
