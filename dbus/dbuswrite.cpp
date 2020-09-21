@@ -30,6 +30,10 @@
 namespace pid_control
 {
 
+// TODO(): These are global variables, should refactor to a cleaner interface
+extern double peekLastWrittenValue;
+extern double peekLastWrittenUnscaled;
+
 constexpr const char* pwmInterface = "xyz.openbmc_project.Control.FanPwm";
 
 using namespace phosphor::logging;
@@ -60,6 +64,9 @@ void DbusWritePercent::write(double value)
     double range = maximum - minimum;
     double offset = range * value;
     double ovalue = offset + minimum;
+
+    peekLastWrittenValue = value;
+    peekLastWrittenUnscaled = static_cast<int64_t>(ovalue);
 
     if (oldValue == static_cast<int64_t>(ovalue))
     {
@@ -108,6 +115,9 @@ std::unique_ptr<WriteInterface>
 
 void DbusWrite::write(double value)
 {
+    peekLastWrittenValue = value;
+    peekLastWrittenUnscaled = static_cast<int64_t>(value);
+
     if (oldValue == static_cast<int64_t>(value))
     {
         return;
