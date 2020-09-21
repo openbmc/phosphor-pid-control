@@ -184,7 +184,33 @@ int main(int argc, char* argv[])
 
     CLI11_PARSE(app, argc, argv);
 
-    loggingEnabled = (!loggingPath.empty());
+    static constexpr auto loggingEnablePath = "/etc/thermal.d/logging";
+    static constexpr auto tuningEnablePath = "/etc/thermal.d/tuning";
+
+    // If this file exists, enable logging at runtime
+    std::ifstream fsLogging(loggingEnablePath);
+    if (fsLogging)
+    {
+        // Unless file contents are a valid directory path, use system default
+        std::getline(fsLogging, loggingPath);
+        if (!(std::filesystem::exists(loggingPath)))
+        {
+            loggingPath = std::filesystem::temp_directory_path();
+        }
+
+        loggingEnabled = true;
+        fsLogging.close();
+        std::cerr << "Logging enabled: " << loggingPath << "\n";
+    }
+
+    // If this file exists, enable tuning at runtime
+    std::ifstream fsTuning(tuningEnablePath);
+    if (fsTuning)
+    {
+        tuningEnabled = true;
+        fsTuning.close();
+        std::cerr << "Tuning enabled\n";
+    }
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     // Create a manager for the ModeBus because we own it.
