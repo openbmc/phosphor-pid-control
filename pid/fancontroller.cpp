@@ -21,6 +21,7 @@
 #include "zone.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 
 namespace pid_control
@@ -62,7 +63,7 @@ double FanController::inputProc(void)
              * sort of have to guess -- all the other fans are reporting, why
              * not this one?  Maybe it's unable to be read, so it's "bad."
              */
-            if (value > 0)
+            if ((!(std::isnan(value))) && (value > 0))
             {
                 values.push_back(value);
             }
