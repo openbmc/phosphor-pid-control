@@ -26,6 +26,10 @@
 namespace pid_control
 {
 
+// TODO(): These are global variables, should refactor to a cleaner interface
+extern double peekLastWrittenValue;
+extern double peekLastWrittenUnscaled;
+
 std::unique_ptr<PIDController>
     FanController::createFanPid(ZoneInterface* owner, const std::string& id,
                                 const std::vector<std::string>& inputs,
@@ -139,6 +143,11 @@ void FanController::outputProc(double value)
     {
         auto sensor = _owner->getSensor(it);
         sensor->write(percent);
+
+        // "If it's a stupid idea that works, then it's not a stupid idea."
+        _owner->setOutputCache(
+            sensor->getName(),
+            std::make_pair(peekLastWrittenValue, peekLastWrittenUnscaled));
     }
 
     return;

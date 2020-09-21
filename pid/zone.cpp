@@ -115,6 +115,12 @@ std::pair<double, double> DbusPidZone::getCachedValues(const std::string& name)
     return _cachedValuesByName.at(name);
 }
 
+void DbusPidZone::setOutputCache(const std::string& name,
+                                 std::pair<double, double> values)
+{
+    _cachedFanOutputs[name] = values;
+}
+
 void DbusPidZone::addFanInput(const std::string& fan)
 {
     _fanInputs.push_back(fan);
@@ -183,7 +189,7 @@ void DbusPidZone::determineMaxSetPointRequest(void)
 void DbusPidZone::initializeLog(void)
 {
     /* Print header for log file:
-     * epoch_ms,setpt,fan1,fan1_raw,fan2,fan2_raw,fanN,fanN_raw,sensor1,sensor1_raw,sensor2,sensor2_raw,sensorN,sensorN_raw,failsafe
+     * epoch_ms,setpt,fan1,fan1_raw,fan1_pwm,fan1_pwm_raw,fan2,fan2_raw,fan2_pwm,fan2_pwm_raw,fanN,fanN_raw,fanN_pwm,fanN_pwm_raw,sensor1,sensor1_raw,sensor2,sensor2_raw,sensorN,sensorN_raw,failsafe
      */
 
     _log << "epoch_ms,setpt";
@@ -191,6 +197,7 @@ void DbusPidZone::initializeLog(void)
     for (const auto& f : _fanInputs)
     {
         _log << "," << f << "," << f << "_raw";
+        _log << "," << f << "_pwm," << f << "_pwm_raw";
     }
     for (const auto& t : _thermalInputs)
     {
@@ -204,7 +211,6 @@ void DbusPidZone::initializeLog(void)
 void DbusPidZone::writeLog(const std::string& value)
 {
     _log << value;
-    return;
 }
 
 /*
@@ -256,6 +262,8 @@ void DbusPidZone::updateFanTelemetry(void)
         {
             const auto& v = getCachedValues(f);
             _log << "," << v.first << "," << v.second;
+            const auto& p = _cachedFanOutputs[f];
+            _log << "," << p.first << "," << p.second;
         }
 
         // check if fan fail.
@@ -336,6 +344,7 @@ void DbusPidZone::initializeCache(void)
     for (const auto& f : _fanInputs)
     {
         _cachedValuesByName[f] = std::make_pair(0, 0);
+        _cachedFanOutputs[f] = std::make_pair(0, 0);
 
         // Start all fans in fail-safe mode.
         _failSafeSensors.insert(f);
@@ -354,6 +363,12 @@ void DbusPidZone::dumpCache(void)
 {
     std::cerr << "Cache values now: \n";
     for (const auto& [name, value] : _cachedValuesByName)
+    {
+        std::cerr << name << ": " << value.first << " " << value.second << "\n";
+    }
+
+    std::cerr << "Fan outputs now: \n";
+    for (const auto& [name, value] : _cachedFanOutputs)
     {
         std::cerr << name << ": " << value.first << " " << value.second << "\n";
     }
