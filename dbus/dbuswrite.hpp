@@ -47,6 +47,7 @@ class DbusWritePercent : public WriteInterface
     std::string path;
     std::string connectionName;
     int64_t oldValue = -1;
+    int dupeCount = 0;
 };
 
 class DbusWrite : public WriteInterface
@@ -68,6 +69,7 @@ class DbusWrite : public WriteInterface
     std::string path;
     std::string connectionName;
     int64_t oldValue = -1;
+    int dupeCount = 0;
 };
 
 } // namespace pid_control
