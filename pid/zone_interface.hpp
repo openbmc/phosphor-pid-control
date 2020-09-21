@@ -57,6 +57,15 @@ class ZoneInterface
 
     /** Return cached value for sensor by name. */
     virtual double getCachedValue(const std::string& name) = 0;
+    /** Return cached values, both scaled and original unscaled values,
+     * for sensor by name. A compatibility interface is provided here,
+     * for subclasses that only implement getCachedValue() and do not care
+     * about maintaining the distinction between scaled and unscaled values.
+     */
+    virtual ValueCacheEntry getCachedValues(const std::string& name)
+    {
+        return {getCachedValue(name), getCachedValue(name)};
+    }
 
     /** Add a set point value for the Max Set Point computation. */
     virtual void addSetPoint(double setpoint) = 0;

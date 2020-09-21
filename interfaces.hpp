@@ -9,10 +9,12 @@ struct ReadReturn
 {
     double value;
     std::chrono::high_resolution_clock::time_point updated;
+    double unscaled = value;
 
     bool operator==(const ReadReturn& rhs) const
     {
-        return (this->value == rhs.value && this->updated == rhs.updated);
+        return ((this->value == rhs.value) && (this->updated == rhs.updated) &&
+                (this->unscaled == rhs.unscaled));
     }
 };
 
