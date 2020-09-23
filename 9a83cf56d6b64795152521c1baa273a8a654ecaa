@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "7aa7aec4_ea7b0412",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2020-09-23T15:48:05Z",
+      "side": 1,
+      "message": "Is there something else that sets the PWM values?  This seems like something where we should prevent the other senders from sending if we\u0027re in tuning mode, which is how the dbus APIs work today if you override the PWM values from dbus.",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 44
+      },
+      "revId": "9a83cf56d6b64795152521c1baa273a8a654ecaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5563b660_aacb215c",
+        "filename": "dbus/dbuswrite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2020-09-23T15:48:05Z",
+      "side": 1,
+      "message": "Can we only turn this on if we\u0027re in tuning mode?  Every property write on dbus is expensive, and if 2 entities are trying to take control of the PWM, I think we should solve that problem at its source, otherwise the fan will occasionally jump up to a higher value while you\u0027re tuning.",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 28
+      },
+      "revId": "9a83cf56d6b64795152521c1baa273a8a654ecaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
