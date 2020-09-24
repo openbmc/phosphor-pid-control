@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "5f9b42a4_5efe98fe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-09-24T05:55:22Z",
+      "side": 1,
+      "message": "There could be something else, but the whole point is that the program does not know it. The PWM is write-only. Thus, the program needs to repeat the PWM writing every so often, because there\u0027s really no other way to guarantee it will be reliable.",
+      "parentUuid": "7aa7aec4_ea7b0412",
+      "range": {
+        "startLine": 13,
+        "startChar": 0,
+        "endLine": 18,
+        "endChar": 44
+      },
+      "revId": "9a83cf56d6b64795152521c1baa273a8a654ecaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5563b660_aacb215c",
         "filename": "dbus/dbuswrite.cpp",
         "patchSetId": 1
@@ -45,6 +69,30 @@
       "revId": "9a83cf56d6b64795152521c1baa273a8a654ecaa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ad6e0b74_7466d20b",
+        "filename": "dbus/dbuswrite.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-09-24T05:55:22Z",
+      "side": 1,
+      "message": "I\u0027m happy to increase the time. I found that the value of 60 here roughly corresponds to 6 seconds. If D-Bus is slow enough that this is a burden, we can increase the time to every 15-30 seconds. We could then just tell users to expect to wait a little longer before the fans return to automatic mode.\n\nIf an external entity is trying to take control of the PWM, that would be bad, and you\u0027re right, it should be dealt with at its source. The point is to put a minimum amount of time between PWM write attempts, so that if the user has just switched from manual mode back to automatic mode (for example), the PWM will still be written properly within a few seconds, instead of never being written at all.",
+      "parentUuid": "5563b660_aacb215c",
+      "range": {
+        "startLine": 34,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 28
+      },
+      "revId": "9a83cf56d6b64795152521c1baa273a8a654ecaa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
