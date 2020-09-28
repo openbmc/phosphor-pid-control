@@ -12,6 +12,8 @@ namespace ipmi
 class ZoneControlInterface
 {
   public:
+    virtual ~ZoneControlInterface() = default;
+
     // Reads the fan control property (either manual or failsafe) and returns an
     // IPMI code based on success or failure of this.
     virtual uint8_t getFanCtrlProperty(uint8_t zoneId, bool* value,
