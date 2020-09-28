@@ -33,7 +33,7 @@
 namespace pid_control
 {
 
-static void processThermals(ZoneInterface* zone)
+static void processThermals(std::shared_ptr<ZoneInterface> zone)
 {
     // Get the latest margins.
     zone->updateSensors();
@@ -46,7 +46,8 @@ static void processThermals(ZoneInterface* zone)
     zone->determineMaxSetPointRequest();
 }
 
-void pidControlLoop(ZoneInterface* zone, boost::asio::steady_timer& timer,
+void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
+                    std::shared_ptr<boost::asio::steady_timer> timer,
                     bool first, int ms100cnt)
 {
     if (first)
@@ -60,9 +61,9 @@ void pidControlLoop(ZoneInterface* zone, boost::asio::steady_timer& timer,
         processThermals(zone);
     }
 
-    timer.expires_after(std::chrono::milliseconds(100));
-    timer.async_wait(
-        [zone, &timer, ms100cnt](const boost::system::error_code& ec) mutable {
+    timer->expires_after(std::chrono::milliseconds(100));
+    timer->async_wait(
+        [zone, timer, ms100cnt](const boost::system::error_code& ec) mutable {
             if (ec == boost::asio::error::operation_aborted)
             {
                 return; // timer being canceled, stop loop

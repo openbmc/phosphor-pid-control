@@ -79,10 +79,15 @@ namespace pid_control
 void restartControlLoops()
 {
     static SensorManager mgmr;
-    static std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>> zones;
-    static std::list<boost::asio::steady_timer> timers;
+    static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
+    static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
 
+    for (const auto timer : timers)
+    {
+        timer->cancel();
+    }
     timers.clear();
+    zones.clear();
 
     const std::string& path =
         (configPath.length() > 0) ? configPath : jsonConfigurationPath;
@@ -126,9 +131,10 @@ void restartControlLoops()
 
     for (const auto& i : zones)
     {
-        auto& timer = timers.emplace_back(io);
+        std::shared_ptr<boost::asio::steady_timer> timer = timers.emplace_back(
+            std::make_shared<boost::asio::steady_timer>(io));
         std::cerr << "pushing zone " << i.first << "\n";
-        pidControlLoop(i.second.get(), timer);
+        pidControlLoop(i.second, timer);
     }
 }
 
