@@ -44,12 +44,12 @@ static std::string getControlPath(int64_t zone)
     return std::string(objectPath) + std::to_string(zone);
 }
 
-std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>>
+std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
     buildZones(const std::map<int64_t, conf::PIDConf>& zonePids,
                std::map<int64_t, struct conf::ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus)
 {
-    std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>> zones;
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
 
     for (const auto& [zoneId, pidConfig] : zonePids)
     {
@@ -67,7 +67,7 @@ std::unordered_map<int64_t, std::unique_ptr<ZoneInterface>>
             throw std::runtime_error(err);
         }
 
-        auto zone = std::make_unique<DbusPidZone>(
+        auto zone = std::make_shared<DbusPidZone>(
             zoneId, zoneConf->second.minThermalOutput,
             zoneConf->second.failsafePercent, mgr, modeControlBus,
             getControlPath(zoneId).c_str(), deferSignals);
