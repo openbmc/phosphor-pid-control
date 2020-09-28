@@ -17,7 +17,8 @@ namespace pid_control
  * @param[in] first - boolean to denote if initialization needs to be run.
  * @param[in] ms100cnt - loop timer counter.
  */
-void pidControlLoop(ZoneInterface* zone, boost::asio::steady_timer& timer,
+void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
+                    std::shared_ptr<boost::asio::steady_timer> timer,
                     bool first = true, int ms100cnt = 0);
 
 } // namespace pid_control
