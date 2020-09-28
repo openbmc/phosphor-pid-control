@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d9f3470f_72bb704e",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1000233
+      },
+      "writtenOn": "2020-09-28T23:36:12Z",
+      "side": 0,
+      "message": "Won\u0027t this affect the configuration of temp sensors?",
+      "revId": "270d27defd3c73c150ea58ebc5cc132dc77877da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
