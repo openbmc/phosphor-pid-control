@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b9088a4e_5309e873",
+        "filename": "dbus/dbuswrite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000100
+      },
+      "writtenOn": "2020-09-29T17:35:46Z",
+      "side": 1,
+      "message": "Perhaps it shouldn\u0027t be treated as write-only, but -- there is a time constraint, so reading it all the time isn\u0027t ideal either.",
+      "revId": "1e329d00c28ceb4a62713fae5ccfd59bce0ccf2d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
