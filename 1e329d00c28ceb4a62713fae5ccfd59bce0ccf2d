@@ -16,6 +16,24 @@
       "revId": "1e329d00c28ceb4a62713fae5ccfd59bce0ccf2d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6c146ff1_669ee526",
+        "filename": "dbus/dbuswrite.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 35,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-09-29T19:45:40Z",
+      "side": 1,
+      "message": "Unfortunately, the way the sensors are implemented now, it becomes ambiguous. In dbus-sensors, any write from D-Bus to a sensor will set the \"overriddenState\" flag on that sensor, which causes the sensor to no longer self-update itself with new values learned from the hardware, which is a drawback. So, even if we could treat this as read-write instead of write-only, we would only be able to read back the value that was just written, thus not learning anything new.",
+      "parentUuid": "b9088a4e_5309e873",
+      "revId": "1e329d00c28ceb4a62713fae5ccfd59bce0ccf2d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
