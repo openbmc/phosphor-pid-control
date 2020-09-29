@@ -16,6 +16,24 @@
       "revId": "270d27defd3c73c150ea58ebc5cc132dc77877da",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6891b77_5294360e",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 716,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-09-29T09:59:45Z",
+      "side": 0,
+      "message": "Good point. I\u0027m not sure why the original code wanted to force \"ignoreDbusMinMax\" to true, for temp sensors, but not for margin sensors, interestingly enough. Most of the math in the inner PID loop routine already takes in scaled values, between 0.0 (min) and 1.0 (max), so if temperature were not also scaled, it would make the math really weird. It seems to me that it works better when all values are scaled.",
+      "parentUuid": "d9f3470f_72bb704e",
+      "revId": "270d27defd3c73c150ea58ebc5cc132dc77877da",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
