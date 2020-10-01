@@ -54,6 +54,11 @@ std::unique_ptr<WriteInterface> DbusWritePercent::createDbusWrite(
 
 void DbusWritePercent::write(double value)
 {
+    return write(value, false, nullptr);
+}
+
+void DbusWritePercent::write(double value, bool needRedundant, int64_t *rawWritten)
+{
     double minimum = getMin();
     double maximum = getMax();
 
@@ -63,7 +68,14 @@ void DbusWritePercent::write(double value)
 
     if (oldValue == static_cast<int64_t>(ovalue))
     {
-        return;
+        if (!needRedundant)
+        {
+            if (rawWritten)
+            {
+                *rawWritten = oldValue;
+            }
+            return;
+        }
     }
     auto writeBus = sdbusplus::bus::new_default();
     auto mesg =
@@ -84,6 +96,10 @@ void DbusWritePercent::write(double value)
     }
 
     oldValue = static_cast<int64_t>(ovalue);
+    if (rawWritten)
+    {
+        *rawWritten = oldValue;
+    }
     return;
 }
 
@@ -108,9 +124,21 @@ std::unique_ptr<WriteInterface>
 
 void DbusWrite::write(double value)
 {
+    return write(value, false, nullptr);
+}
+
+void DbusWrite::write(double value, bool needRedundant, int64_t *rawWritten)
+{
     if (oldValue == static_cast<int64_t>(value))
     {
-        return;
+        if (!needRedundant)
+        {
+            if (rawWritten)
+            {
+                *rawWritten = oldValue;
+            }
+            return;
+        }
     }
     auto writeBus = sdbusplus::bus::new_default();
     auto mesg =
@@ -131,6 +159,10 @@ void DbusWrite::write(double value)
     }
 
     oldValue = static_cast<int64_t>(value);
+    if (rawWritten)
+    {
+        *rawWritten = oldValue;
+    }
     return;
 }
 

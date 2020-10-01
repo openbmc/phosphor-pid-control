@@ -53,6 +53,18 @@ class WriteInterface
     virtual void write(double value) = 0;
 
     /*
+     * An optional, richer, interface to write().
+     * needRedundant = true to force writing, even if raw value unchanged.
+     * rawWritten = non-null to learn the actual raw value written.
+     */
+    virtual void write(double value, bool needRedundant, int64_t *rawWritten)
+    {
+      (void)needRedundant;
+      (void)rawWritten;
+      return write(value);
+    }
+    
+    /*
      * All WriteInterfaces have min/max available in case they want to error
      * check.
      */
