@@ -41,6 +41,20 @@ class ZoneInterface
      * starts processing values to control fans.
      */
     virtual void initializeCache(void) = 0;
+    /** Optionally adds fan outputs to an output cache, which is different
+     * from the input cache accessed by getCachedValue(), so it is possible
+     * to have entries with the same name in both the output cache and
+     * the input cache. The output cache is used for logging, to show
+     * the PWM values determined by the PID loop, next to the resulting RPM.
+     */
+    virtual void setOutputCache(const std::string& name,
+                                std::pair<double, double> values)
+    {
+        // If subclass does not override this function, simply discard
+        (void)name;
+        (void)values;
+    }
+
     /** Return cached value for sensor by name. */
     virtual double getCachedValue(const std::string& name) = 0;
 
@@ -75,6 +89,14 @@ class ZoneInterface
      * mode (the default).
      */
     virtual bool getManualMode(void) const = 0;
+
+    /** Returns true if a redundant fan PWM write is needed. Redundant write
+     * is used when returning the fan to automatic mode from manual mode.
+     */
+    virtual bool getRedundantWrite(void) const
+    {
+        return false;
+    }
 
     /** For each fan pid, do processing. */
     virtual void processFans(void) = 0;
