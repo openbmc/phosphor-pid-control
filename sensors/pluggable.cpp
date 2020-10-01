@@ -29,6 +29,11 @@ void PluggableSensor::write(double value)
     _writer->write(value);
 }
 
+void PluggableSensor::write(double value, bool force, int64_t* written)
+{
+    _writer->write(value, force, written);
+}
+
 bool PluggableSensor::getFailed(void)
 {
     return _reader->getFailed();
