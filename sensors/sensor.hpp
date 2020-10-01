@@ -36,6 +36,14 @@ class Sensor
 
     virtual ReadReturn read(void) = 0;
     virtual void write(double value) = 0;
+
+    virtual void write(double value, bool force, int64_t* written)
+    {
+        (void)force;
+        (void)written;
+        return write(value);
+    }
+
     virtual bool getFailed(void)
     {
         return false;

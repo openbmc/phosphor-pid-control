@@ -24,6 +24,7 @@ class PluggableSensor : public Sensor
 
     ReadReturn read(void) override;
     void write(double value) override;
+    void write(double value, bool force, int64_t* written) override;
     bool getFailed(void) override;
 
   private:
