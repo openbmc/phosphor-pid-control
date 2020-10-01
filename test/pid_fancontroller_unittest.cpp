@@ -171,10 +171,13 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
     SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
 
+    EXPECT_CALL(z, getRedundantWrite())
+        .WillOnce(Return(false))
+        .WillOnce(Return(false));
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
-    EXPECT_CALL(*sm1, write(0.75));
+    EXPECT_CALL(*sm1, write(0.75, false, _));
     EXPECT_CALL(z, getSensor(StrEq("fan1"))).WillOnce(Return(s2.get()));
-    EXPECT_CALL(*sm2, write(0.75));
+    EXPECT_CALL(*sm2, write(0.75, false, _));
 
     // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.
@@ -207,10 +210,13 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected)
     SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
     SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
 
+    EXPECT_CALL(z, getRedundantWrite())
+        .WillOnce(Return(false))
+        .WillOnce(Return(false));
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
-    EXPECT_CALL(*sm1, write(0.5));
+    EXPECT_CALL(*sm1, write(0.5, false, _));
     EXPECT_CALL(z, getSensor(StrEq("fan1"))).WillOnce(Return(s2.get()));
-    EXPECT_CALL(*sm2, write(0.5));
+    EXPECT_CALL(*sm2, write(0.5, false, _));
 
     // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.
@@ -243,12 +249,49 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     double percent = 80;
     double value = percent / 100;
 
+    EXPECT_CALL(z, getRedundantWrite()).WillOnce(Return(false));
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
-    EXPECT_CALL(*sm1, write(value));
+    EXPECT_CALL(*sm1, write(value, false, _));
 
     // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.
     p->outputProc(percent);
+}
+
+TEST(FanControllerTest, OutputProc_VerifyRedundantWrites)
+{
+    /* when a zone indicates that redundant writes are enabled
+     * make sure the fan controller honors this by forcing a sensor write
+     */
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fan0", "fan1"};
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p =
+        FanController::createFanPid(&z, "fan1", inputs, initial);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(false));
+
+    int64_t timeout = 0;
+    std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
+    std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
+    // Grab pointers for mocking.
+    SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
+    SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
+
+    EXPECT_CALL(z, getRedundantWrite())
+        .WillOnce(Return(true))
+        .WillOnce(Return(true));
+    EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
+    EXPECT_CALL(*sm1, write(0.5, true, _));
+    EXPECT_CALL(z, getSensor(StrEq("fan1"))).WillOnce(Return(s2.get()));
+    EXPECT_CALL(*sm2, write(0.5, true, _));
+
+    // This is a fan PID, so calling outputProc will try to write this value
+    // to the sensors.
+    p->outputProc(50.0);
 }
 
 } // namespace

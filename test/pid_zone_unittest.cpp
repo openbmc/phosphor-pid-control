@@ -125,6 +125,39 @@ TEST_F(PidZoneTest, GetAndSetManualModeTest_BehavesAsExpected)
     EXPECT_TRUE(zone->getManualMode());
 }
 
+TEST_F(PidZoneTest, SetManualMode_RedundantWritesEnabledOnceAfterManualMode)
+{
+    // Tests adding a fan PID controller to the zone, and verifies it's
+    // touched during processing.
+
+    std::unique_ptr<PIDController> tpid =
+        std::make_unique<ControllerMock>("fan1", zone.get());
+    ControllerMock* tmock = reinterpret_cast<ControllerMock*>(tpid.get());
+
+    // Access the internal pid configuration to clear it out (unrelated to the
+    // test).
+    ec::pid_info_t* info = tpid->getPIDInfo();
+    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+
+    zone->addFanPID(std::move(tpid));
+
+    EXPECT_CALL(*tmock, setptProc()).WillOnce(Return(10.0));
+    EXPECT_CALL(*tmock, inputProc()).WillOnce(Return(11.0));
+    EXPECT_CALL(*tmock, outputProc(_));
+
+    // while zone is in auto mode redundant writes should be disabled
+    EXPECT_FALSE(zone->getRedundantWrite());
+
+    // but switching from manual to auto enables a single redundant write
+    zone->setManualMode(true);
+    zone->setManualMode(false);
+    EXPECT_TRUE(zone->getRedundantWrite());
+
+    // after one iteration of a pid loop redundant write should be cleared
+    zone->processFans();
+    EXPECT_FALSE(zone->getRedundantWrite());
+}
+
 TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
 {
     // Tests addSetPoint, clearSetPoints, determineMaxSetPointRequest
