@@ -138,7 +138,20 @@ void FanController::outputProc(double value)
     for (const auto& it : _inputs)
     {
         auto sensor = _owner->getSensor(it);
-        sensor->write(percent);
+        auto redundantWrite = _owner->getRedundantWrite();
+        if (redundantWrite)
+        {
+            std::cerr << "### Sensor " << sensor->getName()
+                      << " redundantWrite is true\n";
+        }
+        int64_t rawWritten;
+        sensor->write(percent, redundantWrite, &rawWritten);
+        auto unscaledWritten = static_cast<double>(rawWritten);
+        _owner->setOutputCache(sensor->getName(),
+                               std::make_pair(percent, unscaledWritten));
+        std::cerr << "### Sensor " << sensor->getName()
+                  << " wrote percent=" << percent << ",raw=" << rawWritten
+                  << ",unscaled=" << unscaledWritten << "\n";
     }
 
     return;

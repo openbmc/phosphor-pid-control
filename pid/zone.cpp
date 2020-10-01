@@ -52,6 +52,13 @@ bool DbusPidZone::getManualMode(void) const
 void DbusPidZone::setManualMode(bool mode)
 {
     _manualMode = mode;
+
+    // If returning to automatic mode, need to restore PWM from PID loop
+    if (!mode)
+    {
+        _redundantWrite = true;
+        std::cerr << "### Setting _redundantWrite to true\n";
+    }
 }
 
 bool DbusPidZone::getFailSafeMode(void) const
@@ -359,6 +366,13 @@ void DbusPidZone::processFans(void)
     {
         p->process();
     }
+
+    if (_redundantWrite)
+    {
+        // This is only needed once
+        std::cerr << "### Setting _redundantWrite to false\n";
+        _redundantWrite = false;
+    }
 }
 
 void DbusPidZone::processThermals(void)
@@ -372,6 +386,11 @@ void DbusPidZone::processThermals(void)
 Sensor* DbusPidZone::getSensor(const std::string& name)
 {
     return _mgr.getSensor(name);
+}
+
+bool DbusPidZone::getRedundantWrite(void) const
+{
+    return _redundantWrite;
 }
 
 bool DbusPidZone::manual(bool value)
