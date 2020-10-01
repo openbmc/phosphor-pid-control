@@ -145,7 +145,9 @@ void FanController::outputProc(double value)
     for (const auto& it : _inputs)
     {
         auto sensor = _owner->getSensor(it);
-        sensor->write(percent);
+        auto redundantWrite = _owner->getRedundantWrite();
+        int64_t rawWritten;
+        sensor->write(percent, redundantWrite, &rawWritten);
     }
 
     return;

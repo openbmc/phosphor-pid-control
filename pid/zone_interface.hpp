@@ -41,6 +41,7 @@ class ZoneInterface
      * starts processing values to control fans.
      */
     virtual void initializeCache(void) = 0;
+
     /** Return cached value for sensor by name. */
     virtual double getCachedValue(const std::string& name) = 0;
 
@@ -75,6 +76,11 @@ class ZoneInterface
      * mode (the default).
      */
     virtual bool getManualMode(void) const = 0;
+
+    /** Returns true if a redundant fan PWM write is needed. Redundant write
+     * is used when returning the fan to automatic mode from manual mode.
+     */
+    virtual bool getRedundantWrite(void) const = 0;
 
     /** For each fan pid, do processing. */
     virtual void processFans(void) = 0;

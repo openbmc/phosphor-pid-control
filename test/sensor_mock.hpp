@@ -18,6 +18,7 @@ class SensorMock : public Sensor
 
     MOCK_METHOD0(read, ReadReturn());
     MOCK_METHOD1(write, void(double));
+    MOCK_METHOD3(write, void(double, bool, int64_t*));
 };
 
 } // namespace pid_control

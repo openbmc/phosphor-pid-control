@@ -18,7 +18,7 @@ class ZoneMock : public ZoneInterface
     MOCK_METHOD0(updateSensors, void());
     MOCK_METHOD0(initializeCache, void());
     MOCK_METHOD1(getCachedValue, double(const std::string&));
-
+    MOCK_CONST_METHOD0(getRedundantWrite, bool(void));
     MOCK_METHOD1(addSetPoint, void(double));
     MOCK_METHOD0(clearSetPoints, void());
     MOCK_METHOD1(addRPMCeiling, void(double));
