@@ -71,6 +71,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void updateSensors(void) override;
     void initializeCache(void) override;
     void dumpCache(void);
+
     void processFans(void) override;
     void processThermals(void) override;
 
@@ -83,6 +84,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void initializeLog(void) override;
     void writeLog(const std::string& value) override;
 
+    bool getRedundantWrite(void) const override;
+
     /* Method for setting the manual mode over dbus */
     bool manual(bool value) override;
     /* Method for reading whether in fail-safe mode over dbus */
@@ -94,6 +97,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     const int64_t _zoneId;
     double _maximumSetPoint = 0;
     bool _manualMode = false;
+    bool _redundantWrite = false;
     const double _minThermalOutputSetPt;
     const double _failSafePercent;
 
