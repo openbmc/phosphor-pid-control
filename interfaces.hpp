@@ -16,6 +16,12 @@ struct ReadReturn
     }
 };
 
+struct ValueCacheEntry
+{
+    double scaled;
+    double unscaled;
+};
+
 /*
  * A ReadInterface is a plug-in for the PluggableSensor and anyone implementing
  * this basically is providing a way to read a sensor.

@@ -53,6 +53,11 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     /* Could put lock around this since it's accessed from two threads, but
      * only one reader/one writer.
      */
+
+    bool getRedundantWrite(void) const override
+    {
+        return false;
+    };
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
 
@@ -70,7 +75,12 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void updateFanTelemetry(void) override;
     void updateSensors(void) override;
     void initializeCache(void) override;
+    void setOutputCache(std::string_view, const ValueCacheEntry&) override
+    {
+        return;
+    };
     void dumpCache(void);
+
     void processFans(void) override;
     void processThermals(void) override;
 
@@ -83,6 +93,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void initializeLog(void) override;
     void writeLog(const std::string& value) override;
 
+    bool getRedundantWrite(void) const override;
+
     /* Method for setting the manual mode over dbus */
     bool manual(bool value) override;
     /* Method for reading whether in fail-safe mode over dbus */
@@ -94,6 +106,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     const int64_t _zoneId;
     double _maximumSetPoint = 0;
     bool _manualMode = false;
+    bool _redundantWrite = false;
     const double _minThermalOutputSetPt;
     const double _failSafePercent;
 
