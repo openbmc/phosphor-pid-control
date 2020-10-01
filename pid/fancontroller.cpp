@@ -145,7 +145,16 @@ void FanController::outputProc(double value)
     for (const auto& it : _inputs)
     {
         auto sensor = _owner->getSensor(it);
-        sensor->write(percent);
+        auto redundantWrite = _owner->getRedundantWrite();
+        int64_t rawWritten;
+        sensor->write(percent, redundantWrite, &rawWritten);
+
+        // The outputCache will be used later,
+        // to store a record of the PWM commanded,
+        // so that this information can be included during logging.
+        auto unscaledWritten = static_cast<double>(rawWritten);
+        _owner->setOutputCache(sensor->getName(),
+                               std::make_pair(percent, unscaledWritten));
     }
 
     return;
