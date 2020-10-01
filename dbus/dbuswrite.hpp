@@ -42,6 +42,7 @@ class DbusWritePercent : public WriteInterface
     {}
 
     void write(double value) override;
+    void write(double value, bool force, int64_t* written) override;
 
   private:
     std::string path;
@@ -63,6 +64,7 @@ class DbusWrite : public WriteInterface
     {}
 
     void write(double value) override;
+    void write(double value, bool needRedundant, int64_t* rawWritten) override;
 
   private:
     std::string path;
