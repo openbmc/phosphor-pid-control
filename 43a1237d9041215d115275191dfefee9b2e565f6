@@ -16,6 +16,24 @@
       "revId": "43a1237d9041215d115275191dfefee9b2e565f6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c66f32ea_fca61687",
+        "filename": "pid/fancontroller.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-10-03T01:39:10Z",
+      "side": 1,
+      "message": "Added a comment, see latest patchset. The outputCache is populated in this CL, but its contents are not actually used. I wanted to split it up, to avoid creating an unwanted dependency between CL\u0027s. The outputCache is actually used here: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/36697",
+      "parentUuid": "88ae4990_109dde8e",
+      "revId": "43a1237d9041215d115275191dfefee9b2e565f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
