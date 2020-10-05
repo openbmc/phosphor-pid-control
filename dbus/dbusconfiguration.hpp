@@ -13,12 +13,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 */
-
 #pragma once
+
 #include "conf.hpp"
 
 #include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/bus.hpp>
+
+#include <cstdint>
+#include <string>
+#include <unordered_map>
+#include <variant>
+#include <vector>
+
+using DbusVariantType =
+    std::variant<uint64_t, int64_t, double, std::string,
+                 std::vector<std::string>, std::vector<double>>;
+
+using ManagedObjectType = std::unordered_map<
+    sdbusplus::message::object_path,
+    std::unordered_map<std::string,
+                       std::unordered_map<std::string, DbusVariantType>>>;
 
 namespace pid_control
 {
