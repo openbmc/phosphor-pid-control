@@ -13,6 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 */
+#include "dbusconfiguration.hpp"
 
 #include "conf.hpp"
 #include "dbushelper.hpp"
@@ -73,9 +74,6 @@ const std::array<const char*, 4> types = {"CriticalLow", "CriticalHigh",
 
 namespace dbus_configuration
 {
-using DbusVariantType =
-    std::variant<uint64_t, int64_t, double, std::string,
-                 std::vector<std::string>, std::vector<double>>;
 using SensorInterfaceType = std::pair<std::string, std::string>;
 
 inline std::string getSensorNameFromPath(const std::string& dbusPath)
@@ -458,15 +456,6 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
     zoneDetailsConfig.clear();
 
     createMatches(bus, timer);
-
-    using DbusVariantType =
-        std::variant<uint64_t, int64_t, double, std::string,
-                     std::vector<std::string>, std::vector<double>>;
-
-    using ManagedObjectType = std::unordered_map<
-        sdbusplus::message::object_path,
-        std::unordered_map<std::string,
-                           std::unordered_map<std::string, DbusVariantType>>>;
 
     auto mapper =
         bus.new_method_call("xyz.openbmc_project.ObjectMapper",
