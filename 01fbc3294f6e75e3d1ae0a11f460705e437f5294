@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "677ad243_8db68eb2",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000100
+      },
+      "writtenOn": "2020-10-05T15:13:00Z",
+      "side": 1,
+      "message": "Commented on follow-on CL, so I\u0027ll comment here.  Using a pair for this adds an unnecessary level of abstraction.  A struct would be easier to read/use.",
+      "revId": "01fbc3294f6e75e3d1ae0a11f460705e437f5294",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
