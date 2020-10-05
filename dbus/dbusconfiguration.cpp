@@ -19,6 +19,7 @@
 #include "dbushelper.hpp"
 #include "dbusutil.hpp"
 #include "util.hpp"
+#include "control.hpp"
 
 #include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/bus.hpp>

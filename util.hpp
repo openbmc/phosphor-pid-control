@@ -11,8 +11,6 @@
 namespace pid_control
 {
 
-void tryRestartControlLoops(void);
-
 /*
  * Given a configuration structure, fill out the information we use within the
  * PID loop.
