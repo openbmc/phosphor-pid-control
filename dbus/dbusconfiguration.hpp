@@ -40,5 +40,11 @@ namespace pid_control
 namespace dbus_configuration
 {
 bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer);
+
+// Find sensors+interfaces for sensors that match search.
+bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
+                 const std::string& search,
+                 std::vector<std::pair<std::string, std::string>>& matches);
+
 } // namespace dbus_configuration
 } // namespace pid_control
