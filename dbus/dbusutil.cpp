@@ -1,8 +1,11 @@
 #include "util.hpp"
 
 #include <cmath>
+#include <cstdint>
 #include <iostream>
+#include <map>
 #include <set>
+#include <string>
 #include <variant>
 
 using Property = std::string;
