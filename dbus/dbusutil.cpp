@@ -4,9 +4,13 @@
 #include <cstdint>
 #include <iostream>
 #include <map>
+#include <regex>
 #include <set>
 #include <string>
+#include <unordered_map>
+#include <utility>
 #include <variant>
+#include <vector>
 
 using Property = std::string;
 using Value = std::variant<int64_t, double, std::string, bool>;
@@ -14,6 +18,22 @@ using PropertyMap = std::map<Property, Value>;
 
 namespace pid_control
 {
+
+bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
+                 const std::string& search,
+                 std::vector<std::pair<std::string, std::string>>& matches)
+{
+    std::smatch match;
+    std::regex reg(search + '$');
+    for (const auto& sensor : sensors)
+    {
+        if (std::regex_search(sensor.first, match, reg))
+        {
+            matches.push_back(sensor);
+        }
+    }
+    return matches.size() > 0;
+}
 
 std::string getSensorPath(const std::string& type, const std::string& id)
 {

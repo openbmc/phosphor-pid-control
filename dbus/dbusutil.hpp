@@ -2,6 +2,9 @@
 
 #include <stdexcept>
 #include <string>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 namespace pid_control
 {
@@ -27,5 +30,9 @@ std::string getSensorPath(const std::string& type, const std::string& id);
 std::string getMatch(const std::string& type, const std::string& id);
 void scaleSensorReading(const double min, const double max, double& value);
 bool validType(const std::string& type);
+
+bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
+                 const std::string& search,
+                 std::vector<std::pair<std::string, std::string>>& matches);
 
 } // namespace pid_control
