@@ -30,7 +30,6 @@
 #include <functional>
 #include <iostream>
 #include <list>
-#include <regex>
 #include <set>
 #include <unordered_map>
 #include <variant>
@@ -86,22 +85,6 @@ inline std::string sensorNameToDbusName(const std::string& sensorName)
     std::string retString = sensorName;
     std::replace(retString.begin(), retString.end(), ' ', '_');
     return retString;
-}
-
-bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
-                 const std::string& search,
-                 std::vector<std::pair<std::string, std::string>>& matches)
-{
-    std::smatch match;
-    std::regex reg(search + '$');
-    for (const auto& sensor : sensors)
-    {
-        if (std::regex_search(sensor.first, match, reg))
-        {
-            matches.push_back(sensor);
-        }
-    }
-    return matches.size() > 0;
 }
 
 // this function prints the configuration into a form similar to the cpp
