@@ -25,7 +25,7 @@ check_PROGRAMS = sensor_manager_unittest sensor_pluggable_unittest \
  sensor_host_unittest util_unittest pid_zone_unittest \
  pid_thermalcontroller_unittest pid_fancontroller_unittest \
  pid_stepwisecontroller_unittest \
- dbus_passive_unittest dbus_active_unittest \
+ dbus_passive_unittest dbus_active_unittest dbus_util_unittest \
  sensors_json_unittest pid_json_unittest json_parse_unittest
 TESTS = $(check_PROGRAMS)
 
@@ -67,6 +67,9 @@ dbus_passive_unittest_LDADD = $(top_builddir)/dbus/dbusutil.o \
 
 dbus_active_unittest_SOURCES = dbus_active_unittest.cpp
 dbus_active_unittest_LDADD = $(top_builddir)/dbus/dbusactiveread.o
+
+dbus_util_unittest_SOURCES = dbus_util_unittest.cpp
+dbus_util_unittest_LDADD = $(top_builddir)/dbus/dbusutil.o
 
 sensors_json_unittest_SOURCES = sensors_json_unittest.cpp
 sensors_json_unittest_LDADD = $(top_builddir)/sensors/buildjson.o
