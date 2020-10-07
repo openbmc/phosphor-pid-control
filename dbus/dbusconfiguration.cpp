@@ -155,59 +155,6 @@ void debugPrint(void)
     std::cout << "}\n\n";
 }
 
-int64_t setZoneIndex(const std::string& name,
-                     std::map<std::string, int64_t>& zones, int64_t index)
-{
-    auto it = zones.find(name);
-    if (it != zones.end())
-    {
-        // Name already allocated, make no change, return existing
-        return it->second;
-    }
-
-    // The zone name is known not to exist yet
-    for (;;)
-    {
-        bool usedIndex = false;
-
-        // See if desired index number is free
-        for (const auto& zi : zones)
-        {
-            if (index == zi.second)
-            {
-                usedIndex = true;
-                break;
-            }
-        }
-
-        // Increment until a free index number is found
-        if (usedIndex)
-        {
-            ++index;
-            continue;
-        }
-
-        break;
-    }
-
-    // Allocate and return new zone index number for this name
-    zones[name] = index;
-    return index;
-}
-
-int64_t getZoneIndex(const std::string& name,
-                     std::map<std::string, int64_t>& zones)
-{
-    auto it = zones.find(name);
-    if (it != zones.end())
-    {
-        return it->second;
-    }
-
-    // Auto-assign next unused zone number, using 0-based numbering
-    return setZoneIndex(name, zones, 0);
-}
-
 std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
 {
     std::vector<std::string> ret;

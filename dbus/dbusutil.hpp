@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+#include <map>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -34,5 +36,13 @@ bool validType(const std::string& type);
 bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
                  const std::string& search,
                  std::vector<std::pair<std::string, std::string>>& matches);
+
+// Set zone number for a zone, 0-based
+int64_t setZoneIndex(const std::string& name,
+                     std::map<std::string, int64_t>& zones, int64_t index);
+
+// Read zone number for a zone.
+int64_t getZoneIndex(const std::string& name,
+                     std::map<std::string, int64_t>& zones);
 
 } // namespace pid_control
