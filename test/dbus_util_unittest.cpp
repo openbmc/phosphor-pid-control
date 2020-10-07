@@ -14,6 +14,8 @@ namespace pid_control
 namespace
 {
 
+using ::testing::ContainerEq;
+using ::testing::Eq;
 using ::testing::StrEq;
 using ::testing::UnorderedElementsAreArray;
 
@@ -83,6 +85,112 @@ TEST_F(FindSensorsTest, MultipleMatches)
     };
 
     EXPECT_THAT(results, UnorderedElementsAreArray(expected_results));
+}
+
+TEST(GetZoneIndexTest, ZoneAlreadyAssigned)
+{
+    std::map<std::string, int64_t> zones = {
+        {"a", 0},
+    };
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", 0},
+    };
+
+    EXPECT_THAT(getZoneIndex("a", zones), Eq(0));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
+}
+
+TEST(GetZoneIndexTest, ZoneNotYetAssignedZeroBased)
+{
+    /* This calls into setZoneIndex, but is a case hit by getZoneIndex. */
+    std::map<std::string, int64_t> zones;
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", 0},
+    };
+
+    EXPECT_THAT(getZoneIndex("a", zones), Eq(0));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
+}
+
+TEST(SetZoneIndexTest, ZoneAlreadyAssigned)
+{
+    std::map<std::string, int64_t> zones = {
+        {"a", 0},
+    };
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", 0},
+    };
+
+    EXPECT_THAT(setZoneIndex("a", zones, 0), Eq(0));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
+}
+
+TEST(SetZoneIndexTest, ZoneNotYetAssignedEmptyListZeroBased)
+{
+    constexpr int64_t index = 0;
+    std::map<std::string, int64_t> zones;
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", index},
+    };
+
+    EXPECT_THAT(setZoneIndex("a", zones, index), Eq(index));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
+}
+
+TEST(SetZoneIndexTest, ZoneNotYetAssignedEmptyListNonZeroBased)
+{
+    constexpr int64_t index = 5;
+    std::map<std::string, int64_t> zones;
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", index},
+    };
+
+    EXPECT_THAT(setZoneIndex("a", zones, index), Eq(index));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
+}
+
+TEST(SetZoneIndexTest, ZoneListNotEmptyAssignsNextIndexZeroBased)
+{
+    std::map<std::string, int64_t> zones = {
+        {"a", 0},
+    };
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", 0},
+        {"b", 1},
+    };
+
+    EXPECT_THAT(setZoneIndex("b", zones, 0), Eq(1));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
+}
+
+TEST(SetZoneIndexTest, ZoneListNotEmptyAssignsNextIndexNonZeroBased)
+{
+    std::map<std::string, int64_t> zones = {
+        {"a", 0},
+    };
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", 0},
+        {"b", 5},
+    };
+
+    EXPECT_THAT(setZoneIndex("b", zones, 5), Eq(5));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
+}
+
+TEST(SetZoneIndexTest, ZoneListNotEmptyAssignsIntoGap)
+{
+    std::map<std::string, int64_t> zones = {
+        {"a", 0},
+        {"b", 5},
+    };
+    const std::map<std::string, int64_t> expected_zones = {
+        {"a", 0},
+        {"c", 1},
+        {"b", 5},
+    };
+
+    EXPECT_THAT(setZoneIndex("c", zones, 0), Eq(1));
+    EXPECT_THAT(zones, ContainerEq(expected_zones));
 }
 
 } // namespace
