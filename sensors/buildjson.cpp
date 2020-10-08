@@ -99,10 +99,9 @@ void from_json(const json& j, conf::SensorConfig& s)
 }
 } // namespace conf
 
-std::map<std::string, struct conf::SensorConfig>
-    buildSensorsFromJson(const json& data)
+std::map<std::string, conf::SensorConfig> buildSensorsFromJson(const json& data)
 {
-    std::map<std::string, struct conf::SensorConfig> config;
+    std::map<std::string, conf::SensorConfig> config;
     auto sensors = data["sensors"];
 
     /* TODO: If no sensors, this is invalid, and we should except here or during
@@ -110,7 +109,7 @@ std::map<std::string, struct conf::SensorConfig>
      */
     for (const auto& sensor : sensors)
     {
-        config[sensor["name"]] = sensor.get<struct conf::SensorConfig>();
+        config[sensor["name"]] = sensor.get<conf::SensorConfig>();
     }
 
     return config;

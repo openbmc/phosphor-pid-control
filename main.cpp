@@ -51,11 +51,11 @@ namespace pid_control
 {
 
 /* The configuration converted sensor list. */
-std::map<std::string, struct conf::SensorConfig> sensorConfig = {};
+std::map<std::string, conf::SensorConfig> sensorConfig = {};
 /* The configuration converted PID list. */
 std::map<int64_t, conf::PIDConf> zoneConfig = {};
 /* The configuration converted Zone configuration. */
-std::map<int64_t, struct conf::ZoneConfig> zoneDetailsConfig = {};
+std::map<int64_t, conf::ZoneConfig> zoneDetailsConfig = {};
 
 } // namespace pid_control
 

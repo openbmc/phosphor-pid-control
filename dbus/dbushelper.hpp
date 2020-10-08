@@ -33,7 +33,7 @@ class DbusHelper : public DbusHelperInterface
                            const std::string& path) override;
 
     void getProperties(const std::string& service, const std::string& path,
-                       struct SensorProperties* prop) override;
+                       SensorProperties* prop) override;
 
     bool thresholdsAsserted(const std::string& service,
                             const std::string& path) override;

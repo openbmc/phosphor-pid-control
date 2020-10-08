@@ -32,13 +32,13 @@ class DbusHelperInterface
      * @param[in] bus - A bus to use for the call.
      * @param[in] service - The service providing the interface.
      * @param[in] path - The dbus path.
-     * @param[out] prop - A pointer to a properties struct to fill out.
+     * @param[out] prop - A pointer to a properties to fill out.
      *
      * @warning Throws exception on dbus failure.
      */
     virtual void getProperties(const std::string& service,
                                const std::string& path,
-                               struct SensorProperties* prop) = 0;
+                               SensorProperties* prop) = 0;
 
     /** @brief Get Critical Threshold current assert status
      *

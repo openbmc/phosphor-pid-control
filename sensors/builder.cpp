@@ -43,7 +43,7 @@ namespace pid_control
 static constexpr bool deferSignals = true;
 
 SensorManager
-    buildSensors(const std::map<std::string, struct conf::SensorConfig>& config,
+    buildSensors(const std::map<std::string, conf::SensorConfig>& config,
                  sdbusplus::bus::bus& passive, sdbusplus::bus::bus& host)
 {
     SensorManager mgmr(passive, host);
@@ -56,7 +56,7 @@ SensorManager
         std::unique_ptr<WriteInterface> wi;
 
         std::string name = it.first;
-        const struct conf::SensorConfig* info = &it.second;
+        const conf::SensorConfig* info = &it.second;
 
         std::cerr << "Sensor: " << name << " " << info->type << " ";
         std::cerr << info->readPath << " " << info->writePath << "\n";

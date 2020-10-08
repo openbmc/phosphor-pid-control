@@ -260,7 +260,7 @@ inline DbusVariantType getPIDAttribute(
 void populatePidInfo(
     sdbusplus::bus::bus& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
-    struct conf::ControllerInfo& info, const std::string* thresholdProperty,
+    conf::ControllerInfo& info, const std::string* thresholdProperty,
     const std::map<std::string, conf::SensorConfig>& sensorConfig)
 {
     info.type = std::get<std::string>(getPIDAttribute(base, "Class"));
@@ -752,7 +752,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
 
                 if (offsetType.empty())
                 {
-                    struct conf::ControllerInfo& info =
+                    conf::ControllerInfo& info =
                         conf[std::get<std::string>(base.at("Name"))];
                     info.inputs = std::move(inputSensorNames);
                     populatePidInfo(bus, base, info, nullptr, sensorConfig);
@@ -763,7 +763,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                     // values will differ, making setpoints differ
                     for (const std::string& input : inputSensorNames)
                     {
-                        struct conf::ControllerInfo& info = conf[input];
+                        conf::ControllerInfo& info = conf[input];
                         info.inputs.emplace_back(input);
                         populatePidInfo(bus, base, info, &offsetType,
                                         sensorConfig);
@@ -822,7 +822,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                 {
                     continue;
                 }
-                struct conf::ControllerInfo& info =
+                conf::ControllerInfo& info =
                     conf[std::get<std::string>(base.at("Name"))];
                 info.inputs = std::move(inputs);
 

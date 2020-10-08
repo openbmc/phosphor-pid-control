@@ -118,14 +118,13 @@ void from_json(const json& j, conf::ControllerInfo& c)
 }
 } // namespace conf
 
-std::pair<std::map<int64_t, conf::PIDConf>,
-          std::map<int64_t, struct conf::ZoneConfig>>
+std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
     buildPIDsFromJson(const json& data)
 {
     // zone -> pids
     std::map<int64_t, conf::PIDConf> pidConfig;
     // zone -> configs
-    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
+    std::map<int64_t, conf::ZoneConfig> zoneConfig;
 
     /* TODO: if zones is empty, that's invalid. */
     auto zones = data["zones"];
@@ -133,7 +132,7 @@ std::pair<std::map<int64_t, conf::PIDConf>,
     {
         int64_t id;
         conf::PIDConf thisZone;
-        struct conf::ZoneConfig thisZoneConfig;
+        conf::ZoneConfig thisZoneConfig;
 
         /* TODO: using at() throws a specific exception we can catch */
         id = zone["id"];

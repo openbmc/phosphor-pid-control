@@ -17,7 +17,7 @@ class DbusHelperMock : public DbusHelperInterface
     MOCK_METHOD2(getService,
                  std::string(const std::string&, const std::string&));
     MOCK_METHOD3(getProperties, void(const std::string&, const std::string&,
-                                     struct SensorProperties*));
+                                     SensorProperties*));
 
     MOCK_METHOD2(thresholdsAsserted,
                  bool(const std::string& service, const std::string& path));

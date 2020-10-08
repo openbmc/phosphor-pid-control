@@ -58,7 +58,7 @@ struct ZoneConfig
     double failsafePercent;
 };
 
-using PIDConf = std::map<std::string, struct ControllerInfo>;
+using PIDConf = std::map<std::string, ControllerInfo>;
 
 constexpr bool DEBUG = false; // enable to print found configuration
 

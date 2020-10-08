@@ -74,8 +74,7 @@ std::string DbusHelper::getService(const std::string& intf,
 }
 
 void DbusHelper::getProperties(const std::string& service,
-                               const std::string& path,
-                               struct SensorProperties* prop)
+                               const std::string& path, SensorProperties* prop)
 {
     auto pimMsg = _bus.new_method_call(service.c_str(), path.c_str(),
                                        propertiesintf, "GetAll");

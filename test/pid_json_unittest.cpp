@@ -14,7 +14,7 @@ TEST(ZoneFromJson, emptyZone)
     // This is technically invalid.
 
     std::map<int64_t, conf::PIDConf> pidConfig;
-    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
+    std::map<int64_t, conf::ZoneConfig> zoneConfig;
 
     auto j2 = R"(
       {
@@ -33,7 +33,7 @@ TEST(ZoneFromJson, oneZoneOnePid)
     // Parse a valid configuration with one zone and one PID.
 
     std::map<int64_t, conf::PIDConf> pidConfig;
-    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
+    std::map<int64_t, conf::ZoneConfig> zoneConfig;
 
     auto j2 = R"(
       {
@@ -78,7 +78,7 @@ TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
     // Hysteresis parameters.
 
     std::map<int64_t, conf::PIDConf> pidConfig;
-    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
+    std::map<int64_t, conf::ZoneConfig> zoneConfig;
 
     auto j2 = R"(
       {
@@ -127,7 +127,7 @@ TEST(ZoneFromJson, oneZoneOneStepwiseWithHysteresis)
     // Hysteresis parameters.
 
     std::map<int64_t, conf::PIDConf> pidConfig;
-    std::map<int64_t, struct conf::ZoneConfig> zoneConfig;
+    std::map<int64_t, conf::ZoneConfig> zoneConfig;
 
     auto j2 = R"(
       {

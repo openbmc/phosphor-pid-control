@@ -28,7 +28,7 @@ namespace pid_control
 
 ReadReturn DbusActiveRead::read(void)
 {
-    struct SensorProperties settings;
+    SensorProperties settings;
     double value;
 
     _helper->getProperties(_service, _path, &settings);
@@ -39,7 +39,7 @@ ReadReturn DbusActiveRead::read(void)
      * Technically it might not be a value from now, but there's no timestamp
      * on Sensor.Value yet.
      */
-    struct ReadReturn r = {value, std::chrono::high_resolution_clock::now()};
+    ReadReturn r = {value, std::chrono::high_resolution_clock::now()};
 
     return r;
 }

@@ -50,7 +50,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     /* service == busname */
     std::string path = getSensorPath(type, id);
 
-    struct SensorProperties settings;
+    SensorProperties settings;
     bool failed;
 
     try
@@ -79,8 +79,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 DbusPassive::DbusPassive(
     sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
     std::unique_ptr<DbusHelperInterface> helper,
-    const struct SensorProperties& settings, bool failed,
-    const std::string& path,
+    const SensorProperties& settings, bool failed, const std::string& path,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
     ReadInterface(),
     _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this), _id(id),
@@ -103,7 +102,7 @@ ReadReturn DbusPassive::read(void)
 {
     std::lock_guard<std::mutex> guard(_lock);
 
-    struct ReadReturn r = {_value, _updated};
+    ReadReturn r = {_value, _updated};
 
     return r;
 }

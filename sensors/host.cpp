@@ -86,7 +86,7 @@ ReadReturn HostSensor::read(void)
     std::lock_guard<std::mutex> guard(_lock);
 
     /* This doesn't sanity check anything, that's the caller's job. */
-    struct ReadReturn r = {_value, _updated};
+    ReadReturn r = {_value, _updated};
 
     return r;
 }

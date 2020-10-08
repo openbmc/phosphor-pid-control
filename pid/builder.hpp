@@ -14,7 +14,7 @@ namespace pid_control
 
 std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
     buildZones(const std::map<int64_t, conf::PIDConf>& zonePids,
-               std::map<int64_t, struct conf::ZoneConfig>& zoneConfigs,
+               std::map<int64_t, conf::ZoneConfig>& zoneConfigs,
                SensorManager& mgr, sdbusplus::bus::bus& modeControlBus);
 
 }

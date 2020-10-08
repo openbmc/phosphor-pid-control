@@ -56,7 +56,7 @@ TEST(DbusPassiveTest, BoringConstructorTest)
     std::string path = "/xyz/openbmc_project/sensors/unknown/id";
 
     auto helper = std::make_unique<DbusHelperMock>();
-    struct SensorProperties properties;
+    SensorProperties properties;
 
     DbusPassive(bus_mock, type, id, std::move(helper), properties, false, path,
                 nullptr);
@@ -78,7 +78,7 @@ class DbusPassiveTestObj : public ::testing::Test
                     getProperties(StrEq("asdf"), StrEq(path), NotNull()))
             .WillOnce(
                 Invoke([&](const std::string& service, const std::string& path,
-                           struct SensorProperties* prop) {
+                           SensorProperties* prop) {
                     prop->scale = _scale;
                     prop->value = _value;
                     prop->unit = "x";

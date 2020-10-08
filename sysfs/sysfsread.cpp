@@ -32,8 +32,8 @@ ReadReturn SysFsRead::read(void)
     ifs >> value;
     ifs.close();
 
-    struct ReadReturn r = {static_cast<double>(value),
-                           std::chrono::high_resolution_clock::now()};
+    ReadReturn r = {static_cast<double>(value),
+                    std::chrono::high_resolution_clock::now()};
 
     return r;
 }

@@ -49,7 +49,7 @@ class DbusPassive : public ReadInterface
     DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
                 const std::string& id,
                 std::unique_ptr<DbusHelperInterface> helper,
-                const struct SensorProperties& settings, bool failed,
+                const SensorProperties& settings, bool failed,
                 const std::string& path,
                 const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
 

@@ -42,13 +42,12 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
     std::string service = "asdfasdf.asdfasdf";
 
     EXPECT_CALL(*helper, getProperties(service, path, NotNull()))
-        .WillOnce(
-            Invoke([&](const std::string& service, const std::string& path,
-                       struct SensorProperties* prop) {
-                prop->scale = -3;
-                prop->value = 10000;
-                prop->unit = "x";
-            }));
+        .WillOnce(Invoke([&](const std::string& service,
+                             const std::string& path, SensorProperties* prop) {
+            prop->scale = -3;
+            prop->value = 10000;
+            prop->unit = "x";
+        }));
 
     DbusActiveRead ar(bus_mock, path, service, std::move(helper));
 
