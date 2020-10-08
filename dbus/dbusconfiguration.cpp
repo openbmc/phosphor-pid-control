@@ -37,8 +37,6 @@
 namespace pid_control
 {
 
-static constexpr bool DEBUG = false; // enable to print found configuration
-
 extern std::map<std::string, struct conf::SensorConfig> sensorConfig;
 extern std::map<int64_t, conf::PIDConf> zoneConfig;
 extern std::map<int64_t, struct conf::ZoneConfig> zoneDetailsConfig;
@@ -85,74 +83,6 @@ inline std::string sensorNameToDbusName(const std::string& sensorName)
     std::string retString = sensorName;
     std::replace(retString.begin(), retString.end(), ' ', '_');
     return retString;
-}
-
-// this function prints the configuration into a form similar to the cpp
-// generated code to help in verification, should be turned off during normal
-// use
-void debugPrint(void)
-{
-    // print sensor config
-    std::cout << "sensor config:\n";
-    std::cout << "{\n";
-    for (const auto& pair : sensorConfig)
-    {
-
-        std::cout << "\t{" << pair.first << ",\n\t\t{";
-        std::cout << pair.second.type << ", ";
-        std::cout << pair.second.readPath << ", ";
-        std::cout << pair.second.writePath << ", ";
-        std::cout << pair.second.min << ", ";
-        std::cout << pair.second.max << ", ";
-        std::cout << pair.second.timeout << "},\n\t},\n";
-    }
-    std::cout << "}\n\n";
-    std::cout << "ZoneDetailsConfig\n";
-    std::cout << "{\n";
-    for (const auto& zone : zoneDetailsConfig)
-    {
-        std::cout << "\t{" << zone.first << ",\n";
-        std::cout << "\t\t{" << zone.second.minThermalOutput << ", ";
-        std::cout << zone.second.failsafePercent << "}\n\t},\n";
-    }
-    std::cout << "}\n\n";
-    std::cout << "ZoneConfig\n";
-    std::cout << "{\n";
-    for (const auto& zone : zoneConfig)
-    {
-        std::cout << "\t{" << zone.first << "\n";
-        for (const auto& pidconf : zone.second)
-        {
-            std::cout << "\t\t{" << pidconf.first << ",\n";
-            std::cout << "\t\t\t{" << pidconf.second.type << ",\n";
-            std::cout << "\t\t\t{";
-            for (const auto& input : pidconf.second.inputs)
-            {
-                std::cout << "\n\t\t\t" << input << ",\n";
-            }
-            std::cout << "\t\t\t}\n";
-            std::cout << "\t\t\t" << pidconf.second.setpoint << ",\n";
-            std::cout << "\t\t\t{" << pidconf.second.pidInfo.ts << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.proportionalCoeff
-                      << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.integralCoeff
-                      << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.feedFwdOffset
-                      << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.feedFwdGain
-                      << ",\n";
-            std::cout << "\t\t\t{" << pidconf.second.pidInfo.integralLimit.min
-                      << "," << pidconf.second.pidInfo.integralLimit.max
-                      << "},\n";
-            std::cout << "\t\t\t{" << pidconf.second.pidInfo.outLim.min << ","
-                      << pidconf.second.pidInfo.outLim.max << "},\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.slewNeg << ",\n";
-            std::cout << "\t\t\t" << pidconf.second.pidInfo.slewPos << ",\n";
-            std::cout << "\t\t\t}\n\t\t}\n";
-        }
-        std::cout << "\t},\n";
-    }
-    std::cout << "}\n\n";
 }
 
 std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
@@ -211,7 +141,7 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
             ret.emplace_back(std::move(mode));
         }
     }
-    if constexpr (DEBUG)
+    if constexpr (pid_control::conf::DEBUG)
     {
         std::cout << "Profiles selected: ";
         for (const auto& profile : ret)
@@ -949,9 +879,9 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
             }
         }
     }
-    if constexpr (DEBUG)
+    if constexpr (pid_control::conf::DEBUG)
     {
-        debugPrint();
+        debugPrint(sensorConfig, zoneConfig, zoneDetailsConfig);
     }
     if (zoneConfig.empty() || zoneDetailsConfig.empty())
     {

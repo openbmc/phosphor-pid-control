@@ -79,6 +79,7 @@ libswampd_la_CXXFLAGS = \
 	$(CODE_COVERAGE_CXXFLAGS)
 
 libswampd_la_SOURCES = \
+	util.cpp \
 	notimpl/readonly.cpp \
 	notimpl/writeonly.cpp \
 	dbus/dbusconfiguration.cpp \

@@ -1,11 +1,14 @@
 #pragma once
 
+#include "conf.hpp"
 #include "pid/ec/pid.hpp"
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 
+#include <cstdint>
 #include <limits>
+#include <map>
 #include <string>
 
 namespace pid_control
@@ -36,5 +39,12 @@ const std::string propertiesintf = "org.freedesktop.DBus.Properties";
  * Given a path that optionally has a glob portion, fill it out.
  */
 std::string FixupPath(std::string original);
+
+/*
+ * Dump active configuration.
+ */
+void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
+                const std::map<int64_t, conf::PIDConf>& zoneConfig,
+                const std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig);
 
 } // namespace pid_control
