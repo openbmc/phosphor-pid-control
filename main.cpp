@@ -114,7 +114,8 @@ void restartControlLoops()
     else
     {
         static boost::asio::steady_timer reloadTimer(io);
-        if (!dbus_configuration::init(modeControlBus, reloadTimer))
+        if (!dbus_configuration::init(modeControlBus, reloadTimer, sensorConfig,
+                                      zoneConfig, zoneDetailsConfig))
         {
             return; // configuration not ready
         }

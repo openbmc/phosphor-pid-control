@@ -21,6 +21,7 @@
 #include <sdbusplus/bus.hpp>
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <unordered_map>
 #include <variant>
@@ -39,6 +40,20 @@ namespace pid_control
 {
 namespace dbus_configuration
 {
-bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer);
+
+/**
+ * Initialize a dbus-based configuration.
+ *
+ * @param bus - the sdbusplus connection to use
+ * @param timer - the timer to use
+ * @param sensorConfig - The configuration converted sensor list.
+ * @param zoneConfig - The configuration converted PID list.
+ * @param zoneDetailsConfig - The configuration converted Zone configuration.
+ */
+bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
+          std::map<std::string, conf::SensorConfig>& sensorConfig,
+          std::map<int64_t, conf::PIDConf>& zoneConfig,
+          std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig);
+
 } // namespace dbus_configuration
 } // namespace pid_control

@@ -37,10 +37,6 @@
 namespace pid_control
 {
 
-extern std::map<std::string, struct conf::SensorConfig> sensorConfig;
-extern std::map<int64_t, conf::PIDConf> zoneConfig;
-extern std::map<int64_t, struct conf::ZoneConfig> zoneDetailsConfig;
-
 constexpr const char* pidConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid";
 constexpr const char* objectManagerInterface =
@@ -264,7 +260,8 @@ inline DbusVariantType getPIDAttribute(
 void populatePidInfo(
     sdbusplus::bus::bus& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
-    struct conf::ControllerInfo& info, const std::string* thresholdProperty)
+    struct conf::ControllerInfo& info, const std::string* thresholdProperty,
+    const std::map<std::string, conf::SensorConfig>& sensorConfig)
 {
     info.type = std::get<std::string>(getPIDAttribute(base, "Class"));
     if (info.type == "fan")
@@ -289,7 +286,7 @@ void populatePidInfo(
         {
             interface = thresholds::criticalInterface;
         }
-        const std::string& path = sensorConfig[info.inputs.front()].readPath;
+        const std::string& path = sensorConfig.at(info.inputs.front()).readPath;
 
         DbusHelper helper(sdbusplus::bus::new_system());
         std::string service = helper.getService(interface, path);
@@ -349,7 +346,10 @@ void populatePidInfo(
     info.pidInfo.positiveHysteresis = positiveHysteresis;
 }
 
-bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
+bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
+          std::map<std::string, conf::SensorConfig>& sensorConfig,
+          std::map<int64_t, conf::PIDConf>& zoneConfig,
+          std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig)
 {
 
     sensorConfig.clear();
@@ -755,7 +755,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                     struct conf::ControllerInfo& info =
                         conf[std::get<std::string>(base.at("Name"))];
                     info.inputs = std::move(inputSensorNames);
-                    populatePidInfo(bus, base, info, nullptr);
+                    populatePidInfo(bus, base, info, nullptr, sensorConfig);
                 }
                 else
                 {
@@ -765,7 +765,8 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
                     {
                         struct conf::ControllerInfo& info = conf[input];
                         info.inputs.emplace_back(input);
-                        populatePidInfo(bus, base, info, &offsetType);
+                        populatePidInfo(bus, base, info, &offsetType,
+                                        sensorConfig);
                     }
                 }
             }
