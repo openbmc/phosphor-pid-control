@@ -1,0 +1,7 @@
+Code-Review+2: Patrick Venture <venture@google.com>
+Verified+1: Patrick Venture <venture@google.com>
+Submitted-by: Patrick Venture <venture@google.com>
+Submitted-at: Fri, 09 Oct 2020 16:16:55 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/37238
+Project: openbmc/phosphor-pid-control
+Branch: refs/heads/master
