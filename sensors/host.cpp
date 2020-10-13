@@ -78,6 +78,9 @@ ValueType HostSensor::value(ValueType value)
     _updated = std::chrono::high_resolution_clock::now();
     _value = value * pow(10, getScale(this)); /* scale value */
 
+    // Change the value to a guaranteed different value to ensure
+    // a property changed signal is emitted.
+    ValueObject::value(-value, true);
     return ValueObject::value(value);
 }
 
