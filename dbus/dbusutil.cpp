@@ -77,7 +77,7 @@ bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
                  std::vector<std::pair<std::string, std::string>>& matches)
 {
     std::smatch match;
-    std::regex reg(search + '$');
+    std::regex reg('/' + search + '$');
     for (const auto& sensor : sensors)
     {
         if (std::regex_search(sensor.first, match, reg))

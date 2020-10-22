@@ -46,9 +46,8 @@ class FindSensorsTest : public ::testing::Test
 {
   protected:
     const std::unordered_map<std::string, std::string> sensors = {
-        {"path_a", "b"},
-        {"apple", "juice"},
-        {"other_le", "thing"},
+        {"/abcd/_a", "b"}, {"_a", "c"},        {"/abcd_a", "d"},
+        {"/_a_a", "e"},    {"apple", "juice"}, {"other_le", "thing"},
     };
 
     std::vector<std::pair<std::string, std::string>> results;
@@ -63,12 +62,12 @@ TEST_F(FindSensorsTest, NoMatches)
 
 TEST_F(FindSensorsTest, OneMatches)
 {
-    const std::string target = "a";
+    const std::string target = "_a";
 
     EXPECT_TRUE(findSensors(sensors, target, results));
 
     std::vector<std::pair<std::string, std::string>> expected_results = {
-        {"path_a", "b"},
+        {"/abcd/_a", "b"},
     };
 
     EXPECT_THAT(results, UnorderedElementsAreArray(expected_results));
