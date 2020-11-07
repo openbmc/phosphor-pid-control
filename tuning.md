@@ -35,6 +35,29 @@ epoch_ms,setpt,fan1,fan2,...fanN,fleeting,failsafe
 
 `phosphor-pid-control` will create a log for each PID control zone.
 
+## Core Logging
+
+For even more detailed logging, flag `"-g"` can be specified
+to enable the daemon to log the computations made during the core
+of the PID loop.
+
+The log output is in CSV format, in the same directory as specified with
+the `"-l"` option. Default is the system temporary directory,
+typically `/tmp`.
+
+Two files will be created, for each PID loop configured. The
+`pidcoeffs.*` file will show the PID coefficients that are in use
+for the PID loop. The `pidcore.*` file will show the computations
+that take place, to transform the input into the output. The configured
+name of the PID loop is used as the suffix, for both of these files.
+
+The `pidcoeffs.*` file will grow slowly, updated only when new
+coefficients are set using D-Bus without restarting the program. The
+`pidcore.*` file, on the other hand, will grow rapidly, as it will
+be updated during each PID loop pass in which there were changes. To
+prevent needless log file growth, identical logging lines are
+throttled, unless it has been at least 60 seconds since the last line.
+
 ## Fan RPM Tuning Helper script
 
 `https://github.com/openbmc/phosphor-pid-control/blob/master/tools/fan_rpm_loop_test.sh`
