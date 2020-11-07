@@ -244,6 +244,7 @@ int main(int argc, char* argv[])
     loggingPath = "";
     loggingEnabled = false;
     tuningEnabled = false;
+    coreLoggingEnabled = false;
 
     CLI::App app{"OpenBMC Fan Control Daemon"};
 
@@ -254,11 +255,14 @@ int main(int argc, char* argv[])
                    "Optional parameter to specify logging folder")
         ->check(CLI::ExistingDirectory);
     app.add_flag("-t,--tuning", tuningEnabled, "Enable or disable tuning");
+    app.add_flag("-g,--corelogging", coreLoggingEnabled,
+                 "Enable or disable logging of core PID loop computations");
 
     CLI11_PARSE(app, argc, argv);
 
     static constexpr auto loggingEnablePath = "/etc/thermal.d/logging";
     static constexpr auto tuningEnablePath = "/etc/thermal.d/tuning";
+    static constexpr auto coreLoggingEnablePath = "/etc/thermal.d/corelogging";
 
     // Set up default logging path, preferring command line if it was given
     std::string defLoggingPath(loggingPath);
@@ -276,19 +280,18 @@ int main(int argc, char* argv[])
     std::ifstream fsLogging(loggingEnablePath);
     if (fsLogging)
     {
-        // The first line of file might be a valid directory path
-        std::getline(fsLogging, loggingPath);
+        // Allow logging path to be changed by file content
+        std::string altPath;
+        std::getline(fsLogging, altPath);
         fsLogging.close();
 
-        // If so, use it, otherwise use default logging path instead
-        if (!(std::filesystem::exists(loggingPath)))
+        if (std::filesystem::exists(altPath))
         {
-            loggingPath = defLoggingPath;
+            loggingPath = altPath;
         }
 
         loggingEnabled = true;
     }
-
     if (loggingEnabled)
     {
         std::cerr << "Logging enabled: " << loggingPath << "\n";
@@ -299,11 +302,19 @@ int main(int argc, char* argv[])
     {
         tuningEnabled = true;
     }
-
-    // This can also be enabled from the command line
     if (tuningEnabled)
     {
         std::cerr << "Tuning enabled\n";
+    }
+
+    // If this file exists, enable core logging at runtime
+    if (std::filesystem::exists(coreLoggingEnablePath))
+    {
+        coreLoggingEnabled = true;
+    }
+    if (coreLoggingEnabled)
+    {
+        std::cerr << "Core logging enabled\n";
     }
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
