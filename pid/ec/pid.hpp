@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace pid_control
 {
@@ -39,7 +40,8 @@ typedef struct
     double negativeHysteresis;
 } pid_info_t;
 
-double pid(pid_info_t* pidinfoptr, double input, double setpoint);
+double pid(pid_info_t* pidinfoptr, double input, double setpoint,
+           const std::string* nameptr = nullptr);
 
 /* Condensed version for use by the configuration. */
 struct pidinfo
