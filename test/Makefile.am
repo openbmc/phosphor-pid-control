@@ -44,11 +44,13 @@ util_unittest_LDADD = $(top_builddir)/sensors/build_utils.o
 
 pid_zone_unittest_SOURCES = pid_zone_unittest.cpp
 pid_zone_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
+ $(top_builddir)/pid/ec/logging.o \
  $(top_builddir)/sensors/manager.o $(top_builddir)/pid/pidcontroller.o \
  $(top_builddir)/pid/zone.o $(top_builddir)/pid/tuning.o
 
 pid_thermalcontroller_unittest_SOURCES = pid_thermalcontroller_unittest.cpp
 pid_thermalcontroller_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
+ $(top_builddir)/pid/ec/logging.o $(top_builddir)/pid/tuning.o \
  $(top_builddir)/pid/util.o $(top_builddir)/pid/pidcontroller.o \
  $(top_builddir)/pid/thermalcontroller.o
 
@@ -58,6 +60,7 @@ pid_stepwisecontroller_unittest_LDADD = $(top_builddir)/pid/ec/stepwise.o \
 
 pid_fancontroller_unittest_SOURCES = pid_fancontroller_unittest.cpp
 pid_fancontroller_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
+ $(top_builddir)/pid/ec/logging.o \
  $(top_builddir)/pid/util.o $(top_builddir)/pid/pidcontroller.o \
  $(top_builddir)/pid/fancontroller.o $(top_builddir)/pid/tuning.o
 
