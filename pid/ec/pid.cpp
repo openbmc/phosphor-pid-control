@@ -16,6 +16,15 @@
 
 #include "pid.hpp"
 
+#include "../tuning.hpp"
+#include "logging.hpp"
+
+#include <chrono>
+#include <fstream>
+#include <iostream>
+#include <map>
+#include <string>
+
 namespace pid_control
 {
 namespace ec
@@ -42,8 +51,30 @@ static double clamp(double x, double min, double max)
  *  pid code
  *  Note: Codes assumes the ts field is non-zero
  */
-double pid(pid_info_t* pidinfoptr, double input, double setpoint)
+double pid(pid_info_t* pidinfoptr, double input, double setpoint,
+           const std::string* nameptr)
 {
+    if (nameptr)
+    {
+        if (!(pidinfoptr->initialized))
+        {
+            LogInit(*nameptr, pidinfoptr);
+        }
+    }
+
+    auto logPtr = nameptr ? LogPeek(*nameptr) : nullptr;
+
+    PidCore coreLog;
+    std::chrono::milliseconds msNow;
+
+    if (logPtr)
+    {
+        msNow = LogTimestamp();
+    }
+
+    coreLog.input = input;
+    coreLog.setpoint = setpoint;
+
     double error;
 
     double proportionalTerm;
@@ -58,21 +89,37 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
     error = setpoint - input;
     proportionalTerm = pidinfoptr->proportionalCoeff * error;
 
+    coreLog.error = error;
+    coreLog.proportionalTerm = proportionalTerm;
+    coreLog.integralTerm1 = 0.0;
+
     // pId
     if (0.0f != pidinfoptr->integralCoeff)
     {
         integralTerm = pidinfoptr->integral;
         integralTerm += error * pidinfoptr->integralCoeff * pidinfoptr->ts;
+
+        coreLog.integralTerm1 = integralTerm;
+
         integralTerm = clamp(integralTerm, pidinfoptr->integralLimit.min,
                              pidinfoptr->integralLimit.max);
     }
+
+    coreLog.integralTerm2 = integralTerm;
 
     // FF
     feedFwdTerm =
         (setpoint + pidinfoptr->feedFwdOffset) * pidinfoptr->feedFwdGain;
 
     output = proportionalTerm + integralTerm + feedFwdTerm;
+
+    coreLog.feedFwdTerm = feedFwdTerm;
+    coreLog.output1 = output;
+
     output = clamp(output, pidinfoptr->outLim.min, pidinfoptr->outLim.max);
+
+    coreLog.output2 = output;
+    coreLog.boundsOut = 0.0;
 
     // slew rate
     // TODO(aarena) - Simplify logic as Andy suggested by creating dynamic
@@ -85,6 +132,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
             // Don't decrease too fast
             double minOut =
                 pidinfoptr->lastOutput + pidinfoptr->slewNeg * pidinfoptr->ts;
+            coreLog.boundsOut = minOut;
             if (output < minOut)
             {
                 output = minOut;
@@ -95,6 +143,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
             // Don't increase too fast
             double maxOut =
                 pidinfoptr->lastOutput + pidinfoptr->slewPos * pidinfoptr->ts;
+            coreLog.boundsOut = maxOut;
             if (output > maxOut)
             {
                 output = maxOut;
@@ -109,6 +158,9 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
         }
     }
 
+    coreLog.output3 = output;
+    coreLog.integralTerm3 = integralTerm;
+
     // Clamp again because having limited the output may result in a
     // larger integral term
     integralTerm = clamp(integralTerm, pidinfoptr->integralLimit.min,
@@ -116,6 +168,14 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
     pidinfoptr->integral = integralTerm;
     pidinfoptr->initialized = true;
     pidinfoptr->lastOutput = output;
+
+    coreLog.integralTerm = pidinfoptr->integral;
+    coreLog.output = pidinfoptr->lastOutput;
+
+    if (logPtr)
+    {
+        LogPidCore(*logPtr, msNow, coreLog);
+    }
 
     return output;
 }
