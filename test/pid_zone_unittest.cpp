@@ -1,3 +1,4 @@
+#include "pid/ec/logging.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/zone.hpp"
 #include "sensors/manager.hpp"
