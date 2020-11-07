@@ -43,12 +43,13 @@ void PIDController::process(void)
     input = inputProc();
 
     auto info = getPIDInfo();
+    auto name = getID();
 
     // if no hysteresis, maintain previous behavior
     if (info->positiveHysteresis == 0 && info->negativeHysteresis == 0)
     {
         // Calculate new output
-        output = ec::pid(info, input, setpt);
+        output = ec::pid(info, input, setpt, &name);
 
         // this variable isn't actually used in this context, but we're setting
         // it here incase somebody uses it later it's the correct value
@@ -73,7 +74,7 @@ void PIDController::process(void)
             lastInput = input;
         }
 
-        output = ec::pid(info, lastInput, setpt);
+        output = ec::pid(info, lastInput, setpt, &name);
     }
 
     // Output new value
