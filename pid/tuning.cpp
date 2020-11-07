@@ -22,3 +22,5 @@ std::string loggingPath;
 bool loggingEnabled = false;
 
 bool debugEnabled = false;
+
+bool coreLoggingEnabled = false;
