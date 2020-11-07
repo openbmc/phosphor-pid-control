@@ -100,6 +100,7 @@ libswampd_la_SOURCES = \
 	sensors/build_utils.cpp \
 	pid/ec/pid.cpp \
 	pid/ec/stepwise.cpp \
+	pid/ec/logging.cpp \
 	pid/fancontroller.cpp \
 	pid/thermalcontroller.cpp \
 	pid/pidcontroller.cpp \

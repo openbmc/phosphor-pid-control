@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace pid_control
 {
@@ -18,12 +19,12 @@ typedef struct
  */
 typedef struct
 {
-    bool initialized; // has pid been initialized
+    bool initialized;         // has pid been initialized
 
-    double ts;         // sample time in seconds
-    double integral;   // intergal of error
-    double lastOutput; // value of last output
-    double lastError;  // value of last error
+    double ts;                // sample time in seconds
+    double integral;          // intergal of error
+    double lastOutput;        // value of last output
+    double lastError;         // value of last error
 
     double proportionalCoeff; // coeff for P
     double integralCoeff;     // coeff for I
@@ -31,15 +32,16 @@ typedef struct
     double feedFwdOffset;     // offset coeff for feed-forward term
     double feedFwdGain;       // gain for feed-forward term
 
-    limits_t integralLimit; // clamp of integral
-    limits_t outLim;        // clamp of output
+    limits_t integralLimit;   // clamp of integral
+    limits_t outLim;          // clamp of output
     double slewNeg;
     double slewPos;
     double positiveHysteresis;
     double negativeHysteresis;
 } pid_info_t;
 
-double pid(pid_info_t* pidinfoptr, double input, double setpoint);
+double pid(pid_info_t* pidinfoptr, double input, double setpoint,
+           const std::string* nameptr = nullptr);
 
 /* Condensed version for use by the configuration. */
 struct pidinfo
