@@ -25,6 +25,7 @@ using ::testing::Return;
 using ::testing::StrEq;
 
 static std::string modeInterface = "xyz.openbmc_project.Control.Mode";
+static std::string fanSpeedInterface = "xyz.openbmc_project.Control.FanSpeed";
 
 namespace
 {
@@ -33,10 +34,10 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
 {
     // Build a PID Zone.
 
-    sdbusplus::SdBusMock sdbus_mock_passive, sdbus_mock_host, sdbus_mock_mode;
+    sdbusplus::SdBusMock sdbus_mock_passive, sdbus_mock_host, sdbus_mock_fan;
     auto bus_mock_passive = sdbusplus::get_mocked_new(&sdbus_mock_passive);
     auto bus_mock_host = sdbusplus::get_mocked_new(&sdbus_mock_host);
-    auto bus_mock_mode = sdbusplus::get_mocked_new(&sdbus_mock_mode);
+    auto bus_mock_fan = sdbusplus::get_mocked_new(&sdbus_mock_fan);
 
     EXPECT_CALL(sdbus_mock_host,
                 sd_bus_add_object_manager(
@@ -53,10 +54,9 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
 
     double d;
     std::vector<std::string> properties;
-    SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
-                    &d);
-
-    DbusPidZone p(zone, minThermalOutput, failSafePercent, m, bus_mock_mode,
+    SetupDbusObject(&sdbus_mock_fan, defer, objPath,
+                    {modeInterface, fanSpeedInterface}, properties, &d);
+    DbusPidZone p(zone, minThermalOutput, failSafePercent, m, bus_mock_fan,
                   objPath, defer);
     // Success.
 }
@@ -68,7 +68,7 @@ class PidZoneTest : public ::testing::Test
   protected:
     PidZoneTest() :
         property_index(), properties(), sdbus_mock_passive(), sdbus_mock_host(),
-        sdbus_mock_mode()
+        sdbus_mock_fan()
     {
         EXPECT_CALL(sdbus_mock_host,
                     sd_bus_add_object_manager(
@@ -77,18 +77,19 @@ class PidZoneTest : public ::testing::Test
 
         auto bus_mock_passive = sdbusplus::get_mocked_new(&sdbus_mock_passive);
         auto bus_mock_host = sdbusplus::get_mocked_new(&sdbus_mock_host);
-        auto bus_mock_mode = sdbusplus::get_mocked_new(&sdbus_mock_mode);
+        auto bus_mock_fan = sdbusplus::get_mocked_new(&sdbus_mock_fan);
 
         // Compiler weirdly not happy about just instantiating mgr(...);
         SensorManager m(bus_mock_passive, bus_mock_host);
         mgr = std::move(m);
 
-        SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface,
-                        properties, &property_index);
+        SetupDbusObject(&sdbus_mock_fan, defer, objPath,
+                        {modeInterface, fanSpeedInterface}, properties,
+                        &property_index);
 
         zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
-                                             failSafePercent, mgr,
-                                             bus_mock_mode, objPath, defer);
+                                             failSafePercent, mgr, bus_mock_fan,
+                                             objPath, defer);
     }
 
     // unused
@@ -97,7 +98,7 @@ class PidZoneTest : public ::testing::Test
 
     sdbusplus::SdBusMock sdbus_mock_passive;
     sdbusplus::SdBusMock sdbus_mock_host;
-    sdbusplus::SdBusMock sdbus_mock_mode;
+    sdbusplus::SdBusMock sdbus_mock_fan;
     int64_t zoneId = 1;
     double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
@@ -555,7 +556,7 @@ TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)
 
     // Verifies that someone doesn't remove the internal call to the dbus
     // object from which we're inheriting.
-    EXPECT_CALL(sdbus_mock_mode,
+    EXPECT_CALL(sdbus_mock_fan,
                 sd_bus_emit_properties_changed_strv(
                     IsNull(), StrEq(objPath), StrEq(modeInterface), NotNull()))
         .WillOnce(Invoke([&](sd_bus* bus, const char* path,

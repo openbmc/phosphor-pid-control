@@ -44,7 +44,7 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
 
     // The createTemp updates all the properties, however, only Scale is set
     // to non-default.
-    SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &d);
+    SetupDbusObject(&sdbus_mock, defer, objPath, {interface}, properties, &d);
 
     // This is called during object destruction.
     EXPECT_CALL(sdbus_mock,
@@ -71,7 +71,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     std::vector<std::string> properties = {};
     double d;
 
-    SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &d);
+    SetupDbusObject(&sdbus_mock, defer, objPath, {interface}, properties, &d);
 
     EXPECT_CALL(sdbus_mock,
                 sd_bus_emit_object_removed(IsNull(), StrEq(objPath)))

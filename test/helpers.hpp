@@ -34,39 +34,45 @@ using ::testing::StrEq;
  *     the sdbusplus::bus_t you created.
  * @param[in] defer - Whether object announcement is deferred.
  * @param[in] path - the dbus path passed to the object
- * @param[in] intf - the dbus interface
+ * @param[in] interfaces - a vector of dbus interfaces
  * @param[in] properties - an ordered list of expected property updates.
  * @param[in] index - a pointer to a valid double in a surviving scope.
  */
 void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
-                     const std::string& path, const std::string& intf,
+                     const std::string& path,
+                     const std::vector<std::string>& intferfaces,
                      const std::vector<std::string>& properties, double* index)
 {
-    EXPECT_CALL(*sdbus_mock,
-                sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),
-                                         StrEq(intf), NotNull(), NotNull()))
-        .WillOnce(Return(0));
+
+    // An object could inherit multiple interfaces
+    for (const auto& intf : intferfaces)
+    {
+        EXPECT_CALL(*sdbus_mock,
+                    sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),
+                                             StrEq(intf), NotNull(), NotNull()))
+            .WillOnce(Return(0));
+
+        if (!properties.empty())
+        {
+            (*index) = 0;
+            EXPECT_CALL(*sdbus_mock,
+                        sd_bus_emit_properties_changed_strv(
+                            IsNull(), StrEq(path), StrEq(intf), NotNull()))
+                .Times(properties.size())
+                .WillRepeatedly(
+                    Invoke([=](sd_bus* bus, const char* path,
+                               const char* interface, const char** names) {
+                        EXPECT_STREQ(properties[(*index)++].c_str(), names[0]);
+                        return 0;
+                    }));
+        }
+    }
 
     if (!defer)
     {
         EXPECT_CALL(*sdbus_mock,
                     sd_bus_emit_object_added(IsNull(), StrEq(path)))
             .WillOnce(Return(0));
-    }
-
-    if (!properties.empty())
-    {
-        (*index) = 0;
-        EXPECT_CALL(*sdbus_mock,
-                    sd_bus_emit_properties_changed_strv(IsNull(), StrEq(path),
-                                                        StrEq(intf), NotNull()))
-            .Times(properties.size())
-            .WillRepeatedly(
-                Invoke([=](sd_bus* bus, const char* path, const char* interface,
-                           const char** names) {
-                    EXPECT_STREQ(properties[(*index)++].c_str(), names[0]);
-                    return 0;
-                }));
     }
 
     return;

@@ -136,6 +136,11 @@ double DbusPidZone::getFailSafePercent(void) const
     return _failSafePercent;
 }
 
+void DbusPidZone::setFailSafePercent(double newFailSafe)
+{
+    _failSafePercent = newFailSafe;
+}
+
 double DbusPidZone::getMinThermalSetPoint(void) const
 {
     return _minThermalOutputSetPt;
@@ -496,12 +501,18 @@ bool DbusPidZone::manual(bool value)
 {
     std::cerr << "manual: " << value << std::endl;
     setManualMode(value);
-    return ModeObject::manual(value);
+    return FanObject::manual(value);
 }
 
 bool DbusPidZone::failSafe() const
 {
     return getFailSafeMode();
+}
+
+uint64_t DbusPidZone::target(uint64_t value)
+{
+    setFailSafePercent(((double)value / 255) * 100.0);
+    return FanObject::target(value);
 }
 
 } // namespace pid_control

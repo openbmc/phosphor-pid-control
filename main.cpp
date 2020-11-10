@@ -68,7 +68,7 @@ std::string configPath = "";
 boost::asio::io_context io;
 
 /* buses for system control */
-static sdbusplus::asio::connection modeControlBus(io);
+static sdbusplus::asio::connection fanControlBus(io);
 static sdbusplus::asio::connection
     hostBus(io, sdbusplus::bus::new_system().release());
 static sdbusplus::asio::connection
@@ -123,7 +123,7 @@ void restartControlLoops()
     else
     {
         static boost::asio::steady_timer reloadTimer(io);
-        if (!dbus_configuration::init(modeControlBus, reloadTimer, sensorConfig,
+        if (!dbus_configuration::init(fanControlBus, reloadTimer, sensorConfig,
                                       zoneConfig, zoneDetailsConfig))
         {
             return; // configuration not ready
@@ -131,7 +131,7 @@ void restartControlLoops()
     }
 
     mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
-    zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
+    zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, fanControlBus);
 
     if (0 == zones.size())
     {
@@ -280,11 +280,11 @@ int main(int argc, char* argv[])
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     // Create a manager for the ModeBus because we own it.
-    sdbusplus::server::manager_t(static_cast<sdbusplus::bus_t&>(modeControlBus),
+    sdbusplus::server::manager_t(static_cast<sdbusplus::bus_t&>(fanControlBus),
                                  modeRoot);
     hostBus.request_name("xyz.openbmc_project.Hwmon.external");
-    modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
-    sdbusplus::server::manager_t objManager(modeControlBus, modeRoot);
+    fanControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
+    sdbusplus::server::manager_t objManager(fanControlBus, modeRoot);
 
     /*
      * All sensors are managed by one manager, but each zone has a pointer to
