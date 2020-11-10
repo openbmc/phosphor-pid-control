@@ -10,6 +10,7 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Control/FanSpeed/server.hpp>
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
 
 #include <fstream>
@@ -22,7 +23,9 @@
 template <typename... T>
 using ServerObject = typename sdbusplus::server::object_t<T...>;
 using ModeInterface = sdbusplus::xyz::openbmc_project::Control::server::Mode;
-using ModeObject = ServerObject<ModeInterface>;
+using FanSpeedInterface =
+    sdbusplus::xyz::openbmc_project::Control::server::FanSpeed;
+using FanObject = ServerObject<ModeInterface, FanSpeedInterface>;
 
 namespace pid_control
 {
@@ -32,15 +35,15 @@ namespace pid_control
  * control mode changes.  It primarily holds all PID loops and holds the sensor
  * value cache that's used per iteration of the PID loops.
  */
-class DbusPidZone : public ZoneInterface, public ModeObject
+class DbusPidZone : public ZoneInterface, public FanObject
 {
   public:
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
                 const SensorManager& mgr, sdbusplus::bus_t& bus,
                 const char* objPath, bool defer) :
-        ModeObject(bus, objPath,
-                   defer ? ModeObject::action::defer_emit
-                         : ModeObject::action::emit_object_added),
+        FanObject(bus, objPath,
+                  defer ? FanObject::action::defer_emit
+                        : FanObject::action::emit_object_added),
         _zoneId(zone), _maximumSetPoint(),
         _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _mgr(mgr)
@@ -67,6 +70,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void clearSetPoints(void) override;
     void clearRPMCeilings(void) override;
     double getFailSafePercent(void) const override;
+    void setFailSafePercent(double) override;
     double getMinThermalSetPoint(void) const;
 
     Sensor* getSensor(const std::string& name) override;
@@ -93,6 +97,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     /* Method for reading whether in fail-safe mode over dbus */
     bool failSafe() const override;
 
+    /* Method for setting the failSafePercent over dbus */
+    uint64_t target(uint64_t value) override;
+
   private:
     std::ofstream _log;
 
@@ -103,7 +110,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool _manualMode = false;
     bool _redundantWrite = false;
     const double _minThermalOutputSetPt;
-    const double _failSafePercent;
+    double _failSafePercent;
 
     std::set<std::string> _failSafeSensors;
 

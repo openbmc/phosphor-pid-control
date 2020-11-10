@@ -13,6 +13,7 @@ namespace pid_control
 {
 
 using ::testing::_;
+using ::testing::AnyOfArray;
 using ::testing::Invoke;
 using ::testing::IsNull;
 using ::testing::NotNull;
@@ -34,18 +35,22 @@ using ::testing::StrEq;
  *     the sdbusplus::bus_t you created.
  * @param[in] defer - Whether object announcement is deferred.
  * @param[in] path - the dbus path passed to the object
- * @param[in] intf - the dbus interface
+ * @param[in] interfaces - a vector of dbus interfaces
  * @param[in] properties - an ordered list of expected property updates.
  * @param[in] index - a pointer to a valid double in a surviving scope.
  */
 void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
-                     const std::string& path, const std::string& intf,
+                     const std::string& path,
+                     const std::vector<std::string>& intferfaces,
                      const std::vector<std::string>& properties, double* index)
 {
     EXPECT_CALL(*sdbus_mock,
-                sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),
-                                         StrEq(intf), NotNull(), NotNull()))
-        .WillOnce(Return(0));
+                sd_bus_add_object_vtable(
+                    IsNull(), NotNull(), StrEq(path),
+                    AnyOfArray(intferfaces.begin(), intferfaces.end()),
+                    NotNull(), NotNull()))
+        .Times(intferfaces.size())
+        .WillRepeatedly(Return(0));
 
     if (!defer)
     {
@@ -58,8 +63,10 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
     {
         (*index) = 0;
         EXPECT_CALL(*sdbus_mock,
-                    sd_bus_emit_properties_changed_strv(IsNull(), StrEq(path),
-                                                        StrEq(intf), NotNull()))
+                    sd_bus_emit_properties_changed_strv(
+                        IsNull(), StrEq(path),
+                        AnyOfArray(intferfaces.begin(), intferfaces.end()),
+                        NotNull()))
             .Times(properties.size())
             .WillRepeatedly(
                 Invoke([=](sd_bus* bus, const char* path, const char* interface,
