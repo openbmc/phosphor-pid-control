@@ -182,11 +182,14 @@ int main(int argc, char* argv[])
                    "Optional parameter to specify logging folder")
         ->check(CLI::ExistingDirectory);
     app.add_flag("-t,--tuning", tuningEnabled, "Enable or disable tuning");
+    app.add_flag("-n,--negate", negateEnabled,
+                 "Negate worst-margin input in margin PID loop");
 
     CLI11_PARSE(app, argc, argv);
 
     static constexpr auto loggingEnablePath = "/etc/thermal.d/logging";
     static constexpr auto tuningEnablePath = "/etc/thermal.d/tuning";
+    static constexpr auto negateEnablePath = "/etc/thermal.d/negate";
 
     // If this file exists, enable logging at runtime
     std::ifstream fsLogging(loggingEnablePath);
@@ -201,6 +204,9 @@ int main(int argc, char* argv[])
         fsLogging.close();
 
         loggingEnabled = true;
+    }
+    if (loggingEnabled)
+    {
         std::cerr << "Logging enabled: " << loggingPath << "\n";
     }
 
@@ -208,7 +214,20 @@ int main(int argc, char* argv[])
     if (std::filesystem::exists(tuningEnablePath))
     {
         tuningEnabled = true;
+    }
+    if (tuningEnabled)
+    {
         std::cerr << "Tuning enabled\n";
+    }
+
+    // If this file exists, enable margin negate at runtime
+    if (std::filesystem::exists(negateEnablePath))
+    {
+        negateEnabled = true;
+    }
+    if (negateEnabled)
+    {
+        std::cerr << "Will negate worst-margin input in margin PID loop\n";
     }
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";

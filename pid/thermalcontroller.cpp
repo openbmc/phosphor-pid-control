@@ -17,6 +17,7 @@
 #include "thermalcontroller.hpp"
 
 #include "errors/exception.hpp"
+#include "tuning.hpp"
 #include "util.hpp"
 #include "zone.hpp"
 
@@ -98,6 +99,16 @@ double ThermalController::inputProc(void)
         value = 0;
     }
 
+    // The optional negateEnabled feature can make PID math easier
+    if (type == ThermalType::margin)
+    {
+        if (negateEnabled)
+        {
+            // Negate the computed worst-margin value
+            value = 0.0 - value;
+        }
+    }
+
     return value;
 }
 
@@ -117,6 +128,17 @@ double ThermalController::setptProc(void)
         return setpoint;
     }
 #endif
+
+    // The optional negateEnabled feature can make PID math easier
+    if (type == ThermalType::margin)
+    {
+        if (negateEnabled)
+        {
+            // Negate the setpoint value, to match the worst-margin
+            setpoint = 0.0 - setpoint;
+        }
+    }
+
     return setpoint;
 }
 

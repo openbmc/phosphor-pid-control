@@ -50,7 +50,7 @@ pid_zone_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
 pid_thermalcontroller_unittest_SOURCES = pid_thermalcontroller_unittest.cpp
 pid_thermalcontroller_unittest_LDADD = $(top_builddir)/pid/ec/pid.o \
  $(top_builddir)/pid/util.o $(top_builddir)/pid/pidcontroller.o \
- $(top_builddir)/pid/thermalcontroller.o
+ $(top_builddir)/pid/thermalcontroller.o $(top_builddir)/pid/tuning.o
 
 pid_stepwisecontroller_unittest_SOURCES = pid_stepwisecontroller_unittest.cpp
 pid_stepwisecontroller_unittest_LDADD = $(top_builddir)/pid/ec/stepwise.o \
