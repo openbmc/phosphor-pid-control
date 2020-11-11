@@ -1,0 +1,67 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c60546cf_eb5866d5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2020-11-11T18:01:21Z",
+      "side": 1,
+      "message": "Tested statement?",
+      "revId": "ec2bbab6f9dc86a41be147a34b152d6d673be5c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18a2bfa0_2224f4cd",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2020-11-11T18:01:21Z",
+      "side": 1,
+      "message": "This would increase dbus-traffic, by doubling the number of PropertiesChanged messages on dbus which would defeat the whole purpose of only sending sensor value changes;  We\u0027d need to find a different solution.",
+      "range": {
+        "startLine": 645,
+        "startChar": 44,
+        "endLine": 646,
+        "endChar": 41
+      },
+      "revId": "ec2bbab6f9dc86a41be147a34b152d6d673be5c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d80d4e5_b486f826",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2020-11-11T18:01:21Z",
+      "side": 1,
+      "message": "This is a bigger question around what \"alive\" means.  Dbus/systemd has a definition: \"is responding to pings and message inquiries\"  If a sensor daemon is misbehaved, the system will restart it, which phosphor-pid-control can see.",
+      "range": {
+        "startLine": 647,
+        "startChar": 34,
+        "endLine": 648,
+        "endChar": 28
+      },
+      "revId": "ec2bbab6f9dc86a41be147a34b152d6d673be5c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
