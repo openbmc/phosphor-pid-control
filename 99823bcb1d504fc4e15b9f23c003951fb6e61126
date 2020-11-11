@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9dafbed6_77a420da",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000539
+      },
+      "writtenOn": "2020-11-11T19:00:56Z",
+      "side": 1,
+      "message": "The name \"core\" does not make too much sense for me... Maybe lastDump, lastData or lastContext?",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3f0d0219_b5832645",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000539
+      },
+      "writtenOn": "2020-11-11T19:00:56Z",
+      "side": 1,
+      "message": "output2 is not used? Worth commenting?",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dec970ba_e9adb964",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000539
+      },
+      "writtenOn": "2020-11-11T19:00:56Z",
+      "side": 1,
+      "message": "Instead of spreading the \u003d statement everywhere, is it possible to simply use PidCore as the data structure to wrap all these variables? And then, logging is just simply copying/referencing  this data structure.\n\nFor instance:\n\nstruct Data{int a; float b;};\n\nvoid func(){\n    Data data;\n    data.a \u003d getA() + magic;\n    data.b \u003d getB() - magic;\n    log(data);\n}",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
