@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8d4ed6a3_fb9a7be5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2020-11-11T21:21:40Z",
+      "side": 1,
+      "message": "You\u0027ve essentially described the difference between \"temp\" and \"margin\" sensor types.  Why not just change your sensors to temp type?\n\nIt should be noted, dbus-sensors intentionally defines margin values as this way for consistency, and doesn\u0027t describe anything as \"margin\" type.",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 42
+      },
+      "revId": "157458fcd93fc7898a18d507de90b86d6f89cead",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
