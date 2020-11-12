@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "861cb411_d49311a1",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T09:43:44Z",
+      "side": 1,
+      "message": "I\u0027m naming this feature \"core logging\" because there\u0027s already another layer of logging that can be enabled in this program, one that works at a higher level, and I needed to distinguish it. The PidCore name makes sense when it\u0027s part of the \"core logging\" feature. Given this, any suggestions? Calling it \"dump\" or \"data\" or \"context\" seems generic, and wouldn\u0027t provide any advantage.",
+      "parentUuid": "9dafbed6_77a420da",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f0d0219_b5832645",
         "filename": "pid/ec/pid.cpp",
         "patchSetId": 6
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "da74b049_6aecbcf4",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T09:43:44Z",
+      "side": 1,
+      "message": "Part of the reason for the \"core logging\" feature is to debug the guts of this function, the most important function (and the most mysterious) in the entire program. I want to take a snapshot of each variable as it gets modified, even during intermediate steps. That\u0027s why the same variable is copied at many different times. Then, I can see a before-and-after of every change that happens. All of the fields in the \"coreLog\" structure are eventually used, as they are written to the file, for later human perusal.",
+      "parentUuid": "3f0d0219_b5832645",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dec970ba_e9adb964",
         "filename": "pid/ec/pid.cpp",
         "patchSetId": 6
@@ -50,6 +86,24 @@
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8e1dacbb_3587097c",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T09:43:44Z",
+      "side": 1,
+      "message": "I thought about refactoring this function, but I don\u0027t want to change what\u0027s there already. I only want to log the values of the variables at various places within this function. I\u0027m using the \"coreLog\" object as the data structure which receives all the variables for logging purposes. The already-existing \"pidinfoptr\" object already stores the persistent data that is remembered for successive passes through the PID loop. So, every variable in here already does get wrapped by either one or both of these data structures.",
+      "parentUuid": "dec970ba_e9adb964",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
