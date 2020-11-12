@@ -46,6 +46,30 @@
       "revId": "157458fcd93fc7898a18d507de90b86d6f89cead",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9b7d6624_a08e5177",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2020-11-12T15:59:44Z",
+      "side": 1,
+      "message": "\u003e I thought about that, but a configuration flag would still need to be in there. Reason is, the worst-temperature (or worst-margin) calculation. You have to tell phosphor-pid-control what is considered the worst, and it varies by type. If \"temp\", worst is greatest number. If \"margin\", worst is lowest number. That\u0027s why the two types are still distinct.\n\u003e \n\u003e If I were to convert my margin PID loops to temp PID loops, then I would need to negate each of the incoming measurements as well, so that the highest \"temperature\" would still be correctly identifying the component with the least remaining safety margin. Doing the negation at this point seems much easier and safer than doing the negation for each of the incoming measurements.\n\nI\u0027m reading this, but I\u0027m not quite following.  In \"temp\" type, the highest numeric temperature is the one fed into the loop .  Assuming negated margin sensors go -100 (very cool) to 100 (very hot) they would use the exact same logic, right?  The highest numeric sensor would be the one used to do the control?\nThis is essentially the reason why dbus-sensors DIMM, DTS, and NVMe Sensors are described as \"temp\" type, even though some of them are effectively margin sensors and unitless, to keep the math the same.",
+      "parentUuid": "07f24b82_e0ba821e",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 42
+      },
+      "revId": "157458fcd93fc7898a18d507de90b86d6f89cead",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
