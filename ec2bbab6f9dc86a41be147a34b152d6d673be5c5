@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c96dab25_7ced90d2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T10:14:33Z",
+      "side": 1,
+      "message": "Good catch. Added it, in next patchset.",
+      "parentUuid": "c60546cf_eb5866d5",
+      "revId": "ec2bbab6f9dc86a41be147a34b152d6d673be5c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "18a2bfa0_2224f4cd",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 6
@@ -42,6 +60,30 @@
     },
     {
       "key": {
+        "uuid": "6a97c399_9702d247",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 646,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T10:14:33Z",
+      "side": 1,
+      "message": "Yep, this comment was optimistic. Will change the comment.",
+      "parentUuid": "18a2bfa0_2224f4cd",
+      "range": {
+        "startLine": 645,
+        "startChar": 44,
+        "endLine": 646,
+        "endChar": 41
+      },
+      "revId": "ec2bbab6f9dc86a41be147a34b152d6d673be5c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4d80d4e5_b486f826",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 6
@@ -62,6 +104,30 @@
       "revId": "ec2bbab6f9dc86a41be147a34b152d6d673be5c5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "20b7178b_7e06de03",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 648,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T10:14:33Z",
+      "side": 1,
+      "message": "Same.",
+      "parentUuid": "4d80d4e5_b486f826",
+      "range": {
+        "startLine": 647,
+        "startChar": 34,
+        "endLine": 648,
+        "endChar": 28
+      },
+      "revId": "ec2bbab6f9dc86a41be147a34b152d6d673be5c5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
