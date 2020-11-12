@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "5258fb2e_15a2dcd5",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T22:58:19Z",
+      "side": 1,
+      "message": "Thought about that one, actually. That already has an established meaning, though. A core dump is the memory file that the kernel gives you when your program crashes. That wasn\u0027t the intention of this feature :)",
+      "parentUuid": "c0275852_3606deff",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f0d0219_b5832645",
         "filename": "pid/ec/pid.cpp",
         "patchSetId": 6
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Hmm, I can\u0027t trace to where output2 is modified in this CL... Am I missing anything?",
       "parentUuid": "da74b049_6aecbcf4",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c70f9e25_fa641322",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T22:58:19Z",
+      "side": 1,
+      "message": "The \"coreLog\" structure is a stashing-away place for variables at various points. None of the variables in \"coreLog\" are modified after they are set, by design. The entire structure is printed intact, to the log file, for later human perusal.\n\nThe variable \"output\" is changed below, in the if-blocks. That\u0027s why I\u0027m taking a snapshot of it, before and after the if-blocks. The before is \"output2\" and the after is \"output3\", in the CoreLog structure.",
+      "parentUuid": "23e52c5c_bae70a69",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
