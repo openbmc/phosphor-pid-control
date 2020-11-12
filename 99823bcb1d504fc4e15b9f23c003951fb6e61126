@@ -73,6 +73,24 @@
     },
     {
       "key": {
+        "uuid": "241d28b2_9b879a27",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000539
+      },
+      "writtenOn": "2020-11-12T23:23:17Z",
+      "side": 1,
+      "message": "I\u0027m out of ideas then... :P Maybe just PidCoreContext, or anyone else could suggest a good name? Or it\u0027s already good enough?",
+      "parentUuid": "5258fb2e_15a2dcd5",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f0d0219_b5832645",
         "filename": "pid/ec/pid.cpp",
         "patchSetId": 6
@@ -138,6 +156,24 @@
       "side": 1,
       "message": "The \"coreLog\" structure is a stashing-away place for variables at various points. None of the variables in \"coreLog\" are modified after they are set, by design. The entire structure is printed intact, to the log file, for later human perusal.\n\nThe variable \"output\" is changed below, in the if-blocks. That\u0027s why I\u0027m taking a snapshot of it, before and after the if-blocks. The before is \"output2\" and the after is \"output3\", in the CoreLog structure.",
       "parentUuid": "23e52c5c_bae70a69",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "979c5837_c2b7dd33",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000539
+      },
+      "writtenOn": "2020-11-12T23:23:17Z",
+      "side": 1,
+      "message": "Ah, just realized that... Sry, sth was definitely going wrong with my mind, nvm...",
+      "parentUuid": "c70f9e25_fa641322",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
