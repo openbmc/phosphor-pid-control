@@ -70,6 +70,30 @@
       "revId": "157458fcd93fc7898a18d507de90b86d6f89cead",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9dea027c_3714e73c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T23:03:16Z",
+      "side": 1,
+      "message": "That\u0027s what it would be, if the negation took place before the selection. That\u0027s not what\u0027s done, though.\n\nAs it stands now, the sensors are collected as-is, then the choice of \"temp\" or \"margin\" controls whether the worst is defined as the most positive (temp) or most negative (margin).\n\nIf all margin sensors were negated, before they were collected and compared, then you\u0027re right, there would be no need to distinguish between temp and margin. But, they\u0027re not. So, the phosphor-pid-control program offers you the choice, to select the correct behavior as needed.",
+      "parentUuid": "9b7d6624_a08e5177",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 42
+      },
+      "revId": "157458fcd93fc7898a18d507de90b86d6f89cead",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
