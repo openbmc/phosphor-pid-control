@@ -22,6 +22,30 @@
       "revId": "157458fcd93fc7898a18d507de90b86d6f89cead",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07f24b82_e0ba821e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2020-11-12T05:55:08Z",
+      "side": 1,
+      "message": "I thought about that, but a configuration flag would still need to be in there. Reason is, the worst-temperature (or worst-margin) calculation. You have to tell phosphor-pid-control what is considered the worst, and it varies by type. If \"temp\", worst is greatest number. If \"margin\", worst is lowest number. That\u0027s why the two types are still distinct.\n\nIf I were to convert my margin PID loops to temp PID loops, then I would need to negate each of the incoming measurements as well, so that the highest \"temperature\" would still be correctly identifying the component with the least remaining safety margin. Doing the negation at this point seems much easier and safer than doing the negation for each of the incoming measurements.",
+      "parentUuid": "8d4ed6a3_fb9a7be5",
+      "range": {
+        "startLine": 18,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 42
+      },
+      "revId": "157458fcd93fc7898a18d507de90b86d6f89cead",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
