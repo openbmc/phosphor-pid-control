@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "c0275852_3606deff",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000539
+      },
+      "writtenOn": "2020-11-12T17:30:09Z",
+      "side": 1,
+      "message": "I\u0027m not really sure; not a native speaker... PidCoreDump? :P",
+      "parentUuid": "861cb411_d49311a1",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3f0d0219_b5832645",
         "filename": "pid/ec/pid.cpp",
         "patchSetId": 6
@@ -66,6 +84,24 @@
       "side": 1,
       "message": "Part of the reason for the \"core logging\" feature is to debug the guts of this function, the most important function (and the most mysterious) in the entire program. I want to take a snapshot of each variable as it gets modified, even during intermediate steps. That\u0027s why the same variable is copied at many different times. Then, I can see a before-and-after of every change that happens. All of the fields in the \"coreLog\" structure are eventually used, as they are written to the file, for later human perusal.",
       "parentUuid": "3f0d0219_b5832645",
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "23e52c5c_bae70a69",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000539
+      },
+      "writtenOn": "2020-11-12T17:30:09Z",
+      "side": 1,
+      "message": "Hmm, I can\u0027t trace to where output2 is modified in this CL... Am I missing anything?",
+      "parentUuid": "da74b049_6aecbcf4",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
