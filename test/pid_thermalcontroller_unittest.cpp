@@ -67,7 +67,7 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected)
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
     EXPECT_FALSE(p == nullptr);
 
-    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
+    EXPECT_CALL(z, getCachedValues(StrEq("fleeting0"))).WillOnce(Return({5.0, 5.0}));
 
     EXPECT_EQ(5.0, p->inputProc());
 }
@@ -124,8 +124,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsAbsolute)
         &z, "therm1", inputs, setpoint, initial, ThermalType::absolute);
     EXPECT_FALSE(p == nullptr);
 
-    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
-    EXPECT_CALL(z, getCachedValue(StrEq("fleeting1"))).WillOnce(Return(10.0));
+    EXPECT_CALL(z, getCachedValues(StrEq("fleeting0"))).WillOnce(Return({5.0, 5.0}));
+    EXPECT_CALL(z, getCachedValues(StrEq("fleeting1"))).WillOnce(Return({10.0, 10.0}));
 
     EXPECT_EQ(10.0, p->inputProc());
 }
@@ -145,8 +145,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
     EXPECT_FALSE(p == nullptr);
 
-    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
-    EXPECT_CALL(z, getCachedValue(StrEq("fleeting1"))).WillOnce(Return(10.0));
+    EXPECT_CALL(z, getCachedValues(StrEq("fleeting0"))).WillOnce(Return({5.0, 5.0}));
+    EXPECT_CALL(z, getCachedValues(StrEq("fleeting1"))).WillOnce(Return({10.0, 10.0}));
 
     EXPECT_EQ(5.0, p->inputProc());
 }
@@ -171,9 +171,9 @@ TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
         .Times(3)
-        .WillOnce(Return(12.0))
-        .WillOnce(Return(9.0))
-        .WillOnce(Return(7.0));
+        .WillOnce(Return({12.0, 12.0}))
+        .WillOnce(Return({9.0, 9.0}))
+        .WillOnce(Return({7.0, 7.0}));
 
     EXPECT_CALL(z, addSetPoint(_, "therm1")).Times(3);
 
@@ -204,9 +204,9 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
         .Times(3)
-        .WillOnce(Return(8.0))
-        .WillOnce(Return(13.0))
-        .WillOnce(Return(14.0));
+        .WillOnce(Return({8.0, 8.0}))
+        .WillOnce(Return({13.0, 13.0}))
+        .WillOnce(Return({14.0, 14.0}));
 
     EXPECT_CALL(z, addSetPoint(_, "therm1")).Times(3);
 
