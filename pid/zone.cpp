@@ -448,12 +448,10 @@ void DbusPidZone::updateSensors(void)
 
 void DbusPidZone::initializeCache(void)
 {
-    auto nan = std::numeric_limits<double>::quiet_NaN();
-
     for (const auto& f : _fanInputs)
     {
-        _cachedValuesByName[f] = {nan, nan};
-        _cachedFanOutputs[f] = {nan, nan};
+        _cachedValuesByName[f] = {0, 0};
+        _cachedFanOutputs[f] = {0, 0};
 
         // Start all fans in fail-safe mode.
         _failSafeSensors.insert(f);
@@ -461,7 +459,7 @@ void DbusPidZone::initializeCache(void)
 
     for (const auto& t : _thermalInputs)
     {
-        _cachedValuesByName[t] = {nan, nan};
+        _cachedValuesByName[t] = {0, 0};
 
         // Start all sensors in fail-safe mode.
         _failSafeSensors.insert(t);
