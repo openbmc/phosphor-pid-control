@@ -46,15 +46,17 @@ std::unique_ptr<PIDController>
 
 double FanController::inputProc(void)
 {
-    double value = 0;
-    std::vector<int64_t> values;
-    std::vector<int64_t>::iterator result;
+    double value = 0.0;
+    std::vector<double> values;
+    std::vector<double>::iterator result;
 
     try
     {
         for (const auto& name : _inputs)
         {
-            value = _owner->getCachedValue(name);
+            // Read the unscaled value, to correctly recover the RPM
+            value = _owner->getCachedValues(name).second;
+
             /* If we have a fan we can't read, its value will be 0 for at least
              * some boards, while others... the fan will drop off dbus (if
              * that's how it's being read and in that case its value will never
@@ -67,7 +69,7 @@ double FanController::inputProc(void)
             {
                 continue;
             }
-            if (value <= 0)
+            if (value <= 0.0)
             {
                 continue;
             }
@@ -82,7 +84,7 @@ double FanController::inputProc(void)
     }
 
     /* Reset the value from the above loop. */
-    value = 0;
+    value = 0.0;
     if (values.size() > 0)
     {
         /* the fan PID algorithm was unstable with average, and seemed to work
@@ -139,7 +141,7 @@ void FanController::outputProc(double value)
     }
 
     // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.
-    percent /= 100;
+    percent /= 100.0;
 
     // PidSensorMap for writing.
     for (const auto& it : _inputs)
