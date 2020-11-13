@@ -64,7 +64,8 @@ class ZoneInterface
      */
     virtual ValueCacheEntry getCachedValues(const std::string& name)
     {
-        return {getCachedValue(name), getCachedValue(name)};
+        auto v = getCachedValue(name);
+        return {v, v};
     }
 
     /** Add a set point value for the Max Set Point computation. */
