@@ -166,6 +166,11 @@ AS_IF([test "x$enable_tests" != "xno"], [
     AX_RESTORE_FLAGS_WITH_PREFIX(OLD, [LDFLAGS])
 ])
 
+# Integration tests
+AC_ARG_ENABLE([itests], AC_HELP_STRING([--enable-itests],
+                                      [Run integration tests]))
+AM_CONDITIONAL([ENABLE_ITESTS], [test "x$enable_itests" = "xyes"])
+
 # Code coverage
 AX_CODE_COVERAGE
 AS_IF([test "x$CODE_COVERAGE_ENABLED" = "xyes"], [
@@ -219,6 +224,6 @@ eval "eval BINDIR=$bindir"
 AC_SUBST([BINDIR])
 
 # Create configured output
-AC_CONFIG_FILES([Makefile test/Makefile])
+AC_CONFIG_FILES([Makefile test/Makefile test/integration/Makefile])
 AC_CONFIG_FILES([phosphor-pid-control.service])
 AC_OUTPUT
