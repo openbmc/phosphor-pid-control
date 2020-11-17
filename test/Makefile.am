@@ -79,3 +79,8 @@ pid_json_unittest_LDADD = $(top_builddir)/pid/buildjson.o
 
 json_parse_unittest_SOURCES = json_parse_unittest.cpp
 json_parse_unittest_LDADD = $(top_builddir)/build/buildjson.o
+
+# Run integration tests
+if ENABLE_ITESTS
+SUBDIRS = . integration
+endif #enable_itests
