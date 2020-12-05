@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4b88662_9858fd7d",
+        "filename": "test/integration/README.md",
+        "patchSetId": 2
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000233
+      },
+      "writtenOn": "2020-12-05T02:51:03Z",
+      "side": 1,
+      "message": "please be consistent in tabs vs spaces",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 20,
+        "endChar": 8
+      },
+      "revId": "76eed5c65986620d5b0066d6f426c10f1d0592c8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
