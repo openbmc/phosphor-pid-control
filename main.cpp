@@ -135,7 +135,7 @@ void restartControlLoops()
         std::shared_ptr<boost::asio::steady_timer> timer = timers.emplace_back(
             std::make_shared<boost::asio::steady_timer>(io));
         std::cerr << "pushing zone " << i.first << "\n";
-        pidControlLoop(i.second, timer);
+        pidControlLoop(std::weak_ptr(i.second), std::weak_ptr(timer));
     }
 }
 
