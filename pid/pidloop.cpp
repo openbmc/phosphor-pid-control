@@ -46,10 +46,16 @@ static void processThermals(std::shared_ptr<ZoneInterface> zone)
     zone->determineMaxSetPointRequest();
 }
 
-void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
-                    std::shared_ptr<boost::asio::steady_timer> timer,
-                    bool first, int ms100cnt)
+void pidControlLoop(std::weak_ptr<ZoneInterface> wzone,
+                    std::weak_ptr<boost::asio::steady_timer> wtimer, bool first,
+                    int ms100cnt)
 {
+    auto zone = wzone.lock();
+    auto timer = wtimer.lock();
+    if (!zone || !timer)
+    {
+        return;
+    }
     if (first)
     {
         if (loggingEnabled)
@@ -63,12 +69,17 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
 
     timer->expires_after(std::chrono::milliseconds(100));
     timer->async_wait(
-        [zone, timer, ms100cnt](const boost::system::error_code& ec) mutable {
+        [wzone, wtimer, ms100cnt](const boost::system::error_code& ec) mutable {
             if (ec == boost::asio::error::operation_aborted)
             {
                 return; // timer being canceled, stop loop
             }
 
+            auto zone = wzone.lock();
+            if (!zone)
+            {
+                return;
+            }
             /*
              * This should sleep on the conditional wait for the listen thread
              * to tell us it's in sync.  But then we also need a timeout option
@@ -99,7 +110,7 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
             // Check if we should just go back to sleep.
             if (zone->getManualMode())
             {
-                pidControlLoop(zone, timer, false, ms100cnt);
+                pidControlLoop(wzone, wtimer, false, ms100cnt);
                 return;
             }
 
@@ -125,7 +136,7 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
 
             ms100cnt += 1;
 
-            pidControlLoop(zone, timer, false, ms100cnt);
+            pidControlLoop(wzone, wtimer, false, ms100cnt);
         });
 }
 
