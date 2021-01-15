@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "741ce385_3947c976",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-01-15T18:01:50Z",
+      "side": 1,
+      "message": "typo.",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 7
+      },
+      "revId": "17cbc9d8c498481e22a5b87bb3e12c5c2bd58cbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb168c69_f66a2a75",
+        "filename": "pid/pidloop.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-01-15T18:01:50Z",
+      "side": 1,
+      "message": "In this context, the timer doesn\u0027t actually need to be able to create an owning reference to itself in the lambda.\n\nBecause the timer owns this lambda, there\u0027s no way this can ever be called back after the timer has been destroyed.  So, you can simply pass in a reference here.\n\nWith that said, weak_ptr works too, it\u0027s just more complex.",
+      "range": {
+        "startLine": 72,
+        "startChar": 16,
+        "endLine": 72,
+        "endChar": 22
+      },
+      "revId": "17cbc9d8c498481e22a5b87bb3e12c5c2bd58cbf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
