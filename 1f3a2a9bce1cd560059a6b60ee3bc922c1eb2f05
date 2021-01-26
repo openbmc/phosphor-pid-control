@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9bbd4803_93f12821",
+        "filename": "pid/pidloop.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-01-26T09:18:28Z",
+      "side": 1,
+      "message": "Should it also test for wtimer.lock() and return out if lock() failed?",
+      "revId": "1f3a2a9bce1cd560059a6b60ee3bc922c1eb2f05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
