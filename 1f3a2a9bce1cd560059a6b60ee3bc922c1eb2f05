@@ -34,6 +34,24 @@
       "revId": "1f3a2a9bce1cd560059a6b60ee3bc922c1eb2f05",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "43bc16b7_090a857c",
+        "filename": "pid/pidloop.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-02-01T23:32:41Z",
+      "side": 1,
+      "message": "OK, there\u0027s no usage of \"wtimer\" in this function, except for passing it into pidControlLoop(), so it\u0027s OK here, even though I still think it would be safer to check wtimer and wzone at the same time.",
+      "parentUuid": "98a0c4df_fdbb340e",
+      "revId": "1f3a2a9bce1cd560059a6b60ee3bc922c1eb2f05",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
