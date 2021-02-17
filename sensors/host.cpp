@@ -96,4 +96,14 @@ void HostSensor::write(double value)
     throw std::runtime_error("Not Implemented.");
 }
 
+bool HostSensor::getFailed(void)
+{
+    if (std::isfinite(_value))
+    {
+        return false;
+    }
+
+    return true;
+}
+
 } // namespace pid_control
