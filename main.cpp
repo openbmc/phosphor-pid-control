@@ -87,6 +87,11 @@ void restartControlLoops()
         timer->cancel();
     }
     timers.clear();
+
+    if (zones.size() > 0 && zones.begin()->second.use_count() > 1)
+    {
+        throw std::runtime_error("wait for count back to 1");
+    }
     zones.clear();
 
     const std::string& path =
@@ -139,28 +144,60 @@ void restartControlLoops()
     }
 }
 
-void tryRestartControlLoops()
+void tryRestartControlLoops(bool first)
 {
-    int count = 0;
-    for (count = 0; count <= 5; count++)
+    static int count = 0;
+    static const auto initialStartTime = std::chrono::milliseconds(10);
+    static const auto delayTeime = std::chrono::seconds(10);
+    static boost::asio::steady_timer timer(io);
+    // try to start a control loop while the loop has been scheduled.
+    if (first && count != 0)
     {
-        try
-        {
-            restartControlLoops();
-            break;
-        }
-        catch (const std::exception& e)
-        {
-            std::cerr << count
-                      << " Failed during restartControlLoops, try again: "
-                      << e.what() << "\n";
-            if (count >= 5)
-            {
-                throw std::runtime_error(e.what());
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::seconds(10));
+        std::cerr
+            << "ControlLoops has been scheduled, refresh the loop count\n";
+        count = 1;
+        return;
     }
+    // first time of trying to restart the control loop, delay for a small
+    // amount of time.
+    else if (first)
+    {
+        timer.expires_after(initialStartTime);
+    }
+    // re-try control loop, set up a delay.
+    else
+    {
+        timer.expires_after(delayTeime);
+    }
+    count++;
+    timer.async_wait(
+        [](const boost::system::error_code& error) {
+            if (error == boost::asio::error::operation_aborted)
+            {
+                return;
+            }
+            try
+            {
+                restartControlLoops();
+                // reset count after succesful restartControlLoops()
+                count = 0;
+            }
+            catch (const std::exception& e)
+            {
+                if (count >= 5)
+                {
+                    std::cerr
+                        << "Failed to restartControlLoops after multiple tries"
+                        << std::endl;
+                    throw std::runtime_error(e.what());
+                }
+
+                std::cerr << count
+                          << " Failed during restartControlLoops, try again: "
+                          << e.what() << "\n";
+                tryRestartControlLoops(false);
+            }
+        });
 
     return;
 }

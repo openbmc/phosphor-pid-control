@@ -14,7 +14,7 @@
 namespace pid_control
 {
 
-void tryRestartControlLoops(void);
+void tryRestartControlLoops(bool first = true);
 
 /*
  * Given a configuration structure, fill out the information we use within the
