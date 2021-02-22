@@ -170,34 +170,36 @@ void tryRestartControlLoops(bool first)
         timer.expires_after(delayTeime);
     }
     count++;
-    timer.async_wait(
-        [](const boost::system::error_code& error) {
-            if (error == boost::asio::error::operation_aborted)
-            {
-                return;
-            }
-            try
-            {
-                restartControlLoops();
-                // reset count after succesful restartControlLoops()
-                count = 0;
-            }
-            catch (const std::exception& e)
-            {
-                if (count >= 5)
-                {
-                    std::cerr
-                        << "Failed to restartControlLoops after multiple tries"
-                        << std::endl;
-                    throw std::runtime_error(e.what());
-                }
+    timer.async_wait([](const boost::system::error_code& error) {
+        if (error == boost::asio::error::operation_aborted)
+        {
+            return;
+        }
 
-                std::cerr << count
-                          << " Failed during restartControlLoops, try again: "
-                          << e.what() << "\n";
-                tryRestartControlLoops(false);
-            }
-        });
+        // for the last loop, don't elminate the failure of restartControlLoops.
+        if (count >= 5)
+        {
+            restartControlLoops();
+            // reset count after succesful restartControlLoops()
+            count = 0;
+            return;
+        }
+
+        // retry when restartControlLoops() has some failure.
+        try
+        {
+            restartControlLoops();
+            // reset count after succesful restartControlLoops()
+            count = 0;
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << count
+                      << " Failed during restartControlLoops, try again: "
+                      << e.what() << "\n";
+            tryRestartControlLoops(false);
+        }
+    });
 
     return;
 }
