@@ -81,11 +81,13 @@ void restartControlLoops()
     static SensorManager mgmr;
     static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
     static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
+    static bool isCanceling = false;
 
     for (const auto timer : timers)
     {
         timer->cancel();
     }
+    isCanceling = true;
     timers.clear();
 
     if (zones.size() > 0 && zones.begin()->second.use_count() > 1)
@@ -93,6 +95,7 @@ void restartControlLoops()
         throw std::runtime_error("wait for count back to 1");
     }
     zones.clear();
+    isCanceling = false;
 
     const std::string& path =
         (configPath.length() > 0) ? configPath : jsonConfigurationPath;
@@ -140,7 +143,7 @@ void restartControlLoops()
         std::shared_ptr<boost::asio::steady_timer> timer = timers.emplace_back(
             std::make_shared<boost::asio::steady_timer>(io));
         std::cerr << "pushing zone " << i.first << "\n";
-        pidControlLoop(i.second, timer);
+        pidControlLoop(i.second, timer, &isCanceling);
     }
 }
 
