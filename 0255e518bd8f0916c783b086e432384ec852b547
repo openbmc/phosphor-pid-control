@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "922f01d9_50feab0a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-02-25T01:28:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "163af7e3_6e588390",
+      "revId": "0255e518bd8f0916c783b086e432384ec852b547",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5bf84e03_0792519b",
         "filename": "/COMMIT_MSG",
         "patchSetId": 2
@@ -33,6 +51,24 @@
       "revId": "0255e518bd8f0916c783b086e432384ec852b547",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "995e5421_61a33273",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-02-25T01:28:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5bf84e03_0792519b",
+      "revId": "0255e518bd8f0916c783b086e432384ec852b547",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     },
     {
       "key": {
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "2d3b7f42_9ed95325",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-02-25T01:28:34Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "b361a118_15f19253",
+      "revId": "0255e518bd8f0916c783b086e432384ec852b547",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "06111e29_9b108c63",
         "filename": "main.cpp",
         "patchSetId": 2
@@ -64,6 +118,24 @@
       "writtenOn": "2021-02-24T01:26:25Z",
       "side": 1,
       "message": "Weird: clang-format puts \"{\" on the right here, but in other usages, clang-format usually puts \"{\" alone on its own line. Maybe lambdas are special?",
+      "revId": "0255e518bd8f0916c783b086e432384ec852b547",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "0aa9f23d_fbcc8a30",
+        "filename": "main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 173,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-02-25T01:28:34Z",
+      "side": 1,
+      "message": "the clang formatter always do lambda this way.",
+      "parentUuid": "06111e29_9b108c63",
       "revId": "0255e518bd8f0916c783b086e432384ec852b547",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
