@@ -91,7 +91,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
                 sd_bus_emit_properties_changed_strv(
                     IsNull(), StrEq(objPath), StrEq(interface), NotNull()))
         .WillOnce(Invoke([=](sd_bus* bus, const char* path,
-                             const char* interface, char** names) {
+                             const char* interface, const char** names) {
             EXPECT_STREQ("Value", names[0]);
             return 0;
         }));
