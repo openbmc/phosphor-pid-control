@@ -1,0 +1,2 @@
+option('dbus', type: 'feature', value : 'enabled', description : 'Build with dbus support')
+option('tests', type: 'feature', value : 'enabled', description : 'Build unit tests')

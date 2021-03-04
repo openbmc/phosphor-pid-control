@@ -60,12 +60,7 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
         EXPECT_CALL(*sdbus_mock,
                     sd_bus_emit_properties_changed_strv(IsNull(), StrEq(path),
                                                         StrEq(intf), NotNull()))
-            .Times(properties.size())
-            .WillRepeatedly(Invoke([=](sd_bus* bus, const char* path,
-                                       const char* interface, char** names) {
-                EXPECT_STREQ(properties[(*index)++].c_str(), names[0]);
-                return 0;
-            }));
+            .Times(properties.size());
     }
 
     return;

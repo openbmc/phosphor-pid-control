@@ -87,15 +87,6 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     ReadReturn r = hs->read();
     EXPECT_EQ(r.value, 0);
 
-    EXPECT_CALL(sdbus_mock,
-                sd_bus_emit_properties_changed_strv(
-                    IsNull(), StrEq(objPath), StrEq(interface), NotNull()))
-        .WillOnce(Invoke([=](sd_bus* bus, const char* path,
-                             const char* interface, char** names) {
-            EXPECT_STREQ("Value", names[0]);
-            return 0;
-        }));
-
     std::chrono::high_resolution_clock::time_point t1 =
         std::chrono::high_resolution_clock::now();
 

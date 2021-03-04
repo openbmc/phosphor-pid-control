@@ -40,6 +40,7 @@ void setupGlobalOemFanControl() __attribute__((constructor));
 
 void setupGlobalOemFanControl()
 {
+    /*
     oem::Router* router = oem::mutableRouter();
 
     std::fprintf(
@@ -52,4 +53,5 @@ void setupGlobalOemFanControl()
                             std::bind(pid_control::ipmi::manualModeControl,
                                       &pid_control::ipmi::handler, _1, _2, _3,
                                       _4));
+*/
 }
