@@ -69,6 +69,24 @@
       "revId": "1eb799b80eda9a44ceacd645f21384c9d1d7e3b0",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c4ad5327_4d2d9c6f",
+        "filename": "main.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-03-04T15:35:20Z",
+      "side": 1,
+      "message": "Ah, good point. It\u0027s static, so it\u0027s by far the easiest to have it remain as an \"old-fashioned\" pointer (using unique_ptr gets weird when it\u0027s static, and needs a bunch of pointless overhead). I would rather it remain a local static variable, as there\u0027s many local static variables here already, and it fits in. I think it\u0027s fine as-is now.",
+      "parentUuid": "89307d17_202395f1",
+      "revId": "1eb799b80eda9a44ceacd645f21384c9d1d7e3b0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
