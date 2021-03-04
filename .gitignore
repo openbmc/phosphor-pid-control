@@ -24,7 +24,6 @@ autom4te.cache/
 compile
 config.guess
 config.h
-config.h.in
 config.h.in~
 config.log
 config.status
@@ -47,6 +46,7 @@ x86_64-libtool
 *_unittest.log
 *_unittest.trs
 test-suite.log
+build/
 
 # IDEs
 .idea/
