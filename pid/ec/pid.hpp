@@ -7,16 +7,16 @@ namespace pid_control
 namespace ec
 {
 
-typedef struct
+using limits_t = struct
 {
     double min;
     double max;
-} limits_t;
+};
 
 /* Note: If you update these structs you need to update the copy code in
  * pid/util.cpp.
  */
-typedef struct
+struct pid_info_t
 {
     bool initialized; // has pid been initialized
 
@@ -35,12 +35,12 @@ typedef struct
     double slewPos;
     double positiveHysteresis;
     double negativeHysteresis;
-} pid_info_t;
+};
 
 double pid(pid_info_t* pidinfoptr, double input, double setpoint);
 
 /* Condensed version for use by the configuration. */
-struct pidinfo
+struct Pidinfo
 {
     double ts;                  // sample time in seconds
     double proportionalCoeff;   // coeff for P

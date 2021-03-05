@@ -26,7 +26,7 @@ TEST(ThermalControllerTest, BoringFactoryTest)
 
     std::vector<std::string> inputs = {"fleeting0"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
@@ -42,7 +42,7 @@ TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs)
 
     std::vector<std::string> inputs = {};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
     std::unique_ptr<PIDController> p;
     EXPECT_THROW(
         {
@@ -61,7 +61,7 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected)
 
     std::vector<std::string> inputs = {"fleeting0"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
@@ -80,7 +80,7 @@ TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected)
 
     std::vector<std::string> inputs = {"fleeting0"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
@@ -97,7 +97,7 @@ TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
 
     std::vector<std::string> inputs = {"fleeting0"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
@@ -118,7 +118,7 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsAbsolute)
 
     std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::absolute);
@@ -139,7 +139,7 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
 
     std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
@@ -162,7 +162,7 @@ TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
 
     std::vector<std::string> inputs = {"fleeting0"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
     initial.negativeHysteresis = 4.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
@@ -195,7 +195,7 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
 
     std::vector<std::string> inputs = {"fleeting0"};
     double setpoint = 10.0;
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
     initial.positiveHysteresis = 5.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(

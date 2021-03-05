@@ -16,7 +16,7 @@ class SysFsRead : public ReadInterface
 {
   public:
     explicit SysFsRead(const std::string& path) :
-        ReadInterface(), _path(FixupPath(path))
+        ReadInterface(), _path(fixupPath(path))
     {}
 
     ReadReturn read(void) override;
