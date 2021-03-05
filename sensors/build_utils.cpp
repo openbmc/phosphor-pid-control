@@ -19,9 +19,9 @@
 namespace pid_control
 {
 
-static constexpr auto external_sensor =
-    "/xyz/openbmc_project/extsensors/";                         // type/
-static constexpr auto openbmc_sensor = "/xyz/openbmc_project/"; // type/
+static constexpr auto externalSensor =
+    "/xyz/openbmc_project/extsensors/";                        // type/
+static constexpr auto openbmcSensor = "/xyz/openbmc_project/"; // type/
 static constexpr auto sysfs = "/sys/";
 
 IOInterfaceType getWriteInterfaceType(const std::string& path)
@@ -37,7 +37,7 @@ IOInterfaceType getWriteInterfaceType(const std::string& path)
         return IOInterfaceType::SYSFS;
     }
 
-    if (path.find(openbmc_sensor) != std::string::npos)
+    if (path.find(openbmcSensor) != std::string::npos)
     {
         return IOInterfaceType::DBUSACTIVE;
     }
@@ -52,12 +52,12 @@ IOInterfaceType getReadInterfaceType(const std::string& path)
         return IOInterfaceType::NONE;
     }
 
-    if (path.find(external_sensor) != std::string::npos)
+    if (path.find(externalSensor) != std::string::npos)
     {
         return IOInterfaceType::EXTERNAL;
     }
 
-    if (path.find(openbmc_sensor) != std::string::npos)
+    if (path.find(openbmcSensor) != std::string::npos)
     {
         return IOInterfaceType::DBUSPASSIVE;
     }

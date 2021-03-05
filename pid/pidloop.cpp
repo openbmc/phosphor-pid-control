@@ -33,7 +33,7 @@
 namespace pid_control
 {
 
-static void processThermals(std::shared_ptr<ZoneInterface> zone)
+static void processThermals(const std::shared_ptr<ZoneInterface>& zone)
 {
     // Get the latest margins.
     zone->updateSensors();

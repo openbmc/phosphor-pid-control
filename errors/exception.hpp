@@ -9,7 +9,7 @@ class SensorBuildException : public std::exception
     explicit SensorBuildException(const std::string& message) : message(message)
     {}
 
-    virtual const char* what() const noexcept override
+    const char* what() const noexcept override
     {
         return message.c_str();
     }
@@ -25,7 +25,7 @@ class ControllerBuildException : public std::exception
         message(message)
     {}
 
-    virtual const char* what() const noexcept override
+    const char* what() const noexcept override
     {
         return message.c_str();
     }
@@ -41,7 +41,7 @@ class ConfigurationException : public std::exception
         message(message)
     {}
 
-    virtual const char* what() const noexcept override
+    const char* what() const noexcept override
     {
         return message.c_str();
     }

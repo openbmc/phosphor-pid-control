@@ -97,22 +97,22 @@ int64_t DbusPidZone::getZoneID(void) const
 
 void DbusPidZone::addSetPoint(double setpoint)
 {
-    _SetPoints.push_back(setpoint);
+    SetPoints.push_back(setpoint);
 }
 
 void DbusPidZone::addRPMCeiling(double ceiling)
 {
-    _RPMCeilings.push_back(ceiling);
+    RPMCeilings.push_back(ceiling);
 }
 
 void DbusPidZone::clearRPMCeilings(void)
 {
-    _RPMCeilings.clear();
+    RPMCeilings.clear();
 }
 
 void DbusPidZone::clearSetPoints(void)
 {
-    _SetPoints.clear();
+    SetPoints.clear();
 }
 
 double DbusPidZone::getFailSafePercent(void) const
@@ -207,15 +207,15 @@ void DbusPidZone::determineMaxSetPointRequest(void)
     double max = 0;
     std::vector<double>::iterator result;
 
-    if (_SetPoints.size() > 0)
+    if (SetPoints.size() > 0)
     {
-        result = std::max_element(_SetPoints.begin(), _SetPoints.end());
+        result = std::max_element(SetPoints.begin(), SetPoints.end());
         max = *result;
     }
 
-    if (_RPMCeilings.size() > 0)
+    if (RPMCeilings.size() > 0)
     {
-        result = std::min_element(_RPMCeilings.begin(), _RPMCeilings.end());
+        result = std::min_element(RPMCeilings.begin(), RPMCeilings.end());
         max = std::min(max, *result);
     }
 
