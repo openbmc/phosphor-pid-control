@@ -39,7 +39,7 @@ struct ControllerInfo
     double setpoint;                 // initial setpoint for thermal.
     union
     {
-        ec::pidinfo pidInfo; // pid details
+        ec::Pidinfo pidInfo; // pid details
         ec::StepwiseInfo stepwiseInfo;
     };
 };
@@ -60,7 +60,7 @@ struct ZoneConfig
 
 using PIDConf = std::map<std::string, ControllerInfo>;
 
-constexpr bool DEBUG = false; // enable to print found configuration
+constexpr bool debug = false; // enable to print found configuration
 
 } // namespace conf
 } // namespace pid_control

@@ -82,7 +82,7 @@ void restartControlLoops()
     static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
     static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
 
-    for (const auto timer : timers)
+    for (const auto& timer : timers)
     {
         timer->cancel();
     }
@@ -213,7 +213,7 @@ int main(int argc, char* argv[])
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     // Create a manager for the ModeBus because we own it.
-    sdbusplus::server::manager::manager(
+    sdbusplus::server::manager::manager give_me_a_name(
         static_cast<sdbusplus::bus::bus&>(modeControlBus), modeRoot);
     hostBus.request_name("xyz.openbmc_project.Hwmon.external");
     modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");

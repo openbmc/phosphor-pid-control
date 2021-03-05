@@ -24,12 +24,11 @@ class PIDController : public Controller
         Controller(), _owner(owner), _setpoint(0), _id(id)
     {}
 
-    virtual ~PIDController()
-    {}
+    ~PIDController() override = default;
 
-    virtual double inputProc(void) override = 0;
+    double inputProc(void) override = 0;
     virtual double setptProc(void) = 0;
-    virtual void outputProc(double value) override = 0;
+    void outputProc(double value) override = 0;
 
     void process(void) override;
 

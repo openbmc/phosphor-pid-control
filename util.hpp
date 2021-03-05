@@ -20,7 +20,7 @@ void tryRestartControlLoops(void);
  * Given a configuration structure, fill out the information we use within the
  * PID loop.
  */
-void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial);
+void initializePIDStruct(ec::pid_info_t* info, const ec::Pidinfo& initial);
 
 void dumpPIDStruct(ec::pid_info_t* info);
 
@@ -38,7 +38,7 @@ const std::string propertiesintf = "org.freedesktop.DBus.Properties";
 /*
  * Given a path that optionally has a glob portion, fill it out.
  */
-std::string FixupPath(std::string original);
+std::string fixupPath(std::string original);
 
 /*
  * Dump active configuration.

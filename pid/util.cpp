@@ -24,7 +24,7 @@
 namespace pid_control
 {
 
-void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
+void initializePIDStruct(ec::pid_info_t* info, const ec::Pidinfo& initial)
 {
     std::memset(info, 0x00, sizeof(ec::pid_info_t));
 

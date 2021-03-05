@@ -21,7 +21,7 @@ class DbusHelper : public DbusHelperInterface
 
     explicit DbusHelper(sdbusplus::bus::bus bus) : _bus(std::move(bus))
     {}
-    ~DbusHelper() = default;
+    ~DbusHelper() override = default;
 
     DbusHelper(const DbusHelper&) = delete;
     DbusHelper& operator=(const DbusHelper&) = delete;

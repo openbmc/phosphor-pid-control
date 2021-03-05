@@ -71,7 +71,7 @@ using SensorInterfaceType = std::pair<std::string, std::string>;
 
 inline std::string getSensorNameFromPath(const std::string& dbusPath)
 {
-    return dbusPath.substr(dbusPath.find_last_of("/") + 1);
+    return dbusPath.substr(dbusPath.find_last_of('/') + 1);
 }
 
 inline std::string sensorNameToDbusName(const std::string& sensorName)
@@ -137,7 +137,7 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
             ret.emplace_back(std::move(mode));
         }
     }
-    if constexpr (pid_control::conf::DEBUG)
+    if constexpr (pid_control::conf::debug)
     {
         std::cout << "Profiles selected: ";
         for (const auto& profile : ret)
@@ -880,7 +880,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
             }
         }
     }
-    if constexpr (pid_control::conf::DEBUG)
+    if constexpr (pid_control::conf::debug)
     {
         debugPrint(sensorConfig, zoneConfig, zoneDetailsConfig);
     }

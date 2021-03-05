@@ -29,7 +29,7 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
                 const std::map<int64_t, conf::PIDConf>& zoneConfig,
                 const std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig)
 {
-    if constexpr (!conf::DEBUG)
+    if constexpr (!conf::debug)
     {
         return;
     }

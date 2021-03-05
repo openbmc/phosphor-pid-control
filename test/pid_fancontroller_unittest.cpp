@@ -27,7 +27,7 @@ TEST(FanControllerTest, BoringFactoryTest)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -42,7 +42,7 @@ TEST(FanControllerTest, VerifyFactoryFailsWithZeroInputs)
     ZoneMock z;
 
     std::vector<std::string> inputs = {};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -56,7 +56,7 @@ TEST(FanControllerTest, InputProc_AllSensorsReturnZero)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0", "fan1"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -74,7 +74,7 @@ TEST(FanControllerTest, InputProc_IfSensorNegativeIsIgnored)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0", "fan1"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -93,7 +93,7 @@ TEST(FanControllerTest, InputProc_ChoosesMinimumValue)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0", "fan1", "fan2"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -116,7 +116,7 @@ TEST(FanControllerTest, SetPtProc_SpeedChanges_VerifyDirection)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0", "fan1"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -155,7 +155,7 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0", "fan1"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -192,7 +192,7 @@ TEST(FanControllerTest, OutputProc_BehavesAsExpected)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0", "fan1"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);
@@ -225,7 +225,7 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     ZoneMock z;
 
     std::vector<std::string> inputs = {"fan0"};
-    ec::pidinfo initial;
+    ec::Pidinfo initial;
 
     std::unique_ptr<PIDController> p =
         FanController::createFanPid(&z, "fan1", inputs, initial);

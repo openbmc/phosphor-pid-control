@@ -23,7 +23,7 @@ class SensorManager
         _passiveListeningBus(&pass), _hostSensorBus(&host)
     {
         // manager gets its interface from the bus. :D
-        sdbusplus::server::manager::manager(*_hostSensorBus, SensorRoot);
+        sdbusplus::server::manager::manager(*_hostSensorBus, sensorRoot);
     }
 
     SensorManager() = default;
@@ -62,7 +62,7 @@ class SensorManager
     sdbusplus::bus::bus* _passiveListeningBus;
     sdbusplus::bus::bus* _hostSensorBus;
 
-    static constexpr auto SensorRoot = "/xyz/openbmc_project/extsensors";
+    static constexpr auto sensorRoot = "/xyz/openbmc_project/extsensors";
 };
 
 } // namespace pid_control
