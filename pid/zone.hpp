@@ -39,8 +39,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
                 const SensorManager& mgr, sdbusplus::bus::bus& bus,
                 const char* objPath, bool defer) :
         ModeObject(bus, objPath, defer),
-        _zoneId(zone), _maximumSetPoint(),
-        _minThermalOutputSetPt(minThermalOutput),
+        _zoneId(zone), _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _mgr(mgr)
     {
         if (loggingEnabled)
@@ -99,8 +98,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
     std::set<std::string> _failSafeSensors;
 
-    std::vector<double> _SetPoints;
-    std::vector<double> _RPMCeilings;
+    std::vector<double> SetPoints;
+    std::vector<double> RPMCeilings;
     std::vector<std::string> _fanInputs;
     std::vector<std::string> _thermalInputs;
     std::map<std::string, double> _cachedValuesByName;

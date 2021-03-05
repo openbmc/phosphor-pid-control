@@ -84,8 +84,8 @@ uint8_t DbusZoneControl::setFanCtrlProperty(uint8_t zoneId, bool value,
 
     std::string path = getControlPath(zoneId);
 
-    auto PropertyWriteBus = sdbusplus::bus::new_system();
-    auto pimMsg = PropertyWriteBus.new_method_call(busName, path.c_str(),
+    auto propertyWriteBus = sdbusplus::bus::new_system();
+    auto pimMsg = propertyWriteBus.new_method_call(busName, path.c_str(),
                                                    propertiesintf, "Set");
     pimMsg.append(intf);
     pimMsg.append(property);
@@ -93,7 +93,7 @@ uint8_t DbusZoneControl::setFanCtrlProperty(uint8_t zoneId, bool value,
 
     try
     {
-        PropertyWriteBus.call_noreply(pimMsg);
+        propertyWriteBus.call_noreply(pimMsg);
     }
     catch (const sdbusplus::exception::SdBusError& ex)
     {

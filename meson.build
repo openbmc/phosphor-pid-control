@@ -58,6 +58,7 @@ cxx = meson.get_compiler('cpp')
 add_project_arguments(
   cxx.get_supported_arguments([
   '-Wno-unused-parameter',
+  '-Wno-subobject-linkage',
   ]),
   language: 'cpp'
 )

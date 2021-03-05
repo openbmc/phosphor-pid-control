@@ -10,7 +10,7 @@ namespace pid_control
 class ReadInterfaceMock : public ReadInterface
 {
   public:
-    virtual ~ReadInterfaceMock() = default;
+    ~ReadInterfaceMock() override = default;
 
     MOCK_METHOD0(read, ReadReturn());
 };
