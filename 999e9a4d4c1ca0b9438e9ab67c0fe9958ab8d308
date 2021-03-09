@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "b8d6b672_d2d79183",
+        "filename": "sensors/host.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 101,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-03-09T00:25:33Z",
+      "side": 1,
+      "message": "Could simplify to if (std::isfinite(_value)) return false",
+      "revId": "999e9a4d4c1ca0b9438e9ab67c0fe9958ab8d308",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67ee438f_a7270904",
+        "filename": "sensors/host.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-03-09T00:25:33Z",
+      "side": 1,
+      "message": "No need for else-clause since it would have already returned by now if true",
+      "revId": "999e9a4d4c1ca0b9438e9ab67c0fe9958ab8d308",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
