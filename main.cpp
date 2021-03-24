@@ -150,7 +150,7 @@ void restartControlLoops()
 void tryRestartControlLoops(bool first)
 {
     static int count = 0;
-    static const auto initialStartTime = std::chrono::milliseconds(10);
+    static const auto initialStartTime = std::chrono::microseconds(1);
     static const auto delayTeime = std::chrono::seconds(10);
     static boost::asio::steady_timer timer(io);
     // try to start a control loop while the loop has been scheduled.
