@@ -150,8 +150,7 @@ void restartControlLoops()
 void tryRestartControlLoops(bool first)
 {
     static int count = 0;
-    static const auto initialStartTime = std::chrono::milliseconds(10);
-    static const auto delayTeime = std::chrono::seconds(10);
+    static const auto delayTime = std::chrono::seconds(10);
     static boost::asio::steady_timer timer(io);
     // try to start a control loop while the loop has been scheduled.
     if (first && count != 0)
@@ -161,19 +160,8 @@ void tryRestartControlLoops(bool first)
         count = 1;
         return;
     }
-    // first time of trying to restart the control loop, delay for a small
-    // amount of time.
-    else if (first)
-    {
-        timer.expires_after(initialStartTime);
-    }
-    // re-try control loop, set up a delay.
-    else
-    {
-        timer.expires_after(delayTeime);
-    }
-    count++;
-    timer.async_wait([](const boost::system::error_code& error) {
+
+    auto restartLbd = [](const boost::system::error_code& error) {
         if (error == boost::asio::error::operation_aborted)
         {
             return;
@@ -202,7 +190,20 @@ void tryRestartControlLoops(bool first)
                       << e.what() << "\n";
             tryRestartControlLoops(false);
         }
-    });
+    };
+    count++;
+    // first time of trying to restart the control loop without a delay
+    if (first)
+    {
+        boost::asio::post(io,
+                          std::bind(restartLbd, boost::system::error_code()));
+    }
+    // re-try control loop, set up a delay.
+    else
+    {
+        timer.expires_after(delayTime);
+        timer.async_wait(restartLbd);
+    }
 
     return;
 }
