@@ -29,9 +29,9 @@ class PIDController : public Controller
 
     virtual double inputProc(void) override = 0;
     virtual double setptProc(void) = 0;
-    virtual void outputProc(double value) override = 0;
+    virtual void outputProc(double value, bool forceUpdate) override = 0;
 
-    void process(void) override;
+    void process(bool forceUpdate) override;
 
     std::string getID(void) override
     {

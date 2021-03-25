@@ -30,9 +30,9 @@ class StepwiseController : public Controller
 
     double inputProc(void) override;
 
-    void outputProc(double value) override;
+    void outputProc(double value, bool forceUpdate) override;
 
-    void process(void) override;
+    void process(bool forceUpdate) override;
 
     std::string getID(void) override
     {

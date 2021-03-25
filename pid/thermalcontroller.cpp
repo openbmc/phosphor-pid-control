@@ -121,7 +121,7 @@ double ThermalController::setptProc(void)
 }
 
 // bmc_set_pid_output
-void ThermalController::outputProc(double value)
+void ThermalController::outputProc(double value, bool forceUpdate)
 {
     _owner->addSetPoint(value);
 

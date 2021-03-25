@@ -81,6 +81,9 @@ bool DbusPidZone::getManualMode(void) const
 
 void DbusPidZone::setManualMode(bool mode)
 {
+    if (mode) {
+    	_forceSensorUpdateOnce = true;
+    }
     _manualMode = mode;
 }
 
@@ -430,16 +433,18 @@ void DbusPidZone::processFans(void)
 {
     for (auto& p : _fans)
     {
-        p->process();
+        p->process(_forceSensorUpdateOnce);
     }
+    _forceSensorUpdateOnce = false;
 }
 
 void DbusPidZone::processThermals(void)
 {
     for (auto& p : _thermals)
     {
-        p->process();
+        p->process(_forceSensorUpdateOnce);
     }
+     _forceSensorUpdateOnce = false;
 }
 
 Sensor* DbusPidZone::getSensor(const std::string& name)
