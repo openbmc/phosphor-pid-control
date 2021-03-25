@@ -16,6 +16,24 @@
       "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1a9722f8_c1457690",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-03-25T23:34:56Z",
+      "side": 1,
+      "message": "Actually 0 delay is desired. but I cannot find document of the exact behavior of delay \u003d 0. Does the timer put the callback in the execution queue or expired queue? Or the behavior is undefined. \n\nSo I just put a small enough value here just in case. \n\nIf delay\u003d0 is clear, I am glad to use that. \n\nBreak refer to: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-objmgr/+/41563",
+      "parentUuid": "1c699ee8_91c05694",
+      "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
