@@ -52,6 +52,24 @@
       "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "da49ad8c_b8be8f2f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-03-25T23:50:49Z",
+      "side": 1,
+      "message": "\u003e If 0 is what we really want, we should rearrange the code such that we don\u0027t start the timer at all before initializing the loops, and only run the timer if it fails.\n\nOk. Sounds reasonable. Originally I didn\u0027t expect such delay will create any trouble trading for neat code. \n\n\u003e Assuming this is an issue, 1usec makes it just a lot less likely, you need something that\u0027s completely interlocked.\n\nThat is why I also proposed this fix (https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-objmgr/+/41563). The ObjectMapper shouldn\u0027t be so sensitive to implementation of other modules/processes.",
+      "parentUuid": "060eafda_1e4a8212",
+      "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
