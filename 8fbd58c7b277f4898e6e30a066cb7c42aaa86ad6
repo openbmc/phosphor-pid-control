@@ -70,6 +70,24 @@
       "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "350e8ec9_5b49f3ae",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-03-25T23:58:54Z",
+      "side": 1,
+      "message": "\u003e \u003e If 0 is what we really want, we should rearrange the code such that we don\u0027t start the timer at all before initializing the loops, and only run the timer if it fails.\n\u003e \n\u003e Ok. Sounds reasonable. Originally I didn\u0027t expect such delay will create any trouble trading for neat code. \n\nsimple diff is different than neat code.  If we don\u0027t need the initial delay, the code can be much neater, even if the diff looks worse.\n\n\u003e \n\u003e \u003e Assuming this is an issue, 1usec makes it just a lot less likely, you need something that\u0027s completely interlocked.\n\u003e \n\u003e That is why I also proposed this fix (https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-objmgr/+/41563). The ObjectMapper shouldn\u0027t be so sensitive to implementation of other modules/processes.\n\nDisagree.  The ObjectMapper should obey the dbus interfaces, and shouldn\u0027t try to go outside of the well defined dbus behavior, rather than try to cover up subtle bugs.",
+      "parentUuid": "da49ad8c_b8be8f2f",
+      "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
