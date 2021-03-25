@@ -97,6 +97,15 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     const double _minThermalOutputSetPt;
     const double _failSafePercent;
 
+    /** When users do manual sensor update,
+     * it bypasses swarmpd. Because swarmpd doesn't know about this
+     * operation it thing it is still running at the old value. This would
+     * result in no change made to the sensor when the mode goes back to auto
+     * from manual. Therefore, when we go from auto to manual, we need to mark
+     * the next auto update as a force update
+     */
+    bool _forceSensorUpdateOnce = false;
+
     std::set<std::string> _failSafeSensors;
 
     std::vector<double> _SetPoints;

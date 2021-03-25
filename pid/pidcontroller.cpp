@@ -30,7 +30,7 @@
 namespace pid_control
 {
 
-void PIDController::process(void)
+void PIDController::process(bool forceUpdate)
 {
     double input;
     double setpt;
@@ -77,7 +77,7 @@ void PIDController::process(void)
     }
 
     // Output new value
-    outputProc(output);
+    outputProc(output, forceUpdate);
 
     return;
 }

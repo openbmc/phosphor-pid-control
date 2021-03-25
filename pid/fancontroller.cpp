@@ -121,7 +121,7 @@ double FanController::setptProc(void)
     return (maxRPM);
 }
 
-void FanController::outputProc(double value)
+void FanController::outputProc(double value, bool forceUpdate)
 {
     double percent = value;
 
@@ -145,7 +145,7 @@ void FanController::outputProc(double value)
     for (const auto& it : _inputs)
     {
         auto sensor = _owner->getSensor(it);
-        sensor->write(percent);
+        sensor->write(percent, forceUpdate, nullptr);
     }
 
     return;

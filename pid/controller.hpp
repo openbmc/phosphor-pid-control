@@ -20,9 +20,9 @@ struct Controller
 
     virtual double inputProc(void) = 0;
 
-    virtual void outputProc(double value) = 0;
+    virtual void outputProc(double value, bool forceUpdate) = 0;
 
-    virtual void process(void) = 0;
+    virtual void process(bool forceUpdate) = 0;
 
     virtual std::string getID(void) = 0;
 };

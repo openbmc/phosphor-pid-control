@@ -33,7 +33,7 @@
 namespace pid_control
 {
 
-void StepwiseController::process(void)
+void StepwiseController::process(bool forceUpdate)
 {
     // Get input value
     double input = inputProc();
@@ -61,7 +61,7 @@ void StepwiseController::process(void)
 
     lastOutput = output;
     // Output new value
-    outputProc(output);
+    outputProc(output, forceUpdate);
 
     return;
 }
@@ -93,7 +93,7 @@ double StepwiseController::inputProc(void)
     return value;
 }
 
-void StepwiseController::outputProc(double value)
+void StepwiseController::outputProc(double value, bool forceUpdate)
 {
     if (getStepwiseInfo().isCeiling)
     {

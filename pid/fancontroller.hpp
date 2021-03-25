@@ -32,7 +32,7 @@ class FanController : public PIDController
 
     double inputProc(void) override;
     double setptProc(void) override;
-    void outputProc(double value) override;
+    void outputProc(double value, bool forceUpdate) override;
 
     FanSpeedDirection getFanDirection(void) const
     {
