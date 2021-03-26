@@ -88,6 +88,24 @@
       "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cb1ede47_a1f8ac0e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-03-26T00:24:25Z",
+      "side": 1,
+      "message": "\u003e simple diff is different than neat code.  If we don\u0027t need the initial delay, the code can be much neater, even if the diff looks worse.\n\nYou are absolutely right. \n\n\u003e Disagree.  The ObjectMapper should obey the dbus interfaces, and shouldn\u0027t try to go outside of the well defined dbus behavior, rather than try to cover up subtle bugs.\n\nBut it is rather a design problem of synchronization/data-racing than misusing of dbus. dbus doesn\u0027t know when or why you want a method call on a not-yet-created object. The correctness is based on the assumption that process execution is faster than dbus inter-process communication, which is 99.9% correct. And the retry is not just a bug-make-up, it serves similar to a spin-lock for synchronization. \n\nBTW, maybe we should move the chat to the other patch?",
+      "parentUuid": "350e8ec9_5b49f3ae",
+      "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
