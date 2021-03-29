@@ -106,6 +106,24 @@
       "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "77ec523a_f66bbb21",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000857
+      },
+      "writtenOn": "2021-03-29T23:25:30Z",
+      "side": 1,
+      "message": "I completely remove the init delay.",
+      "parentUuid": "cb1ede47_a1f8ac0e",
+      "revId": "8fbd58c7b277f4898e6e30a066cb7c42aaa86ad6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
