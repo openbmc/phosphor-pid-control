@@ -571,6 +571,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                                                   zone.at("MinThermalOutput"));
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
+            details.zoneFlags = std::get<uint64_t>(zone.at("ZoneFlags"));
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         // loop through all the PID configurations and fill out a sensor config
