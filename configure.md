@@ -141,6 +141,7 @@ values via these.  Setting this property to true will ignore `MinValue` and
             "id": 1,
             "minThermalOutput": 3000.0,
             "failsafePercent": 75.0,
+            "zoneFlags": 1,
             "pids": [],
 ...
 ```
@@ -153,6 +154,7 @@ Each zone has its own fields, and a list of controllers.
 | `minThermalOutput` | `double`  | This is the minimum value that should be considered from the thermal outputs.  Commonly used as the minimum fan RPM.|
 | `failsafePercent`  | `double`  | If there is a fan PID, it will use this value if the zone goes into fail-safe as the output value written to the fan's sensors.|
 | `pids`             | `list of strings` | Fan and thermal controllers used by the zone.|
+| `zoneFlags`        | `int64_t`  | [Optional / default 0] Used to enable features on the zone.|
 
 The `id` field here is used in the d-bus path to talk to the
 `xyz.openbmc_project.Control.Mode` interface.
