@@ -81,6 +81,22 @@ LT_INIT # Required for systemd linking
 AC_ARG_ENABLE([tests], AC_HELP_STRING([--disable-tests],
                                       [Build test cases]))
 
+# When in failsafe, run at failsafe PWM if this flag is enabled
+AC_ARG_ENABLE([failsafe-pwm],
+    AS_HELP_STRING([--enable-failsafe-pwm],
+                   [Run at failsafe PWM when in failsafe])
+)
+
+AC_ARG_VAR(ENABLE_FAILSAFE_PWM, [Run at failsafe PWM when in failsafe])
+AS_IF(
+    [test "x$enable_failsafe_pwm" == "xyes"],
+    [ENABLE_FAILSAFE_PWM="yes"]
+    AC_DEFINE_UNQUOTED(
+        [ENABLE_FAILSAFE_PWM],
+        ["$ENABLE_FAILSAFE_PWM"], [Run at failsafe PWM when in failsafe]
+    )
+)
+
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
      [AS_HELP_STRING([--with-systemdsystemunitdir=DIR], [Directory for systemd service files])],
