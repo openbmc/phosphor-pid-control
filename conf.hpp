@@ -56,6 +56,9 @@ struct ZoneConfig
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */
     double failsafePercent;
+
+    /* Use bitmask to set flags for the given zone */
+    int64_t zoneFlags;
 };
 
 using PIDConf = std::map<std::string, ControllerInfo>;
