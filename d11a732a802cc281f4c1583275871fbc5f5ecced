@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3d94101c_1c9e4507",
+        "filename": "configure.ac",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2021-04-01T20:53:40Z",
+      "side": 0,
+      "message": "I\u0027m not very familiar with configure.ac so I decided to copy what I\u0027ve done before for phosphor-hwmon:\n\nhttps://gerrit.openbmc-project.xyz/c/openbmc/phosphor-host-ipmid/+/22780/18/configure.ac",
+      "revId": "d11a732a802cc281f4c1583275871fbc5f5ecced",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    }
+  ]
+}
