@@ -70,6 +70,56 @@ TEST(ZoneFromJson, oneZoneOnePid)
 
     EXPECT_EQ(pidConfig[1]["fan1-5"].type, "fan");
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
+    EXPECT_DOUBLE_EQ(zoneConfig[1].failsafePercent, 75.0);
+    // Default zoneFlags should be 0 if not specified
+    EXPECT_EQ(zoneConfig[1].zoneFlags, 0);
+}
+
+TEST(ZoneFromJson, testZoneFlags)
+{
+    // Parse a valid configuration with one zone and one PID.
+
+    std::map<int64_t, conf::PIDConf> pidConfig;
+    std::map<int64_t, conf::ZoneConfig> zoneConfig;
+
+    auto j2 = R"(
+      {
+        "zones" : [{
+          "id": 1,
+          "minThermalOutput": 3000.0,
+          "failsafePercent": 75.0,
+          "zoneFlags": 7,
+          "pids": [{
+            "name": "fan1-5",
+            "type": "fan",
+            "inputs": ["fan1", "fan5"],
+            "setpoint": 90.0,
+            "pid": {
+              "samplePeriod": 0.1,
+              "proportionalCoeff": 0.0,
+              "integralCoeff": 0.0,
+              "feedFwdOffsetCoeff": 0.0,
+              "feedFwdGainCoeff": 0.010,
+              "integralLimit_min": 0.0,
+              "integralLimit_max": 0.0,
+              "outLim_min": 30.0,
+              "outLim_max": 100.0,
+              "slewNeg": 0.0,
+              "slewPos": 0.0
+            }
+          }]
+        }]
+      }
+    )"_json;
+
+    std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2);
+    EXPECT_EQ(pidConfig.size(), 1);
+    EXPECT_EQ(zoneConfig.size(), 1);
+
+    EXPECT_EQ(pidConfig[1]["fan1-5"].type, "fan");
+    EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
+    EXPECT_DOUBLE_EQ(zoneConfig[1].failsafePercent, 75.0);
+    EXPECT_EQ(zoneConfig[1].zoneFlags, 7);
 }
 
 TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
@@ -86,6 +136,7 @@ TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
           "id": 1,
           "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
+          "zoneFlags": 1,
           "pids": [{
             "name": "fan1-5",
             "type": "fan",
@@ -119,6 +170,8 @@ TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
     EXPECT_DOUBLE_EQ(pidConfig[1]["fan1-5"].pidInfo.positiveHysteresis, 1000.0);
 
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
+    EXPECT_DOUBLE_EQ(zoneConfig[1].failsafePercent, 75.0);
+    EXPECT_EQ(zoneConfig[1].zoneFlags, 1);
 }
 
 TEST(ZoneFromJson, oneZoneOneStepwiseWithHysteresis)
@@ -135,6 +188,7 @@ TEST(ZoneFromJson, oneZoneOneStepwiseWithHysteresis)
           "id": 1,
           "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
+          "zoneFlags": 1,
           "pids": [{
             "name": "temp1",
             "type": "stepwise",
@@ -204,6 +258,8 @@ TEST(ZoneFromJson, oneZoneOneStepwiseWithHysteresis)
                      1.0);
 
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
+    EXPECT_DOUBLE_EQ(zoneConfig[1].failsafePercent, 75.0);
+    EXPECT_EQ(zoneConfig[1].zoneFlags, 1);
 }
 
 } // namespace
