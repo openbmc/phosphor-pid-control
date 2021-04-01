@@ -138,6 +138,11 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
         id = zone["id"];
         thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
         thisZoneConfig.failsafePercent = zone["failsafePercent"];
+        if (zone.contains("zoneFlags"))
+            thisZoneConfig.zoneFlags = zone["zoneFlags"];
+        else
+            // Default to 0 if "zoneFlags" was not provided in the json
+            thisZoneConfig.zoneFlags = 0;
 
         auto pids = zone["pids"];
         for (const auto& pid : pids)
