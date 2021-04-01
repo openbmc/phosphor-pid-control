@@ -23,6 +23,48 @@ TEST(ConfigurationVerificationTest, VerifyHappy)
           "id": 1,
           "minThermalOutput": 3000.0,
           "failsafePercent": 75.0,
+          "zoneFlags": 1,
+          "pids": [{
+            "name": "fan1-5",
+            "type": "fan",
+            "inputs": ["fan1", "fan5"],
+            "setpoint": 90.0,
+            "pid": {
+              "samplePeriod": 0.1,
+              "proportionalCoeff": 0.0,
+              "integralCoeff": 0.0,
+              "feedFwdOffsetCoeff": 0.0,
+              "feedFwdGainCoeff": 0.010,
+              "integralLimit_min": 0.0,
+              "integralLimit_max": 0.0,
+              "outLim_min": 30.0,
+              "outLim_max": 100.0,
+              "slewNeg": 0.0,
+              "slewPos": 0.0
+            }
+          }]
+        }]
+      }
+    )"_json;
+
+    validateJson(j2);
+}
+
+TEST(ConfigurationVerificationTest, VerifyNoZoneFlagHappy)
+{
+    /* Verify that zoneFlags parameter is optional and missing the paramter is
+     * a valid configuration. */
+    auto j2 = R"(
+      {
+        "sensors": [{
+          "name": "fan1",
+          "type": "fan",
+          "readPath": "/xyz/openbmc_project/sensors/fan_tach/fan1"
+        }],
+        "zones": [{
+          "id": 1,
+          "minThermalOutput": 3000.0,
+          "failsafePercent": 75.0,
           "pids": [{
             "name": "fan1-5",
             "type": "fan",
