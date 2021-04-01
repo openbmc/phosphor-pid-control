@@ -49,14 +49,14 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     const char* objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0.75;
+    double failsafePercent = 0.75;
 
     double d;
     std::vector<std::string> properties;
     SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
                     &d);
 
-    DbusPidZone p(zone, minThermalOutput, failSafePercent, m, bus_mock_mode,
+    DbusPidZone p(zone, minThermalOutput, failsafePercent, m, bus_mock_mode,
                   objPath, defer);
     // Success.
 }
@@ -87,7 +87,7 @@ class PidZoneTest : public ::testing::Test
                         properties, &property_index);
 
         zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
-                                             failSafePercent, mgr,
+                                             failsafePercent, mgr,
                                              bus_mock_mode, objPath, defer);
     }
 
@@ -100,7 +100,7 @@ class PidZoneTest : public ::testing::Test
     sdbusplus::SdBusMock sdbus_mock_mode;
     int64_t zoneId = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0.75;
+    double failsafePercent = 0.75;
     bool defer = true;
     const char* objPath = "/path/";
     SensorManager mgr;
@@ -171,7 +171,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
 TEST_F(PidZoneTest, GetFailSafePercent_ReturnsExpected)
 {
     // Verify the value used to create the object is stored.
-    EXPECT_EQ(failSafePercent, zone->getFailSafePercent());
+    EXPECT_EQ(failsafePercent, zone->getFailSafePercent());
 }
 
 TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)

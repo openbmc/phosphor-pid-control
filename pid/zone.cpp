@@ -117,7 +117,7 @@ void DbusPidZone::clearSetPoints(void)
 
 double DbusPidZone::getFailSafePercent(void) const
 {
-    return _failSafePercent;
+    return _failsafePercent;
 }
 
 double DbusPidZone::getMinThermalSetpoint(void) const
