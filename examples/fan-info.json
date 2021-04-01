@@ -64,6 +64,7 @@
             "id": 1,
             "minThermalOutput": 3000.0,
             "failsafePercent": 75.0,
+            "zoneFans": 1,
             "pids": [
                 {
                     "name": "fan1-5",
