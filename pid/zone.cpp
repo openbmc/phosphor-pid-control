@@ -120,6 +120,11 @@ double DbusPidZone::getFailSafePercent(void) const
     return _failSafePercent;
 }
 
+bool DbusPidZone::getCapFailsafePWM(void) const
+{
+    return _capFailsafePWM;
+}
+
 double DbusPidZone::getMinThermalSetpoint(void) const
 {
     return _minThermalOutputSetPt;

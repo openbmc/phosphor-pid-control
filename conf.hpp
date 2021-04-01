@@ -56,6 +56,9 @@ struct ZoneConfig
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */
     double failsafePercent;
+
+    /* Cap at the failsafe percent when in failsafe if true */
+    bool capFailsafePWM;
 };
 
 using PIDConf = std::map<std::string, ControllerInfo>;

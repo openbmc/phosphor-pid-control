@@ -138,6 +138,10 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
         id = zone["id"];
         thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
         thisZoneConfig.failsafePercent = zone["failsafePercent"];
+        if (zone.contains("capFailsafePWM"))
+            thisZoneConfig.capFailsafePWM = zone["capFailsafePWM"];
+        else
+            thisZoneConfig.capFailsafePWM = false;
 
         auto pids = zone["pids"];
         for (const auto& pid : pids)

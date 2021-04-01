@@ -70,6 +70,8 @@ class ZoneInterface
      * fail safe.
      */
     virtual double getFailSafePercent() const = 0;
+    /** Return if the zone should cap at failsafe PWM */
+    virtual bool getCapFailsafePWM() const = 0;
 
     /** Return if the zone is set to manual mode.  false equates to automatic
      * mode (the default).

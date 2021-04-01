@@ -64,6 +64,7 @@
             "id": 1,
             "minThermalOutput": 3000.0,
             "failsafePercent": 75.0,
+            "capFailsafePWM": true,
             "pids": [
                 {
                     "name": "fan1-5",
