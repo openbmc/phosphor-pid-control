@@ -54,7 +54,8 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
     {
         std::cout << "\t{" << zone.first << ",\n";
         std::cout << "\t\t{" << zone.second.minThermalOutput << ", ";
-        std::cout << zone.second.failsafePercent << "}\n\t},\n";
+        std::cout << zone.second.failsafePercent << ", ";
+        std::cout << zone.second.zoneFlags << "}\n\t},\n";
     }
     std::cout << "}\n\n";
     std::cout << "ZoneConfig\n";
