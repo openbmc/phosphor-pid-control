@@ -57,6 +57,8 @@ The PID configuration is a list of PIDs per zone.
     "id": 1, /* zone id. */
     "minThermalOutput": 3000.0, /* The minimum thermal RPM value. (double) */
     "failsafePercent": 75.0, /* The percent to use when the zone is in fail-safe mode. (double) */
+    "zoneFlags": 1, /* [Optional | default 0] Used to enable features on the
+    zone. Details in configure.md. (uint8_t) */
     "pids": [
       {
         "name": "fan1-5",           /* PID name */

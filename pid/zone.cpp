@@ -120,6 +120,11 @@ double DbusPidZone::getFailSafePercent(void) const
     return _failSafePercent;
 }
 
+uint8_t DbusPidZone::getZoneFlags(void) const
+{
+    return _zoneFlags;
+}
+
 double DbusPidZone::getMinThermalSetpoint(void) const
 {
     return _minThermalOutputSetPt;
