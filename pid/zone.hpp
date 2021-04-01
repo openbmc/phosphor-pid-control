@@ -35,13 +35,13 @@ namespace pid_control
 class DbusPidZone : public ZoneInterface, public ModeObject
 {
   public:
-    DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
+    DbusPidZone(int64_t zone, double minThermalOutput, double failsafePercent,
                 const SensorManager& mgr, sdbusplus::bus::bus& bus,
                 const char* objPath, bool defer) :
         ModeObject(bus, objPath, defer),
         _zoneId(zone), _maximumSetPoint(),
         _minThermalOutputSetPt(minThermalOutput),
-        _failSafePercent(failSafePercent), _mgr(mgr)
+        _failsafePercent(failsafePercent), _mgr(mgr)
     {
         if (loggingEnabled)
         {
@@ -62,7 +62,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void addRPMCeiling(double ceiling) override;
     void clearSetPoints(void) override;
     void clearRPMCeilings(void) override;
-    double getFailSafePercent(void) const override;
+    double getFailsafePercent(void) const override;
     double getMinThermalSetpoint(void) const;
 
     Sensor* getSensor(const std::string& name) override;
@@ -95,7 +95,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     double _maximumSetPoint = 0;
     bool _manualMode = false;
     const double _minThermalOutputSetPt;
-    const double _failSafePercent;
+    const double _failsafePercent;
 
     std::set<std::string> _failSafeSensors;
 

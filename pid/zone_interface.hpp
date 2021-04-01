@@ -69,7 +69,7 @@ class ZoneInterface
     /** Return the rpm or pwm percent value to drive fan pids when zone is in
      * fail safe.
      */
-    virtual double getFailSafePercent() const = 0;
+    virtual double getFailsafePercent() const = 0;
 
     /** Return if the zone is set to manual mode.  false equates to automatic
      * mode (the default).

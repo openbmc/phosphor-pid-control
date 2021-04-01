@@ -31,7 +31,7 @@ class ZoneMock : public ZoneInterface
 
     MOCK_CONST_METHOD0(getManualMode, bool());
     MOCK_CONST_METHOD0(getFailSafeMode, bool());
-    MOCK_CONST_METHOD0(getFailSafePercent, double());
+    MOCK_CONST_METHOD0(getFailsafePercent, double());
 
     MOCK_METHOD1(getSensor, Sensor*(const std::string&));
 
