@@ -46,6 +46,30 @@
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "87ea61a9_3d05ff1e",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-04-02T22:48:37Z",
+      "side": 1,
+      "message": "I\u0027d much rather have it be a number, not just a boolean. The reason is, it will make future additions much easier, saving toil. Also, it will avoid a proliferation of boolean parameters.\n\nAnd, a huge reason to want a more future-proof design is the extreme brittleness of D-Bus interfaces, that you were telling me about earlier, when I wanted to add the \"Mutable\" field to the Value interface, in dbus-sensors. If it\u0027s true that you can\u0027t make any changes to an interface after it has been used in code that\u0027s widespread, then it will be a real mess to have to invent a new interface for each boolean field that people might want to add. It will lead to a proliferation of interfaces, and each of them requires a separate D-Bus call to read, further slowing down the system. It would be so much easier just to grab all the bits at once.",
+      "parentUuid": "b944a00c_ae5ca87a",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
