@@ -61,6 +61,15 @@ struct ZoneConfig
     int64_t zoneFlags;
 };
 
+/*
+ * Enum for zoneFlags.
+ */
+enum zoneFlags
+{
+    // Set the fans strictly at the failsafe percent when in failsafe mode
+    STRICT_FAILSAFE_PWM = 0x01,
+};
+
 using PIDConf = std::map<std::string, ControllerInfo>;
 
 constexpr bool DEBUG = false; // enable to print found configuration
