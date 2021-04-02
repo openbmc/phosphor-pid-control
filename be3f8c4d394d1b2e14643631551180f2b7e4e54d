@@ -94,6 +94,30 @@
       "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8db62c99_dbc6597a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-04-02T21:28:49Z",
+      "side": 1,
+      "message": "\u003e I\u0027m not familiar enough with the stepwise records, is this referring to the TODO section of the configure.md? https://github.com/openbmc/phosphor-pid-control/blob/master/configure.md#type--stepwise\n\nHere\u0027s an example of one:\nhttps://github.com/openbmc/entity-manager/blob/ec98491a00c5dcffae6be362e483380c807f234c/configurations/R2000%20Chassis.json#L480\n\nEssentially they can set and upper and lower clamp on your fan speeds, optionally dependent on another sensor (usually ambient air temps).\n\n\u003e \n\u003e We would like to control the PID as a normal PID and only go into this \"Ceiling\" type in failsafe or when we instruct it to, is this possible with the stepwise records?\n\nIt should be, if it isn\u0027t already today.  I\u0027d have to look at the code to see exactly the order that the clamps are applied in.",
+      "parentUuid": "a343adda_5543f735",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
