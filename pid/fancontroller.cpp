@@ -16,6 +16,7 @@
 
 #include "fancontroller.hpp"
 
+#include "conf.hpp"
 #include "tuning.hpp"
 #include "util.hpp"
 #include "zone.hpp"
@@ -130,10 +131,23 @@ void FanController::outputProc(double value)
     {
         if (_owner->getFailSafeMode())
         {
-            /* In case it's being set to 100% */
-            if (percent < _owner->getFailSafePercent())
+            double failsafePercent = _owner->getFailSafePercent();
+
+            if (_owner->getZoneFlags() & conf::zoneFlags::STRICT_FAILSAFE_PWM)
             {
-                percent = _owner->getFailSafePercent();
+                // Unconditionally replace the computed PWM with the failsafe
+                // PWM.
+                percent = failsafePercent;
+            }
+            else
+            {
+                // Ensure PWM is never lower than the failsafe PWM
+                // The computed PWM is still allowed to rise higher than
+                // failsafe PWM.
+                if (percent < failsafePercent)
+                {
+                    percent = failsafePercent;
+                }
             }
         }
     }
