@@ -70,6 +70,30 @@
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "734c48a3_c72740da",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-04-02T23:12:48Z",
+      "side": 1,
+      "message": "\u003e I\u0027d much rather have it be a number, not just a boolean. The reason is, it will make future additions much easier, saving toil. Also, it will avoid a proliferation of boolean parameters.\n\nWe can store it however we like inside the daemon, but in terms of dbus, we don\u0027t do these flag parameters, nor do we do bool generally (unless it\u0027s brutally obvious what it is).  As a general rule, these would be enum types, which I think would alleviate your proliferation concerns.  If you\u0027d like to see us do bitfields more (or ever), this patchset isn\u0027t the place to set that precedent, you would do it in phosphor-dbus-interfaces.\n\n\u003e \n\u003e And, a huge reason to want a more future-proof design is the extreme brittleness of D-Bus interfaces, that you were telling me about earlier, \n\nIt\u0027s code like this that makes dbus interfaces \"brittle\", which make changes to a single interface definition without updating everything else, or making the new interface optional, and now we have two definitions of what a Zone interface can be.\n\n\u003e when I wanted to add the \"Mutable\" field to the Value interface, in dbus-sensors. If it\u0027s true that you can\u0027t make any changes to an interface after it has been used in code that\u0027s widespread, then it will be a real mess to have to invent a new interface for each boolean field that people might want to add.\n\nI\u0027m not following this.  What you call \"a real mess\" is something we do all time time, mostly seamlessly.  New interfaces are easy to do, and optional, which we have pretty good processes for.  Also, we have made changes in widespread interfaces, your change wasn\u0027t the first change to the sensor Value interface, it just requires work.\nAdding new fields to existing schemas, or changing the prototype of them, is something that we aren\u0027t very good at, which is what this patchset is doing currently.  In fact, the original dbus bindings we used couldn\u0027t even handle this kind of interface change in a backward compatible way.  Nowadays we know how to handle this kind of thing better, but it\u0027s still error prone.\n\n\u003e It will lead to a proliferation of interfaces, and each of them requires a separate D-Bus call to read,\n\nI\u0027m not sure where you got that information, but it\u0027s wrong, you can read all the dbus interfaces in a single GetManagedObjects call, like most daemons that care about performance tend to do.  Alternatively, GetAll, with an empty interface name will also grab you all the properties in a more error prone fashion, but in a way that only grabs you a single object.\n\n\u003e further slowing down the system. It would be so much easier just to grab all the bits at once.\n\nHappy to debate what would be easier, but this patchset isn\u0027t the place to do it.  We should follow the current best practices for dbus interfaces.",
+      "parentUuid": "87ea61a9_3d05ff1e",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
