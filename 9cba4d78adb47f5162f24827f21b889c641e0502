@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "5972a538_9a540681",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-04-02T05:07:36Z",
+      "side": 1,
+      "message": "This suddenly makes ZoneFlags required on all configurations, which is going to break a lot of people (everyone with downstream patches, assuming you go through and fix all the upstream ones).  Are you sure you don\u0027t want to define something optional?  That seems relatively straightforward to do.\n\nAlso, this is generally not how we\u0027d specify the dbus interface, we\u0027d specify each feature as a field, not one bitfield squished together.  That makes the interface much more clear.\n\nSee comment on the next patchset though, I\u0027m kinda wondering if this feature isnt\u0027t already covered by existing code.",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
