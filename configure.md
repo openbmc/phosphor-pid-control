@@ -156,6 +156,12 @@ Each zone has its own fields, and a list of controllers.
 | `pids`             | `list of strings` | Fan and thermal controllers used by the zone.|
 | `zoneFlags`        | `int64_t`  | [Optional / default 0] Used to enable features on the zone.|
 
+`zoneFlags`
+
+| enum                  | decimal | meaning |
+| --------------------- | ------- | ------- |
+| `STRICT_FAILSAFE_PWM` |       1 | Set the fans strictly at the failsafe percent when in failsafe mode.|
+
 The `id` field here is used in the d-bus path to talk to the
 `xyz.openbmc_project.Control.Mode` interface.
 

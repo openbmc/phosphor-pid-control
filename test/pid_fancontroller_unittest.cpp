@@ -150,7 +150,7 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
 {
     // Verify that if failsafe mode is enabled and the input value for the fans
     // is below the failsafe minimum value, the input is not used and the fans
-    // are driven at failsafe RPM.
+    // are driven at failsafe RPM regardless of STRICT_FAILSAFE_PWM zoneFlags.
 
     ZoneMock z;
 
@@ -161,8 +161,10 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
         FanController::createFanPid(&z, "fan1", inputs, initial);
     EXPECT_FALSE(p == nullptr);
 
+    double failsafePercent = 75.0;
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
-    EXPECT_CALL(z, getFailSafePercent()).Times(2).WillRepeatedly(Return(75.0));
+    EXPECT_CALL(z, getZoneFlags()).WillOnce(Return(0xfffe));
+    EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(failsafePercent));
 
     int64_t timeout = 0;
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
@@ -171,10 +173,52 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
     SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
 
+    double value = failsafePercent / 100;
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
-    EXPECT_CALL(*sm1, write(0.75));
+    EXPECT_CALL(*sm1, write(value));
     EXPECT_CALL(z, getSensor(StrEq("fan1"))).WillOnce(Return(s2.get()));
-    EXPECT_CALL(*sm2, write(0.75));
+    EXPECT_CALL(*sm2, write(value));
+
+    // This is a fan PID, so calling outputProc will try to write this value
+    // to the sensors.
+
+    // Setting 50%, will end up being 75% because the sensors are in failsafe
+    // mode.
+    p->outputProc(50.0);
+}
+
+TEST(FanControllerTest, OutputProcIfFailsafeInputIsIgnoredWithStrictFailsafePWM)
+{
+    // Identical to OutputProc_VerifiesIfFailsafeEnabledInputIsIgnore, but set
+    // STRICT_FAILSAFE_PWM (1) flag to verify that the failsafe function has not
+    // regressed.
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fan0", "fan1"};
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p =
+        FanController::createFanPid(&z, "fan1", inputs, initial);
+    EXPECT_FALSE(p == nullptr);
+
+    double failsafePercent = 75.0;
+    EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
+    EXPECT_CALL(z, getZoneFlags()).WillOnce(Return(1));
+    EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(failsafePercent));
+
+    int64_t timeout = 0;
+    std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
+    std::unique_ptr<Sensor> s2 = std::make_unique<SensorMock>("fan1", timeout);
+    // Grab pointers for mocking.
+    SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
+    SensorMock* sm2 = reinterpret_cast<SensorMock*>(s2.get());
+
+    double value = failsafePercent / 100;
+    EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
+    EXPECT_CALL(*sm1, write(value));
+    EXPECT_CALL(z, getSensor(StrEq("fan1"))).WillOnce(Return(s2.get()));
+    EXPECT_CALL(*sm2, write(value));
 
     // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.
@@ -232,6 +276,7 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
+    EXPECT_CALL(z, getZoneFlags()).WillOnce(Return(0));
     EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(75.0));
 
     int64_t timeout = 0;
@@ -242,6 +287,80 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeIgnoredIfInputHigher)
     // Converting from double to double for expectation.
     double percent = 80;
     double value = percent / 100;
+
+    EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
+    EXPECT_CALL(*sm1, write(value));
+
+    // This is a fan PID, so calling outputProc will try to write this value
+    // to the sensors.
+    p->outputProc(percent);
+}
+
+TEST(FanControllerTest, OutputProc_VerifyStrictFailSafeFeature)
+{
+    // Identical to OutputProc_VerifyFailSafeIgnoredIfInputHigher, but set
+    // STRICT_FAILSAFE_PWM (1) flag to verify that that the capping mechanism
+    // works as intended.
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fan0"};
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p =
+        FanController::createFanPid(&z, "fan1", inputs, initial);
+    EXPECT_FALSE(p == nullptr);
+
+    double failsafePercent = 75.0;
+    EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
+    EXPECT_CALL(z, getZoneFlags()).WillOnce(Return(1));
+    EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(failsafePercent));
+
+    int64_t timeout = 0;
+    std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
+    // Grab pointer for mocking.
+    SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
+
+    // Converting from double to double for expectation.
+    double percent = 80;
+    double value = failsafePercent / 100;
+
+    EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
+    EXPECT_CALL(*sm1, write(value));
+
+    // This is a fan PID, so calling outputProc will try to write this value
+    // to the sensors.
+    p->outputProc(percent);
+}
+
+TEST(FanControllerTest, OutputProc_VerifyStrictFailSafeFeatureWithMoreFlags)
+{
+    // Identical to OutputProc_VerifyStrictFailSafeFeature, but set zoneFlags
+    // with more flags (including STRICT_FAILSAFE_PWM) to ensure the capping
+    // mechanism still works
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fan0"};
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p =
+        FanController::createFanPid(&z, "fan1", inputs, initial);
+    EXPECT_FALSE(p == nullptr);
+
+    double failsafePercent = 75.0;
+    EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
+    EXPECT_CALL(z, getZoneFlags()).WillOnce(Return(3));
+    EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(failsafePercent));
+
+    int64_t timeout = 0;
+    std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
+    // Grab pointer for mocking.
+    SensorMock* sm1 = reinterpret_cast<SensorMock*>(s1.get());
+
+    // Converting from double to double for expectation.
+    double percent = 80;
+    double value = failsafePercent / 100;
 
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
     EXPECT_CALL(*sm1, write(value));
