@@ -22,6 +22,30 @@
       "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cd95a0b1_9fd0f788",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2021-04-02T05:18:05Z",
+      "side": 1,
+      "message": "This is to be able to use this feature which is WIP https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/38112\n\nWe\u0027d like to lower the failsafePercent dynamically when the host is down (where sensors from the host report NaN and margin sensors are stuck at what they reported last) - this causes the PID loop to get into failsafe mode but the calculated RPM to go up to 100%.",
+      "parentUuid": "90f71a56_1fe5e760",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
