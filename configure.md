@@ -142,6 +142,12 @@ Each zone has its own fields, and a list of PIDs.
 | `failsafePercent`  | `double`  | If there is a fan PID, it will use this value if the zone goes into fail-safe as the output value written to the fan's sensors.|
 | `zoneFlags`        | `int64_t`  | [Optional / default 0] Used to enable features on the zone.|
 
+`zoneFlags`
+
+| enum               | decimal | meaning |
+| ------------------ | ------- | ------- |
+| `CAP_FAILSAFE_PWM` |       1 | Cap the fans at the failsafe percent when in failsafe mode.|
+
 The `id` field here is used in the d-bus path to talk to the
 `xyz.openbmc_project.Control.Mode` interface.
 
