@@ -22,6 +22,30 @@
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b944a00c_ae5ca87a",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2021-04-02T05:23:42Z",
+      "side": 1,
+      "message": "I originally made it a separate boolean flag but talking to Josh, it seemed like this would allow us to easily add future flags.\n\nYes, unfortunately I didn\u0027t quite understand this part of the code and where / how we were setting this property in the D-Bus so I\u0027m not surprised I did it wrong.",
+      "parentUuid": "5972a538_9a540681",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
