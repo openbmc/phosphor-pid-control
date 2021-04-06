@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8649ce7d_797981e2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-04-06T16:53:42Z",
+      "side": 1,
+      "message": "My understanding was that this was by design.  This makes generating parameter for multi-chassis systems much easier, and means the per-chassis tuning is far less problematic.",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
