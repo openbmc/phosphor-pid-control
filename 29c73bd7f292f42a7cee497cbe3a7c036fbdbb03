@@ -22,6 +22,30 @@
       "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b7a2665_803b9818",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-04-06T21:12:34Z",
+      "side": 1,
+      "message": "Hmm. If it was by design, to be normalized from 0.0 to 1.0, then it stacks really badly with the usage of integer, that\u0027s also fixed in this commit. It would always round down to 0, so it wouldn\u0027t work as expected.\n\nIf there\u0027s a multi-chassis system, then each chassis should be in its own thermal zone, right? The thermal zones are independent of each other, so there would be no need to normalize RPM between them.",
+      "parentUuid": "8649ce7d_797981e2",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
