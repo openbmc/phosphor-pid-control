@@ -94,6 +94,30 @@
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "394cef48_fd7dd45c",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-04-07T00:09:02Z",
+      "side": 1,
+      "message": "You have valid points. How about this: Rename \"ZoneFlags\" to \"Options\" or \"ZoneOptions\". Instead of a number acting as a bitfield, make it an array of strings. The presence of a certain string in the array indicates that a particular option is enabled. This lets new options be arbitrarily added without having to redefine an interface that\u0027s already in use. It\u0027s also a lot cleaner-looking than a bitfield, which can rapidly become obscure and inelegant. Would this work better?",
+      "parentUuid": "734c48a3_c72740da",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
