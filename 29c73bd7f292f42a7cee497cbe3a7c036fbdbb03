@@ -94,6 +94,30 @@
       "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "61890fa8_9c9445b9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-04-09T23:00:15Z",
+      "side": 1,
+      "message": "\u003e OK, thanks for the clarification. If the same board could be installed in two different chassis, then shouldn\u0027t thermal tuning be done for each chassis, and the parameters updated accordingly?\n\nNot generally;  As a rule, the same per-thermal controller PID loops can be used chassis to chassis, with only the fan loops changing.  This assumes that fans have roughly linear responses to input, which while not true, is true enough for most servers that the integral components can compensate for it over time.  Doing this prevents having to retune every component for every chassis, which would rapidly go into exponential configurations that would need explicit tuning instead of just testing.\n\n\n\u003e If detected at runtime, D-Bus could be used to update the parameters accordingly, without having to do some strange special scaling here to compensate.\n\nthat\u0027s kind of what entity-manager does, it updates parameters dependent on hardware getting detected.  The key here is that the per-chassis parameters are separate from the non unique parameters so that EM can update the parameters separately, and we have a common cooling metric (0-100% cooling) that everything can standardize their tuning on.\n\n\u003e \n\u003e As for breaking stuff, it was broken before, and it\u0027s working now, so there\u0027s that. The RPM input is now correct, and the units in the PID loop now use RPM as intended.\n\nhave the responses to the DBus APIs changed at all?  I kinda wonder if it was \"broken\" for json configs, but working for dbus configs.  With that said, again, I haven\u0027t read the content of the patch, so it very well could just be fixing stuff.",
+      "parentUuid": "f6f79a3c_41f2b394",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
