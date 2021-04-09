@@ -232,19 +232,37 @@ int main(int argc, char* argv[])
     static constexpr auto loggingEnablePath = "/etc/thermal.d/logging";
     static constexpr auto tuningEnablePath = "/etc/thermal.d/tuning";
 
+    // Set up default logging path, preferring command line if it was given
+    std::string defLoggingPath(loggingPath);
+    if (defLoggingPath.empty())
+    {
+        defLoggingPath = std::filesystem::temp_directory_path();
+    }
+    else
+    {
+        // Enable logging, if user explicitly gave path on command line
+        loggingEnabled = true;
+    }
+
     // If this file exists, enable logging at runtime
     std::ifstream fsLogging(loggingEnablePath);
     if (fsLogging)
     {
-        // Unless file contents are a valid directory path, use system default
+        // The first line of file might be a valid directory path
         std::getline(fsLogging, loggingPath);
-        if (!(std::filesystem::exists(loggingPath)))
-        {
-            loggingPath = std::filesystem::temp_directory_path();
-        }
         fsLogging.close();
 
+        // If so, use it, otherwise use default logging path instead
+        if (!(std::filesystem::exists(loggingPath)))
+        {
+            loggingPath = defLoggingPath;
+        }
+
         loggingEnabled = true;
+    }
+
+    if (loggingEnabled)
+    {
         std::cerr << "Logging enabled: " << loggingPath << "\n";
     }
 
@@ -252,6 +270,11 @@ int main(int argc, char* argv[])
     if (std::filesystem::exists(tuningEnablePath))
     {
         tuningEnabled = true;
+    }
+
+    // This can also be enabled from the command line
+    if (tuningEnabled)
+    {
         std::cerr << "Tuning enabled\n";
     }
 
