@@ -1,6 +1,7 @@
 #!/bin/bash
 
 SourceModule() {
+  # shellcheck source=tools/fan_rpm_loop_test.sh
   . fan_rpm_loop_test.sh
 }
 
