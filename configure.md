@@ -2,9 +2,24 @@
 
 A system needs two groups of configurations: zones and sensors.
 
-## Json Configuration
+They can come either from a dedicated config file or via D-Bus from
+e.g. `entity-manager`.
 
-The json object should be a dictionary with two keys, `sensors` and `zones`.
+## D-Bus Configuration
+
+If config file does not exist the configuration is obtained from a set of D-Bus
+interfaces. When using `entity-manager` to provide them refer to `Pid`,
+`Pid.Zone` and `Stepwise`
+[schemas](https://github.com/openbmc/entity-manager/tree/master/schemas). The
+key names are not identical to JSON but similar enough to see the
+correspondence.
+
+## JSON Configuration
+
+Default config file path `/usr/share/swampd/config.json` can be overridden by
+using `--conf` command line option.
+
+The JSON object should be a dictionary with two keys, `sensors` and `zones`.
 `sensors` is a list of the sensor dictionaries, whereas `zones` is a list of
 zones.
 
@@ -40,9 +55,7 @@ The `name` is used to reference the sensor in the zone portion of the
 configuration.
 
 The `type` is the type of sensor it is. This influences how its value is
-treated. Supports values are: `fan`, `temp`, and `margin`.
-
-**TODO: Add further details on what the types mean.**
+treated. Supported values are: `fan`, `temp`, and `margin`.
 
 The `readPath` is the path that tells the daemon how to read the value from this
 sensor. It is optional, allowing for write-only sensors. If the value is absent
@@ -132,13 +145,14 @@ values via these.  Setting this property to true will ignore `MinValue` and
 ...
 ```
 
-Each zone has its own fields, and a list of PIDs.
+Each zone has its own fields, and a list of controllers.
 
 | field              | type      | meaning                                   |
 | ------------------ | --------- | ----------------------------------------- |
 | `id`               | `int64_t` | This is a unique identifier for the zone. |
 | `minThermalOutput` | `double`  | This is the minimum value that should be considered from the thermal outputs.  Commonly used as the minimum fan RPM.|
 | `failsafePercent`  | `double`  | If there is a fan PID, it will use this value if the zone goes into fail-safe as the output value written to the fan's sensors.|
+| `pids`             | `list of strings` | Fan and thermal controllers used by the zone.|
 
 The `id` field here is used in the d-bus path to talk to the
 `xyz.openbmc_project.Control.Mode` interface.
@@ -146,18 +160,26 @@ The `id` field here is used in the d-bus path to talk to the
 ***TODO:*** Examine how the fan controller always treating its output as a
 percentage works for future cases.
 
-### PIDs
+A zone collects all the setpoints and ceilings from the thermal
+controllers attached to it, selects the maximum setpoint, clamps it by
+the minimum ceiling and `minThermalOutput`; the result is used to
+control fans.
 
-There are a few PID types: `fan`, `temp`, `margin`, and `stepwise`.
+### Controllers
 
-The `fan` PID is meant to drive fans. It's expecting to get the maximum RPM
-setpoint value from the owning zone and then drive the fans to that value.
+There are `fan`, `temp`, `margin` (PID), and `stepwise` (discrete steps)
+controllers.
 
-A `temp` PID is meant to drive the RPM setpoint given an absolute temperature
-value (higher value indicates a warmer temperature).
+The `fan` PID is meant to drive fans or other cooling devices. It's
+expecting to get the setpoint value from the owning zone and then
+drive the fans to that value.
 
-A `margin` PID is meant to drive the RPM setpoint given a margin value (lower
-value indicates a warmer temperature).
+A `temp` PID is meant to drive the setpoint given an absolute
+temperature value (higher value indicates warmer temperature).
+
+A `margin` PID is meant to drive the setpoint given a margin value
+(lower value indicates warmer temperature, in other words, it's the
+safety margin remaining expressed in degrees Celsius).
 
 The setpoint output from the thermal controllers is called `RPMSetpoint()`
 However, it doesn't need to be an RPM value.
@@ -166,6 +188,16 @@ However, it doesn't need to be an RPM value.
 
 Some PID configurations have fields in common, but may be interpreted
 differently.
+
+When using D-Bus, each configuration can have a list of strings called
+`Profiles`. In this case the controller will be loaded only if at
+least one of them is returned as `Current` from an object implementing
+`xyz.openbmc_project.Control.ThermalMode` interface (which can be
+anywhere on D-Bus). `swampd` will automatically reload full
+configuration whenever `Current` is changed.
+
+D-Bus `Name` attribute is used for indexing in certain cases so should
+be unique for all defined configurations.
 
 #### PID Field
 
@@ -220,10 +252,6 @@ The type `fan` builds a `FanController` PID.
 | `setpoint` | `double`          | Presently UNUSED                            |
 | `pid`      | `dictionary`      | A PID dictionary detailed above.            |
 
-#### type == "temp"
-
-***TODO:*** Add notes for temperature configuration.
-
 #### type == "margin"
 
 ```
@@ -246,9 +274,24 @@ The type `margin` builds a `ThermalController` PID.
 | `setpoint` | `double`          | The setpoint value for the thermal PID. The setpoint for the margin sensors.|
 | `pid`      | `dictionary`      | A PID dictionary detailed above.            |
 
+Each input is normally a temperature difference between some hardware
+threshold and the current state. E.g. a CPU sensor can be reporting
+that it's 20 degrees below the point when it starts thermal
+throttling. So the lower the margin temperature, the higher the
+corresponding absolute value.
+
+Out of all the `inputs` the minimal value is selected and used as an
+input for the PID loop.
+
 The output of a `margin` PID loop is that it sets the setpoint value for the
 zone. It does this by adding the value to a list of values. The value chosen by
 the fan PIDs (in this cascade configuration) is the maximum value.
+
+#### type == "temp"
+
+Exactly the same as `margin` but all the inputs are supposed to be
+absolute temperatures and so the maximal value is used to feed the PID
+loop.
 
 #### type == "stepwise"
 
