@@ -118,6 +118,30 @@
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6dd71681_180e0f22",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000188
+      },
+      "writtenOn": "2021-04-15T19:38:33Z",
+      "side": 1,
+      "message": "You should just add more optional keys to your dictionary. Generally instead of a bitfield you would just have definitions like \"capMaxFailsafe\": \"true\", or if that thing takes its own parameters you pass a dict to it.",
+      "parentUuid": "394cef48_fd7dd45c",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
