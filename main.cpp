@@ -35,6 +35,7 @@
 #include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/asio/connection.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/server/manager.hpp>
 
 #include <chrono>
 #include <filesystem>
@@ -260,6 +261,7 @@ int main(int argc, char* argv[])
         static_cast<sdbusplus::bus::bus&>(modeControlBus), modeRoot);
     hostBus.request_name("xyz.openbmc_project.Hwmon.external");
     modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
+    sdbusplus::server::manager::manager objManager(modeControlBus, modeRoot);
 
     /*
      * All sensors are managed by one manager, but each zone has a pointer to
