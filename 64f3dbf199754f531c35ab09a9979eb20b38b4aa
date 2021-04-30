@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "d5a803cf_357cea5b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-04-30T17:07:37Z",
+      "side": 1,
+      "message": "\u003e There is logic to reduce the number of D-Bus write calls necessary, if the PID-loop-computed PWM is the same as before. It won\u0027t perform the PWM write. So, what happens is the fan will still remain at whatever speed the user left it at, even if it is vastly wrong compared to what the PID loop wants it to be at, until something happens that causes the PID loop to compute a different PWM value.\n\nRight, but in 99% of cases, won\u0027t that be the next loop of the PID?  \n\n\u003e If the PID loop is stable, that could take an arbitrarily long time to happen.\n\nNot following this.  Even a stable pid loop will have an I value that is changing the output, unless all thermal margins are EXACTLY at the right temperature, in which case, it means the fans are running at the speed they should be.\n\n\u003e This patch makes sure to invalidate that cache, forcing the PWM write to happen, when the user returns to auto mode from manual mode, so the expected PID-loop-computed PWM is restored.",
+      "parentUuid": "3bf21123_3fab02d3",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 63
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a79d9b21_5509aff1",
         "filename": "interfaces.hpp",
         "patchSetId": 12
@@ -93,6 +117,30 @@
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d3356dc_5d158ce1",
+        "filename": "interfaces.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-04-30T17:07:37Z",
+      "side": 1,
+      "message": "\u003e What would be the appropriate standard in this case?\n\nlowerCamelCase.  The docs repo has more details.\n\n\u003e Elsewhere in this file is class WriteInterface, which has local _min and _max members.\n\nThose are also incorrect.  At some point we should really get the clang-tidy checks going on this repo which can catch this kind of stuff at CI time.\n\n\u003e I was following that naming convention, using leading underscore with lowercase. Should WriteInterface local members be renamed as well?\n\nYes, but not part of this commit.",
+      "parentUuid": "a8f59031_4b686083",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 21
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
