@@ -73,6 +73,30 @@
     },
     {
       "key": {
+        "uuid": "01fe2281_66be173e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000233
+      },
+      "writtenOn": "2021-04-30T19:10:46Z",
+      "side": 1,
+      "message": "We\u0027ve seen this happen regularly in both manual and automated testing. The loop will likely eventually get a new value, but in practice that can take long enough to cause test failures",
+      "parentUuid": "d5a803cf_357cea5b",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 63
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a79d9b21_5509aff1",
         "filename": "interfaces.hpp",
         "patchSetId": 12
