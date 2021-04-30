@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "3bf21123_3fab02d3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-04-30T05:43:42Z",
+      "side": 1,
+      "message": "There is logic to reduce the number of D-Bus write calls necessary, if the PID-loop-computed PWM is the same as before. It won\u0027t perform the PWM write. So, what happens is the fan will still remain at whatever speed the user left it at, even if it is vastly wrong compared to what the PID loop wants it to be at, until something happens that causes the PID loop to compute a different PWM value. If the PID loop is stable, that could take an arbitrarily long time to happen. This patch makes sure to invalidate that cache, forcing the PWM write to happen, when the user returns to auto mode from manual mode, so the expected PID-loop-computed PWM is restored.",
+      "parentUuid": "6175ef53_7723ab00",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 63
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a79d9b21_5509aff1",
         "filename": "interfaces.hpp",
         "patchSetId": 12
