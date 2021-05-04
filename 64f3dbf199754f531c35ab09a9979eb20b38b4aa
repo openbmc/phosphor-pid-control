@@ -121,6 +121,30 @@
     },
     {
       "key": {
+        "uuid": "9c1caaf1_81675f5c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000233
+      },
+      "writtenOn": "2021-05-04T00:02:15Z",
+      "side": 1,
+      "message": "I think this happens specifically if the loop is at some minimum output on an idling system, then someone manually sets a high PWM before reverting it to auto control. The loop will just keep sitting at the minimum value meaning the target PWM won\u0027t change meaning the high PWM will persist indefinitely",
+      "parentUuid": "2c9118bf_8e1e6a40",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 63
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a79d9b21_5509aff1",
         "filename": "interfaces.hpp",
         "patchSetId": 12
