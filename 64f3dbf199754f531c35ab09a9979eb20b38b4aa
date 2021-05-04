@@ -193,6 +193,30 @@
     },
     {
       "key": {
+        "uuid": "d436dc0a_e79c18e3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-05-04T01:00:31Z",
+      "side": 1,
+      "message": "OK, here\u0027s a scenario:\n\nComputed PWM is 80%.\nIt\u0027s a stable system.\nUser sets PWM to manual mode.\nUser sets PWM of 20%, because they were in the room and it was too loud.\nUser leaves the room, and sets PWM back to auto mode.\nThe fan PWM is still at 20%, which is incorrect.\nAt this point, it should be set back to 80%, but it\u0027s not.\nComputed PWM remains at 80%.\nAs computed PWM is unchanged, no write command is issued.\nHowever, unbeknownst to the algorithm, the fan is at 20%.\nThe system starts to heat up.\nThings get too hot, and the PWM algorithm notices this.\nEventually, computed PWM becomes 81%.\nNow, this is different enough.\nThe fan is set to 81%.\nThe system cools back down.\n\nIf the fan PWM had simply been restored to 80% after the user returned it to auto mode from manual mode, the above could have been simplified, and the system would not needlessly heat up.\n\nA worse scenario would be if the computed PWM were already 100%. Now, there is no more headroom. The PWM is already as high as it can go, and won\u0027t change, unless the system cools down. If the user  sets manual mode, slows down the fan, and then sets auto mode again, the system is now doomed to overheat, because nothing will restore the PWM to 100%. Because it\u0027s unchanged from the earlier computed value of 100%, so no write command would ever happen.\n\nThis should make more sense now.",
+      "parentUuid": "b7e6f0b4_16e37c2c",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 63
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a79d9b21_5509aff1",
         "filename": "interfaces.hpp",
         "patchSetId": 12
