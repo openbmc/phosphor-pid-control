@@ -2,6 +2,52 @@
   "comments": [
     {
       "key": {
+        "uuid": "67d437b7_6f4ece81",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2021-05-05T18:00:52Z",
+      "side": 1,
+      "message": "Is it useful to record ts here as well? Knowing ts could help debug weird integral term issues or point out that the PID loop computation is really slow.",
+      "range": {
+        "startLine": 17,
+        "startChar": 7,
+        "endLine": 17,
+        "endChar": 14
+      },
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "149119e3_cee274f4",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2021-05-05T18:00:52Z",
+      "side": 1,
+      "message": "Why are there three integral terms? are these the last three computed integral terms from the last three loops?",
+      "range": {
+        "startLine": 24,
+        "startChar": 0,
+        "endLine": 25,
+        "endChar": 25
+      },
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9dafbed6_77a420da",
         "filename": "pid/ec/logging.hpp",
         "patchSetId": 6
@@ -106,6 +152,52 @@
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1d005c9a_ad4f38d1",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2021-05-05T18:00:52Z",
+      "side": 1,
+      "message": "Seems like you\u0027re worried about moved ofstreams,\nhttps://en.cppreference.com/w/cpp/io/basic_ofstream/operator%3D\n\nsuggests that the move assignment operator of ofstream handles this for you.\nAlso looks like ofstreams are RAII,\nhttps://en.cppreference.com/w/cpp/io/basic_ofstream/close\n\nso you don\u0027t even have to close it.\n\nFinally I don\u0027t think this explicit move assignment operator is needed\n\"Implicitly-defined move assignment operator\n\nFor non-union class types (class and struct), the move assignment operator performs full member-wise move assignment of the object\u0027s direct bases and immediate non-static members, in their declaration order, using built-in assignment for the scalars, memberwise move-assignment for arrays, and move assignment operator for class types (called non-virtually).\n\"",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 26
+      },
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "dfd800f7_76942dbc",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2021-05-05T18:00:52Z",
+      "side": 1,
+      "message": "don\u0027t think an user-defined destructor is needed to close the files.\nofstreams look to be RAII and will close themselves.\nMoved-from ofstreams have their file associations removed which may result in failbit being set during close (but who cares?)",
+      "range": {
+        "startLine": 88,
+        "startChar": 1,
+        "endLine": 95,
+        "endChar": 9
+      },
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     },
     {
       "key": {
