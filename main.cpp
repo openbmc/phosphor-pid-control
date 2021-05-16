@@ -84,7 +84,7 @@ void restartControlLoops()
     static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
     static bool isCanceling = false;
 
-    for (const auto timer : timers)
+    for (const auto& timer : timers)
     {
         timer->cancel();
     }
