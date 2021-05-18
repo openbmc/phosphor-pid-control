@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "937e83d1_917f6277",
+        "filename": "configure.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-05-18T23:33:38Z",
+      "side": 1,
+      "message": "The fan PID loop is actually expecting to get the desired RPM from the zone, and then drive the fans to that RPM, by manipulating the fan PWM output.\n\nAs for what units the RPM input should be in, either direct RPM units or some abstract percentage, that\u0027s currently under debate: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/38228",
+      "revId": "e227c634312e1e46d34dd5e963b5d2f2dd92146a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a8f60a25_ba07879f",
+        "filename": "configure.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-05-18T23:33:38Z",
+      "side": 1,
+      "message": "A good way of explaining it is \"degrees of safety margin remaining\". Higher value indicates colder absolute temperature, as the temperature is that many degrees below the margin-zero point.",
+      "revId": "e227c634312e1e46d34dd5e963b5d2f2dd92146a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
