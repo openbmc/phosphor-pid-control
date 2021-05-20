@@ -16,6 +16,24 @@
       "revId": "2c1efe7640c3906837d57570a9dc6168c069be79",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f77a7cc3_56d5ff0f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2021-05-20T15:36:09Z",
+      "side": 1,
+      "message": "Oh, I understand your mean.\nIf I want scalar \u003d 0.5, I just modify my P, I coefficient to 0.5*P and 0.5*I, right?\nIt looks like really a little unnecessary.",
+      "parentUuid": "9f262227_ce4e8262",
+      "revId": "2c1efe7640c3906837d57570a9dc6168c069be79",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
