@@ -39,7 +39,8 @@ TEST(ConfigurationVerificationTest, VerifyHappy)
               "outLim_min": 30.0,
               "outLim_max": 100.0,
               "slewNeg": 0.0,
-              "slewPos": 0.0
+              "slewPos": 0.0,
+              "scalar": 1.0
             }
           }]
         }]
@@ -74,7 +75,8 @@ TEST(ConfigurationVerificationTest, VerifyNoSensorKey)
               "outLim_min": 30.0,
               "outLim_max": 100.0,
               "slewNeg": 0.0,
-              "slewPos": 0.0
+              "slewPos": 0.0,
+              "scalar": 1.0
             }
           }]
         }]
@@ -126,7 +128,8 @@ TEST(ConfigurationVerificationTest, VerifyNoSensor)
               "outLim_min": 30.0,
               "outLim_max": 100.0,
               "slewNeg": 0.0,
-              "slewPos": 0.0
+              "slewPos": 0.0,
+              "scalar": 1.0
             }
           }]
         }]

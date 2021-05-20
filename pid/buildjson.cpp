@@ -68,6 +68,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
         p.at("outLim_max").get_to(c.pidInfo.outLim.max);
         p.at("slewNeg").get_to(c.pidInfo.slewNeg);
         p.at("slewPos").get_to(c.pidInfo.slewPos);
+        p.at("scalar").get_to(c.pidInfo.scalar);
 
         c.pidInfo.positiveHysteresis = positiveHysteresisValue;
         c.pidInfo.negativeHysteresis = negativeHysteresisValue;

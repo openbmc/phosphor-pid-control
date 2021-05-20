@@ -89,6 +89,7 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
                       << pidconf.second.pidInfo.outLim.max << "},\n";
             std::cout << "\t\t\t" << pidconf.second.pidInfo.slewNeg << ",\n";
             std::cout << "\t\t\t" << pidconf.second.pidInfo.slewPos << ",\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.scalar << ",\n";
             std::cout << "\t\t\t}\n\t\t}\n";
         }
         std::cout << "\t},\n";
