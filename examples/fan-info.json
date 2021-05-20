@@ -81,7 +81,8 @@
                         "outLim_min": 30.0,
                         "outLim_max": 100.0,
                         "slewNeg": 0.0,
-                        "slewPos": 0.0
+                        "slewPos": 0.0,
+                        "scalar": 1.0
                     }
                 },
                 {
@@ -100,7 +101,8 @@
                         "outLim_min": 30.0,
                         "outLim_max": 100.0,
                         "slewNeg": 0.0,
-                        "slewPos": 0.0
+                        "slewPos": 0.0,
+                        "scalar": 1.0
                     }
                 },
                 {
@@ -119,7 +121,8 @@
                         "outLim_min": 30.0,
                         "outLim_max": 100.0,
                         "slewNeg": 0.0,
-                        "slewPos": 0.0
+                        "slewPos": 0.0,
+                        "scalar": 1.0
                     }
                 },
                 {
@@ -138,7 +141,8 @@
                         "outLim_min": 30.0,
                         "outLim_max": 100.0,
                         "slewNeg": 0.0,
-                        "slewPos": 0.0
+                        "slewPos": 0.0,
+                        "scalar": 1.0
                     }
                 },
                 {
@@ -157,7 +161,8 @@
                         "outLim_min": 3000,
                         "outLim_max": 10000,
                         "slewNeg": -100.0,
-                        "slewPos": 0.0
+                        "slewPos": 0.0,
+                        "scalar": 1.0
                     }
                 }
             ]

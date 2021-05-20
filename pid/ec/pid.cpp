@@ -56,6 +56,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 
     // Pid
     error = setpoint - input;
+    error *= pidinfoptr->scalar;
     proportionalTerm = pidinfoptr->proportionalCoeff * error;
 
     // pId

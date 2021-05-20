@@ -74,7 +74,8 @@ The PID configuration is a list of PIDs per zone.
           "outLim_min": 30.0,           /* the PID output clamp, min, max (double) */
           "outLim_max": 100.0,
           "slewNeg": 0.0, /* The slew negative value. (double) */
-          "slewPos": 0.0  /* The slew positive value. (double) */
+          "slewPos": 0.0,  /* The slew positive value. (double) */
+          "scalar": 1.0  /* The weight value for error term */
         }
       }
     ]
