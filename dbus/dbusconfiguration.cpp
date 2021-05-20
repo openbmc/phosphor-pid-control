@@ -325,6 +325,8 @@ void populatePidInfo(
         std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewNeg"));
     info.pidInfo.slewPos =
         std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewPos"));
+    info.pidInfo.scalar =
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "Scalar"));
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
 

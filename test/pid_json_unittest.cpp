@@ -57,7 +57,8 @@ TEST(ZoneFromJson, oneZoneOnePid)
               "outLim_min": 30.0,
               "outLim_max": 100.0,
               "slewNeg": 0.0,
-              "slewPos": 0.0
+              "slewPos": 0.0,
+              "scalar": 1.0
             }
           }]
         }]
@@ -104,7 +105,8 @@ TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
               "slewNeg": 0.0,
               "slewPos": 0.0,
               "positiveHysteresis": 1000.0,
-              "negativeHysteresis": 9000.0
+              "negativeHysteresis": 9000.0,
+              "scalar": 1.0
             }
           }]
         }]

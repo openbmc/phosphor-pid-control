@@ -35,6 +35,7 @@ typedef struct
     double slewPos;
     double positiveHysteresis;
     double negativeHysteresis;
+    double scalar;
 } pid_info_t;
 
 double pid(pid_info_t* pidinfoptr, double input, double setpoint);
@@ -53,6 +54,7 @@ struct pidinfo
     double slewPos;
     double positiveHysteresis;
     double negativeHysteresis;
+    double scalar;
 };
 
 } // namespace ec
