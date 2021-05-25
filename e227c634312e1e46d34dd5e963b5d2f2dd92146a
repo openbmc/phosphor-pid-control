@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "61c50806_92281344",
+        "filename": "configure.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2021-05-25T10:56:24Z",
+      "side": 1,
+      "message": "\u003e The fan PID loop is actually expecting to get the desired RPM from the zone, and then drive the fans to that RPM\n\nDoesn\u0027t my wording say exactly the same thing already? The word \"setpoint\" has a well-defined meaning in control theory afaik.\n\n\u003e As for what units the RPM input should be in, either direct RPM units or some abstract percentage, that\u0027s currently under debate: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/38228\n\nWhile this is still undecided (looks like your patch is doing the right thing so it\u0027s likely to get merged eventually) I removed the note.",
+      "parentUuid": "937e83d1_917f6277",
+      "revId": "e227c634312e1e46d34dd5e963b5d2f2dd92146a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "a8f60a25_ba07879f",
         "filename": "configure.md",
         "patchSetId": 3
@@ -33,6 +51,24 @@
       "revId": "e227c634312e1e46d34dd5e963b5d2f2dd92146a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d86279cd_d5692f0e",
+        "filename": "configure.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 172,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2021-05-25T10:56:24Z",
+      "side": 1,
+      "message": "I hope the new wording is better now, thank you.",
+      "parentUuid": "a8f60a25_ba07879f",
+      "revId": "e227c634312e1e46d34dd5e963b5d2f2dd92146a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
