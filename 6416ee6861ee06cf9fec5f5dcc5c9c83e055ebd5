@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "8aaed95a_95723e09",
+        "filename": "configure.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2021-07-20T14:54:47Z",
+      "side": 1,
+      "message": "This looks wrong indeed. It\u0027s been too long since April (when I worked on this) so it will take some time to reacquire the understanding. Will reply soon.",
+      "parentUuid": "32f4277f_70feef65",
+      "range": {
+        "startLine": 47,
+        "startChar": 1,
+        "endLine": 47,
+        "endChar": 9
+      },
+      "revId": "6416ee6861ee06cf9fec5f5dcc5c9c83e055ebd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "72b0c8d1_2108de56",
         "filename": "configure.md",
         "patchSetId": 6
@@ -36,6 +60,30 @@
       "writtenOn": "2021-07-20T14:09:37Z",
       "side": 1,
       "message": "I\u0027m not really following this statement.  There are two supported controllers, stepwise and PID, and the PID is in fact a proportional-integral-derivative loop.  Can you comment on what you were trying to convey here?",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 0
+      },
+      "revId": "6416ee6861ee06cf9fec5f5dcc5c9c83e055ebd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3483785_1b7f6e32",
+        "filename": "configure.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2021-07-20T14:54:47Z",
+      "side": 1,
+      "message": "The next paragraph talks about \"PID types\" and mentions \"stepwise\" (and this whole section is named ### PIDs) which is not really a PID controller. Also, stepwisecontroller.hpp is in pid/ subdirectory of the sources.",
+      "parentUuid": "72b0c8d1_2108de56",
       "range": {
         "startLine": 158,
         "startChar": 0,
