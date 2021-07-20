@@ -117,6 +117,30 @@
       "revId": "6416ee6861ee06cf9fec5f5dcc5c9c83e055ebd5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5e1ddcd0_ef2b0aa2",
+        "filename": "configure.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2021-07-20T15:28:12Z",
+      "side": 1,
+      "message": "\"There are a few PID types: `fan`, `temp`, `margin`, and `stepwise`.\" is what the next paragraph says. I\u0027m reading it as `stepwise` is presented as a \"PID type\". And later in the docs it follows with #### type \u003d\u003d \"stepwise\" so it\u0027s a _subsection_ of ### PIDs . Probably it\u0027s better to rearrange the sections and get terminology straight so that it would be obvious that there\u0027re several types of controllers, and all of them (but stepwise) are PID controllers.\n```\npid/fancontroller.hpp:class FanController : public PIDController\npid/pidcontroller.hpp:class PIDController : public Controller\npid/stepwisecontroller.hpp:class StepwiseController : public Controller\npid/thermalcontroller.hpp:class ThermalController : public PIDController\n```",
+      "parentUuid": "7fcd0c2b_cae3563b",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 0
+      },
+      "revId": "6416ee6861ee06cf9fec5f5dcc5c9c83e055ebd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
