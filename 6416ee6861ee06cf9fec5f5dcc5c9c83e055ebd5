@@ -93,6 +93,30 @@
       "revId": "6416ee6861ee06cf9fec5f5dcc5c9c83e055ebd5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7fcd0c2b_cae3563b",
+        "filename": "configure.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-07-20T15:04:15Z",
+      "side": 1,
+      "message": "That\u0027s the thing, the next paragraph is still correct, there are different PID types, which are sub types (really configuration items) on the PID controller, and do in fact do PID math, the type just changes how the error term is calculated.  That doesn\u0027t mean that Stepwise controllers are also refered to as PID controllers, which is what this statement implies.",
+      "parentUuid": "e3483785_1b7f6e32",
+      "range": {
+        "startLine": 158,
+        "startChar": 0,
+        "endLine": 160,
+        "endChar": 0
+      },
+      "revId": "6416ee6861ee06cf9fec5f5dcc5c9c83e055ebd5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
