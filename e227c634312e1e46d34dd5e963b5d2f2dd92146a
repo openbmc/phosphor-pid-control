@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "f2daed00_4b99b819",
+        "filename": "configure.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2021-07-25T10:14:43Z",
+      "side": 1,
+      "message": "I think my latest update resolves this.",
+      "parentUuid": "61c50806_92281344",
+      "revId": "e227c634312e1e46d34dd5e963b5d2f2dd92146a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "a8f60a25_ba07879f",
         "filename": "configure.md",
         "patchSetId": 3
