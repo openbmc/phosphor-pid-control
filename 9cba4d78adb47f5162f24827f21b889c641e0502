@@ -142,6 +142,30 @@
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d8006d6b_92f04f71",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2021-08-03T17:22:53Z",
+      "side": 1,
+      "message": "I\u0027m not really a big fan of that either;  The whole point of dbus is doing the exact opposite of what you\u0027re wanting, in that it\u0027s explicit, and ideally well documented what each param does, and each param is fixed.  Keep in mind, all of these parameters will need to be available to Redfish, and updated in entity-manager.  Redfish can\u0027t just push arbitrary values to REST, as we\u0027re held to a schema there, so the APIs will need to be well defined, and you\u0027ll need to update three components every time you add a parameter anyway (This repo to add the feature, entity-manager to document and move all the platforms forward that already have configs, and Redfish to add the parameter to the PID rest API).\n\nI don\u0027t really see moving to any sort of dict or flags API fixing that.",
+      "parentUuid": "6dd71681_180e0f22",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
