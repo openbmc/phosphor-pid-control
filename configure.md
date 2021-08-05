@@ -294,5 +294,58 @@ absolute temperatures and so the maximal value is used to feed the PID
 loop.
 
 #### type == "stepwise"
+```
+"name": "temp1",
+"type": "stepwise",
+"inputs": ["temp1"],
+"setpoint": 30.0,
+"pid": {
+  "samplePeriod": 0.1,
+  "positiveHysteresis": 1.0,
+  "negativeHysteresis": 1.0,
+  "isCeiling": false,
+  "reading": {
+    "0": 45,
+    "1": 46,
+    "2": 47,
+  },
+  "output": {
+    "0": 5000,
+    "1": 2400,
+    "2": 2600,
+  }
+}
+```
 
-***TODO:*** Write up `stepwise` details.
+The type `stepwise` builds a `StepwiseController`.
+
+| field      | type              | meaning                                                                          |
+| ---------- | ----------------- | -------------------------------------------                                      |
+| `name`     | `string`          | The name of the controller. This is just for humans and logging.                 |
+| `type`     | `string`          | `stepwise`                                                                       |
+| `inputs`   | `list of strings` | The names of the sensor(s) that are used as input and output for the controller. |
+| `pid`      | `dictionary`      | A controller settings dictionary detailed below.                                 |
+
+The `pid` dictionary (confusingly named) is defined as follows:
+
+| field                | type         | meaning                                                                                              |
+| -------------------- | --------     | -----------------------------------------                                                            |
+| `samplePeriod`       | `double`     | Presently UNUSED.                                                                                    |
+| `reading`            | `dictionary` | Enumerated list of input values, indexed from 0, must be monotonically increasing, maximum 20 items. |
+| `output`             | `dictionary` | Enumerated list of output values, indexed from 0, must match the amount of `reading` items.          |
+| `positiveHysteresis` | `double`     | How much the input value must raise to allow the switch to the next step.                            |
+| `negativeHysteresis` | `double`     | How much the input value must drop to allow the switch to the previous step.                         |
+| `isCeiling`          | `bool`       | Whether this controller provides a setpoint or a ceiling for the zone                                |
+| `setpoint`           | `double`     | Presently UNUSED.                                                                                    |
+
+***NOTE:*** `reading` and `output` are normal arrays and not embedded
+in the dictionary in Entity Manager.
+
+Each measurement cycle out of all the `inputs` the maximum value is
+selected. Then it's compared to the list of `reading` values finding
+the largest that's still lower or equal the input (the very first item
+is used even if it's larger than the input). The corresponding
+`output` value is selected if hysteresis allows the switch (the
+current input value is compared with the input present at the moment
+of the previous switch). The result is added to the list of setpoints
+or ceilings for the zone depending on `isCeiling` setting.
