@@ -56,7 +56,7 @@ class DbusHelper : public DbusHelperInterface
             auto valueResponseMsg = _bus.call(msg);
             valueResponseMsg.read(result);
         }
-        catch (const sdbusplus::exception::SdBusError& ex)
+        catch (const sdbusplus::exception::exception& ex)
         {
             log::log<log::level::ERR>("Get Property Failed",
                                       log::entry("WHAT=%s", ex.what()));

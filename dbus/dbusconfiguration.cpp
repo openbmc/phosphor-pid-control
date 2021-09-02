@@ -296,7 +296,7 @@ void populatePidInfo(
             helper.getProperty(service, path, interface, *thresholdProperty,
                                reading);
         }
-        catch (const sdbusplus::exception::SdBusError& ex)
+        catch (const sdbusplus::exception::exception& ex)
         {
             // unsupported threshold, leaving reading at 0
         }
