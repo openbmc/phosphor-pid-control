@@ -58,7 +58,7 @@ std::string DbusHelper::getService(const std::string& intf,
 
         responseMsg.read(response);
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("ObjectMapper call failure",
                         entry("WHAT=%s", ex.what()));
@@ -88,7 +88,7 @@ void DbusHelper::getProperties(const std::string& service,
         auto valueResponseMsg = _bus.call(pimMsg);
         valueResponseMsg.read(propMap);
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         log<level::ERR>("GetAll Properties Failed",
                         entry("WHAT=%s", ex.what()));

@@ -68,7 +68,7 @@ uint8_t DbusZoneControl::getFanCtrlProperty(uint8_t zoneId, bool* value,
 
         *value = std::get<bool>(propMap[property]);
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         return IPMI_CC_INVALID;
     }
@@ -95,7 +95,7 @@ uint8_t DbusZoneControl::setFanCtrlProperty(uint8_t zoneId, bool value,
     {
         PropertyWriteBus.call_noreply(pimMsg);
     }
-    catch (const sdbusplus::exception::SdBusError& ex)
+    catch (const sdbusplus::exception::exception& ex)
     {
         return IPMI_CC_INVALID;
     }
