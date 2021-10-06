@@ -375,7 +375,15 @@ void DbusPidZone::updateSensors(void)
         auto duration = duration_cast<std::chrono::seconds>(now - then).count();
         auto period = std::chrono::seconds(timeout).count();
 
-        if (sensor->getFailed())
+        /*
+         * Unavailable thermal sensors, who are not present or
+         * power-state-not-matching, should not trigger the failSafe mode. For
+         * example, when a system stays at a powered-off state, its CPU Temp
+         * sensors will be unavailable, these unavailable sensors should not be
+         * treated as failed and trigger failSafe.
+         * This is important for systems whose Fans are always on.
+         */
+        if (sensor->getAvailable() && sensor->getFailed())
         {
             _failSafeSensors.insert(t);
         }

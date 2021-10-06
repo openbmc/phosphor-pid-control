@@ -26,6 +26,7 @@ class PluggableSensor : public Sensor
     void write(double value) override;
     void write(double value, bool force, int64_t* written) override;
     bool getFailed(void) override;
+    bool getAvailable(void) override;
 
   private:
     std::unique_ptr<ReadInterface> _reader;

@@ -39,4 +39,9 @@ bool PluggableSensor::getFailed(void)
     return _reader->getFailed();
 }
 
+bool PluggableSensor::getAvailable(void)
+{
+    return _reader->getAvailable();
+}
+
 } // namespace pid_control

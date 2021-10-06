@@ -13,6 +13,7 @@ struct SensorProperties
     double min;
     double max;
     std::string unit;
+    bool available;
 };
 
 class DbusHelperInterface

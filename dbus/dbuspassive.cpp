@@ -90,6 +90,7 @@ DbusPassive::DbusPassive(
     _scale = settings.scale;
     _min = settings.min * std::pow(10.0, _scale);
     _max = settings.max * std::pow(10.0, _scale);
+    _available = settings.available;
 
     // Cache this type knowledge, to avoid repeated string comparison
     _typeMargin = (type == "margin");
@@ -149,6 +150,11 @@ bool DbusPassive::getFailed(void) const
     return _failed || !_functional;
 }
 
+bool DbusPassive::getAvailable(void) const
+{
+    return _available;
+}
+
 void DbusPassive::setFailed(bool value)
 {
     _failed = value;
@@ -157,6 +163,11 @@ void DbusPassive::setFailed(bool value)
 void DbusPassive::setFunctional(bool value)
 {
     _functional = value;
+}
+
+void DbusPassive::setAvailable(bool value)
+{
+    _available = value;
 }
 
 int64_t DbusPassive::getScale(void)
@@ -266,6 +277,20 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
             asserted = std::get<bool>(criticalAlarmHigh->second);
         }
         owner->setFailed(asserted);
+    }
+    else if (msgSensor == "xyz.openbmc_project.State.Decorator.Availability")
+    {
+        auto available = msgData.find("Available");
+        if (available == msgData.end())
+        {
+            return 0;
+        }
+        bool asserted = std::get<bool>(available->second);
+        owner->setAvailable(asserted);
+        if (!asserted)
+        {
+            owner->updateValue(std::numeric_limits<double>::quiet_NaN(), true);
+        }
     }
     else if (msgSensor ==
              "xyz.openbmc_project.State.Decorator.OperationalStatus")
