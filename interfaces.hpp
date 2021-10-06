@@ -35,6 +35,11 @@ class ReadInterface
     {
         return false;
     }
+
+    virtual bool getAvailable(void) const
+    {
+        return true;
+    }
 };
 
 /*

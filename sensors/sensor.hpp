@@ -49,6 +49,11 @@ class Sensor
         return false;
     };
 
+    virtual bool getAvailable(void)
+    {
+        return false;
+    };
+
     std::string getName(void) const
     {
         return _name;

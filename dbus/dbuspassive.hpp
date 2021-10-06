@@ -55,17 +55,21 @@ class DbusPassive : public ReadInterface
 
     ReadReturn read(void) override;
     bool getFailed(void) const override;
+    bool getAvailable(void) const override;
 
     void updateValue(double value, bool force);
     void setValue(double value);
 
     void setFailed(bool value);
     void setFunctional(bool value);
+    void setAvailable(bool value);
 
     int64_t getScale(void);
     std::string getID(void);
     double getMax(void);
     double getMin(void);
+
+    std::string getName(void);
 
   private:
     sdbusplus::server::match::match _signal;
@@ -79,8 +83,11 @@ class DbusPassive : public ReadInterface
     double _min = 0;
     bool _failed = false;
     bool _functional = true;
+    bool _available = true;
+    bool _unavailableAsFailed = true;
 
     bool _typeMargin = false;
+    bool _typeFan = false;
     bool _badReading = false;
     bool _marginHot = false;
 

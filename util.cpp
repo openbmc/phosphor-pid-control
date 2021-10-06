@@ -45,7 +45,8 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
         std::cout << pair.second.writePath << ", ";
         std::cout << pair.second.min << ", ";
         std::cout << pair.second.max << ", ";
-        std::cout << pair.second.timeout << "},\n\t},\n";
+        std::cout << pair.second.timeout << ", ";
+        std::cout << pair.second.unavailableAsFailed << "},\n\t},\n";
     }
     std::cout << "}\n\n";
     std::cout << "ZoneDetailsConfig\n";
