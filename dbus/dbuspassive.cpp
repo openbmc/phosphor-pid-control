@@ -72,6 +72,8 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         settings.max = 0;
     }
 
+    settings.unavailableAsFailed = info->unavailableAsFailed;
+
     return std::make_unique<DbusPassive>(bus, type, id, std::move(helper),
                                          settings, failed, path, redundancy);
 }
@@ -90,9 +92,12 @@ DbusPassive::DbusPassive(
     _scale = settings.scale;
     _min = settings.min * std::pow(10.0, _scale);
     _max = settings.max * std::pow(10.0, _scale);
+    _available = settings.available;
+    _unavailableAsFailed = settings.unavailableAsFailed;
 
     // Cache this type knowledge, to avoid repeated string comparison
     _typeMargin = (type == "margin");
+    _typeFan = (type == "fan");
 
     // Force value to be stored, otherwise member would be uninitialized
     updateValue(settings.value, true);
@@ -126,6 +131,19 @@ bool DbusPassive::getFailed(void) const
         }
     }
 
+    /*
+     * Unavailable thermal sensors, who are not present or
+     * power-state-not-matching, should not trigger the failSafe mode. For
+     * example, when a system stays at a powered-off state, its CPU Temp
+     * sensors will be unavailable, these unavailable sensors should not be
+     * treated as failed and trigger failSafe.
+     * This is important for systems whose Fans are always on.
+     */
+    if (!_typeFan && !_available && !_unavailableAsFailed)
+    {
+        return false;
+    }
+
     // If a reading has came in,
     // but its value bad in some way (determined by sensor type),
     // indicate this sensor has failed,
@@ -146,7 +164,7 @@ bool DbusPassive::getFailed(void) const
         return true;
     }
 
-    return _failed || !_functional;
+    return _failed || !_available || !_functional;
 }
 
 void DbusPassive::setFailed(bool value)
@@ -157,6 +175,11 @@ void DbusPassive::setFailed(bool value)
 void DbusPassive::setFunctional(bool value)
 {
     _functional = value;
+}
+
+void DbusPassive::setAvailable(bool value)
+{
+    _available = value;
 }
 
 int64_t DbusPassive::getScale(void)
@@ -266,6 +289,24 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
             asserted = std::get<bool>(criticalAlarmHigh->second);
         }
         owner->setFailed(asserted);
+    }
+    else if (msgSensor == "xyz.openbmc_project.State.Decorator.Availability")
+    {
+        auto available = msgData.find("Available");
+        if (available == msgData.end())
+        {
+            return 0;
+        }
+        bool asserted = std::get<bool>(available->second);
+        owner->setAvailable(asserted);
+        if (!asserted)
+        {
+            // A thermal controller will continue its PID calculation and not
+            // trigger a 'failsafe' when some inputs are unavailable.
+            // So, forced to clear the value here to prevent a historical
+            // value to participate in a latter PID calculation.
+            owner->updateValue(std::numeric_limits<double>::quiet_NaN(), true);
+        }
     }
     else if (msgSensor ==
              "xyz.openbmc_project.State.Decorator.OperationalStatus")

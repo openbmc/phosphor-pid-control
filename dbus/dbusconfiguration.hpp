@@ -28,7 +28,7 @@
 #include <vector>
 
 using DbusVariantType =
-    std::variant<uint64_t, int64_t, double, std::string,
+    std::variant<uint64_t, int64_t, double, std::string, bool,
                  std::vector<std::string>, std::vector<double>>;
 
 using ManagedObjectType = std::unordered_map<
