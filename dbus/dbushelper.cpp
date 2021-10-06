@@ -147,7 +147,7 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
         auto msg = _bus.call(critical);
         msg.read(criticalMap);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         // do nothing, sensors don't have to expose critical thresholds
         return false;

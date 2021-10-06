@@ -98,7 +98,7 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
         auto resp = bus.call(mapper);
         resp.read(respData);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         // can't do anything without mapper call data
         throw std::runtime_error("ObjectMapper Call Failure");
@@ -129,7 +129,7 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
                 auto resp = bus.call(getProfile);
                 resp.read(variantResp);
             }
-            catch (sdbusplus::exception_t&)
+            catch (const sdbusplus::exception_t&)
             {
                 throw std::runtime_error("Failure getting profile");
             }
@@ -376,7 +376,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
         auto resp = bus.call(mapper);
         resp.read(respData);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         // can't do anything without mapper call data
         throw std::runtime_error("ObjectMapper Call Failure");
@@ -440,7 +440,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
             auto responce = bus.call(endpoint);
             responce.read(configuration);
         }
-        catch (sdbusplus::exception_t&)
+        catch (const sdbusplus::exception_t&)
         {
             // this shouldn't happen, probably means daemon crashed
             throw std::runtime_error("Error getting managed objects from " +

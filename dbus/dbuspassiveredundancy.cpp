@@ -59,7 +59,7 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus::bus& bus) :
               {
                   message.read(objectName, result);
               }
-              catch (sdbusplus::exception_t&)
+              catch (const sdbusplus::exception_t&)
               {
                   std::cerr << "Error reading match data";
                   return;
@@ -82,7 +82,7 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus::bus& bus) :
                   auto reply = passiveBus.call(methodCall);
                   reply.read(collection);
               }
-              catch (sdbusplus::exception_t&)
+              catch (const sdbusplus::exception_t&)
               {
                   std::cerr << "Error reading match data";
                   return;
@@ -121,7 +121,7 @@ void DbusPassiveRedundancy::populateFailures(void)
         auto resp = passiveBus.call(mapper);
         resp.read(respData);
     }
-    catch (sdbusplus::exception_t&)
+    catch (const sdbusplus::exception_t&)
     {
         std::cerr << "Populate Failures Mapper Error\n";
         return;
@@ -156,7 +156,7 @@ void DbusPassiveRedundancy::populateFailures(void)
                 auto data = passiveBus.call(call);
                 data.read(getAll);
             }
-            catch (sdbusplus::exception_t&)
+            catch (const sdbusplus::exception_t&)
             {
                 std::cerr << "Populate Failures Mapper Error\n";
                 return;
