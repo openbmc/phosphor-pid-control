@@ -49,6 +49,7 @@ void from_json(const json& j, conf::SensorConfig& s)
      * sensors.
      */
     s.ignoreDbusMinMax = false;
+    s.unavailableAsFailed = true;
     s.min = 0;
     s.max = 0;
 
@@ -56,6 +57,12 @@ void from_json(const json& j, conf::SensorConfig& s)
     if (ignore != j.end())
     {
         j.at("ignoreDbusMinMax").get_to(s.ignoreDbusMinMax);
+    }
+
+    auto findunAsF = j.find("unavailableAsFailed");
+    if (findunAsF != j.end())
+    {
+        j.at("unavailableAsFailed").get_to(s.unavailableAsFailed);
     }
 
     /* The min field is optional in a configuration. */
