@@ -81,6 +81,32 @@ TEST(SensorsFromJson, IgnoreDbusSensor)
     EXPECT_EQ(output["fan1"].ignoreDbusMinMax, true);
 }
 
+TEST(SensorsFromJson, TempDbusSensor)
+{
+    auto j2 = R"(
+      {
+        "sensors": [{
+            "name": "CPU_DTS",
+            "type": "temp",
+            "readPath": "/xyz/openbmc_project/sensors/temperature/CPU_DTS",
+            "unavailableAsFailed": false
+        }]
+      }
+    )"_json;
+
+    auto output = buildSensorsFromJson(j2);
+    EXPECT_EQ(1, output.size());
+    EXPECT_EQ(output["CPU_DTS"].type, "temp");
+    EXPECT_EQ(output["CPU_DTS"].readPath,
+              "/xyz/openbmc_project/sensors/temperature/CPU_DTS");
+    EXPECT_EQ(output["CPU_DTS"].writePath, "");
+    EXPECT_EQ(output["CPU_DTS"].min, 0);
+    EXPECT_EQ(output["CPU_DTS"].max, 0);
+    EXPECT_EQ(output["CPU_DTS"].timeout,
+              Sensor::getDefaultTimeout(output["CPU_DTS"].type));
+    EXPECT_EQ(output["CPU_DTS"].unavailableAsFailed, false);
+}
+
 TEST(SensorsFromJson, validateOptionalFields)
 {
     // The writePath, min, max, timeout, and ignoreDbusMinMax fields are
@@ -107,6 +133,7 @@ TEST(SensorsFromJson, validateOptionalFields)
     EXPECT_EQ(output["fan1"].timeout,
               Sensor::getDefaultTimeout(output["fan1"].type));
     EXPECT_EQ(output["fan1"].ignoreDbusMinMax, false);
+    EXPECT_EQ(output["fan1"].unavailableAsFailed, true);
 }
 
 TEST(SensorsFromJson, twoSensors)

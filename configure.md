@@ -35,6 +35,7 @@ zones.
         "min": 0,
         "max": 255,
         "ignoreDbusMinMax": true
+        "unavailableAsFailed": true
     },
     {
         "name": "fan2",
@@ -49,7 +50,7 @@ zones.
 ```
 
 A sensor has a `name`, a `type`, a `readPath`, a `writePath`, a `minimum` value,
-a `maximum` value, a `timeout`, and a `ignoreDbusMinMax` value.
+a `maximum` value, a `timeout`, a `ignoreDbusMinMax` and a `unavailableAsFailed` value.
 
 The `name` is used to reference the sensor in the zone portion of the
 configuration.
@@ -132,6 +133,13 @@ The `ignoreDbusMinMax` value is optional and defaults to false.  The dbus
 passive sensors check for a `MinValue` and `MaxValue` and scale the incoming
 values via these.  Setting this property to true will ignore `MinValue` and
 `MaxValue` from dbus and therefore won't call any passive value scaling.
+
+The `unavailableAsFailed` value is optional and defaults to true. However,
+some specific thermal sensors should not be treated as Failed when they are
+unavailable. For example, when a system is powered-off, its CPU/DIMM Temp sensors
+are unavailable, in such state these sensors should not be treated as Failed and
+trigger FailSafe. This is important for systems whose Fans are always on.
+For these specific sensors set this property to false.
 
 ### Zones
 

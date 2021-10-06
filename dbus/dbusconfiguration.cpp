@@ -599,6 +599,15 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                         getPIDAttribute(base, "Outputs"));
                 }
 
+                bool unavailableAsFailed = true;
+                auto findUnavailableAsFailed =
+                    base.find("InputUnavailableAsFailed");
+                if (findUnavailableAsFailed != base.end())
+                {
+                    unavailableAsFailed =
+                        std::get<bool>(findUnavailableAsFailed->second);
+                }
+
                 std::vector<SensorInterfaceType> inputSensorInterfaces;
                 std::vector<SensorInterfaceType> outputSensorInterfaces;
                 /* populate an interface list for different sensor direction
@@ -640,6 +649,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                     {
                         config.timeout = 0;
                         config.ignoreDbusMinMax = true;
+                        config.unavailableAsFailed = unavailableAsFailed;
                     }
                     if (dbusInterface != sensorInterface)
                     {
@@ -788,6 +798,15 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                 std::vector<std::string> sensorNames =
                     std::get<std::vector<std::string>>(base.at("Inputs"));
 
+                bool unavailableAsFailed = true;
+                auto findUnavailableAsFailed =
+                    base.find("InputUnavailableAsFailed");
+                if (findUnavailableAsFailed != base.end())
+                {
+                    unavailableAsFailed =
+                        std::get<bool>(findUnavailableAsFailed->second);
+                }
+
                 bool sensorFound = false;
                 for (const std::string& sensorName : sensorNames)
                 {
@@ -811,6 +830,7 @@ bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
                         config.readPath = sensorPathIfacePair.first;
                         config.type = "temp";
                         config.ignoreDbusMinMax = true;
+                        config.unavailableAsFailed = unavailableAsFailed;
                         // todo: maybe un-hardcode this if we run into slower
                         // timeouts with sensors
 

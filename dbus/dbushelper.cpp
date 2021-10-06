@@ -130,6 +130,17 @@ void DbusHelper::getProperties(const std::string& service,
 
     prop->value = std::visit(VariantToDoubleVisitor(), propMap["Value"]);
 
+    bool available = true;
+    try
+    {
+        getProperty(service, path, availabilityIntf, "Available", available);
+    }
+    catch (const sdbusplus::exception::exception& ex)
+    {
+        // unsupported Available property, leaving reading at 'True'
+    }
+    prop->available = available;
+
     return;
 }
 
