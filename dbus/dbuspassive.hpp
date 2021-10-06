@@ -61,6 +61,7 @@ class DbusPassive : public ReadInterface
 
     void setFailed(bool value);
     void setFunctional(bool value);
+    void setAvailable(bool value);
 
     int64_t getScale(void);
     std::string getID(void);
@@ -79,8 +80,11 @@ class DbusPassive : public ReadInterface
     double _min = 0;
     bool _failed = false;
     bool _functional = true;
+    bool _available = true;
+    bool _unavailableAsFailed = true;
 
     bool _typeMargin = false;
+    bool _typeFan = false;
     bool _badReading = false;
     bool _marginHot = false;
 
