@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a92a90c3_fbdc359d",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-10-15T06:15:28Z",
+      "side": 1,
+      "message": "It should not be necessary to call updateValue(NaN) here, because the test for _available being false will result in going into failsafe mode anyway. For debugging purposes it can be advantageous to retain the last-known-good value.",
+      "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4b91df7e_b8c66a1e",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-10-15T06:15:28Z",
+      "side": 1,
+      "message": "This is a great explanation. Could this test be moved into the DbusPassive::getFailed() function? That seems like a better place, because that\u0027s where the other flags that can contribute to failure (such as _badReading and _marginHot) are tested.",
+      "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    }
+  ]
+}
