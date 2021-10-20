@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "f3c2700a_c628fe53",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1001234
+      },
+      "writtenOn": "2021-10-20T11:11:43Z",
+      "side": 1,
+      "message": "I think there might be some misunderstanding here. The intention is to have an \u0027Unavailable\u0027 sensor not put the PID system into failsafe mode. And keep the system continuing its normal work path.\nGiven that, if we don\u0027t clear its cached \u0027Value\u0027 here, a high \u0027Value\u0027 (beyond \u0027Setpoint\u0027) may slip to the latter PID calculation and makes the PID output go up cycle by cycle until reaching the max cap. So, I think we would need to clear its \u0027Value\u0027 here.\nIs this make sense to you?",
+      "parentUuid": "a92a90c3_fbdc359d",
+      "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "4b91df7e_b8c66a1e",
         "filename": "pid/zone.cpp",
         "patchSetId": 2
@@ -30,6 +48,24 @@
       "writtenOn": "2021-10-15T06:15:28Z",
       "side": 1,
       "message": "This is a great explanation. Could this test be moved into the DbusPassive::getFailed() function? That seems like a better place, because that\u0027s where the other flags that can contribute to failure (such as _badReading and _marginHot) are tested.",
+      "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e249412_3238912e",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1001234
+      },
+      "writtenOn": "2021-10-20T11:11:43Z",
+      "side": 1,
+      "message": "Thanks. :) \nAnd I was struggling with this. I finally put it this way because I thought \u0027Available\u0027 and \u0027Failed\u0027 were two parallel concepts. \u0027Available\u0027 is not included in \u0027Failed\u0027. A sensor should be physically available at first, and then we start to consider if it is in a \u0027Failed\u0027 state. Would this make sense to you?",
+      "parentUuid": "4b91df7e_b8c66a1e",
       "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
