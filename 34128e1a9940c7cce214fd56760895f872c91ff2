@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "b175e5e4_41703a43",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 292,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-10-27T04:24:32Z",
+      "side": 1,
+      "message": "Ah. So an unavailable sensor should have its value intentionally cleared, so that it does not participate in the PID loop calculations? That makes more sense. It would be good to add a comment that explains this reasoning.",
+      "parentUuid": "675bdf73_60c532c8",
+      "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "4b91df7e_b8c66a1e",
         "filename": "pid/zone.cpp",
         "patchSetId": 2
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Done. Not so sure if I should mark it as Resolved to trigger a next review process?",
       "parentUuid": "2e249412_3238912e",
+      "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a405f607_3789b058",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 386,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-10-27T04:24:32Z",
+      "side": 1,
+      "message": "Available and Failed are two different concepts, you are correct. If a sensor is not available, then we don\u0027t know if that sensor has failed or not.\n\nHowever, for purposes of this code, we assume that an unavailable sensor has not failed. it makes the most sense to me, to put the test into getFailed(). If the sensor is unavailable, return false from getFailed.\n\nIt also simplifies the logic here. The if-statement here is already rather tricky, and I\u0027d prefer not to make it more complex.",
+      "parentUuid": "8a82e3a7_2eb7b965",
       "revId": "34128e1a9940c7cce214fd56760895f872c91ff2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": false
