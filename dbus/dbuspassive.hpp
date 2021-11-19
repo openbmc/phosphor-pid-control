@@ -7,8 +7,8 @@
 #include "util.hpp"
 
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/message.hpp>
-#include <sdbusplus/server.hpp>
 
 #include <chrono>
 #include <cmath>
@@ -68,7 +68,7 @@ class DbusPassive : public ReadInterface
     double getMin(void);
 
   private:
-    sdbusplus::server::match::match _signal;
+    sdbusplus::bus::match_t _signal;
     int64_t _scale;
     std::string _id; // for debug identification
     std::unique_ptr<DbusHelperInterface> _helper;
