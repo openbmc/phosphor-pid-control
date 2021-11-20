@@ -16,6 +16,75 @@
       "revId": "77e8188b772490786e16f2fc7a0709fa3ee4a40a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cf18101e_6f0ceaf4",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 174,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2021-11-20T00:20:33Z",
+      "side": 1,
+      "message": "Is this needed? I only see _available used in getFailed()?",
+      "range": {
+        "startLine": 169,
+        "startChar": 0,
+        "endLine": 174,
+        "endChar": 0
+      },
+      "revId": "77e8188b772490786e16f2fc7a0709fa3ee4a40a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e618b5f_ffc65040",
+        "filename": "dbus/dbuspassive.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2021-11-20T00:20:33Z",
+      "side": 1,
+      "message": "Why this change and where is it defined?",
+      "range": {
+        "startLine": 72,
+        "startChar": 3,
+        "endLine": 72,
+        "endChar": 30
+      },
+      "revId": "77e8188b772490786e16f2fc7a0709fa3ee4a40a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fdb98c4d_83065870",
+        "filename": "interfaces.hpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2021-11-20T00:20:33Z",
+      "side": 1,
+      "message": "Is this interfaces needed?",
+      "range": {
+        "startLine": 39,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 5
+      },
+      "revId": "77e8188b772490786e16f2fc7a0709fa3ee4a40a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": true
     }
   ]
 }
