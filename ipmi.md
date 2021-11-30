@@ -2,15 +2,17 @@
 
 ## IPMI Command Specification
 
-The host needs the ability to send to the BMC, the margin information on the
+The host needs the ability to send, to the BMC, the temperature information on the
 devices that it knows how to read that the BMC cannot. There is no command in
-IPMI that currently supports this use-case, therefore it will be added as an OEM
-command.
+IPMI that currently supports this use-case, therefore it is recommended something like
+[ExternalSensor](https://github.com/openbmc/docs/blob/master/designs/external-sensor.md)
+be used. ExternalSensor can add virtual sensors to the IPMI SDR, then the host
+can write values to them, to be read by the BMC.
 
-The state of the BMC readable temperature sensors can be read through normal
+The state of the BMC-readable temperature sensors can be read through normal
 IPMI commands and is already supported.
 
-### OEM Set Control
+### OEM Get/Set Control
 
 A host tool needs to be able to set the control of the thermal system to either
 automatic or manual. When manual, the daemon will effectively wait to be told to
