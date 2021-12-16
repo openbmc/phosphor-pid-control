@@ -22,6 +22,30 @@
       "revId": "251229fd0b1114d4a0baaca3f9b654ff6a89abdb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "41107403_08696211",
+        "filename": "ipmi.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2021-12-16T02:45:14Z",
+      "side": 1,
+      "message": "Good wording improvement, I\u0027ll take it. As for \"host\", this is an OpenBMC project, so the context is clear in this case. I did add a clarification in parenthesis, though, to make sure a reader knows that the host is the IPMI client.",
+      "parentUuid": "7ee032e6_dcd08602",
+      "range": {
+        "startLine": 5,
+        "startChar": 76,
+        "endLine": 6,
+        "endChar": 53
+      },
+      "revId": "251229fd0b1114d4a0baaca3f9b654ff6a89abdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
+      "unresolved": false
     }
   ]
 }
