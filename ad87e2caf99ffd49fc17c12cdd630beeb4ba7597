@@ -16,6 +16,24 @@
       "message": "Given this doc is talking about the ipmi command to the PID daemon.\nWhat about some wording something like the following : )\n“\n### OEM Sensor Data Pushing Command\n\nFor those BMC-non-reachable sensors, sensor readings can be pushed to\nthe PID daemon via some sort of OEM IPMI commands (not implemented)\nby the host (the host itself or other IPMI clients).\n\nOr it is highly recommended to utilize the [ExternalSensor](https://github.com/openbmc/docs/blob/master/designs/external-sensor.md).\nThe ExternalSensor can add virtual sensors to the IPMI SDR, and the host\ncan write values to them to keep them update. The PID daemon then can\nuse them directly as if they are normal sensors.\n\n\n### OEM Get/Set Control\n\n”",
       "revId": "ad87e2caf99ffd49fc17c12cdd630beeb4ba7597",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1c7b84bf_f8abb5eb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-01-12T22:11:48Z",
+      "side": 1,
+      "message": "Hmm, that wording is a little more confusing, I think. I like the idea of adding another section for it, though.",
+      "parentUuid": "fff4c39e_37ac8d89",
+      "revId": "ad87e2caf99ffd49fc17c12cdd630beeb4ba7597",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
