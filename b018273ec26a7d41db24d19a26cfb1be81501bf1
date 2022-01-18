@@ -50,6 +50,24 @@
       "message": "nit: what about appending something like \"And then the Phsophor-pid-control can use them naturedly, no additional OEM commands are needed.\" to better establish the doc content with the head title \"# OEM-IPMI Commands to talk to Phosphor-pid-control\".",
       "revId": "b018273ec26a7d41db24d19a26cfb1be81501bf1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da68fdbe_ca7e2bd2",
+        "filename": "ipmi.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-01-18T20:44:13Z",
+      "side": 1,
+      "message": "Sounds good, tied it into the next paragraph.",
+      "parentUuid": "30d75424_1ba122f3",
+      "revId": "b018273ec26a7d41db24d19a26cfb1be81501bf1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
