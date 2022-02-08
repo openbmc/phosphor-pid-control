@@ -36,7 +36,6 @@ owners:
 - krellan@google.com
 
 reviewers:
-- venture@google.com
 
 matches:
 
@@ -47,6 +46,3 @@ openbmc:
 - name: Josh Lehan
   email: krellan@google.com
   discord: Krellan
-- name: Patrick Venture
-  email: venture@google.com
-  discord: Venture
