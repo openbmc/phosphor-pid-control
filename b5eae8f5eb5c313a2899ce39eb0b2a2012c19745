@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2b58fd2d_e756df14",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-09T22:51:11Z",
+      "side": 1,
+      "message": "Sorry, the unit tests fail. Something has gone wrong with the logic here, breaking the unit tests. I think it is because \"readPath\" is optional, and oftentimes it\u0027s not given in fan configurations that are dynamic. Need to handle the case in which \"readPath\" is empty.\n",
+      "revId": "b5eae8f5eb5c313a2899ce39eb0b2a2012c19745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "affc6b5c_aa860b99",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-09T22:51:11Z",
+      "side": 1,
+      "message": "The readPath field is optional, in dynamic configurations. Please have it fall back to the old way, doing getSensorPath(), if info-\u003ereadPath string is empty.",
+      "revId": "b5eae8f5eb5c313a2899ce39eb0b2a2012c19745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8048fc3d_d13d1e17",
+        "filename": "dbus/dbusutil.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-09T22:51:11Z",
+      "side": 1,
+      "message": "This is a good refactoring, to avoid a needless call to getSensorPath() if \"path\" already contains the correct path. Are there any other callers of getMatch(), anywhere else in the code, though?",
+      "revId": "b5eae8f5eb5c313a2899ce39eb0b2a2012c19745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
