@@ -637,16 +637,16 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         inputSensorInterface.second;
                     const std::string& inputSensorPath =
                         inputSensorInterface.first;
-                    std::string inputSensorName =
-                        getSensorNameFromPath(inputSensorPath);
-                    auto& config = sensorConfig[inputSensorName];
-                    inputSensorNames.push_back(inputSensorName);
-                    config.type = pidClass;
-                    config.readPath = inputSensorInterface.first;
                     // todo: maybe un-hardcode this if we run into slower
                     // timeouts with sensors
-                    if (config.type == "temp")
+                    if (pidClass == "temp")
                     {
+                        std::string inputSensorName =
+                            getSensorNameFromPath(inputSensorPath);
+                        auto& config = sensorConfig[inputSensorName];
+                        inputSensorNames.push_back(inputSensorName);
+                        config.type = pidClass;
+                        config.readPath = inputSensorInterface.first;
                         config.timeout = 0;
                         config.ignoreDbusMinMax = true;
                         config.unavailableAsFailed = unavailableAsFailed;
@@ -696,6 +696,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     std::string fanSensorName;
                     std::string pwmPath;
                     std::string pwmInterface;
+                    std::string pwmSensorName;
                     if (singlePwm)
                     {
                         /* if just a single output(pwm) is provided then use
@@ -726,7 +727,12 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         const std::string& fanPath =
                             inputSensorInterfaces.at(idx).first;
                         fanSensorName = getSensorNameFromPath(fanPath);
-                        auto& fanConfig = sensorConfig[fanSensorName];
+                        pwmSensorName = getSensorNameFromPath(pwmPath);
+                        std::string fanPwmIndex = fanSensorName + pwmSensorName;
+                        inputSensorNames.push_back(fanPwmIndex);
+                        auto& fanConfig = sensorConfig[fanPwmIndex];
+                        fanConfig.type = pidClass;
+                        fanConfig.readPath = fanPath;
                         fanConfig.writePath = pwmPath;
                         // todo: un-hardcode this if there are fans with
                         // different ranges
