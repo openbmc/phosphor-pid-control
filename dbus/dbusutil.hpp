@@ -29,7 +29,7 @@ struct VariantToDoubleVisitor
 };
 
 std::string getSensorPath(const std::string& type, const std::string& id);
-std::string getMatch(const std::string& type, const std::string& id);
+std::string getMatch(const std::string& path);
 void scaleSensorReading(const double min, const double max, double& value);
 bool validType(const std::string& type);
 
