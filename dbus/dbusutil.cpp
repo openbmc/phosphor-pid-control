@@ -111,13 +111,12 @@ std::string getSensorPath(const std::string& type, const std::string& id)
     return std::string("/xyz/openbmc_project/sensors/" + layer + "/" + id);
 }
 
-std::string getMatch(const std::string& type, const std::string& id)
+std::string getMatch(const std::string& path)
 {
     return std::string("type='signal',"
                        "interface='org.freedesktop.DBus.Properties',"
                        "member='PropertiesChanged',"
-                       "path='" +
-                       getSensorPath(type, id) + "'");
+                       "path='" + path + "'");
 }
 
 bool validType(const std::string& type)
