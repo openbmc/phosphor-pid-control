@@ -48,7 +48,15 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 
     /* Need to get the scale and initial value */
     /* service == busname */
-    std::string path = getSensorPath(type, id);
+    std::string path;
+    if (info->readPath == "")
+    {
+        path = getSensorPath(type, id);
+    }
+    else
+    {
+        path = info->readPath;
+    }
 
     SensorProperties settings;
     bool failed;
@@ -84,7 +92,7 @@ DbusPassive::DbusPassive(
     const SensorProperties& settings, bool failed, const std::string& path,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
     ReadInterface(),
-    _signal(bus, getMatch(type, id).c_str(), dbusHandleSignal, this), _id(id),
+    _signal(bus, getMatch(path).c_str(), dbusHandleSignal, this), _id(id),
     _helper(std::move(helper)), _failed(failed), path(path),
     redundancy(redundancy)
 
