@@ -20,6 +20,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "d2c63cb2_504803b4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-02-10T06:23:03Z",
+      "side": 1,
+      "message": "Thanks for the suggestion. Done.",
+      "parentUuid": "280fc668_6fd5de33",
+      "revId": "94a055f452538efcfa4bf26971a08307eebb0be3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "7b04e064_83010dd0",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 2
@@ -31,6 +49,24 @@
       "writtenOn": "2022-02-09T22:57:42Z",
       "side": 1,
       "message": "This is a good cleanup, thanks. However, the test cases still fail. I think it is because this change is stacked on top of the 51062 change. These two changes don\u0027t have any obvious dependency on each other that I can see, so please, separate them, so they can go in independently. Thanks!\n",
+      "revId": "94a055f452538efcfa4bf26971a08307eebb0be3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dfb5498f_8c5e5cd4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-02-10T06:23:03Z",
+      "side": 1,
+      "message": "This PR have to after 51062 change. Because after this PR, the fan index name is not same as dbus sensor name.\nOrigin index name \u003d\u003e fan0_tach\nAfter this PR, index name \u003d\u003e fan0_tachfan0_pwm",
+      "parentUuid": "7b04e064_83010dd0",
       "revId": "94a055f452538efcfa4bf26971a08307eebb0be3",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
