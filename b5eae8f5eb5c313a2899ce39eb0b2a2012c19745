@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7d9c0cf6_17d6eedd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-02-10T06:23:00Z",
+      "side": 1,
+      "message": "The reason why the unit test failed is empty readPath input in dbus_passive_unittest.cpp. So adding if condition in dbuspassive.cpp to use original getSensorPath() when readPath is empty.",
+      "parentUuid": "2b58fd2d_e756df14",
+      "revId": "b5eae8f5eb5c313a2899ce39eb0b2a2012c19745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "affc6b5c_aa860b99",
@@ -35,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "741ebc17_65dd54a0",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-02-10T06:23:00Z",
+      "side": 1,
+      "message": "I use to add if condition to detect readPath is empty or not. If it\u0027s empty, using original getSensorPath function to set path value.",
+      "parentUuid": "affc6b5c_aa860b99",
+      "revId": "b5eae8f5eb5c313a2899ce39eb0b2a2012c19745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8048fc3d_d13d1e17",
@@ -48,6 +84,24 @@
       "writtenOn": "2022-02-09T22:51:11Z",
       "side": 1,
       "message": "This is a good refactoring, to avoid a needless call to getSensorPath() if \"path\" already contains the correct path. Are there any other callers of getMatch(), anywhere else in the code, though?",
+      "revId": "b5eae8f5eb5c313a2899ce39eb0b2a2012c19745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "64215490_0494f08d",
+        "filename": "dbus/dbusutil.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-02-10T06:23:00Z",
+      "side": 1,
+      "message": "I only found getMatch() function in dbuspassive.cpp. And already update function input in this PR.",
+      "parentUuid": "8048fc3d_d13d1e17",
       "revId": "b5eae8f5eb5c313a2899ce39eb0b2a2012c19745",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
