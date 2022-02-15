@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "42cb90f8_448b9bbf",
         "filename": "pid/zone_interface.hpp",
@@ -20,8 +21,31 @@
         "endChar": 5
       },
       "revId": "475b0343c1953da5418ff30877cc5bf1ca98cb84",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e20ea2b7_e81f46c3",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2022-02-15T22:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "42cb90f8_448b9bbf",
+      "range": {
+        "startLine": 97,
+        "startChar": 0,
+        "endLine": 99,
+        "endChar": 5
+      },
+      "revId": "475b0343c1953da5418ff30877cc5bf1ca98cb84",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

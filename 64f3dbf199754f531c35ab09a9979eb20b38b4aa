@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "6175ef53_7723ab00",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "3bf21123_3fab02d3",
         "filename": "/COMMIT_MSG",
@@ -44,10 +45,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d5a803cf_357cea5b",
         "filename": "/COMMIT_MSG",
@@ -68,10 +69,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "01fe2281_66be173e",
         "filename": "/COMMIT_MSG",
@@ -92,10 +93,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "2c9118bf_8e1e6a40",
         "filename": "/COMMIT_MSG",
@@ -116,10 +117,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "9c1caaf1_81675f5c",
         "filename": "/COMMIT_MSG",
@@ -140,10 +141,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "21ce15b1_ebe819b0",
         "filename": "/COMMIT_MSG",
@@ -164,10 +165,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "b7e6f0b4_16e37c2c",
         "filename": "/COMMIT_MSG",
@@ -188,10 +189,10 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d436dc0a_e79c18e3",
         "filename": "/COMMIT_MSG",
@@ -212,10 +213,34 @@
         "endChar": 63
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9861b030_88d32b82",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2022-02-15T22:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d436dc0a_e79c18e3",
+      "range": {
+        "startLine": 14,
+        "startChar": 17,
+        "endLine": 14,
+        "endChar": 63
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "a79d9b21_5509aff1",
         "filename": "interfaces.hpp",
@@ -235,10 +260,10 @@
         "endChar": 21
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "a8f59031_4b686083",
         "filename": "interfaces.hpp",
@@ -259,10 +284,10 @@
         "endChar": 21
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "1d3356dc_5d158ce1",
         "filename": "interfaces.hpp",
@@ -283,10 +308,34 @@
         "endChar": 21
       },
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17df06c3_b732c49a",
+        "filename": "interfaces.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2022-02-15T22:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1d3356dc_5d158ce1",
+      "range": {
+        "startLine": 20,
+        "startChar": 0,
+        "endLine": 22,
+        "endChar": 21
+      },
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "6a53bcd3_21804efa",
         "filename": "pid/zone_interface.hpp",
@@ -300,10 +349,28 @@
       "side": 1,
       "message": "These two methods are taking what was previously a pure virtual class, and gicing it a concrete implementation.  At a matter of design, I think it would be better for this to remain a virtual class.",
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "23a40822_c50ca886",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2022-02-15T22:56:11Z",
+      "side": 1,
+      "message": "made this a pure virtual and put the no-op in the concrete class.",
+      "parentUuid": "6a53bcd3_21804efa",
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "f96276cc_f614a25f",
         "filename": "pid/zone_interface.hpp",
@@ -317,8 +384,25 @@
       "side": 1,
       "message": "same as above.",
       "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18b30087_3b98a425",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1000521
+      },
+      "writtenOn": "2022-02-15T22:56:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f96276cc_f614a25f",
+      "revId": "64f3dbf199754f531c35ab09a9979eb20b38b4aa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
