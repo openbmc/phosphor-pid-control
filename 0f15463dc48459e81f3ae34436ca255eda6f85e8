@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ba640982_e0e7c3f2",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-15T22:51:35Z",
+      "side": 1,
+      "message": "Nice, this looks good now. Are we ready to remove the WIP status?\n\n\n",
+      "revId": "0f15463dc48459e81f3ae34436ca255eda6f85e8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
