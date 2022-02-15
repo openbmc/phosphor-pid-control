@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d26ca2f2_897a68ab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-15T01:38:04Z",
+      "side": 1,
+      "message": "Nice, LGTM. Will leave it open a little before +2 in case anybody else has any comments.\n",
+      "revId": "baf16a59473119bef39a8ffce60bc7d2de868d36",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
