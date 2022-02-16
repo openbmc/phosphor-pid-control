@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b386cee1_a6a761f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-16T22:55:36Z",
+      "side": 1,
+      "message": "LGTM - this was split out of the 36695 patchset, to reduce the scope of the 36695 patchset\n",
+      "revId": "d90aafef6f69c5fa11d2bfa7690546b5b9f4c7f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
