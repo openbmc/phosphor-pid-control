@@ -42,6 +42,15 @@ class ZoneInterface
      */
     virtual void initializeCache(void) = 0;
 
+    /** Optionally adds fan outputs to an output cache, which is different
+     * from the input cache accessed by getCachedValue(), so it is possible
+     * to have entries with the same name in both the output cache and
+     * the input cache. The output cache is used for logging, to show
+     * the PWM values determined by the PID loop, next to the resulting RPM.
+     */
+    virtual void setOutputCache(std::string_view name,
+                                const ValueCacheEntry& values) = 0;
+
     /** Return cached value for sensor by name. */
     virtual double getCachedValue(const std::string& name) = 0;
 
