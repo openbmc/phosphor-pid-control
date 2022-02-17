@@ -16,6 +16,29 @@
       "message": "LGTM - this was split out of the 36695 patchset, to reduce the scope of the 36695 patchset\n",
       "revId": "d90aafef6f69c5fa11d2bfa7690546b5b9f4c7f6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1324710b_010745e3",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-02-17T00:02:19Z",
+      "side": 1,
+      "message": "same comments as the other patch this was in.\n\n1. implementations don\u0027t go in header files.\n2. the return; is redundant (ideally we should get clang-tidy going on this repo, it will catch stuff like this for us automatically)\n3. Having an API that does nothing generally implies that this isn\u0027t the patch it needs to go into.",
+      "range": {
+        "startLine": 76,
+        "startChar": 0,
+        "endLine": 78,
+        "endChar": 6
+      },
+      "revId": "d90aafef6f69c5fa11d2bfa7690546b5b9f4c7f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
