@@ -61,13 +61,13 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool getFailSafeMode(void) const override;
 
     int64_t getZoneID(void) const;
-    void addSetPoint(double setpoint) override;
+    void addSetPoint(double setPoint, const std::string& name) override;
     double getMaxSetPointRequest(void) const override;
     void addRPMCeiling(double ceiling) override;
     void clearSetPoints(void) override;
     void clearRPMCeilings(void) override;
     double getFailSafePercent(void) const override;
-    double getMinThermalSetpoint(void) const;
+    double getMinThermalSetPoint(void) const;
 
     Sensor* getSensor(const std::string& name) override;
     void determineMaxSetPointRequest(void) override;
@@ -98,6 +98,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
     const int64_t _zoneId;
     double _maximumSetPoint = 0;
+    std::string _maximumSetPointName;
+    std::string _maximumSetPointNamePrev;
     bool _manualMode = false;
     bool _redundantWrite = false;
     const double _minThermalOutputSetPt;
