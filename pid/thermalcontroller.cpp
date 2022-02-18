@@ -123,7 +123,7 @@ double ThermalController::setptProc(void)
 // bmc_set_pid_output
 void ThermalController::outputProc(double value)
 {
-    _owner->addSetPoint(value);
+    _owner->addSetPoint(value, _id);
 
     return;
 }

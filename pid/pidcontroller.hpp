@@ -21,7 +21,7 @@ class PIDController : public Controller
 {
   public:
     PIDController(const std::string& id, ZoneInterface* owner) :
-        Controller(), _owner(owner), _setpoint(0), _id(id)
+        Controller(), _owner(owner), _id(id)
     {}
 
     virtual ~PIDController()
@@ -58,12 +58,12 @@ class PIDController : public Controller
 
   protected:
     ZoneInterface* _owner;
+    std::string _id;
 
   private:
     // parameters
     ec::pid_info_t _pid_info;
-    double _setpoint;
-    std::string _id;
+    double _setpoint=0;
     double lastInput = std::numeric_limits<double>::quiet_NaN();
 };
 

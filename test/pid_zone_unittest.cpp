@@ -168,7 +168,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
     std::vector<double> values = {100, 200, 300, 400, 500, 5000};
     for (auto v : values)
     {
-        zone->addSetPoint(v);
+        zone->addSetPoint(v, "");
     }
 
     // This will pull the maximum RPM setpoint request.
@@ -191,7 +191,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
     std::vector<double> values = {100, 200, 300, 400, 500};
     for (auto v : values)
     {
-        zone->addSetPoint(v);
+        zone->addSetPoint(v, "");
     }
 
     // This will pull the maximum RPM setpoint request.
