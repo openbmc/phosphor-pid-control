@@ -46,7 +46,7 @@ class ZoneInterface
     virtual double getCachedValue(const std::string& name) = 0;
 
     /** Add a set point value for the Max Set Point computation. */
-    virtual void addSetPoint(double setpoint) = 0;
+    virtual void addSetPoint(double setpoint, const std::string& name) = 0;
     /** Clear all set points specified via addSetPoint */
     virtual void clearSetPoints(void) = 0;
 

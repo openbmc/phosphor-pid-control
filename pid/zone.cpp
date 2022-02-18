@@ -101,9 +101,18 @@ int64_t DbusPidZone::getZoneID(void) const
     return _zoneId;
 }
 
-void DbusPidZone::addSetPoint(double setpoint)
+void DbusPidZone::addSetPoint(double setpoint, const std::string& name)
 {
     _SetPoints.push_back(setpoint);
+    /*
+     * if there are multiple thermal controllers with the same
+     * value, pick the first one in the iterator
+     */
+    if (_maximumSetPoint < setpoint)
+    {
+        _maximumSetPoint = setpoint;
+        _maximumSetPointName = name;
+    }
 }
 
 void DbusPidZone::addRPMCeiling(double ceiling)
@@ -119,6 +128,7 @@ void DbusPidZone::clearRPMCeilings(void)
 void DbusPidZone::clearSetPoints(void)
 {
     _SetPoints.clear();
+    _maximumSetPoint = 0;
 }
 
 double DbusPidZone::getFailSafePercent(void) const
@@ -210,27 +220,46 @@ static bool fileParseRpm(const std::string& fileName, double& rpmValue)
 
 void DbusPidZone::determineMaxSetPointRequest(void)
 {
-    double max = 0;
     std::vector<double>::iterator result;
-
-    if (_SetPoints.size() > 0)
-    {
-        result = std::max_element(_SetPoints.begin(), _SetPoints.end());
-        max = *result;
-    }
+    double minThermalThreshold = getMinThermalSetpoint();
 
     if (_RPMCeilings.size() > 0)
     {
         result = std::min_element(_RPMCeilings.begin(), _RPMCeilings.end());
-        max = std::min(max, *result);
+        // if Max set point is larger than the lowest ceiling, reset to lowest
+        // ceiling.
+        if (*result < _maximumSetPoint)
+        {
+            _maximumSetPoint = *result;
+            // When using lowest ceiling, controller name is ceiling.
+            _maximumSetPointName = "Ceiling";
+        }
     }
 
     /*
      * If the maximum RPM setpoint output is below the minimum RPM
      * setpoint, set it to the minimum.
      */
-    max = std::max(getMinThermalSetpoint(), max);
-
+    if (minThermalThreshold >= _maximumSetPoint)
+    {
+        _maximumSetPoint = minThermalThreshold;
+        _maximumSetPointName = "";
+    }
+    else if (_maximumSetPointName.compare(_maximumSetPointNamePrev))
+    {
+        std::cerr << "PID Zone " << _zoneId << " max SetPoint "
+                  << _maximumSetPoint << " requested by "
+                  << _maximumSetPointName << "\n";
+        for (const auto& sensor : _failSafeSensors)
+        {
+            if (sensor.find("Fan") == std::string::npos)
+            {
+                std::cerr << " " << sensor;
+            }
+        }
+        std::cerr << "\n";
+        _maximumSetPointNamePrev.assign(_maximumSetPointName);
+    }
     if (tuningEnabled)
     {
         /*
@@ -240,17 +269,15 @@ void DbusPidZone::determineMaxSetPointRequest(void)
          */
         static constexpr auto setpointpath = "/etc/thermal.d/setpoint";
 
-        fileParseRpm(setpointpath, max);
+        fileParseRpm(setpointpath, _maximumSetPoint);
 
         // Allow per-zone setpoint files to override overall setpoint file
         std::ostringstream zoneSuffix;
         zoneSuffix << ".zone" << _zoneId;
         std::string zoneSetpointPath = setpointpath + zoneSuffix.str();
 
-        fileParseRpm(zoneSetpointPath, max);
+        fileParseRpm(zoneSetpointPath, _maximumSetPoint);
     }
-
-    _maximumSetPoint = max;
     return;
 }
 
@@ -260,7 +287,7 @@ void DbusPidZone::initializeLog(void)
      * epoch_ms,setpt,fan1,fan2,fanN,sensor1,sensor2,sensorN,failsafe
      */
 
-    _log << "epoch_ms,setpt";
+    _log << "epoch_ms,setpt,requester";
 
     for (const auto& f : _fanInputs)
     {
@@ -308,6 +335,7 @@ void DbusPidZone::updateFanTelemetry(void)
                     now.time_since_epoch())
                     .count();
         _log << "," << _maximumSetPoint;
+        _log << "," << _maximumSetPointName;
     }
 
     for (const auto& f : _fanInputs)
