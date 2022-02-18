@@ -101,7 +101,7 @@ void StepwiseController::outputProc(double value)
     }
     else
     {
-        _owner->addSetPoint(value);
+        _owner->addSetPoint(value, _id);
     }
     return;
 }
