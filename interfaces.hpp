@@ -9,11 +9,22 @@ struct ReadReturn
 {
     double value;
     std::chrono::high_resolution_clock::time_point updated;
+    double unscaled = value;
 
     bool operator==(const ReadReturn& rhs) const
     {
-        return (this->value == rhs.value && this->updated == rhs.updated);
+        return ((this->value == rhs.value) && (this->updated == rhs.updated) &&
+                (this->unscaled == rhs.unscaled));
     }
+};
+
+struct ValueCacheEntry
+{
+    // This is normalized to (0.0, 1.0) range, using configured min and max
+    double scaled;
+
+    // This is the raw value, as recieved from the input/output sensors
+    double unscaled;
 };
 
 /*
