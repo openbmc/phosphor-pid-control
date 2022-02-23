@@ -143,7 +143,18 @@ void DbusPidZone::addThermalPID(std::unique_ptr<Controller> pid)
 
 double DbusPidZone::getCachedValue(const std::string& name)
 {
+    return _cachedValuesByName.at(name).scaled;
+}
+
+ValueCacheEntry DbusPidZone::getCachedValues(const std::string& name)
+{
     return _cachedValuesByName.at(name);
+}
+
+void DbusPidZone::setOutputCache(std::string_view name,
+                                 const ValueCacheEntry& values)
+{
+    _cachedFanOutputs[std::string{name}] = values;
 }
 
 void DbusPidZone::addFanInput(const std::string& fan)
@@ -257,29 +268,28 @@ void DbusPidZone::determineMaxSetPointRequest(void)
 void DbusPidZone::initializeLog(void)
 {
     /* Print header for log file:
-     * epoch_ms,setpt,fan1,fan2,fanN,sensor1,sensor2,sensorN,failsafe
+     * epoch_ms,setpt,fan1,fan1_raw,fan1_pwm,fan1_pwm_raw,fan2,fan2_raw,fan2_pwm,fan2_pwm_raw,fanN,fanN_raw,fanN_pwm,fanN_pwm_raw,sensor1,sensor1_raw,sensor2,sensor2_raw,sensorN,sensorN_raw,failsafe
      */
 
     _log << "epoch_ms,setpt";
 
     for (const auto& f : _fanInputs)
     {
-        _log << "," << f;
+        _log << "," << f << "," << f << "_raw";
+        _log << "," << f << "_pwm," << f << "_pwm_raw";
     }
     for (const auto& t : _thermalInputs)
     {
-        _log << "," << t;
+        _log << "," << t << "," << t << "_raw";
     }
+
     _log << ",failsafe";
     _log << std::endl;
-
-    return;
 }
 
 void DbusPidZone::writeLog(const std::string& value)
 {
     _log << value;
-    return;
 }
 
 /*
@@ -314,7 +324,7 @@ void DbusPidZone::updateFanTelemetry(void)
     {
         auto sensor = _mgr.getSensor(f);
         ReadReturn r = sensor->read();
-        _cachedValuesByName[f] = r.value;
+        _cachedValuesByName[f] = {r.value, r.unscaled};
         int64_t timeout = sensor->getTimeout();
         tstamp then = r.updated;
 
@@ -329,7 +339,10 @@ void DbusPidZone::updateFanTelemetry(void)
          */
         if (loggingEnabled)
         {
-            _log << "," << r.value;
+            const auto& v = _cachedValuesByName[f];
+            _log << "," << v.scaled << "," << v.unscaled;
+            const auto& p = _cachedFanOutputs[f];
+            _log << "," << p.scaled << "," << p.unscaled;
         }
 
         // check if fan fail.
@@ -356,7 +369,8 @@ void DbusPidZone::updateFanTelemetry(void)
     {
         for (const auto& t : _thermalInputs)
         {
-            _log << "," << _cachedValuesByName[t];
+            const auto& v = _cachedValuesByName[t];
+            _log << "," << v.scaled << "," << v.unscaled;
         }
     }
 
@@ -375,7 +389,7 @@ void DbusPidZone::updateSensors(void)
         ReadReturn r = sensor->read();
         int64_t timeout = sensor->getTimeout();
 
-        _cachedValuesByName[t] = r.value;
+        _cachedValuesByName[t] = {r.value, r.unscaled};
         tstamp then = r.updated;
 
         auto duration = duration_cast<std::chrono::seconds>(now - then).count();
@@ -406,9 +420,12 @@ void DbusPidZone::updateSensors(void)
 
 void DbusPidZone::initializeCache(void)
 {
+    auto nan = std::numeric_limits<double>::quiet_NaN();
+
     for (const auto& f : _fanInputs)
     {
-        _cachedValuesByName[f] = 0;
+        _cachedValuesByName[f] = {nan, nan};
+        _cachedFanOutputs[f] = {nan, nan};
 
         // Start all fans in fail-safe mode.
         _failSafeSensors.insert(f);
@@ -416,7 +433,7 @@ void DbusPidZone::initializeCache(void)
 
     for (const auto& t : _thermalInputs)
     {
-        _cachedValuesByName[t] = 0;
+        _cachedValuesByName[t] = {nan, nan};
 
         // Start all sensors in fail-safe mode.
         _failSafeSensors.insert(t);
@@ -428,7 +445,15 @@ void DbusPidZone::dumpCache(void)
     std::cerr << "Cache values now: \n";
     for (const auto& [name, value] : _cachedValuesByName)
     {
-        std::cerr << name << ": " << value << "\n";
+        std::cerr << name << ": " << value.scaled << " " << value.unscaled
+                  << "\n";
+    }
+
+    std::cerr << "Fan outputs now: \n";
+    for (const auto& [name, value] : _cachedFanOutputs)
+    {
+        std::cerr << name << ": " << value.scaled << " " << value.unscaled
+                  << "\n";
     }
 }
 

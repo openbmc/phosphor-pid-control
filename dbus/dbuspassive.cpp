@@ -107,17 +107,23 @@ ReadReturn DbusPassive::read(void)
 {
     std::lock_guard<std::mutex> guard(_lock);
 
-    ReadReturn r = {_value, _updated};
+    ReadReturn r = {_value, _updated, _unscaled};
 
     return r;
 }
 
-void DbusPassive::setValue(double value)
+void DbusPassive::setValue(double value, double unscaled)
 {
     std::lock_guard<std::mutex> guard(_lock);
 
     _value = value;
+    _unscaled = unscaled;
     _updated = std::chrono::high_resolution_clock::now();
+}
+
+void DbusPassive::setValue(double value)
+{
+    setValue(value, value);
 }
 
 bool DbusPassive::getFailed(void) const
@@ -245,7 +251,7 @@ void DbusPassive::updateValue(double value, bool force)
         }
     }
 
-    setValue(value);
+    setValue(value, unscaled);
 }
 
 int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
