@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "67d437b7_6f4ece81",
         "filename": "pid/ec/logging.hpp",
@@ -20,10 +21,10 @@
         "endChar": 14
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "77037bb5_a48cd929",
         "filename": "pid/ec/logging.hpp",
@@ -44,10 +45,10 @@
         "endChar": 14
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "149119e3_cee274f4",
         "filename": "pid/ec/logging.hpp",
@@ -67,10 +68,10 @@
         "endChar": 25
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "46e5b22d_7098a63d",
         "filename": "pid/ec/logging.hpp",
@@ -91,10 +92,10 @@
         "endChar": 25
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "9dafbed6_77a420da",
         "filename": "pid/ec/logging.hpp",
@@ -108,10 +109,10 @@
       "side": 1,
       "message": "The name \"core\" does not make too much sense for me... Maybe lastDump, lastData or lastContext?",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "861cb411_d49311a1",
         "filename": "pid/ec/logging.hpp",
@@ -126,10 +127,10 @@
       "message": "I\u0027m naming this feature \"core logging\" because there\u0027s already another layer of logging that can be enabled in this program, one that works at a higher level, and I needed to distinguish it. The PidCore name makes sense when it\u0027s part of the \"core logging\" feature. Given this, any suggestions? Calling it \"dump\" or \"data\" or \"context\" seems generic, and wouldn\u0027t provide any advantage.",
       "parentUuid": "9dafbed6_77a420da",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "c0275852_3606deff",
         "filename": "pid/ec/logging.hpp",
@@ -144,10 +145,10 @@
       "message": "I\u0027m not really sure; not a native speaker... PidCoreDump? :P",
       "parentUuid": "861cb411_d49311a1",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "5258fb2e_15a2dcd5",
         "filename": "pid/ec/logging.hpp",
@@ -162,10 +163,10 @@
       "message": "Thought about that one, actually. That already has an established meaning, though. A core dump is the memory file that the kernel gives you when your program crashes. That wasn\u0027t the intention of this feature :)",
       "parentUuid": "c0275852_3606deff",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "241d28b2_9b879a27",
         "filename": "pid/ec/logging.hpp",
@@ -180,10 +181,10 @@
       "message": "I\u0027m out of ideas then... :P Maybe just PidCoreContext, or anyone else could suggest a good name? Or it\u0027s already good enough?",
       "parentUuid": "5258fb2e_15a2dcd5",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "73c0535f_b85158c8",
         "filename": "pid/ec/logging.hpp",
@@ -198,10 +199,10 @@
       "message": "I like PidCoreContext, it\u0027s descriptive.",
       "parentUuid": "241d28b2_9b879a27",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "1d005c9a_ad4f38d1",
         "filename": "pid/ec/logging.hpp",
@@ -221,10 +222,10 @@
         "endChar": 26
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "7584b386_b0f0d49f",
         "filename": "pid/ec/logging.hpp",
@@ -245,10 +246,34 @@
         "endChar": 26
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ac654c55_ab62491a",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-23T05:14:48Z",
+      "side": 1,
+      "message": "Thanks, I still think it\u0027s safest to write it explicitly. It\u0027s worth an experiment to see if it still works, though.",
+      "parentUuid": "7584b386_b0f0d49f",
+      "range": {
+        "startLine": 84,
+        "startChar": 8,
+        "endLine": 84,
+        "endChar": 26
+      },
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "dfd800f7_76942dbc",
         "filename": "pid/ec/logging.hpp",
@@ -268,10 +293,10 @@
         "endChar": 9
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "e6a87e85_01ca27a4",
         "filename": "pid/ec/logging.hpp",
@@ -292,10 +317,34 @@
         "endChar": 9
       },
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0ac55932_cfbf1f0b",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 95,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-23T05:14:48Z",
+      "side": 1,
+      "message": "Thanks, I still think it\u0027s safest to write it explicitly. It\u0027s worth an experiment to see if it still works, though.",
+      "parentUuid": "e6a87e85_01ca27a4",
+      "range": {
+        "startLine": 88,
+        "startChar": 1,
+        "endLine": 95,
+        "endChar": 9
+      },
+      "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
       "key": {
         "uuid": "3f0d0219_b5832645",
         "filename": "pid/ec/pid.cpp",
@@ -309,10 +358,10 @@
       "side": 1,
       "message": "output2 is not used? Worth commenting?",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "da74b049_6aecbcf4",
         "filename": "pid/ec/pid.cpp",
@@ -327,10 +376,10 @@
       "message": "Part of the reason for the \"core logging\" feature is to debug the guts of this function, the most important function (and the most mysterious) in the entire program. I want to take a snapshot of each variable as it gets modified, even during intermediate steps. That\u0027s why the same variable is copied at many different times. Then, I can see a before-and-after of every change that happens. All of the fields in the \"coreLog\" structure are eventually used, as they are written to the file, for later human perusal.",
       "parentUuid": "3f0d0219_b5832645",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "23e52c5c_bae70a69",
         "filename": "pid/ec/pid.cpp",
@@ -345,10 +394,10 @@
       "message": "Hmm, I can\u0027t trace to where output2 is modified in this CL... Am I missing anything?",
       "parentUuid": "da74b049_6aecbcf4",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "c70f9e25_fa641322",
         "filename": "pid/ec/pid.cpp",
@@ -363,10 +412,10 @@
       "message": "The \"coreLog\" structure is a stashing-away place for variables at various points. None of the variables in \"coreLog\" are modified after they are set, by design. The entire structure is printed intact, to the log file, for later human perusal.\n\nThe variable \"output\" is changed below, in the if-blocks. That\u0027s why I\u0027m taking a snapshot of it, before and after the if-blocks. The before is \"output2\" and the after is \"output3\", in the CoreLog structure.",
       "parentUuid": "23e52c5c_bae70a69",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "979c5837_c2b7dd33",
         "filename": "pid/ec/pid.cpp",
@@ -381,10 +430,10 @@
       "message": "Ah, just realized that... Sry, sth was definitely going wrong with my mind, nvm...",
       "parentUuid": "c70f9e25_fa641322",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "dec970ba_e9adb964",
         "filename": "pid/ec/pid.cpp",
@@ -398,10 +447,10 @@
       "side": 1,
       "message": "Instead of spreading the \u003d statement everywhere, is it possible to simply use PidCore as the data structure to wrap all these variables? And then, logging is just simply copying/referencing  this data structure.\n\nFor instance:\n\nstruct Data{int a; float b;};\n\nvoid func(){\n    Data data;\n    data.a \u003d getA() + magic;\n    data.b \u003d getB() - magic;\n    log(data);\n}",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "8e1dacbb_3587097c",
         "filename": "pid/ec/pid.cpp",
@@ -416,8 +465,7 @@
       "message": "I thought about refactoring this function, but I don\u0027t want to change what\u0027s there already. I only want to log the values of the variables at various places within this function. I\u0027m using the \"coreLog\" object as the data structure which receives all the variables for logging purposes. The already-existing \"pidinfoptr\" object already stores the persistent data that is remembered for successive passes through the PID loop. So, every variable in here already does get wrapped by either one or both of these data structures.",
       "parentUuid": "dec970ba_e9adb964",
       "revId": "99823bcb1d504fc4e15b9f23c003951fb6e61126",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
