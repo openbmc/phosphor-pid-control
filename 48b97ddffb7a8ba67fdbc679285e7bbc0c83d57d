@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "18c3ba9c_712dc2d1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-23T05:19:58Z",
+      "side": 1,
+      "message": "Rebased to latest master. Removing leading underscores from \"_scaled\" and \"_unscaled\" member variables, to match what was done in 36695. Cleaned up usage of std::string_view versus std::string type.\n\nCombined 51267 with this changeset, so we can abandon 51267 now: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/51267\n",
+      "revId": "48b97ddffb7a8ba67fdbc679285e7bbc0c83d57d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
