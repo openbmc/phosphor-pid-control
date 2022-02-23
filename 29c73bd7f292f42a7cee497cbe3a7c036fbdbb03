@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "8649ce7d_797981e2",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,10 @@
         "endChar": 28
       },
       "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "8b7a2665_803b9818",
         "filename": "/COMMIT_MSG",
@@ -44,10 +45,10 @@
         "endChar": 28
       },
       "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "8f1547f7_ae274282",
         "filename": "/COMMIT_MSG",
@@ -68,10 +69,10 @@
         "endChar": 28
       },
       "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
       "key": {
         "uuid": "f6f79a3c_41f2b394",
         "filename": "/COMMIT_MSG",
@@ -92,10 +93,10 @@
         "endChar": 28
       },
       "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": false
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "61890fa8_9c9445b9",
         "filename": "/COMMIT_MSG",
@@ -116,8 +117,31 @@
         "endChar": 28
       },
       "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b4c6d208_8ef73dab",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-23T05:10:36Z",
+      "side": 1,
+      "message": "Good thoughts. I\u0027m waking up this patch again, since it has been some time. Is the above still a concern?",
+      "parentUuid": "61890fa8_9c9445b9",
+      "range": {
+        "startLine": 9,
+        "startChar": 21,
+        "endLine": 9,
+        "endChar": 28
+      },
+      "revId": "29c73bd7f292f42a7cee497cbe3a7c036fbdbb03",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

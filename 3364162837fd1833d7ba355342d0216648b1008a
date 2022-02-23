@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "8042414e_153fdd02",
         "filename": "pid/zone_interface.hpp",
@@ -14,8 +15,25 @@
       "side": 0,
       "message": "I would recommend pulling this change out since it\u0027s unrelated and is an easy patch to land as it has no behavioral changes.",
       "revId": "3364162837fd1833d7ba355342d0216648b1008a",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "94126778_c309815e",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-02-23T05:10:36Z",
+      "side": 0,
+      "message": "Hmm, this is necessary here, to make a smooth transition between a 1-entry cache (scaled only) and a 2-entry cache (scaled and unscaled). It reduces the blast radius, versus making an equivalent change elsewhere.",
+      "parentUuid": "8042414e_153fdd02",
+      "revId": "3364162837fd1833d7ba355342d0216648b1008a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
