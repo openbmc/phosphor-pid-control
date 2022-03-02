@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed5cb4b5_959d0811",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-03-02T00:25:09Z",
+      "side": 1,
+      "message": "Please also check the \"OpenBMC CI\" comments. The tests are failing to compile. You can see the results at the Jenkins URL, hit \"Console Output\" to see the log.\n\n",
+      "revId": "7e0aca47a9b11c5612b4c36e4dd6d72391bde491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "923aa5af_f47a5cc0",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 290,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-03-02T00:25:09Z",
+      "side": 1,
+      "message": "Please remove the extra comma from the end of this line. Otherwise, it will make double commas.",
+      "revId": "7e0aca47a9b11c5612b4c36e4dd6d72391bde491",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
