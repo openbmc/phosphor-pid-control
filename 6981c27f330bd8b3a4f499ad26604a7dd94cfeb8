@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "13719a47_8565c773",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2022-03-02T01:04:36Z",
+      "side": 1,
+      "message": "Agreed, it touches more code than anticipated. We had discussions internally. This approach was chosen because, logic wise, it is straight forward. The goal is to know which input is driving the fans. If there are other simpler approaches, please advise.",
+      "parentUuid": "636ea5ea_4997b835",
+      "revId": "6981c27f330bd8b3a4f499ad26604a7dd94cfeb8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "1f133a4e_638b841f",
         "filename": "pid/zone.cpp",
         "patchSetId": 1
@@ -31,6 +49,24 @@
       "writtenOn": "2022-03-02T00:05:33Z",
       "side": 1,
       "message": "Please also add a column to the header, in initializeLog() above. Otherwise, the header columns will not line up with the data columns.",
+      "revId": "6981c27f330bd8b3a4f499ad26604a7dd94cfeb8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "345ff3bf_3483bf9a",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 337,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2022-03-02T01:04:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f133a4e_638b841f",
       "revId": "6981c27f330bd8b3a4f499ad26604a7dd94cfeb8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
