@@ -48,7 +48,9 @@ class HostSensor : public Sensor, public ValueObject
     HostSensor(const std::string& name, int64_t timeout,
                sdbusplus::bus::bus& bus, const char* objPath, bool defer) :
         Sensor(name, timeout),
-        ValueObject(bus, objPath, defer)
+        ValueObject(bus, objPath,
+                    defer ? ValueObject::action::defer_emit
+                          : ValueObject::action::emit_object_added)
     {}
 
     ValueType value(ValueType value) override;
