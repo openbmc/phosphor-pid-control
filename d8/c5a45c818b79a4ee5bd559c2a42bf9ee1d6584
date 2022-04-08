@@ -1,0 +1,8 @@
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Ok-To-Test+1: Josh Lehan <krellan@google.com>
+Code-Review+2: Josh Lehan <krellan@google.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Fri, 08 Apr 2022 21:38:54 +0000
+Reviewed-on: https://gerrit.openbmc-project.xyz/c/openbmc/phosphor-pid-control/+/52728
+Project: openbmc/phosphor-pid-control
+Branch: refs/heads/master
