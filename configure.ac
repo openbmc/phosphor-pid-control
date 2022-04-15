@@ -26,7 +26,7 @@ AC_PROG_INSTALL
 AC_PROG_MAKE_SET
 
 # Checks for typedefs, structures, and compiler characteristics.
-AX_CXX_COMPILE_STDCXX_17([noext])
+AX_CXX_COMPILE_STDCXX([20],[noext])
 AX_APPEND_COMPILE_FLAGS([-fpic -Wall -Werror], [CXXFLAGS])
 
 # Checks for libraries.
