@@ -16,6 +16,24 @@
       "message": "LGTM - good idea, assuming all our compilers are new enough for this\n",
       "revId": "ac3a21911e4f6b796310a510299bafe6e46b5afb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "622ada00_49d43133",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-04-19T15:58:50Z",
+      "side": 1,
+      "message": "\u003e assuming all our compilers are new enough for this\n\nNot sure if this is something you were expecting me to reply to.  We\u0027ve been using C++20 in most of the repositories for a long time now.\n\nhttps://lore.kernel.org/openbmc/YHdMjAsKKA+BKW8X@heinlein/",
+      "parentUuid": "11ef9d30_7b9fb84a",
+      "revId": "ac3a21911e4f6b796310a510299bafe6e46b5afb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
