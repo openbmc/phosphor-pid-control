@@ -889,7 +889,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     if (!findSensors(sensors, sensorNameToDbusName(sensorName),
                                      sensorPathIfacePairs))
                     {
-                        break;
+                        // zone should be created if any of the sensors exists
+                        continue;
                     }
 
                     for (const auto& sensorPathIfacePair : sensorPathIfacePairs)
