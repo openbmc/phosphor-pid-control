@@ -119,6 +119,57 @@
       "message": "Oops, it looks like there has been some sdbusplus bit rot over time....",
       "revId": "cd6fc0ceb383f4bd555d471924208eff48298915",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b102eb46_525d9bc3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001322
+      },
+      "writtenOn": "2022-05-26T10:00:23Z",
+      "side": 1,
+      "message": "nit: camelCasing for getMinThermalSetPoint()",
+      "revId": "cd6fc0ceb383f4bd555d471924208eff48298915",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "10abcc10_873da560",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1001322
+      },
+      "writtenOn": "2022-05-26T10:00:23Z",
+      "side": 1,
+      "message": "nit: camelCasing for getMinThermalSetPoint()",
+      "revId": "cd6fc0ceb383f4bd555d471924208eff48298915",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fa11efa2_c2c83e1c",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1001322
+      },
+      "writtenOn": "2022-05-26T10:00:23Z",
+      "side": 1,
+      "message": "nit: camelCasing for getMinThermalSetPoint()",
+      "revId": "cd6fc0ceb383f4bd555d471924208eff48298915",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
