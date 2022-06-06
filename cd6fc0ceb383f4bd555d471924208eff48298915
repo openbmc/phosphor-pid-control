@@ -173,6 +173,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "edcb349d_c5a22a99",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2022-06-06T21:39:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "10abcc10_873da560",
+      "revId": "cd6fc0ceb383f4bd555d471924208eff48298915",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "fa11efa2_c2c83e1c",
@@ -186,6 +204,24 @@
       "writtenOn": "2022-05-26T10:00:23Z",
       "side": 1,
       "message": "nit: camelCasing for getMinThermalSetPoint()",
+      "revId": "cd6fc0ceb383f4bd555d471924208eff48298915",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62a7e631_fc15ac14",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2022-06-06T21:39:17Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "fa11efa2_c2c83e1c",
       "revId": "cd6fc0ceb383f4bd555d471924208eff48298915",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
