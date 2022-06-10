@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "87e1f480_5dda344f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2022-06-10T00:05:09Z",
+      "side": 1,
+      "message": "Commit message line-wrapping seems a bit oddly narrow, fwiw...",
+      "revId": "2e6287f42fe1e0a4c625f1677dd3167a01a58732",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "f7435a3d_a7403fca",
@@ -14,6 +31,46 @@
       "writtenOn": "2022-02-23T05:15:26Z",
       "side": 1,
       "message": "Rebased to latest master. No other changes made.\n",
+      "revId": "2e6287f42fe1e0a4c625f1677dd3167a01a58732",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97b23127_79f1abde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2022-06-10T00:05:09Z",
+      "side": 1,
+      "message": "I tested this with the a config including the following fragment:\n\n```\n{\n        \"name\": \"TSI0_TEMP\",\n        \"type\": \"temp\",\n        \"readPath\": \"/xyz/openbmc_project/sensors/temperature/TSI0_TEMP\",\n        \"timeout\": 5.0,\n        \"ignoreDbusMinMax\": true\n}\n```\n\nThe timeout setting is bogus and based on a misunderstanding, but by my understanding this patch should correct it and set the timeout to zero anyway, matching the behavior I get if I edit the config to do that explicitly.  However, in practice that doesn\u0027t seem to happen -- with the config edit it works as desired, but with the above config and this patch I\u0027m still getting the failsafe oscillation I\u0027d been getting previously due to the timeout expiring between the arrivals of value-changed signals.",
+      "revId": "2e6287f42fe1e0a4c625f1677dd3167a01a58732",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8bc37417_1adab9d0",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 656,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2022-06-10T00:05:09Z",
+      "side": 1,
+      "message": "Is this part of the comment stale at this point?  From the discussion on discord it sounds like we can achieve proper failsafe behavior by having dbus-sensors daemons report NaNs to signal failures.",
+      "range": {
+        "startLine": 653,
+        "startChar": 62,
+        "endLine": 656,
+        "endChar": 79
+      },
       "revId": "2e6287f42fe1e0a4c625f1677dd3167a01a58732",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
