@@ -161,6 +161,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "58141783_d4fbc17f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2022-06-11T02:24:04Z",
+      "side": 1,
+      "message": "\u003e It\u0027s unfortunate that the code has two parallel code paths like this.\n\nAgreed -- it\u0027d be nice of course to find a single spot to put this logic that would apply to both without just duplicating it, but I haven\u0027t looked through the code enough to know if such a spot exists.",
+      "parentUuid": "e318bf23_7f2f6f3e",
+      "revId": "2e6287f42fe1e0a4c625f1677dd3167a01a58732",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8bc37417_1adab9d0",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 10
