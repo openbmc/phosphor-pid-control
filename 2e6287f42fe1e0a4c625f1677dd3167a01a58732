@@ -143,6 +143,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e318bf23_7f2f6f3e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-06-11T02:18:19Z",
+      "side": 1,
+      "message": "That\u0027s a good idea. It\u0027s unfortunate that the code has two parallel code paths like this. I haven\u0027t yet used the combination of D-Bus passive sensors with the standalone hardcoded JSON configuration.",
+      "parentUuid": "57e994c2_31ac3f06",
+      "revId": "2e6287f42fe1e0a4c625f1677dd3167a01a58732",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8bc37417_1adab9d0",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 10
