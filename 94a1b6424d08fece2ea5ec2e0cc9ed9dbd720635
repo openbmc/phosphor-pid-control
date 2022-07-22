@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5a716f1e_29cb2fef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-07-22T22:58:39Z",
+      "side": 1,
+      "message": "Is this the same as https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/55634 change?\n",
+      "revId": "94a1b6424d08fece2ea5ec2e0cc9ed9dbd720635",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
