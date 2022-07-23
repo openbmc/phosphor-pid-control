@@ -20,7 +20,7 @@
 #include <vector>
 
 template <typename... T>
-using ServerObject = typename sdbusplus::server::object::object<T...>;
+using ServerObject = typename sdbusplus::server::object_t<T...>;
 using ModeInterface = sdbusplus::xyz::openbmc_project::Control::server::Mode;
 using ModeObject = ServerObject<ModeInterface>;
 
@@ -36,7 +36,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 {
   public:
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
-                const SensorManager& mgr, sdbusplus::bus::bus& bus,
+                const SensorManager& mgr, sdbusplus::bus_t& bus,
                 const char* objPath, bool defer) :
         ModeObject(bus, objPath,
                    defer ? ModeObject::action::defer_emit

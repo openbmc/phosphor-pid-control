@@ -31,7 +31,7 @@ using ::testing::StrEq;
  * TODO: Make it support more cases, as I'm sure there are more.
  *
  * @param[in] sdbus_mock - Pointer to your sdbus mock interface used with
- *     the sdbusplus::bus::bus you created.
+ *     the sdbusplus::bus_t you created.
  * @param[in] defer - Whether object announcement is deferred.
  * @param[in] path - the dbus path passed to the object
  * @param[in] intf - the dbus interface

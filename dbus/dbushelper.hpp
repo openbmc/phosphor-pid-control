@@ -21,7 +21,7 @@ class DbusHelper : public DbusHelperInterface
     static constexpr char availabilityIntf[] =
         "xyz.openbmc_project.State.Decorator.Availability";
 
-    explicit DbusHelper(sdbusplus::bus::bus bus) : _bus(std::move(bus))
+    explicit DbusHelper(sdbusplus::bus_t bus) : _bus(std::move(bus))
     {}
     ~DbusHelper() = default;
 
@@ -58,7 +58,7 @@ class DbusHelper : public DbusHelperInterface
             auto valueResponseMsg = _bus.call(msg);
             valueResponseMsg.read(result);
         }
-        catch (const sdbusplus::exception::exception& ex)
+        catch (const sdbusplus::exception_t& ex)
         {
             log::log<log::level::ERR>("Get Property Failed",
                                       log::entry("WHAT=%s", ex.what()));
@@ -69,7 +69,7 @@ class DbusHelper : public DbusHelperInterface
     }
 
   private:
-    sdbusplus::bus::bus _bus;
+    sdbusplus::bus_t _bus;
 };
 
 } // namespace pid_control

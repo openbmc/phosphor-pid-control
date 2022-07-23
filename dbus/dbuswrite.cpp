@@ -89,7 +89,7 @@ void DbusWritePercent::write(double value, bool force, int64_t* written)
         // TODO: if we don't use the reply, call_noreply()
         auto resp = writeBus.call(mesg);
     }
-    catch (const sdbusplus::exception::exception& ex)
+    catch (const sdbusplus::exception_t& ex)
     {
         log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
                         entry("WHAT=%s", ex.what()));
@@ -152,7 +152,7 @@ void DbusWrite::write(double value, bool force, int64_t* written)
         // TODO: consider call_noreplly
         auto resp = writeBus.call(mesg);
     }
-    catch (const sdbusplus::exception::exception& ex)
+    catch (const sdbusplus::exception_t& ex)
     {
         log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
                         entry("WHAT=%s", ex.what()));

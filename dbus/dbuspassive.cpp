@@ -33,7 +33,7 @@ namespace pid_control
 {
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
-    sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
+    sdbusplus::bus_t& bus, const std::string& type, const std::string& id,
     std::unique_ptr<DbusHelperInterface> helper, const conf::SensorConfig* info,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy)
 {
@@ -79,7 +79,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 }
 
 DbusPassive::DbusPassive(
-    sdbusplus::bus::bus& bus, const std::string& type, const std::string& id,
+    sdbusplus::bus_t& bus, const std::string& type, const std::string& id,
     std::unique_ptr<DbusHelperInterface> helper,
     const SensorProperties& settings, bool failed, const std::string& path,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
@@ -248,7 +248,7 @@ void DbusPassive::updateValue(double value, bool force)
     setValue(value);
 }
 
-int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
+int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
 {
     std::string msgSensor;
     std::map<std::string, std::variant<int64_t, double, bool>> msgData;
@@ -325,7 +325,7 @@ int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner)
 
 int dbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
 {
-    auto sdbpMsg = sdbusplus::message::message(msg);
+    auto sdbpMsg = sdbusplus::message_t(msg);
     DbusPassive* obj = static_cast<DbusPassive*>(usrData);
 
     return handleSensorValue(sdbpMsg, obj);

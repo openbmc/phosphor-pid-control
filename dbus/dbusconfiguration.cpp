@@ -81,7 +81,7 @@ inline std::string sensorNameToDbusName(const std::string& sensorName)
     return retString;
 }
 
-std::vector<std::string> getSelectedProfiles(sdbusplus::bus::bus& bus)
+std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
 {
     std::vector<std::string> ret;
     auto mapper =
@@ -161,7 +161,7 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
     const std::array<const char*, 1> skipList = {
         "xyz.openbmc_project.Association"};
 
-    sdbusplus::message::message message(m);
+    sdbusplus::message_t message(m);
     if (std::string(message.get_member()) == "InterfacesAdded")
     {
         sdbusplus::message::object_path path;
@@ -206,10 +206,10 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
     return 1;
 }
 
-void createMatches(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer)
+void createMatches(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer)
 {
     // this is a list because the matches can't be moved
-    static std::list<sdbusplus::bus::match::match> matches;
+    static std::list<sdbusplus::bus::match_t> matches;
 
     const std::array<std::string, 4> interfaces = {
         thermalControlIface, pidConfigurationInterface,
@@ -258,7 +258,7 @@ inline DbusVariantType getPIDAttribute(
 }
 
 void populatePidInfo(
-    sdbusplus::bus::bus& bus,
+    sdbusplus::bus_t& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
     conf::ControllerInfo& info, const std::string* thresholdProperty,
     const std::map<std::string, conf::SensorConfig>& sensorConfig)
@@ -296,7 +296,7 @@ void populatePidInfo(
             helper.getProperty(service, path, interface, *thresholdProperty,
                                reading);
         }
-        catch (const sdbusplus::exception::exception& ex)
+        catch (const sdbusplus::exception_t& ex)
         {
             // unsupported threshold, leaving reading at 0
         }
@@ -346,7 +346,7 @@ void populatePidInfo(
     info.pidInfo.positiveHysteresis = positiveHysteresis;
 }
 
-bool init(sdbusplus::bus::bus& bus, boost::asio::steady_timer& timer,
+bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
           std::map<std::string, conf::SensorConfig>& sensorConfig,
           std::map<int64_t, conf::PIDConf>& zoneConfig,
           std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig)

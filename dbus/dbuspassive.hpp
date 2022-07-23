@@ -41,12 +41,12 @@ class DbusPassive : public ReadInterface
 {
   public:
     static std::unique_ptr<ReadInterface> createDbusPassive(
-        sdbusplus::bus::bus& bus, const std::string& type,
-        const std::string& id, std::unique_ptr<DbusHelperInterface> helper,
+        sdbusplus::bus_t& bus, const std::string& type, const std::string& id,
+        std::unique_ptr<DbusHelperInterface> helper,
         const conf::SensorConfig* info,
         const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
 
-    DbusPassive(sdbusplus::bus::bus& bus, const std::string& type,
+    DbusPassive(sdbusplus::bus_t& bus, const std::string& type,
                 const std::string& id,
                 std::unique_ptr<DbusHelperInterface> helper,
                 const SensorProperties& settings, bool failed,
@@ -94,6 +94,6 @@ class DbusPassive : public ReadInterface
     std::chrono::high_resolution_clock::time_point _updated;
 };
 
-int handleSensorValue(sdbusplus::message::message& msg, DbusPassive* owner);
+int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner);
 
 } // namespace pid_control

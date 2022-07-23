@@ -44,7 +44,7 @@ static constexpr bool deferSignals = true;
 
 SensorManager
     buildSensors(const std::map<std::string, conf::SensorConfig>& config,
-                 sdbusplus::bus::bus& passive, sdbusplus::bus::bus& host)
+                 sdbusplus::bus_t& passive, sdbusplus::bus_t& host)
 {
     SensorManager mgmr(passive, host);
     auto& hostSensorBus = mgmr.getHostBus();

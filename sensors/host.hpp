@@ -11,7 +11,7 @@
 #include <type_traits>
 
 template <typename... T>
-using ServerObject = typename sdbusplus::server::object::object<T...>;
+using ServerObject = typename sdbusplus::server::object_t<T...>;
 
 using ValueInterface = sdbusplus::xyz::openbmc_project::Sensor::server::Value;
 using ValueObject = ServerObject<ValueInterface>;
@@ -42,11 +42,11 @@ class HostSensor : public Sensor, public ValueObject
   public:
     static std::unique_ptr<Sensor> createTemp(const std::string& name,
                                               int64_t timeout,
-                                              sdbusplus::bus::bus& bus,
+                                              sdbusplus::bus_t& bus,
                                               const char* objPath, bool defer);
 
-    HostSensor(const std::string& name, int64_t timeout,
-               sdbusplus::bus::bus& bus, const char* objPath, bool defer) :
+    HostSensor(const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
+               const char* objPath, bool defer) :
         Sensor(name, timeout),
         ValueObject(bus, objPath,
                     defer ? ValueObject::action::defer_emit

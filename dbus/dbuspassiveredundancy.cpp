@@ -45,11 +45,11 @@ constexpr const char* interface = "xyz.openbmc_project.Control.FanRedundancy";
 
 } // namespace redundancy
 
-DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus::bus& bus) :
+DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
     match(bus,
           "type='signal',member='PropertiesChanged',arg0namespace='" +
               std::string(redundancy::interface) + "'",
-          std::move([this](sdbusplus::message::message& message) {
+          std::move([this](sdbusplus::message_t& message) {
               std::string objectName;
               std::unordered_map<
                   std::string,
