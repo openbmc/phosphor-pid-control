@@ -98,7 +98,7 @@ class DbusPassiveTestObj : public ::testing::Test
     }
 
     sdbusplus::SdBusMock sdbus_mock;
-    sdbusplus::bus::bus bus_mock;
+    sdbusplus::bus_t bus_mock;
     std::unique_ptr<DbusHelperMock> helper;
     std::string type = "temp";
     std::string id = "id";
@@ -157,7 +157,7 @@ TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* Value = "Value";
     int64_t xValue = 10000;
@@ -227,7 +227,7 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* Scale = "Scale";
     int64_t xScale = -6;
@@ -296,7 +296,7 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdAssert)
     // Verifies when a threshold is crossed the sensor goes into error state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* criticalAlarm = "CriticalAlarmHigh";
     bool alarm = true;
@@ -371,7 +371,7 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
     // the normal state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* criticalAlarm = "CriticalAlarmHigh";
     bool alarm = false;
@@ -446,7 +446,7 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableDeassert)
     // the sensor goes into error state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* property = "Available";
     bool asserted = false;
@@ -521,7 +521,7 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableAssert)
     // an error sensor goes back to normal state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* property = "Available";
     bool asserted = true;
@@ -626,7 +626,7 @@ class DbusPassiveTestUnaSensorNotAsFailedObj : public ::testing::Test
     }
 
     sdbusplus::SdBusMock sdbus_mock;
-    sdbusplus::bus::bus bus_mock;
+    sdbusplus::bus_t bus_mock;
     std::unique_ptr<DbusHelperMock> helper;
     std::string type = "temp";
     std::string id = "id";
@@ -645,7 +645,7 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableDeassert)
     // the sensor remains at OK state but reading goes to NaN.
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* property = "Available";
     bool asserted = false;
@@ -722,7 +722,7 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableAssert)
     // && unavailableAsFailed == false, this sensor remains at OK state.
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
-    sdbusplus::message::message msg(nullptr, &sdbus_mock);
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
 
     const char* property = "Available";
     bool asserted = true;
@@ -831,7 +831,7 @@ class DbusPassiveTest3kMaxObj : public ::testing::Test
     }
 
     sdbusplus::SdBusMock sdbus_mock;
-    sdbusplus::bus::bus bus_mock;
+    sdbusplus::bus_t bus_mock;
     std::unique_ptr<DbusHelperMock> helper;
     std::string type = "temp";
     std::string id = "id";
@@ -876,7 +876,7 @@ class DbusPassiveTest3kMaxIgnoredObj : public ::testing::Test
     }
 
     sdbusplus::SdBusMock sdbus_mock;
-    sdbusplus::bus::bus bus_mock;
+    sdbusplus::bus_t bus_mock;
     std::unique_ptr<DbusHelperMock> helper;
     std::string type = "temp";
     std::string id = "id";

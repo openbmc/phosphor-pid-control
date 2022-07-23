@@ -34,15 +34,15 @@ namespace pid_control
 class DbusPassiveRedundancy
 {
   public:
-    explicit DbusPassiveRedundancy(sdbusplus::bus::bus& bus);
+    explicit DbusPassiveRedundancy(sdbusplus::bus_t& bus);
     const std::set<std::string>& getFailed(void);
 
   private:
     void populateFailures(void);
 
-    sdbusplus::bus::match::match match;
+    sdbusplus::bus::match_t match;
     std::set<std::string> failed;
-    sdbusplus::bus::bus& passiveBus;
+    sdbusplus::bus_t& passiveBus;
 };
 
 } // namespace pid_control

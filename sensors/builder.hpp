@@ -17,6 +17,6 @@ namespace pid_control
  */
 SensorManager
     buildSensors(const std::map<std::string, conf::SensorConfig>& config,
-                 sdbusplus::bus::bus& passive, sdbusplus::bus::bus& host);
+                 sdbusplus::bus_t& passive, sdbusplus::bus_t& host);
 
 } // namespace pid_control

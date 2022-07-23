@@ -280,11 +280,11 @@ int main(int argc, char* argv[])
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     // Create a manager for the ModeBus because we own it.
-    sdbusplus::server::manager::manager(
-        static_cast<sdbusplus::bus::bus&>(modeControlBus), modeRoot);
+    sdbusplus::server::manager_t(static_cast<sdbusplus::bus_t&>(modeControlBus),
+                                 modeRoot);
     hostBus.request_name("xyz.openbmc_project.Hwmon.external");
     modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
-    sdbusplus::server::manager::manager objManager(modeControlBus, modeRoot);
+    sdbusplus::server::manager_t objManager(modeControlBus, modeRoot);
 
     /*
      * All sensors are managed by one manager, but each zone has a pointer to

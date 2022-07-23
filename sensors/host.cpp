@@ -35,7 +35,7 @@ void scaleHelper(T& ptr, int64_t value)
 
 std::unique_ptr<Sensor> HostSensor::createTemp(const std::string& name,
                                                int64_t timeout,
-                                               sdbusplus::bus::bus& bus,
+                                               sdbusplus::bus_t& bus,
                                                const char* objPath, bool defer)
 {
     auto sensor =
