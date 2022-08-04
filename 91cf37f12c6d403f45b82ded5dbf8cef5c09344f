@@ -16,6 +16,23 @@
       "message": "Nice, LGTM. Now the test cases pass again.\n",
       "revId": "91cf37f12c6d403f45b82ded5dbf8cef5c09344f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "56df7e57_3be3d0c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-08-04T05:43:29Z",
+      "side": 1,
+      "message": "Hi Krellan, can these two PRs merge?\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/51062\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/51063",
+      "revId": "91cf37f12c6d403f45b82ded5dbf8cef5c09344f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
