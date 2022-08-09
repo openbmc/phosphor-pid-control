@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "90f71a56_1fe5e760",
         "filename": "/COMMIT_MSG",
@@ -20,10 +21,10 @@
         "endChar": 40
       },
       "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "cd95a0b1_9fd0f788",
         "filename": "/COMMIT_MSG",
@@ -44,10 +45,10 @@
         "endChar": 40
       },
       "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a059edf5_16bd4fe5",
         "filename": "/COMMIT_MSG",
@@ -68,10 +69,10 @@
         "endChar": 40
       },
       "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "a343adda_5543f735",
         "filename": "/COMMIT_MSG",
@@ -92,10 +93,10 @@
         "endChar": 40
       },
       "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "8db62c99_dbc6597a",
         "filename": "/COMMIT_MSG",
@@ -116,8 +117,31 @@
         "endChar": 40
       },
       "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7afa95ef_1f078bfe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-09T22:28:24Z",
+      "side": 1,
+      "message": "Reviving this discussion - this is to be used for platforms without entity-manager (it\u0027s using static sensor stack), so I\u0027m not sure if we can use EM changes for this feature",
+      "parentUuid": "8db62c99_dbc6597a",
+      "range": {
+        "startLine": 8,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 40
+      },
+      "revId": "be3f8c4d394d1b2e14643631551180f2b7e4e54d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
