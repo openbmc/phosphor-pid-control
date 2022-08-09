@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "5972a538_9a540681",
         "filename": "dbus/dbusconfiguration.cpp",
@@ -20,10 +21,10 @@
         "endChar": 55
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "b944a00c_ae5ca87a",
         "filename": "dbus/dbusconfiguration.cpp",
@@ -44,10 +45,10 @@
         "endChar": 55
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "87ea61a9_3d05ff1e",
         "filename": "dbus/dbusconfiguration.cpp",
@@ -68,10 +69,10 @@
         "endChar": 55
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "734c48a3_c72740da",
         "filename": "dbus/dbusconfiguration.cpp",
@@ -92,10 +93,10 @@
         "endChar": 55
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "394cef48_fd7dd45c",
         "filename": "dbus/dbusconfiguration.cpp",
@@ -116,10 +117,10 @@
         "endChar": 55
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "6dd71681_180e0f22",
         "filename": "dbus/dbusconfiguration.cpp",
@@ -140,10 +141,10 @@
         "endChar": 55
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
       "key": {
         "uuid": "d8006d6b_92f04f71",
         "filename": "dbus/dbusconfiguration.cpp",
@@ -164,8 +165,31 @@
         "endChar": 55
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "96d837e4_836af573",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-09T22:43:37Z",
+      "side": 1,
+      "message": "Trying to remember + revive this discussion as we try to upstream this patch.\n\nInitial proposal I had was to just create a build flag / define that we can set at build time as we believe this is more of a bugfix than a feature (summary in code being: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/41810/17/pid/fancontroller.cpp) where we believe at failsafe, we should be setting the fan speed to failsafe RPM rather than a calculated value that may be higher than failsafe.\n\nSince other platforms and companies may want the original (old) behavior, I thought a build flag / define would be the \"easiest\" solution. If I remember correctly, Josh was not a fan of this idea because we do not have any build flags in this repo yet, and wanted to keep it that way.\n\nSince a build flag would not require a D-Bus property to be added, I feel this is the easiest / simplest way, but please let me know if this is still a bad idea.",
+      "parentUuid": "d8006d6b_92f04f71",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
