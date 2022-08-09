@@ -190,6 +190,30 @@
       },
       "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3375d84d_6b610e94",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 574,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-08-09T23:45:22Z",
+      "side": 1,
+      "message": "I agree that a compile-time build flag should be used. The odds of it needing to change at runtime are essentially zero. Ed mentioned how difficult/impossible it is to change an established D-Bus interface, so we should not do that.\n\nI don\u0027t remember having any objection to a build flag earlier (if I did, sorry about that). Let\u0027s go with a build flag.",
+      "parentUuid": "96d837e4_836af573",
+      "range": {
+        "startLine": 574,
+        "startChar": 51,
+        "endLine": 574,
+        "endChar": 55
+      },
+      "revId": "9cba4d78adb47f5162f24827f21b889c641e0502",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
