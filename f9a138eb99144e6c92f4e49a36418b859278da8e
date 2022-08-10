@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "70299e7e_a23acf02",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1001253
+      },
+      "writtenOn": "2022-08-10T23:45:03Z",
+      "side": 1,
+      "message": "Because we modify this, it is now different from the existing test expectations (https://github.com/openbmc/phosphor-pid-control/blob/master/test/pid_zone_unittest.cpp#L56 and https://github.com/openbmc/phosphor-pid-control/blob/master/test/pid_zone_unittest.cpp#L86)\n```\n../test/helpers.hpp:45: EXPECT_CALL(*sdbus_mock, sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path), StrEq(intf), NotNull(), NotNull()))...\n  Expected arg #3: is equal to \"xyz.openbmc_project.Control.Mode\"\n           Actual: 0x5617ffdbf880 pointing to \"xyz.openbmc_project.Control.FanSpeed\"\n```",
+      "revId": "f9a138eb99144e6c92f4e49a36418b859278da8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
