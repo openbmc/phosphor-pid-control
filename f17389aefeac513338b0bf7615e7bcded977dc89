@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e2932901_88f6170e",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-10T00:33:15Z",
+      "side": 1,
+      "message": "Oops, looks like the comment for this function got lost",
+      "range": {
+        "startLine": 74,
+        "startChar": 0,
+        "endLine": 74,
+        "endChar": 60
+      },
+      "revId": "f17389aefeac513338b0bf7615e7bcded977dc89",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
