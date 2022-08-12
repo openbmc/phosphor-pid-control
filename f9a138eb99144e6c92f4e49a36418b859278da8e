@@ -34,6 +34,24 @@
       "parentUuid": "70299e7e_a23acf02",
       "revId": "f9a138eb99144e6c92f4e49a36418b859278da8e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5fdd4bee_506fc5a6",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-12T20:38:42Z",
+      "side": 1,
+      "message": "Hmmm. Not as easy as I thought, as we should probably only be calling `sd_bus_add_object_vtable` once but with 2 interfaces (or maybe something\u0027s funky, because I tried calling / expecting `sd_bus_add_object_vtable` twice with the 2 different interfaces with no luck). Continuing investigation",
+      "parentUuid": "af6dcdc3_f2633baf",
+      "revId": "f9a138eb99144e6c92f4e49a36418b859278da8e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
