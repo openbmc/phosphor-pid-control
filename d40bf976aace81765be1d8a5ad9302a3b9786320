@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "435787a3_3ed020c3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-15T20:24:27Z",
+      "side": 1,
+      "message": "Looks like Ian had a patch handy with the unit test I wanted to add - porting over his patch into the newest patch",
+      "parentUuid": "9c9042f3_ea7f869f",
+      "revId": "d40bf976aace81765be1d8a5ad9302a3b9786320",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "557ced97_b43cd9e7",
@@ -31,6 +49,30 @@
       "writtenOn": "2022-08-15T18:15:26Z",
       "side": 1,
       "message": "This is actually not that great as we probably would only be targetting a set of properties for a particular interface so this is not quite right... however the times we use it, we seem to just pass an empty properties vector in our tests - not sure if we should just get rid of this (I would imagine this is a copy from another place). I can handle that in another CL perhaps - or do that as a preceding CL to chunk the CL a little further.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 68,
+        "endChar": 9
+      },
+      "revId": "d40bf976aace81765be1d8a5ad9302a3b9786320",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c659f70e_ef22ae21",
+        "filename": "test/helpers.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-15T20:24:27Z",
+      "side": 1,
+      "message": "Looks like Ian had a better way of handling this helper - ported over his fix into the newest patch",
+      "parentUuid": "557ced97_b43cd9e7",
       "range": {
         "startLine": 55,
         "startChar": 0,
