@@ -14,6 +14,15 @@ interfaces. When using `entity-manager` to provide them refer to `Pid`,
 key names are not identical to JSON but similar enough to see the
 correspondence.
 
+## Compile Flag Configuration
+
+### --strict-failsafe-pwm
+
+This build flag is used to set the fans strictly at the failsafe percent when
+in failsafe mode, even when the calculated PWM is higher than failsafe PWM.
+Without this enabled, the PWM is calculated and set to the calculated PWM
+**or** the failsafe PWM, whichever is higher.
+
 ## JSON Configuration
 
 Default config file path `/usr/share/swampd/config.json` can be overridden by

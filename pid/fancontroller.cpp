@@ -130,10 +130,18 @@ void FanController::outputProc(double value)
     {
         if (_owner->getFailSafeMode())
         {
-            /* In case it's being set to 100% */
-            if (percent < _owner->getFailSafePercent())
+            double failsafePercent = _owner->getFailSafePercent();
+
+            // Unconditionally replace the computed PWM with the
+            // failsafe PWM if STRICT_FAILSAFE_PWM is defined
+#ifndef STRICT_FAILSAFE_PWM
+            // Ensure PWM is never lower than the failsafe PWM.
+            // The computed PWM is still allowed to rise higher than
+            // failsafe PWM if STRICT_FAILSAFE_PWM is NOT defined
+            if (percent < failsafePercent)
+#endif
             {
-                percent = _owner->getFailSafePercent();
+                percent = failsafePercent;
             }
         }
     }

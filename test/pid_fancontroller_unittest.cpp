@@ -150,7 +150,7 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
 {
     // Verify that if failsafe mode is enabled and the input value for the fans
     // is below the failsafe minimum value, the input is not used and the fans
-    // are driven at failsafe RPM.
+    // are driven at failsafe RPM (this assumes STRICT_FAILSAFE_PWM is not set)
 
     ZoneMock z;
 
@@ -162,7 +162,7 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
-    EXPECT_CALL(z, getFailSafePercent()).Times(2).WillRepeatedly(Return(75.0));
+    EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(75.0));
 
     int64_t timeout = 0;
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
