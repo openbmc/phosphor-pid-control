@@ -204,6 +204,14 @@ AC_ARG_ENABLE([configure-dbus],
     )
 )
 
+AC_ARG_ENABLE([strict-failsafe-pwm],
+    AS_HELP_STRING([--strict-failsafe-pwm],
+                   [Set the fans strictly at the failsafe PWM when in failsafe mode]))
+AM_CONDITIONAL(ENABLE_STRICT_FAILSAFE_PWM, [test "x$enable_strict_failsafe_pwm" = "xyes"])
+AS_IF([test "x$enable_strict_failsafe_pwm" = "xyes"], [
+    AX_APPEND_COMPILE_FLAGS([-DSTRICT_FAILSAFE_PWM], [CXXFLAGS])
+])
+
 AC_ARG_VAR(SYSTEMD_TARGET, "Target for starting this service")
 AS_IF([test "x$SYSTEMD_TARGET" == "x"], [SYSTEMD_TARGET="multi-user.target"])
 
