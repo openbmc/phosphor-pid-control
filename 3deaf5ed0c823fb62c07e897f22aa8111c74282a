@@ -52,6 +52,24 @@
       "parentUuid": "bea18501_97ef27d5",
       "revId": "3deaf5ed0c823fb62c07e897f22aa8111c74282a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9098fd48_46ad3257",
+        "filename": "pid/fancontroller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2022-08-16T23:53:44Z",
+      "side": 1,
+      "message": "\u003e Unfortunately, I am not aware of a good way to unit test code with compile time flag - so this was only integration tested.\n\nIf the feature is enabled, enable the test is generally how I do that.\n\nUp to josh what he wants though.",
+      "parentUuid": "a83bdabe_22208ff7",
+      "revId": "3deaf5ed0c823fb62c07e897f22aa8111c74282a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
