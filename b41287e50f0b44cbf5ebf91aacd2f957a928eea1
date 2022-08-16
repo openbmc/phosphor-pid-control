@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "9aa36211_b1fde15b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-08-16T17:51:33Z",
+      "side": 1,
+      "message": "Good catch. It should be PWM, because the failsafe percentage value is PWM, not RPM.",
+      "parentUuid": "4aa65be8_1c444ec0",
+      "revId": "b41287e50f0b44cbf5ebf91aacd2f957a928eea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "352558ce_f93d58f4",
@@ -31,6 +49,23 @@
       "writtenOn": "2022-08-16T01:16:17Z",
       "side": 1,
       "message": "This is to replace https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/41802/14 and https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/41810/17 as discussed - the complexity with adding a runtime option (that is to be exposed to D-Bus) is too much hassle when it can be handled simpler with a build flag.\n\nTested internally on QEMU - with a machine that was in failsafe mode.",
+      "revId": "b41287e50f0b44cbf5ebf91aacd2f957a928eea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f12dfb02_ce9b2cde",
+        "filename": "pid/fancontroller.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-08-16T17:51:33Z",
+      "side": 1,
+      "message": "It seems unusual to have both code paths execute here, only to throw away the output of the first. Perhaps use #ifdef ... #else ... #endif to separate both of these code paths, so that only one code path gets executed? Is there any disadvantage of doing it this way?",
       "revId": "b41287e50f0b44cbf5ebf91aacd2f957a928eea1",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
