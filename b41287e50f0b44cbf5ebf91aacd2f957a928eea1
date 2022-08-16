@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "352558ce_f93d58f4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-16T01:16:17Z",
+      "side": 1,
+      "message": "This is to replace https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/41802/14 and https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/41810/17 as discussed - the complexity with adding a runtime option (that is to be exposed to D-Bus) is too much hassle when it can be handled simpler with a build flag.\n\nTested internally on QEMU - with a machine that was in failsafe mode.",
+      "revId": "b41287e50f0b44cbf5ebf91aacd2f957a928eea1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
