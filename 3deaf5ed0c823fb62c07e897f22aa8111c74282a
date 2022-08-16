@@ -70,6 +70,24 @@
       "parentUuid": "a83bdabe_22208ff7",
       "revId": "3deaf5ed0c823fb62c07e897f22aa8111c74282a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "93b7aa26_42042c58",
+        "filename": "pid/fancontroller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-16T23:58:29Z",
+      "side": 1,
+      "message": "I will add a #ifdef-ed test case (not sure how to pass our extra cmake flag for our tests though). The default will be to have this feature turned off (as that was the original behavior).",
+      "parentUuid": "9098fd48_46ad3257",
+      "revId": "3deaf5ed0c823fb62c07e897f22aa8111c74282a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
