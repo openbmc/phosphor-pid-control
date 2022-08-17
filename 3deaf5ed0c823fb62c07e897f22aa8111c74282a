@@ -106,6 +106,24 @@
       "parentUuid": "93b7aa26_42042c58",
       "revId": "3deaf5ed0c823fb62c07e897f22aa8111c74282a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "007a5ff5_dbe37c24",
+        "filename": "pid/fancontroller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 145,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-08-17T21:23:28Z",
+      "side": 1,
+      "message": "Great, updated and manually tested that the alternate path also passes",
+      "parentUuid": "7bca3e9c_8b7e4d6b",
+      "revId": "3deaf5ed0c823fb62c07e897f22aa8111c74282a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
