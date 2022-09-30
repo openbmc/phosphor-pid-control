@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e50e06e_2d8263bf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-09-30T09:45:04Z",
+      "side": 1,
+      "message": "This is a good idea, and a good feature to add. However, I have some implementation concerns. What purpose does it serve to have a timer delay? Is there a bug that happens if many SIGHUP signals arrive in rapid succession?\n",
+      "revId": "0f87db5a29b3baf5ab895c083c175df2405049ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4a05b42d_f7b54039",
+        "filename": "main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-09-30T09:45:04Z",
+      "side": 1,
+      "message": "Please check the \"error\" parameter here, and if called for an error reason (such as operation_aborted), display the error message and then return without taking further action. That will prevent unwanted action from being taken if there\u0027s an error. Your timer callback below already does this, which is good.",
+      "revId": "0f87db5a29b3baf5ab895c083c175df2405049ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "791ae475_18a32670",
+        "filename": "main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-09-30T09:45:04Z",
+      "side": 1,
+      "message": "I don\u0027t understand this sentence. Please explain further. What is the purpose of adding a delay here? I noticed it was commented out. Is this something that is still under development or testing?",
+      "revId": "0f87db5a29b3baf5ab895c083c175df2405049ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32081e81_11e375be",
+        "filename": "main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 232,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-09-30T09:45:04Z",
+      "side": 1,
+      "message": "The timer is created, and callback is registered with async_wait, however, the timer is never actually started during this function, so it will never fire. The expires_after() is commented out above.",
+      "revId": "0f87db5a29b3baf5ab895c083c175df2405049ce",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
