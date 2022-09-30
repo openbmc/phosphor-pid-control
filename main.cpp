@@ -32,6 +32,7 @@
 
 #include <CLI/CLI.hpp>
 #include <boost/asio/io_context.hpp>
+#include <boost/asio/signal_set.hpp>
 #include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/asio/connection.hpp>
 #include <sdbusplus/bus.hpp>
@@ -66,6 +67,8 @@ std::string configPath = "";
 
 /* async io context for operation */
 boost::asio::io_context io;
+/* async signal_set for signal handling */
+boost::asio::signal_set signals(io, SIGHUP);
 
 /* buses for system control */
 static sdbusplus::asio::connection modeControlBus(io);
@@ -211,6 +214,31 @@ void tryRestartControlLoops(bool first)
 
 } // namespace pid_control
 
+void sighupHandler(const boost::system::error_code& error, int signal_number)
+{
+    static boost::asio::steady_timer timer(io);
+
+    if (error == boost::asio::error::operation_aborted)
+    {
+        std::cout << "boost::asio::error::operation_aborted\n";
+        return;
+    }
+
+    timer.expires_after(std::chrono::seconds(1));
+    timer.async_wait([](const boost::system::error_code ec) {
+        if (ec == boost::asio::error::operation_aborted)
+        {
+            /* another timer started*/
+            std::cout << "boost::asio::error::operation_aborted\n";
+            return;
+        }
+
+        std::cout << "reloading configuration\n";
+        pid_control::tryRestartControlLoops();
+    });
+    signals.async_wait(sighupHandler);
+}
+
 int main(int argc, char* argv[])
 {
     loggingPath = "";
@@ -285,6 +313,9 @@ int main(int argc, char* argv[])
     hostBus.request_name("xyz.openbmc_project.Hwmon.external");
     modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
     sdbusplus::server::manager_t objManager(modeControlBus, modeRoot);
+
+    // Enable SIGHUP handling to reload JSON config
+    signals.async_wait(sighupHandler);
 
     /*
      * All sensors are managed by one manager, but each zone has a pointer to
