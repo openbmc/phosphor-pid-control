@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "825f4ed1_168bc55a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-01T04:44:49Z",
+      "side": 1,
+      "message": "This looks better now, just a suggested error message cleanup that i just learned about.\n",
+      "revId": "251e5b224eac975907abda56b00bf150586bfa25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b17a6fd_05cecfb5",
+        "filename": "main.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 221,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-01T04:44:49Z",
+      "side": 1,
+      "message": "I just learned you can use boost::system::error_code in Boolean context, in an if statement:\n\n```\nif (error)\n{\n  std::cout \u003c\u003c \"Signal \" \u003c\u003c signal_number \u003c\u003c \" handler error: \" \u003c\u003c error.message() \u003c\u003c \"\\n\";\n  return;\n}\n```\n\nThis will work for all error possibilities, not just boost::asio::error::operation_aborted, and it will print the error that happened, and it will also clean up a warning message regarding the unused variable signal_number.\n\nhttps://stackoverflow.com/questions/9225119/how-to-countercheck-a-boost-error-code-appropriately",
+      "revId": "251e5b224eac975907abda56b00bf150586bfa25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0c753c3e_bb8ecbc6",
+        "filename": "main.cpp",
+        "patchSetId": 3
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-01T04:44:49Z",
+      "side": 1,
+      "message": "Same suggestion as above:\n\n```\nif (ec)\n{\n  std::cout \u003c\u003c \"Signal timer error: \" \u003c\u003c ec.message() \u003c\u003c \"\\n\";\n  return;\n}\n```",
+      "revId": "251e5b224eac975907abda56b00bf150586bfa25",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
