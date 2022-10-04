@@ -16,6 +16,23 @@
       "message": "Ready for review. Thanks",
       "revId": "8fa8d04a58ee85b42336ca933c60e7000142554c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f242fb1e_0a34da41",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-04T11:50:28Z",
+      "side": 1,
+      "message": "Good catch. Agree that zone should be created if sensors are missing. Zone will be placed into failsafe mode because of missing sensors, which is by design, but nothing should inhibit the creation of the zone itself.\n",
+      "revId": "8fa8d04a58ee85b42336ca933c60e7000142554c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
