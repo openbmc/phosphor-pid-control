@@ -50,6 +50,7 @@ TEST(ZoneFromJson, oneZoneOnePid)
               "samplePeriod": 0.1,
               "proportionalCoeff": 0.0,
               "integralCoeff": 0.0,
+              "derivativeCoeff": 0.0,
               "feedFwdOffsetCoeff": 0.0,
               "feedFwdGainCoeff": 0.010,
               "integralLimit_min": 0.0,
@@ -95,6 +96,7 @@ TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
               "samplePeriod": 0.1,
               "proportionalCoeff": 0.0,
               "integralCoeff": 0.0,
+              "derivativeCoeff": 0.0,
               "feedFwdOffsetCoeff": 0.0,
               "feedFwdGainCoeff": 0.010,
               "integralLimit_min": 0.0,
@@ -121,7 +123,7 @@ TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
 }
 
-TEST(ZoneFromJson, oneZoneOneStepwiseWithHysteresis)
+TEST(ZoneFromJson, oneZoneOneStepwiseWithHyster)
 {
     // Parse a valid configuration with one zone and one PID and the PID uses
     // Hysteresis parameters.
