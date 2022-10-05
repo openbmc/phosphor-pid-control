@@ -72,6 +72,10 @@ class ZoneInterface
      */
     virtual double getFailSafePercent() const = 0;
 
+    /** Return the zone's cycle time settings */
+    virtual uint64_t getCycleIntervalTime(void) const = 0;
+    virtual uint64_t getUpdateThermalsCycle(void) const = 0;
+
     /** Return if the zone is set to manual mode.  false equates to automatic
      * mode (the default).
      */

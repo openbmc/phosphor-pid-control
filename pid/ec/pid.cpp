@@ -48,6 +48,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
 
     double proportionalTerm;
     double integralTerm = 0.0f;
+    double derivativeTerm = 0.0f;
     double feedFwdTerm = 0.0f;
 
     double output;
@@ -67,11 +68,16 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
                              pidinfoptr->integralLimit.max);
     }
 
+    // piD
+    derivativeTerm =
+        pidinfoptr->derivativeCoeff *
+        ((error - pidinfoptr->lastError) / pidinfoptr->ts);
+
     // FF
     feedFwdTerm =
         (setpoint + pidinfoptr->feedFwdOffset) * pidinfoptr->feedFwdGain;
 
-    output = proportionalTerm + integralTerm + feedFwdTerm;
+    output = proportionalTerm + integralTerm + derivativeTerm + feedFwdTerm;
     output = clamp(output, pidinfoptr->outLim.min, pidinfoptr->outLim.max);
 
     // slew rate
@@ -115,6 +121,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint)
                          pidinfoptr->integralLimit.max);
     pidinfoptr->integral = integralTerm;
     pidinfoptr->initialized = true;
+    pidinfoptr->lastError = error;
     pidinfoptr->lastOutput = output;
 
     return output;
