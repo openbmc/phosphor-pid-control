@@ -16,6 +16,23 @@
       "message": "This is a really good idea! We have been wanting the D term for a long time.\n\nPlease work through the Jenkins errors. Also, can some test cases please be added for these new features?\n",
       "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e39e155_51bef35a",
+        "filename": "pid/pidloop.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 112,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-10-05T08:33:21Z",
+      "side": 1,
+      "message": "Something wrong here.\nzone-\u003egetUpdateThermalsCycle() return 1000 by default, but cycleCnt starts counting from 0, which means the cycle of processThermals(zone) is 100 seconds(1000 cycle), not 1 second",
+      "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
