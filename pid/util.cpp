@@ -31,6 +31,7 @@ void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
     info->ts = initial.ts;
     info->proportionalCoeff = initial.proportionalCoeff;
     info->integralCoeff = initial.integralCoeff;
+    info->derivativeCoeff = initial.derivativeCoeff;
     info->feedFwdOffset = initial.feedFwdOffset;
     info->feedFwdGain = initial.feedFwdGain;
     info->integralLimit.min = initial.integralLimit.min;
@@ -48,6 +49,7 @@ void dumpPIDStruct(ec::pid_info_t* info)
     std::cerr << " ts: " << info->ts
               << " proportionalCoeff: " << info->proportionalCoeff
               << " integralCoeff: " << info->integralCoeff
+              << " derivativeCoeff: " << info->derivativeCoeff
               << " feedFwdOffset: " << info->feedFwdOffset
               << " feedFwdGain: " << info->feedFwdGain
               << " integralLimit.min: " << info->integralLimit.min
@@ -56,6 +58,7 @@ void dumpPIDStruct(ec::pid_info_t* info)
               << " outLim.max: " << info->outLim.max
               << " slewNeg: " << info->slewNeg << " slewPos: " << info->slewPos
               << " last_output: " << info->lastOutput
+              << " last_error: " << info->lastError
               << " integral: " << info->integral << std::endl;
 
     return;
