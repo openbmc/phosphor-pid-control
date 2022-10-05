@@ -38,11 +38,17 @@ struct ControllerInfo
     std::string type;                // fan or margin or temp?
     std::vector<std::string> inputs; // one or more sensors.
     double setpoint;                 // initial setpoint for thermal.
-    union
-    {
-        ec::pidinfo pidInfo; // pid details
-        ec::StepwiseInfo stepwiseInfo;
-    };
+    ec::pidinfo pidInfo;             // pid details
+    ec::StepwiseInfo stepwiseInfo;
+};
+
+struct CycleTime
+{
+    /* The time interval every cycle. 0.1 seconds by default */
+    uint64_t cycleIntervalTimeMS = 100; // milliseconds
+
+    /* The interval of updating thermals. 1 second by default */
+    uint64_t updateThermalsTimeMS = 1000; // milliseconds
 };
 
 /*
@@ -57,6 +63,9 @@ struct ZoneConfig
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */
     double failsafePercent;
+
+    /* Customize time settings for every cycle */
+    CycleTime cycleTime;
 };
 
 using PIDConf = std::map<std::string, ControllerInfo>;
