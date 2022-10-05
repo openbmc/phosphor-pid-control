@@ -69,8 +69,8 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
 
         auto zone = std::make_shared<DbusPidZone>(
             zoneId, zoneConf->second.minThermalOutput,
-            zoneConf->second.failsafePercent, mgr, modeControlBus,
-            getControlPath(zoneId).c_str(), deferSignals);
+            zoneConf->second.failsafePercent, zoneConf->second.cycleTime, mgr,
+            modeControlBus, getControlPath(zoneId).c_str(), deferSignals);
 
         std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
 
