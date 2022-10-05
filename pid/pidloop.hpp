@@ -17,11 +17,11 @@ namespace pid_control
  * @param[in] isCanceling - bool ptr to indicate whether pidControlLoop is being
  * canceled.
  * @param[in] first - boolean to denote if initialization needs to be run.
- * @param[in] ms100cnt - loop timer counter.
+ * @param[in] cycleCnt - loop timer counter.
  */
 void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
                     std::shared_ptr<boost::asio::steady_timer> timer,
                     const bool* isCanceling, bool first = true,
-                    int ms100cnt = 0);
+                    uint64_t cycleCnt = 0);
 
 } // namespace pid_control
