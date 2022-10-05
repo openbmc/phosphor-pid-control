@@ -50,14 +50,15 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
+    conf::CycleTime cycleTime;
 
     double d;
     std::vector<std::string> properties;
     SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
                     &d);
 
-    DbusPidZone p(zone, minThermalOutput, failSafePercent, m, bus_mock_mode,
-                  objPath, defer);
+    DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
+                  bus_mock_mode, objPath, defer);
     // Success.
 }
 
@@ -87,7 +88,7 @@ class PidZoneTest : public ::testing::Test
                         properties, &property_index);
 
         zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
-                                             failSafePercent, mgr,
+                                             failSafePercent, cycleTime, mgr,
                                              bus_mock_mode, objPath, defer);
     }
 
@@ -104,6 +105,7 @@ class PidZoneTest : public ::testing::Test
     bool defer = true;
     const char* objPath = "/path/";
     SensorManager mgr;
+    conf::CycleTime cycleTime;
 
     std::unique_ptr<DbusPidZone> zone;
 };
