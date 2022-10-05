@@ -20,6 +20,7 @@
 
 #include <nlohmann/json.hpp>
 
+#include <iostream>
 #include <map>
 #include <tuple>
 
@@ -60,6 +61,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
         p.at("samplePeriod").get_to(c.pidInfo.ts);
         p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
         p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
+        p.at("derivativeCoeff").get_to(c.pidInfo.derivativeCoeff);
         p.at("feedFwdOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
         p.at("feedFwdGainCoeff").get_to(c.pidInfo.feedFwdGain);
         p.at("integralLimit_min").get_to(c.pidInfo.integralLimit.min);
@@ -138,6 +140,54 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
         id = zone["id"];
         thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
         thisZoneConfig.failsafePercent = zone["failsafePercent"];
+
+        auto findTimeInterval = zone.find("cycleIntervalTimeMS");
+        if (findTimeInterval != zone.end())
+        {
+            uint64_t tmp;
+            findTimeInterval->get_to(tmp);
+            if (tmp != 0)
+            {
+                thisZoneConfig.cycleTime.cycleIntervalTimeMS = tmp;
+            }
+            else
+            {
+                std::cerr << "cycleIntervalTimeMS cannot be 0. Use default "
+                          << thisZoneConfig.cycleTime.cycleIntervalTimeMS
+                          << " ms\n";
+            }
+        }
+
+        auto findUpdateThermalsTime = zone.find("updateThermalsTimeMS");
+        if (findUpdateThermalsTime != zone.end())
+        {
+            uint64_t tmp;
+            findUpdateThermalsTime->get_to(tmp);
+            if (tmp != 0)
+            {
+                thisZoneConfig.cycleTime.updateThermalsTimeMS = tmp;
+            }
+            else
+            {
+                std::cerr << "updateThermalsTimeMS cannot be 0. Use default "
+                          << thisZoneConfig.cycleTime.updateThermalsTimeMS
+                          << " ms\n";
+            }
+        }
+
+        auto updateCount = thisZoneConfig.cycleTime.updateThermalsTimeMS /
+                           thisZoneConfig.cycleTime.cycleIntervalTimeMS;
+
+        /* Check if updateThermalsTimeMS could be divided by cycleIntervalTimeMS
+         * without leaving a remainder */
+        if ((updateCount - int(updateCount)) != 0.0)
+        {
+            std::cerr
+                << "updateThermalsTimeMS cannot be divided by "
+                   "cycleIntervalTimeMS without leaving a remainder. Use the "
+                   "smallest interger that is not less than the result.";
+        }
+        thisZoneConfig.cycleTime.updateThermalsTimeMS = std::ceil(updateCount);
 
         auto pids = zone["pids"];
         for (const auto& pid : pids)
