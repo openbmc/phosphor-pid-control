@@ -141,6 +141,16 @@ double DbusPidZone::getMinThermalSetPoint(void) const
     return _minThermalOutputSetPt;
 }
 
+uint64_t DbusPidZone::getCycleIntervalTime(void) const
+{
+    return _cycleTime.cycleIntervalTimeMS;
+}
+
+uint64_t DbusPidZone::getUpdateThermalsCycle(void) const
+{
+    return _cycleTime.updateThermalsTimeMS;
+}
+
 void DbusPidZone::addFanPID(std::unique_ptr<Controller> pid)
 {
     _fans.push_back(std::move(pid));
