@@ -48,7 +48,7 @@ static void processThermals(std::shared_ptr<ZoneInterface> zone)
 
 void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
                     std::shared_ptr<boost::asio::steady_timer> timer,
-                    const bool* isCanceling, bool first, int ms100cnt)
+                    const bool* isCanceling, bool first, uint64_t cycleCnt)
 {
     if (*isCanceling)
         return;
@@ -64,8 +64,8 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
         processThermals(zone);
     }
 
-    timer->expires_after(std::chrono::milliseconds(100));
-    timer->async_wait([zone, timer, ms100cnt, isCanceling](
+    timer->expires_after(std::chrono::milliseconds(zone->getCycleIntervalTime()));
+    timer->async_wait([zone, timer, cycleCnt, isCanceling](
                           const boost::system::error_code& ec) mutable {
         if (ec == boost::asio::error::operation_aborted)
         {
@@ -102,16 +102,16 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
         // Check if we should just go back to sleep.
         if (zone->getManualMode())
         {
-            pidControlLoop(zone, timer, isCanceling, false, ms100cnt);
+            pidControlLoop(zone, timer, isCanceling, false, cycleCnt);
             return;
         }
 
         // Get the latest fan speeds.
         zone->updateFanTelemetry();
 
-        if (10 <= ms100cnt)
+        if (zone->getUpdateThermalsCycle() <= cycleCnt)
         {
-            ms100cnt = 0;
+            cycleCnt = 0;
 
             processThermals(zone);
         }
@@ -126,9 +126,9 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
             zone->writeLog(out.str());
         }
 
-        ms100cnt += 1;
+        cycleCnt += 1;
 
-        pidControlLoop(zone, timer, isCanceling, false, ms100cnt);
+        pidControlLoop(zone, timer, isCanceling, false, cycleCnt);
     });
 }
 
