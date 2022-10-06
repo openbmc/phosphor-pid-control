@@ -20,6 +20,57 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2baee364_3c083777",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-06T19:50:32Z",
+      "side": 1,
+      "message": "We should probably issue a warning, similar to the above std::cerr usage, if the division does not result in an exact integer. The thermal update interval should always be an exact multiple of the cycle interval.",
+      "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "db7897d3_dea45bac",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-06T19:50:32Z",
+      "side": 1,
+      "message": "I am curious, why does this need to be added? I don\u0027t see any new usage of math functions that weren\u0027t there before. Was this missing from earlier?",
+      "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3fb5007_4c849933",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-06T19:50:32Z",
+      "side": 1,
+      "message": "I don\u0027t know enough about the process engineering details of PID loop math, so will leave this to somebody else to review. The code looks syntactically correct, though.",
+      "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5e39e155_51bef35a",
         "filename": "pid/pidloop.cpp",
         "patchSetId": 1
