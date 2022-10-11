@@ -360,14 +360,27 @@ void DbusPidZone::updateFanTelemetry(void)
             _log << "," << r.value;
         }
 
+        if (debugEnabled)
+        {
+            std::cerr << f << " fan sensor reading: " << r.value << "\n";
+        }
+
         // check if fan fail.
         if (sensor->getFailed())
         {
             _failSafeSensors.insert(f);
+            if (debugEnabled)
+            {
+                std::cerr << f << " fan sensor get failed\n";
+            }
         }
         else if (timeout != 0 && duration >= period)
         {
             _failSafeSensors.insert(f);
+            if (debugEnabled)
+            {
+                std::cerr << f << " fan sensor timeout\n";
+            }
         }
         else
         {
@@ -375,6 +388,10 @@ void DbusPidZone::updateFanTelemetry(void)
             auto kt = _failSafeSensors.find(f);
             if (kt != _failSafeSensors.end())
             {
+                if (debugEnabled)
+                {
+                    std::cerr << f << " is erased from failsafe sensor set\n";
+                }
                 _failSafeSensors.erase(kt);
             }
         }
@@ -409,14 +426,27 @@ void DbusPidZone::updateSensors(void)
         auto duration = duration_cast<std::chrono::seconds>(now - then).count();
         auto period = std::chrono::seconds(timeout).count();
 
+        if (debugEnabled)
+        {
+            std::cerr << t << " temperature sensor reading: " << r.value << "\n";
+        }
+
         if (sensor->getFailed())
         {
             _failSafeSensors.insert(t);
+            if (debugEnabled)
+            {
+                std::cerr << t << " temperature sensor get failed\n";
+            }
         }
         else if (timeout != 0 && duration >= period)
         {
             // std::cerr << "Entering fail safe mode.\n";
             _failSafeSensors.insert(t);
+            if (debugEnabled)
+            {
+                std::cerr << t << " temperature sensor get timeout\n";
+            }
         }
         else
         {
@@ -424,6 +454,10 @@ void DbusPidZone::updateSensors(void)
             auto kt = _failSafeSensors.find(t);
             if (kt != _failSafeSensors.end())
             {
+                if (debugEnabled)
+                {
+                    std::cerr << t << " is erased from failsafe sensor set\n";
+                }
                 _failSafeSensors.erase(kt);
             }
         }

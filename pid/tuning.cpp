@@ -20,3 +20,6 @@ bool tuningEnabled = false;
 
 std::string loggingPath;
 bool loggingEnabled = false;
+
+bool debugEnabled = false;
+
