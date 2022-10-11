@@ -17,6 +17,7 @@
 #include "thermalcontroller.hpp"
 
 #include "errors/exception.hpp"
+#include "tuning.hpp"
 #include "util.hpp"
 #include "zone.hpp"
 
@@ -98,6 +99,11 @@ double ThermalController::inputProc(void)
         value = 0;
     }
 
+    if (debugEnabled)
+    {
+        std::cerr << getID() << " choose the temperature value: " << value << "\n";
+    }
+
     return value;
 }
 
@@ -124,6 +130,11 @@ double ThermalController::setptProc(void)
 void ThermalController::outputProc(double value)
 {
     _owner->addSetPoint(value, _id);
+
+    if (debugEnabled)
+    {
+        std::cerr << getID() << " pid output pwm: " << value << "\n";
+    }
 
     return;
 }
