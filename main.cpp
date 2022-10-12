@@ -216,6 +216,7 @@ int main(int argc, char* argv[])
     loggingPath = "";
     loggingEnabled = false;
     tuningEnabled = false;
+    debugEnabled = false;
 
     CLI::App app{"OpenBMC Fan Control Daemon"};
 
@@ -226,6 +227,7 @@ int main(int argc, char* argv[])
                    "Optional parameter to specify logging folder")
         ->check(CLI::ExistingDirectory);
     app.add_flag("-t,--tuning", tuningEnabled, "Enable or disable tuning");
+    app.add_flag("-d,--debug", debugEnabled, "Enable or disable debug mode");
 
     CLI11_PARSE(app, argc, argv);
 
@@ -264,6 +266,11 @@ int main(int argc, char* argv[])
     if (loggingEnabled)
     {
         std::cerr << "Logging enabled: " << loggingPath << "\n";
+    }
+
+    if (debugEnabled)
+    {
+        std::cerr << "Debug mode enabled\n";
     }
 
     // If this file exists, enable tuning at runtime
