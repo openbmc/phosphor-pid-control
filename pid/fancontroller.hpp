@@ -47,6 +47,7 @@ class FanController : public PIDController
   private:
     std::vector<std::string> _inputs;
     FanSpeedDirection _direction;
+    bool failsafePrint = true;
 };
 
 } // namespace pid_control
