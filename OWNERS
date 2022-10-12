@@ -32,10 +32,10 @@
 # data within them will be kept sorted.
 
 owners:
-- edtanous@google.com
 - krellan@google.com
 
 reviewers:
+- edtanous@google.com
 
 matchers:
 
