@@ -1,6 +1,7 @@
 #include "pid/controller.hpp"
 #include "pid/ec/stepwise.hpp"
 #include "pid/stepwisecontroller.hpp"
+#include "pid/tuning.hpp"
 #include "test/zone_mock.hpp"
 
 #include <string>
