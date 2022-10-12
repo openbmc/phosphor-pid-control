@@ -1,5 +1,6 @@
 #include "pid/ec/pid.hpp"
 #include "pid/thermalcontroller.hpp"
+#include "pid/tuning.hpp"
 #include "test/zone_mock.hpp"
 
 #include <string>
