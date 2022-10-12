@@ -2,6 +2,8 @@
 #include "pid/ec/stepwise.hpp"
 #include "pid/stepwisecontroller.hpp"
 #include "test/zone_mock.hpp"
+#include "pid/fancontroller.hpp"
+#include "test/sensor_mock.hpp"
 
 #include <string>
 #include <vector>
