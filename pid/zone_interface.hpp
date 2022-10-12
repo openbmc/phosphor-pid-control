@@ -16,6 +16,9 @@ class ZoneInterface
   public:
     virtual ~ZoneInterface() = default;
 
+    /** Get Current Zone ID */
+    virtual int64_t getZoneID(void) const = 0;
+
     /** If the zone implementation supports logging, initialize the log. */
     virtual void initializeLog(void) = 0;
     /** If the zone implementation supports logging, write string to log. */

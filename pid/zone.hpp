@@ -60,7 +60,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
 
-    int64_t getZoneID(void) const;
+    int64_t getZoneID(void) const override;
     void addSetPoint(double setPoint, const std::string& name) override;
     double getMaxSetPointRequest(void) const override;
     void addRPMCeiling(double ceiling) override;

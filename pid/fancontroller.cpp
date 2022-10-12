@@ -145,7 +145,23 @@ void FanController::outputProc(double value)
             {
                 percent = failsafePercent;
             }
+
+            if (failsafePrint || debugEnabled)
+            {
+                std::cerr << "Zone " << _owner->getZoneID()
+                          << " fans output failsafe pwm: " << percent << "\n";
+                failsafePrint = false;
+            }
 #endif
+        }
+        else
+        {
+            failsafePrint = true;
+            if (debugEnabled)
+            {
+                std::cerr << "Zone " << _owner->getZoneID()
+                          << " fans output pwm: " << percent << "\n";
+            }
         }
     }
 
