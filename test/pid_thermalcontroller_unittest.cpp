@@ -1,4 +1,5 @@
 #include "pid/ec/pid.hpp"
+#include "pid/fancontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 #include "test/zone_mock.hpp"
 
