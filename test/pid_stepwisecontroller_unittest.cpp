@@ -1,6 +1,7 @@
 #include "pid/controller.hpp"
 #include "pid/ec/stepwise.hpp"
 #include "pid/stepwisecontroller.hpp"
+#include "pid/tuning.hpp"
 #include "test/zone_mock.hpp"
 
 #include <string>
@@ -33,6 +34,8 @@ TEST(StepwiseControllerTest, HysteresisTestPositive)
     initial.output[0] = 40.0;
     initial.output[1] = 60.0;
     initial.isCeiling = false;
+
+    debugEnabled = false;
 
     std::unique_ptr<Controller> p =
         StepwiseController::createStepwiseController(&z, "foo", inputs,
@@ -69,6 +72,8 @@ TEST(StepwiseControllerTest, HysteresisTestNegative)
     initial.output[0] = 40.0;
     initial.output[1] = 60.0;
     initial.isCeiling = false;
+
+    debugEnabled = false;
 
     std::unique_ptr<Controller> p =
         StepwiseController::createStepwiseController(&z, "foo", inputs,
