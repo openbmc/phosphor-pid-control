@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pid/zone_interface.hpp"
+#include "tuning.hpp"
 
 #include <string>
 
@@ -32,6 +33,7 @@ class ZoneMock : public ZoneInterface
     MOCK_CONST_METHOD0(getManualMode, bool());
     MOCK_CONST_METHOD0(getFailSafeMode, bool());
     MOCK_CONST_METHOD0(getFailSafePercent, double());
+    MOCK_CONST_METHOD0(getZoneID, int64_t());
 
     MOCK_METHOD1(getSensor, Sensor*(const std::string&));
 
