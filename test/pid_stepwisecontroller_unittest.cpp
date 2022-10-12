@@ -34,6 +34,8 @@ TEST(StepwiseControllerTest, HysteresisTestPositive)
     initial.output[1] = 60.0;
     initial.isCeiling = false;
 
+    debugEnabled = false;
+
     std::unique_ptr<Controller> p =
         StepwiseController::createStepwiseController(&z, "foo", inputs,
                                                      initial);
@@ -69,6 +71,8 @@ TEST(StepwiseControllerTest, HysteresisTestNegative)
     initial.output[0] = 40.0;
     initial.output[1] = 60.0;
     initial.isCeiling = false;
+
+    debugEnabled = false;
 
     std::unique_ptr<Controller> p =
         StepwiseController::createStepwiseController(&z, "foo", inputs,
