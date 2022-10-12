@@ -98,6 +98,12 @@ double ThermalController::inputProc(void)
         value = 0;
     }
 
+    if (true)
+    {
+        std::cerr << getID() << " choose the temperature value: " << value
+                  << "\n";
+    }
+
     return value;
 }
 
@@ -124,6 +130,11 @@ double ThermalController::setptProc(void)
 void ThermalController::outputProc(double value)
 {
     _owner->addSetPoint(value, _id);
+
+    if (true)
+    {
+        std::cerr << getID() << " pid output pwm: " << value << "\n";
+    }
 
     return;
 }

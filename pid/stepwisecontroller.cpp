@@ -90,6 +90,13 @@ double StepwiseController::inputProc(void)
     {
         value = std::max(value, _owner->getCachedValue(in));
     }
+
+    if (true)
+    {
+        std::cerr << getID()
+                  << " choose the maximum temperature value: " << value << "\n";
+    }
+
     return value;
 }
 
@@ -102,6 +109,10 @@ void StepwiseController::outputProc(double value)
     else
     {
         _owner->addSetPoint(value, _id);
+        if (true)
+        {
+            std::cerr << getID() << " stepwise output pwm: " << value << "\n";
+        }
     }
     return;
 }
