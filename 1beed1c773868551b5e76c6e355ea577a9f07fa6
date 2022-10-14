@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2a66d5d4_10e84862",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 177,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-14T07:43:26Z",
+      "side": 1,
+      "message": "OK, that is good that the minimum is 1, however, it is rather subtle. I still would like to see some kind of warning (or perhaps even an error) if this division leaves a remainder (in other words, they are not an exact multiple), as that would often indicate a configuration error, as there is no good reason that I can think of why anybody would want to have the timing not be an exact multiple.",
+      "parentUuid": "eda573bd_3bea794e",
+      "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "db7897d3_dea45bac",
         "filename": "pid/ec/pid.cpp",
         "patchSetId": 1
@@ -106,6 +124,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b6cb14e_0034533e",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-14T07:43:26Z",
+      "side": 1,
+      "message": "Thanks. Please mark comments as Resolved, to indicate that you have resolved them.",
+      "parentUuid": "1961f760_9ea0f1c9",
+      "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b3fb5007_4c849933",
@@ -119,6 +155,24 @@
       "writtenOn": "2022-10-06T19:50:32Z",
       "side": 1,
       "message": "I don\u0027t know enough about the process engineering details of PID loop math, so will leave this to somebody else to review. The code looks syntactically correct, though.",
+      "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "926fec3d_fa1c3ba7",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-14T07:43:26Z",
+      "side": 1,
+      "message": "I asked around, and although not perfect (there were some subtleties that are beyond my understanding), this seems good enough to work.",
+      "parentUuid": "b3fb5007_4c849933",
       "revId": "1beed1c773868551b5e76c6e355ea577a9f07fa6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
