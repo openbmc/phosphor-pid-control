@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6dccf08d_04dc2c82",
+        "filename": "main.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 235,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-18T09:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8108b640_f81de3c4",
+      "revId": "7f18c1ff74a06ae8586544cdb006b6c65fd25c67",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0be5ba3f_498c7636",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-10-14T07:35:40Z",
       "side": 1,
       "message": "Instead of changing the systemd file, I would prefer to use the existing convention we have already established, that of the /etc/thermal.d/logging and /etc/thermal.d/tuning files. Adding /etc/thermal.d/debug or /etc/thermal.d/debugging (your choice of name) would be consistent usage here.",
+      "revId": "7f18c1ff74a06ae8586544cdb006b6c65fd25c67",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62f2b7b2_d3f83f99",
+        "filename": "phosphor-pid-control.service.in",
+        "patchSetId": 14
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-18T09:59:55Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0be5ba3f_498c7636",
       "revId": "7f18c1ff74a06ae8586544cdb006b6c65fd25c67",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
