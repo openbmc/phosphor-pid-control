@@ -39,7 +39,7 @@ struct ControllerInfo
     std::vector<std::string> inputs; // one or more sensors.
     double setpoint;                 // initial setpoint for thermal.
     ec::pidinfo pidInfo;             // pid details
-    ec::StepwiseInfo stepwiseInfo;
+    ec::StepwiseInfo stepwiseInfo;   // stepwise details
 };
 
 struct CycleTime
@@ -66,6 +66,10 @@ struct ZoneConfig
 
     /* Customize time settings for every cycle */
     CycleTime cycleTime;
+
+    /* Enable accumulation of the output PWM of different controllers with same
+     * sensor */
+    bool accumulateSetPoint;
 };
 
 using PIDConf = std::map<std::string, ControllerInfo>;
