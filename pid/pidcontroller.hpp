@@ -73,6 +73,8 @@ class PIDController : public Controller
         return lastInput;
     }
 
+    double calPIDOutput(double setpt, double input, ec::pid_info_t* info);
+
   protected:
     ZoneInterface* _owner;
     std::string _id;
