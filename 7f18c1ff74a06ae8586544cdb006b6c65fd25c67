@@ -157,6 +157,24 @@
       "parentUuid": "6b044571_b26b0a06",
       "revId": "7f18c1ff74a06ae8586544cdb006b6c65fd25c67",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bd5df637_bd631dfb",
+        "filename": "pid/tuning.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-10-19T12:19:23Z",
+      "side": 1,
+      "message": "\u003e Also, we would like to ask if it is possible to run the CI test on our own server?\n\nThis is how to run locally what CI does on any repo:\nhttps://github.com/openbmc/docs/blob/master/testing/local-ci-build.md\n\nWhat I personally do is I have a large collection of the openbmc code repositories cloned into a single directory (the WORKSPACE in the below shell function) and then I have a zsh function as follows:\n\n```\nlf-ut () {\n\tREPO\u003d\"$(git rev-parse --show-toplevel)\"\n\tUT_PATH\u003d\"$(wd path obmcsrc)/openbmc-build-scripts\"\n\tUNIT_TEST_PKG\u003d\"$(basename $REPO)\" WORKSPACE\u003d\"$(dirname $REPO)\" \"$UT_PATH/run-unit-test-docker.sh\"\n}\n```\n\n`$(wd path obmcsrc)` is also an alias to get to the WORKSPACE.",
+      "parentUuid": "25e46c7a_37edb143",
+      "revId": "7f18c1ff74a06ae8586544cdb006b6c65fd25c67",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
