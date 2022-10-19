@@ -38,11 +38,13 @@ class DbusPidZone : public ZoneInterface, public ModeObject
   public:
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
                 conf::CycleTime cycleTime, const SensorManager& mgr,
-                sdbusplus::bus_t& bus, const char* objPath, bool defer) :
+                sdbusplus::bus_t& bus, const char* objPath, bool defer,
+                bool accumulateSetPoint) :
         ModeObject(bus, objPath,
                    defer ? ModeObject::action::defer_emit
                          : ModeObject::action::emit_object_added),
         _zoneId(zone), _maximumSetPoint(),
+        _accumulateSetPoint(accumulateSetPoint),
         _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _cycleTime(cycleTime), _mgr(mgr)
     {
@@ -60,6 +62,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool getRedundantWrite(void) const override;
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
+    bool getAccSetPoint(void) const override;
 
     int64_t getZoneID(void) const override;
     void addSetPoint(double setPoint, const std::string& name) override;
@@ -180,13 +183,14 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     std::string _maximumSetPointNamePrev;
     bool _manualMode = false;
     bool _redundantWrite = false;
+    bool _accumulateSetPoint = false;
     const double _minThermalOutputSetPt;
     const double _failSafePercent;
     const conf::CycleTime _cycleTime;
 
     std::set<std::string> _failSafeSensors;
 
-    std::vector<double> _SetPoints;
+    std::map<std::string, double> _SetPoints;
     std::vector<double> _RPMCeilings;
     std::vector<std::string> _fanInputs;
     std::vector<std::string> _thermalInputs;
