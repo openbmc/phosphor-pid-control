@@ -571,6 +571,14 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                                                   zone.at("MinThermalOutput"));
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
+
+            bool accumulateSetPoint = false;
+            auto findAccSetPoint = zone.find("AccumulateSetPoint");
+            if (findAccSetPoint != zone.end())
+            {
+                accumulateSetPoint = std::get<bool>(findAccSetPoint->second);
+            }
+            details.accumulateSetPoint = accumulateSetPoint;
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         // loop through all the PID configurations and fill out a sensor config
