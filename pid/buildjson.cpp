@@ -191,6 +191,12 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
         }
         thisZoneConfig.cycleTime.updateThermalsTimeMS = updateCount;
 
+        auto findAccSetPoint = zone.find("accumulateSetPoint");
+        if (findAccSetPoint != zone.end())
+        {
+            findAccSetPoint->get_to(thisZoneConfig.accumulateSetPoint);
+        }
+
         auto pids = zone["pids"];
         for (const auto& pid : pids)
         {
