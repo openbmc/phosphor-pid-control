@@ -23,6 +23,12 @@ failsafe mode, even when the calculated PWM is higher than failsafe PWM. Without
 this enabled, the PWM is calculated and set to the calculated PWM **or** the
 failsafe PWM, whichever is higher.
 
+### --check-hysteresis-using-setpoint
+
+This build flag is used to check hysteresis using setpoint when calculating PWM
+in PID controller. Without this enabled, will check hysteresis using last input
+temperature.
+
 ## JSON Configuration
 
 Default config file path `/usr/share/swampd/config.json` can be overridden by
