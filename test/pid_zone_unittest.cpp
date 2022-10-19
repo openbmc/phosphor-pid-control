@@ -47,6 +47,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SensorManager m(bus_mock_passive, bus_mock_host);
 
     bool defer = true;
+    bool accSetPoint = false;
     const char* objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
@@ -59,7 +60,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
                     &d);
 
     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
-                  bus_mock_mode, objPath, defer);
+                  bus_mock_mode, objPath, defer, accSetPoint);
     // Success.
 }
 
@@ -88,9 +89,9 @@ class PidZoneTest : public ::testing::Test
         SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface,
                         properties, &property_index);
 
-        zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
-                                             failSafePercent, cycleTime, mgr,
-                                             bus_mock_mode, objPath, defer);
+        zone = std::make_unique<DbusPidZone>(
+            zoneId, minThermalOutput, failSafePercent, cycleTime, mgr,
+            bus_mock_mode, objPath, defer, accSetPoint);
     }
 
     // unused
@@ -104,6 +105,7 @@ class PidZoneTest : public ::testing::Test
     double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
     bool defer = true;
+    bool accSetPoint = false;
     const char* objPath = "/path/";
     SensorManager mgr;
     conf::CycleTime cycleTime;
@@ -171,7 +173,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
     std::vector<double> values = {100, 200, 300, 400, 500, 5000};
     for (auto v : values)
     {
-        zone->addSetPoint(v, "");
+        zone->addSetPoint(v, std::to_string(v));
     }
 
     // This will pull the maximum RPM setpoint request.
@@ -194,7 +196,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
     std::vector<double> values = {100, 200, 300, 400, 500};
     for (auto v : values)
     {
-        zone->addSetPoint(v, "");
+        zone->addSetPoint(v, std::to_string(v));
     }
 
     // This will pull the maximum RPM setpoint request.

@@ -104,6 +104,11 @@ class ZoneInterface
      */
     virtual bool getRedundantWrite(void) const = 0;
 
+    /** Returns true if user wants to accumulate the output PWM of different
+     * controllers with same sensor
+     */
+    virtual bool getAccSetPoint(void) const = 0;
+
     /** For each fan pid, do processing. */
     virtual void processFans(void) = 0;
     /** For each thermal pid, do processing. */

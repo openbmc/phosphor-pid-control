@@ -1,4 +1,5 @@
 option('tests', type: 'feature', value: 'disabled', description: 'Build tests')
 option('oe-sdk', type: 'feature', value: 'disabled', description: 'Enable OE SDK')
 option('strict-failsafe-pwm', type: 'boolean', value: false, description: 'Set the fans strictly at the failsafe PWM when in failsafe mode')
+option('check-hysteresis-using-setpoint', type: 'boolean', value: false, description: 'Set to check hysteresis using setpoint when calculating PWM')
 option('systemd_target', type: 'string', value: 'multi-user.target', description: 'Target for starting this service')

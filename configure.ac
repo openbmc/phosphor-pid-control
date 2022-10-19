@@ -212,6 +212,14 @@ AS_IF([test "x$enable_strict_failsafe_pwm" = "xyes"], [
     AX_APPEND_COMPILE_FLAGS([-DSTRICT_FAILSAFE_PWM], [CXXFLAGS])
 ])
 
+AC_ARG_ENABLE([check-hysteresis-using-setpoint],
+    AS_HELP_STRING([--check-hysteresis-using-setpoint],
+                   [Using setpoint to Check hysteresis when calculating PID output PWM]))
+AM_CONDITIONAL(ENABLE_CHECK_HYSTERESIS_USING_SETPOINT, [test "x$enable_check_hysteresis_using_setpoint" = "xyes"])
+AS_IF([test "x$enable_check_hysteresis_using_setpoint" = "xyes"], [
+    AX_APPEND_COMPILE_FLAGS([-DCHECK_HYSTERESIS_USING_SETPOINT], [CXXFLAGS])
+])
+
 AC_ARG_VAR(SYSTEMD_TARGET, "Target for starting this service")
 AS_IF([test "x$SYSTEMD_TARGET" == "x"], [SYSTEMD_TARGET="multi-user.target"])
 
