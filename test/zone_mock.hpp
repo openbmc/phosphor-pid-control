@@ -39,6 +39,7 @@ class ZoneMock : public ZoneInterface
 
     MOCK_CONST_METHOD0(getCycleIntervalTime, uint64_t());
     MOCK_CONST_METHOD0(getUpdateThermalsCycle, uint64_t());
+    MOCK_CONST_METHOD0(getAccSetPoint, bool());
 
     MOCK_METHOD1(getSensor, Sensor*(const std::string&));
 
