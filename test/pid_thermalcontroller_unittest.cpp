@@ -173,11 +173,11 @@ TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
         .Times(3)
         .WillOnce(Return(12.0))
         .WillOnce(Return(9.0))
-        .WillOnce(Return(7.0));
+        .WillOnce(Return(5.0));
 
     EXPECT_CALL(z, addSetPoint(_, "therm1")).Times(3);
 
-    std::vector<double> lastReadings = {12.0, 12.0, 7.0};
+    std::vector<double> lastReadings = {12.0, 9.0, setpoint};
     for (auto& reading : lastReadings)
     {
         p->process();
@@ -196,7 +196,7 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
     std::vector<std::string> inputs = {"fleeting0"};
     double setpoint = 10.0;
     ec::pidinfo initial;
-    initial.positiveHysteresis = 5.0;
+    initial.positiveHysteresis = 3.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
