@@ -38,11 +38,8 @@ struct ControllerInfo
     std::string type;                // fan or margin or temp?
     std::vector<std::string> inputs; // one or more sensors.
     double setpoint;                 // initial setpoint for thermal.
-    union
-    {
-        ec::pidinfo pidInfo; // pid details
-        ec::StepwiseInfo stepwiseInfo;
-    };
+    ec::pidinfo pidInfo;             // pid details
+    ec::StepwiseInfo stepwiseInfo;   // stepwise details
 };
 
 /*
@@ -57,6 +54,10 @@ struct ZoneConfig
 
     /* If the sensors are in fail-safe mode, this is the percentage to use. */
     double failsafePercent;
+
+    /* Enable accumulation of the output PWM of different controllers with same
+     * sensor */
+    bool accumulateSetPoint;
 };
 
 using PIDConf = std::map<std::string, ControllerInfo>;
