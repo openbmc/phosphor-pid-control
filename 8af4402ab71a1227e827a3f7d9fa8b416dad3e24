@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9eff015a_0c3a2cc3",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-20T11:54:03Z",
+      "side": 1,
+      "message": "Hi Josh,\n\nIn Meta OpenBMC, the PID controller would use input temperature and setpoint to check the hysteresis instead of using input temperature and last input temperature.\n\nAnd the PID controller would not calculate the output PWM if the input temperature was lower than the setpoint and will reset the integral term if the input temperature was lower than the setpoint to prevent the overshot.\n\nI think it is different behavior than existing PID loops. Should we add an option for user to choose which method they need?\n\nRef:https://github.com/facebook/openbmc/blob/helium/common/recipes-core/fscd3/fscd/fsc_control.py#L23",
+      "parentUuid": "5ee36eaf_dc524e26",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3c480eb_b24e8218",
         "filename": "pid/zone.cpp",
         "patchSetId": 9
@@ -82,6 +100,24 @@
       "writtenOn": "2022-10-20T01:35:23Z",
       "side": 1,
       "message": "This new behavior should have documentation/examples documented somewhere. See also my similar comment below.",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "30bd53de_d19e6595",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-20T11:54:03Z",
+      "side": 1,
+      "message": "Hi Josh,\nIn Meta OpenBMC, we could set stepwise controller and PID controller in fan table for one sensor. The output PWM will be calculated by accumulating stepwise PWM and PID PWM.\nTherefore, we propose to accumulate the output PWM that the controllers have same profile name. E.g. The profile name of PID_Temp_CPU0 and Stepwise_Temp_CPU0 are Temp_CPU0.\n\nRef: https://github.com/facebook/openbmc/blob/helium/meta-facebook/meta-fby35/recipes-fby35/fscd/fscd/FSC_CLASS1_type1_zone1.fsc#L2",
+      "parentUuid": "b3c480eb_b24e8218",
       "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -105,6 +141,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4936519a_afb0ad18",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-20T11:54:03Z",
+      "side": 1,
+      "message": "We would like to accumulate the output PWM of PID controller and stepwise controller so the maximum setpoint name would be the combination of the name of PID controller and the name of stepwise controller.",
+      "parentUuid": "668410b6_910adf15",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32461c5f_4dd1d294",
         "filename": "pid/zone.hpp",
         "patchSetId": 9
@@ -116,6 +170,24 @@
       "writtenOn": "2022-10-20T01:35:23Z",
       "side": 1,
       "message": "I am unsure of the purpose of adding the string field here. What additional purpose does this string serve?",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "54cfc0ed_2a5e5465",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-20T11:54:03Z",
+      "side": 1,
+      "message": "We would like to accumulate the output PWM of PID controller and stepwise controller so we would accumulate the setpoint of the controllers that have same profile name.\nE.g. The profile name of PID_Temp_CPU0 and Stepwise_Temp_CPU0 are Temp_CPU0.",
+      "parentUuid": "32461c5f_4dd1d294",
       "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
