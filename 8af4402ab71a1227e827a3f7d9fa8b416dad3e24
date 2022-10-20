@@ -89,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c82552c1_2e4bba0b",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T23:29:25Z",
+      "side": 1,
+      "message": "Yes, this should be an option. A compile-time option is fine. Reason is, I don\u0027t want to break anybody\u0027s existing PID loops, which could be very delicately tuned, by doing anything that changes the default behavior of the computations.\n\n(To contrast, adding new optional features that don\u0027t change the behavior by default, such as introducing the \"D\" term, is always completely OK, because these don\u0027t alter existing behavior.)",
+      "parentUuid": "9eff015a_0c3a2cc3",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b3c480eb_b24e8218",
         "filename": "pid/zone.cpp",
         "patchSetId": 9
@@ -188,6 +206,24 @@
       "side": 1,
       "message": "We would like to accumulate the output PWM of PID controller and stepwise controller so we would accumulate the setpoint of the controllers that have same profile name.\nE.g. The profile name of PID_Temp_CPU0 and Stepwise_Temp_CPU0 are Temp_CPU0.",
       "parentUuid": "32461c5f_4dd1d294",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bee91d3b_49849dc4",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T23:29:25Z",
+      "side": 1,
+      "message": "Interesting. I don\u0027t quite understand what is meant by \"accumulate the setpoint\" in this context. How do the two PID loops interact?",
+      "parentUuid": "54cfc0ed_2a5e5465",
       "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
