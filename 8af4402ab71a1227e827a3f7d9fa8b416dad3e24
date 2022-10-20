@@ -1,0 +1,140 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30fc147b_f3f2b97f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "The idea looks good, but I have some concerns. What goals is this change designed to accomplish? I\u0027m not sure what the improvement will be.\n",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "818eed9f_50789f76",
+        "filename": "conf.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "I agree here that using a union is a micro-optimization that did not seem necessary. The structures don\u0027t take up that much space.",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df13e072_e0c73da1",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "We must also continue to test for NAN here. Please do not remove the NAN test. Reason is, NAN is used as an indication of an error, a missing sensor reading, or similar.\n\nThis also reminds me of a historical bug here. We should be using std::isfinite() instead of isnan() here, because that will give us the advantage of being able to also catch other weird floating-point error states like +INF and -INF.",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ee36eaf_dc524e26",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "This entire block looks like a pretty significant behavioral change. I\u0027m unsure what\u0027s going on here. What is the purpose of this change? Will it break people\u0027s existing PID loops that they already have working in their hardware?",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b3c480eb_b24e8218",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "This new behavior should have documentation/examples documented somewhere. See also my similar comment below.",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "668410b6_910adf15",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "I\u0027m not sure what this is to accomplish. What is the purpose of this? Also, please provide documentation/examples for this new feature.",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32461c5f_4dd1d294",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "I am unsure of the purpose of adding the string field here. What additional purpose does this string serve?",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "50ab5514_2a2b57eb",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T01:35:23Z",
+      "side": 1,
+      "message": "I would prefer this stay a vector. If you wish to ensure that no duplicates are present, how about checking for them at insertion time, and making sure that a duplicate does not already exist before inserting it?",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
