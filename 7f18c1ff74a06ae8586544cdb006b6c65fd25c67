@@ -175,6 +175,24 @@
       "parentUuid": "25e46c7a_37edb143",
       "revId": "7f18c1ff74a06ae8586544cdb006b6c65fd25c67",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2669c83_c663153b",
+        "filename": "pid/tuning.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-20T06:37:59Z",
+      "side": 1,
+      "message": "Hi Josh,\nI resolved the issue by modifying the Makefile.am in test folder.\n\nHi Patrick,\nI can run CI test on our server now. Thank you for your help!",
+      "parentUuid": "bd5df637_bd631dfb",
+      "revId": "7f18c1ff74a06ae8586544cdb006b6c65fd25c67",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
