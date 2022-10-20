@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6fc09bc_06393d07",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-20T08:28:53Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4c642303_691263ed",
+      "revId": "c7e6e7f412efd66985c91e79f4b04996d4d4cf77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f07c68b4_a62bbb41",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-20T01:43:17Z",
       "side": 1,
       "message": "This comparison might not work as intended. One thing that might work is to compare updateCount to std::ceil(updateCount) and test for equality. If they are not already equal, then print the warning message and do the assignment, to force them to be equal.",
+      "revId": "c7e6e7f412efd66985c91e79f4b04996d4d4cf77",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d5bc3a45_1b689f27",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-20T08:28:53Z",
+      "side": 1,
+      "message": "Modified.\nThanks for your suggestion!",
+      "parentUuid": "f07c68b4_a62bbb41",
       "revId": "c7e6e7f412efd66985c91e79f4b04996d4d4cf77",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
