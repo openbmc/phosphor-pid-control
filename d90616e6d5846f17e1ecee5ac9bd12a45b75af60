@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "012feba8_46212837",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T23:26:25Z",
+      "side": 1,
+      "message": "Grammar: Using the",
+      "revId": "d90616e6d5846f17e1ecee5ac9bd12a45b75af60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "737a06bc_a29fa864",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-20T23:26:25Z",
+      "side": 1,
+      "message": "Spelling: integer",
+      "revId": "d90616e6d5846f17e1ecee5ac9bd12a45b75af60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
