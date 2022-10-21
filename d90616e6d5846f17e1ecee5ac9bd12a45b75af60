@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3d70a828_8e097a9c",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 188,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-21T01:17:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "012feba8_46212837",
+      "revId": "d90616e6d5846f17e1ecee5ac9bd12a45b75af60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "737a06bc_a29fa864",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-10-20T23:26:25Z",
       "side": 1,
       "message": "Spelling: integer",
+      "revId": "d90616e6d5846f17e1ecee5ac9bd12a45b75af60",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "78ffd035_b1d76a54",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 18
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-21T01:17:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "737a06bc_a29fa864",
       "revId": "d90616e6d5846f17e1ecee5ac9bd12a45b75af60",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
