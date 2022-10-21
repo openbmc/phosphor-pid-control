@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8fb6cdad_38180b85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-21T01:21:01Z",
+      "side": 1,
+      "message": "Nice, it looks good now, last chance for any objections from anybody else\n",
+      "revId": "f4c7063c1d3d106567a41ddebb5356e709ef2fb3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
