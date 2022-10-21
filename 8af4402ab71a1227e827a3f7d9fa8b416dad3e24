@@ -230,6 +230,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "381f295f_b6faa680",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-10-21T02:49:48Z",
+      "side": 1,
+      "message": "We can have multiple controllers for same sensors, as you can see in the reference fan table. It has two controllers, linear_cpu (which is stepwise) and pid_cpu, to monitor the temperature of CPU.\n\nWe will accumulate the output PWM(setpoint) of linear_cpu and pid_cpu as the output PWM for CPU temperature.\n\nThere is a setpoint 65 degree in pid_cpu that means the output PWM of pid_cpu will be 0 if the temperature was lower than 65 degree.\n\nOnce the temperature was over 65 degree, the linear_cpu will ouput 40 PWM and pid_cpu will also calculate the output PWM, let\u0027s say pid_cpu_output. The output PWM for CPU temperature will be 40 + pid_cpu_output.\n\nRef: https://github.com/facebook/openbmc/blob/helium/meta-facebook/meta-fby35/recipes-fby35/fscd/fscd/FSC_CLASS1_type1_config.json#L61",
+      "parentUuid": "bee91d3b_49849dc4",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "50ab5514_2a2b57eb",
         "filename": "pid/zone.hpp",
         "patchSetId": 9
