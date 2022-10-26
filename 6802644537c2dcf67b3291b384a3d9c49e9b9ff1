@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9008976e_128b225d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 13
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-26T01:25:07Z",
+      "side": 1,
+      "message": "This text is good, but please maintain the line wrap at 72 characters. For a lengthy commit message, a link to a GitHub Gist might be useful, instead of putting it all in the message.",
+      "revId": "6802644537c2dcf67b3291b384a3d9c49e9b9ff1",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

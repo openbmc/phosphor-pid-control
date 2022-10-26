@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "5b9721b7_97fe1e5d",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-26T01:25:07Z",
+      "side": 1,
+      "message": "Yes, please change usages of isnan() to isfinite(). However, be careful, isnan() is true if NAN, but isfinite() is false if NAN. It is necessary to invert the sense of the test:\n\nif (std::isnan(n)) \u003d\u003d\u003e if (!std::isfinite(n))\n\nNote the added \"!\" operator here. Here is a historical change for an example: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/36630",
+      "parentUuid": "2f83a176_08ec7768",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5ee36eaf_dc524e26",
         "filename": "pid/pidcontroller.cpp",
         "patchSetId": 9
@@ -314,6 +332,24 @@
       "side": 1,
       "message": "Hi Josh,\n\nThe output PWM can be limited by the output maximum clamp value in fan table so it won\u0027t exceed 100%.\n\nI added a compile flag to seperate two method to calculate PID output.",
       "parentUuid": "4ca96c1e_146a912c",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "28483d51_91c6a68b",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 113,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-26T01:25:07Z",
+      "side": 1,
+      "message": "Thanks for adding a compile-time flag to separate out the new behavior.",
+      "parentUuid": "02ac8569_509b607c",
       "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
