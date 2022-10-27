@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "93eafcc4_a255bab3",
+        "filename": "conf.hpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-27T00:05:55Z",
+      "side": 1,
+      "message": "No action needed here, marking this as Resolved",
+      "parentUuid": "818eed9f_50789f76",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df13e072_e0c73da1",
@@ -214,6 +232,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec64588c_cdbd0519",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 115,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-27T00:05:55Z",
+      "side": 1,
+      "message": "This is useful information. Please add documentation somewhere, to explain the usage of this new feature? Adding it to your Gist would be sufficient. Others might be interested in using this new feature as well.",
+      "parentUuid": "30bd53de_d19e6595",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "668410b6_910adf15",
         "filename": "pid/zone.cpp",
         "patchSetId": 9
@@ -243,6 +279,24 @@
       "side": 1,
       "message": "We would like to accumulate the output PWM of PID controller and stepwise controller so the maximum setpoint name would be the combination of the name of PID controller and the name of stepwise controller.",
       "parentUuid": "668410b6_910adf15",
+      "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "efc8af33_f67cb23a",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 9
+      },
+      "lineNbr": 276,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-10-27T00:05:55Z",
+      "side": 1,
+      "message": "Makes sense, based on what was explained in other comments",
+      "parentUuid": "4936519a_afb0ad18",
       "revId": "8af4402ab71a1227e827a3f7d9fa8b416dad3e24",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
