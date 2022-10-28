@@ -130,7 +130,8 @@ static void driveGoal(int64_t& seriesCnt, int64_t setPwm, int64_t goal,
     return;
 }
 
-static void driveTime(int64_t& seriesCnt, int64_t setPwm, int64_t goal,
+static void driveTime([[maybe_unused]] int64_t& seriesCnt, int64_t setPwm,
+                      [[maybe_unused]] int64_t goal,
                       std::vector<std::tuple<tstamp, int64_t, int64_t>>& series,
                       std::vector<std::unique_ptr<Sensor>>& fanSensors)
 {

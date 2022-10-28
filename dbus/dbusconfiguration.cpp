@@ -258,7 +258,7 @@ inline DbusVariantType getPIDAttribute(
 }
 
 void populatePidInfo(
-    sdbusplus::bus_t& bus,
+    [[maybe_unused]] sdbusplus::bus_t& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
     conf::ControllerInfo& info, const std::string* thresholdProperty,
     const std::map<std::string, conf::SensorConfig>& sensorConfig)
