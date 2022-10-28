@@ -82,7 +82,7 @@ static void SetManualMode(int8_t zone)
     }
 }
 
-int main(int argc, char* argv[])
+int main([[maybe_unused]] int argc, [[maybe_unused]] char* argv[])
 {
     int rc = 0;
 

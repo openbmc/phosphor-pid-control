@@ -41,7 +41,7 @@ TEST(SensorsFromJson, oneFanSensor)
     )"_json;
 
     auto output = buildSensorsFromJson(j2);
-    EXPECT_EQ(1, output.size());
+    EXPECT_EQ(static_cast<u_int64_t>(1), output.size());
     EXPECT_EQ(output["fan1"].type, "fan");
     EXPECT_EQ(output["fan1"].readPath,
               "/xyz/openbmc_project/sensors/fan_tach/fan1");
@@ -69,7 +69,7 @@ TEST(SensorsFromJson, IgnoreDbusSensor)
     )"_json;
 
     auto output = buildSensorsFromJson(j2);
-    EXPECT_EQ(1, output.size());
+    EXPECT_EQ(static_cast<u_int64_t>(1), output.size());
     EXPECT_EQ(output["fan1"].type, "fan");
     EXPECT_EQ(output["fan1"].readPath,
               "/xyz/openbmc_project/sensors/fan_tach/fan1");
@@ -95,7 +95,7 @@ TEST(SensorsFromJson, TempDbusSensor)
     )"_json;
 
     auto output = buildSensorsFromJson(j2);
-    EXPECT_EQ(1, output.size());
+    EXPECT_EQ(static_cast<u_int64_t>(1), output.size());
     EXPECT_EQ(output["CPU_DTS"].type, "temp");
     EXPECT_EQ(output["CPU_DTS"].readPath,
               "/xyz/openbmc_project/sensors/temperature/CPU_DTS");
@@ -123,7 +123,7 @@ TEST(SensorsFromJson, validateOptionalFields)
     )"_json;
 
     auto output = buildSensorsFromJson(j2);
-    EXPECT_EQ(1, output.size());
+    EXPECT_EQ(static_cast<u_int64_t>(1), output.size());
     EXPECT_EQ(output["fan1"].type, "fan");
     EXPECT_EQ(output["fan1"].readPath,
               "/xyz/openbmc_project/sensors/fan_tach/fan1");
@@ -157,7 +157,7 @@ TEST(SensorsFromJson, twoSensors)
     )"_json;
 
     auto output = buildSensorsFromJson(j2);
-    EXPECT_EQ(2, output.size());
+    EXPECT_EQ(static_cast<u_int64_t>(2), output.size());
 }
 
 } // namespace

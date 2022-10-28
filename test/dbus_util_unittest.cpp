@@ -32,7 +32,7 @@ TEST_P(GetSensorPathTest, ReturnsExpectedValue)
                 StrEq(std::get<2>(params)));
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     GetSensorPathTests, GetSensorPathTest,
     ::testing::Values(
         std::make_tuple("fan", "0", "/xyz/openbmc_project/sensors/fan_tach/0"),

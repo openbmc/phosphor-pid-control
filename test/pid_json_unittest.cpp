@@ -65,8 +65,8 @@ TEST(ZoneFromJson, oneZoneOnePid)
     )"_json;
 
     std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2);
-    EXPECT_EQ(pidConfig.size(), 1);
-    EXPECT_EQ(zoneConfig.size(), 1);
+    EXPECT_EQ(pidConfig.size(), static_cast<u_int64_t>(1));
+    EXPECT_EQ(zoneConfig.size(), static_cast<u_int64_t>(1));
 
     EXPECT_EQ(pidConfig[1]["fan1-5"].type, "fan");
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
@@ -112,8 +112,8 @@ TEST(ZoneFromJson, oneZoneOnePidWithHysteresis)
     )"_json;
 
     std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2);
-    EXPECT_EQ(pidConfig.size(), 1);
-    EXPECT_EQ(zoneConfig.size(), 1);
+    EXPECT_EQ(pidConfig.size(), static_cast<u_int64_t>(1));
+    EXPECT_EQ(zoneConfig.size(), static_cast<u_int64_t>(1));
 
     EXPECT_EQ(pidConfig[1]["fan1-5"].type, "fan");
     EXPECT_DOUBLE_EQ(pidConfig[1]["fan1-5"].pidInfo.positiveHysteresis, 1000.0);
@@ -196,8 +196,8 @@ TEST(ZoneFromJson, oneZoneOneStepwiseWithHysteresis)
     )"_json;
 
     std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2);
-    EXPECT_EQ(pidConfig.size(), 1);
-    EXPECT_EQ(zoneConfig.size(), 1);
+    EXPECT_EQ(pidConfig.size(), static_cast<u_int64_t>(1));
+    EXPECT_EQ(zoneConfig.size(), static_cast<u_int64_t>(1));
 
     EXPECT_EQ(pidConfig[1]["temp1"].type, "stepwise");
     EXPECT_DOUBLE_EQ(pidConfig[1]["temp1"].stepwiseInfo.positiveHysteresis,

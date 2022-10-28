@@ -91,7 +91,7 @@ ReadReturn HostSensor::read(void)
     return r;
 }
 
-void HostSensor::write(double value)
+void HostSensor::write([[maybe_unused]] double value)
 {
     throw std::runtime_error("Not Implemented.");
 }
