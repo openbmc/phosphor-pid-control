@@ -104,9 +104,8 @@ ipmi_ret_t ZoneControlIpmiHandler::getManualModeState(const uint8_t* reqBuf,
  *   <arg name="value" direction="in" type="v"/>
  * </method>
  */
-ipmi_ret_t ZoneControlIpmiHandler::setManualModeState(const uint8_t* reqBuf,
-                                                      uint8_t* replyBuf,
-                                                      size_t* dataLen)
+ipmi_ret_t ZoneControlIpmiHandler::setManualModeState(
+    const uint8_t* reqBuf, [[maybe_unused]] uint8_t* replyBuf, size_t* dataLen)
 {
     if (*dataLen < sizeof(struct FanCtrlRequestSet))
     {
@@ -123,7 +122,8 @@ ipmi_ret_t ZoneControlIpmiHandler::setManualModeState(const uint8_t* reqBuf,
 }
 
 /* Three command packages: get, set true, set false */
-ipmi_ret_t manualModeControl(ZoneControlIpmiHandler* handler, ipmi_cmd_t cmd,
+ipmi_ret_t manualModeControl(ZoneControlIpmiHandler* handler,
+                             [[maybe_unused]] ipmi_cmd_t cmd,
                              const uint8_t* reqBuf, uint8_t* replyCmdBuf,
                              size_t* dataLen)
 {

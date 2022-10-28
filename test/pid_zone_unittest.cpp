@@ -558,11 +558,12 @@ TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)
     EXPECT_CALL(sdbus_mock_mode,
                 sd_bus_emit_properties_changed_strv(
                     IsNull(), StrEq(objPath), StrEq(modeInterface), NotNull()))
-        .WillOnce(Invoke([&](sd_bus* bus, const char* path,
-                             const char* interface, const char** names) {
-            EXPECT_STREQ("Manual", names[0]);
-            return 0;
-        }));
+        .WillOnce(Invoke(
+            [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
+                [[maybe_unused]] const char* interface, const char** names) {
+                EXPECT_STREQ("Manual", names[0]);
+                return 0;
+            }));
 
     // Method under test will set the manual mode to true and broadcast this
     // change on dbus.

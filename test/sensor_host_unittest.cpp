@@ -90,11 +90,12 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     EXPECT_CALL(sdbus_mock,
                 sd_bus_emit_properties_changed_strv(
                     IsNull(), StrEq(objPath), StrEq(interface), NotNull()))
-        .WillOnce(Invoke([=](sd_bus* bus, const char* path,
-                             const char* interface, const char** names) {
-            EXPECT_STREQ("Value", names[0]);
-            return 0;
-        }));
+        .WillOnce(Invoke(
+            [=]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
+                [[maybe_unused]] const char* interface, const char** names) {
+                EXPECT_STREQ("Value", names[0]);
+                return 0;
+            }));
 
     std::chrono::high_resolution_clock::time_point t1 =
         std::chrono::high_resolution_clock::now();

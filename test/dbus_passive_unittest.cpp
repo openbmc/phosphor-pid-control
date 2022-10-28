@@ -76,16 +76,16 @@ class DbusPassiveTestObj : public ::testing::Test
 
         EXPECT_CALL(*helper,
                     getProperties(StrEq("asdf"), StrEq(path), NotNull()))
-            .WillOnce(
-                Invoke([&](const std::string& service, const std::string& path,
-                           SensorProperties* prop) {
-                    prop->scale = _scale;
-                    prop->value = _value;
-                    prop->unit = "x";
-                    prop->min = 0;
-                    prop->max = 0;
-                    prop->available = true;
-                }));
+            .WillOnce(Invoke([&]([[maybe_unused]] const std::string& service,
+                                 [[maybe_unused]] const std::string& path,
+                                 SensorProperties* prop) {
+                prop->scale = _scale;
+                prop->value = _value;
+                prop->unit = "x";
+                prop->min = 0;
+                prop->max = 0;
+                prop->available = true;
+            }));
         EXPECT_CALL(*helper, thresholdsAsserted(StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
@@ -166,13 +166,15 @@ TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
     // msg.read(msgSensor, msgData);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = Value;
             // Read the string in the pair (dictionary).
@@ -202,7 +204,8 @@ TEST_F(DbusPassiveTestObj, VerifyHandlesDbusSignal)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'x', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             int64_t* s = static_cast<int64_t*>(p);
             *s = xValue;
             return 0;
@@ -236,13 +239,15 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
     // msg.read(msgSensor, msgData);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = Scale;
             // Read the string in the pair (dictionary).
@@ -272,7 +277,8 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'x', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             int64_t* s = static_cast<int64_t*>(p);
             *s = xScale;
             return 0;
@@ -305,13 +311,15 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdAssert)
     passive->setFailed(false);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = criticalAlarm;
             // Read the string in the pair (dictionary).
@@ -347,7 +355,8 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdAssert)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             bool* s = static_cast<bool*>(p);
             *s = alarm;
             return 0;
@@ -380,13 +389,15 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
     passive->setFailed(true);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = criticalAlarm;
             // Read the string in the pair (dictionary).
@@ -422,7 +433,8 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             bool* s = static_cast<bool*>(p);
             *s = alarm;
             return 0;
@@ -455,13 +467,15 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableDeassert)
     passive->setAvailable(true);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = property;
             // Read the string in the pair (dictionary).
@@ -497,7 +511,8 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableDeassert)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             bool* s = static_cast<bool*>(p);
             *s = asserted;
             return 0;
@@ -532,13 +547,15 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableAssert)
     EXPECT_EQ(failed, true);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = property;
             // Read the string in the pair (dictionary).
@@ -574,7 +591,8 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableAssert)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             bool* s = static_cast<bool*>(p);
             *s = asserted;
             return 0;
@@ -604,16 +622,16 @@ class DbusPassiveTestUnaSensorNotAsFailedObj : public ::testing::Test
 
         EXPECT_CALL(*helper,
                     getProperties(StrEq("asdf"), StrEq(path), NotNull()))
-            .WillOnce(
-                Invoke([&](const std::string& service, const std::string& path,
-                           SensorProperties* prop) {
-                    prop->scale = _scale;
-                    prop->value = _value;
-                    prop->unit = "x";
-                    prop->min = 0;
-                    prop->max = 0;
-                    prop->available = true;
-                }));
+            .WillOnce(Invoke([&]([[maybe_unused]] const std::string& service,
+                                 [[maybe_unused]] const std::string& path,
+                                 SensorProperties* prop) {
+                prop->scale = _scale;
+                prop->value = _value;
+                prop->unit = "x";
+                prop->min = 0;
+                prop->max = 0;
+                prop->available = true;
+            }));
         EXPECT_CALL(*helper, thresholdsAsserted(StrEq("asdf"), StrEq(path)))
             .WillOnce(Return(false));
 
@@ -654,13 +672,15 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableDeassert)
     passive->setAvailable(true);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = property;
             // Read the string in the pair (dictionary).
@@ -696,7 +716,8 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableDeassert)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             bool* s = static_cast<bool*>(p);
             *s = asserted;
             return 0;
@@ -733,13 +754,15 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableAssert)
     EXPECT_EQ(failed, false);
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             // Read the first parameter, the string.
             *s = intf;
             return 0;
         }))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             const char** s = static_cast<const char**>(p);
             *s = property;
             // Read the string in the pair (dictionary).
@@ -775,7 +798,8 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableAssert)
         .WillOnce(Return(0));
 
     EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
-        .WillOnce(Invoke([&](sd_bus_message* m, char type, void* p) {
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
             bool* s = static_cast<bool*>(p);
             *s = asserted;
             return 0;
@@ -792,7 +816,8 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableAssert)
     EXPECT_EQ(failed, false);
 }
 
-void GetPropertiesMax3k(const std::string& service, const std::string& path,
+void GetPropertiesMax3k([[maybe_unused]] const std::string& service,
+                        [[maybe_unused]] const std::string& path,
                         SensorProperties* prop)
 {
     prop->scale = -3;

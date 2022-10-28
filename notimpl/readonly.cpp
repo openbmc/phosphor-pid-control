@@ -21,12 +21,12 @@
 namespace pid_control
 {
 
-void ReadOnly::write(double value)
+void ReadOnly::write([[maybe_unused]] double value)
 {
     throw std::runtime_error("Not supported.");
 }
 
-void ReadOnlyNoExcept::write(double value)
+void ReadOnlyNoExcept::write([[maybe_unused]] double value)
 {
     return;
 }

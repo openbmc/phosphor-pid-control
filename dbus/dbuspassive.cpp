@@ -331,7 +331,8 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
     return 0;
 }
 
-int dbusHandleSignal(sd_bus_message* msg, void* usrData, sd_bus_error* err)
+int dbusHandleSignal(sd_bus_message* msg, void* usrData,
+                     [[maybe_unused]] sd_bus_error* err)
 {
     auto sdbpMsg = sdbusplus::message_t(msg);
     DbusPassive* obj = static_cast<DbusPassive*>(usrData);
