@@ -16,7 +16,7 @@
 
 #include "config.h"
 
-#include "build/buildjson.hpp"
+#include "buildjson/buildjson.hpp"
 #include "conf.hpp"
 #include "dbus/dbusconfiguration.hpp"
 #include "interfaces.hpp"
