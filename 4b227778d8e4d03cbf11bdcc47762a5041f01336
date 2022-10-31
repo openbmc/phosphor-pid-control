@@ -1,0 +1,159 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1cced5a7_657d27ee",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1001292
+      },
+      "writtenOn": "2022-10-31T14:46:12Z",
+      "side": 1,
+      "message": "enable accumulation of",
+      "range": {
+        "startLine": 10,
+        "startChar": 55,
+        "endLine": 11,
+        "endChar": 13
+      },
+      "revId": "4b227778d8e4d03cbf11bdcc47762a5041f01336",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2c90ee0b_94ea5cdc",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1001292
+      },
+      "writtenOn": "2022-10-31T14:46:12Z",
+      "side": 1,
+      "message": "field",
+      "range": {
+        "startLine": 17,
+        "startChar": 31,
+        "endLine": 17,
+        "endChar": 36
+      },
+      "revId": "4b227778d8e4d03cbf11bdcc47762a5041f01336",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf284c8a_44841f07",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001292
+      },
+      "writtenOn": "2022-10-31T14:46:12Z",
+      "side": 1,
+      "message": "controllers",
+      "range": {
+        "startLine": 19,
+        "startChar": 13,
+        "endLine": 19,
+        "endChar": 24
+      },
+      "revId": "4b227778d8e4d03cbf11bdcc47762a5041f01336",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "014a0ea8_fd2c4304",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 14
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1001292
+      },
+      "writtenOn": "2022-10-31T14:46:12Z",
+      "side": 1,
+      "message": "chosen",
+      "range": {
+        "startLine": 21,
+        "startChar": 60,
+        "endLine": 21,
+        "endChar": 65
+      },
+      "revId": "4b227778d8e4d03cbf11bdcc47762a5041f01336",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f85c3c1a_3368a6d8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001292
+      },
+      "writtenOn": "2022-10-31T14:46:12Z",
+      "side": 1,
+      "message": "Few minor changes to address to clean up the comments a bit.",
+      "revId": "4b227778d8e4d03cbf11bdcc47762a5041f01336",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90d68a5a_9aad70f7",
+        "filename": "conf.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1001292
+      },
+      "writtenOn": "2022-10-31T14:46:12Z",
+      "side": 1,
+      "message": "would be good to have a comment for this variable for consistency since all the other variables have comments indicating their purpose.",
+      "range": {
+        "startLine": 42,
+        "startChar": 5,
+        "endLine": 42,
+        "endChar": 34
+      },
+      "revId": "4b227778d8e4d03cbf11bdcc47762a5041f01336",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fe5e4312_88c82c8b",
+        "filename": "conf.hpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1001292
+      },
+      "writtenOn": "2022-10-31T14:46:12Z",
+      "side": 1,
+      "message": "accumulation of",
+      "range": {
+        "startLine": 58,
+        "startChar": 14,
+        "endLine": 58,
+        "endChar": 27
+      },
+      "revId": "4b227778d8e4d03cbf11bdcc47762a5041f01336",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
