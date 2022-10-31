@@ -78,4 +78,4 @@ pid_json_unittest_SOURCES = pid_json_unittest.cpp
 pid_json_unittest_LDADD = $(top_builddir)/pid/buildjson.o
 
 json_parse_unittest_SOURCES = json_parse_unittest.cpp
-json_parse_unittest_LDADD = $(top_builddir)/build/buildjson.o
+json_parse_unittest_LDADD = $(top_builddir)/buildjson/buildjson.o

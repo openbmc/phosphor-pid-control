@@ -110,7 +110,7 @@ libswampd_la_SOURCES = \
 	pid/util.cpp \
 	pid/pidloop.cpp \
 	pid/tuning.cpp \
-	build/buildjson.cpp \
+	buildjson/buildjson.cpp \
 	experiments/drive.cpp
 
 libmanualcmdsdir = ${libdir}/ipmid-providers
