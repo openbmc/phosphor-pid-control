@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8bf57a2_a49629fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-02T21:49:59Z",
+      "side": 1,
+      "message": "Good catch. In Meson, the directory name \"build\" is special and reserved.\n",
+      "revId": "3dcfd546a9d3d2f311f46db57088f71f7ae5851c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
