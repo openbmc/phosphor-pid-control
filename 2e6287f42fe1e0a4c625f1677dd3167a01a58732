@@ -56,6 +56,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "4fa79e2b_89287151",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-04T01:23:37Z",
+      "side": 1,
+      "message": "I rewrote the commit message, to reflect modern reality.",
+      "parentUuid": "94eb5e4e_82273259",
+      "revId": "2e6287f42fe1e0a4c625f1677dd3167a01a58732",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "f7435a3d_a7403fca",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
