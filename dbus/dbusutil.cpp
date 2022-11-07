@@ -90,7 +90,7 @@ bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
 
 std::string getSensorPath(const std::string& type, const std::string& id)
 {
-    std::string layer = type;
+    std::string layer;
     if (type == "fan")
     {
         layer = "fan_tach";

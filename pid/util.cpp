@@ -26,8 +26,6 @@ namespace pid_control
 
 void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
 {
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
-
     info->ts = initial.ts;
     info->proportionalCoeff = initial.proportionalCoeff;
     info->integralCoeff = initial.integralCoeff;

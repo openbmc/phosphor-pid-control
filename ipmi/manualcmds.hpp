@@ -17,7 +17,8 @@ namespace ipmi
 class ZoneControlIpmiHandler
 {
   public:
-    ZoneControlIpmiHandler(std::unique_ptr<ZoneControlInterface> control) :
+    explicit ZoneControlIpmiHandler(
+        std::unique_ptr<ZoneControlInterface> control) :
         _control(std::move(control))
     {}
 
@@ -28,7 +29,7 @@ class ZoneControlIpmiHandler
                                   size_t* dataLen);
 
     ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
-                                  size_t* dataLen);
+                                  const size_t* dataLen);
 
   private:
     std::unique_ptr<ZoneControlInterface> _control;

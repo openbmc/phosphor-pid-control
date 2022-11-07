@@ -22,7 +22,24 @@ class PIDController : public Controller
   public:
     PIDController(const std::string& id, ZoneInterface* owner) :
         Controller(), _owner(owner), _id(id)
-    {}
+    {
+        _pid_info.initialized = false;
+        _pid_info.ts = static_cast<double>(0.0);
+        _pid_info.integral = static_cast<double>(0.0);
+        _pid_info.lastOutput = static_cast<double>(0.0);
+        _pid_info.proportionalCoeff = static_cast<double>(0.0);
+        _pid_info.integralCoeff = static_cast<double>(0.0);
+        _pid_info.feedFwdOffset = static_cast<double>(0.0);
+        _pid_info.feedFwdGain = static_cast<double>(0.0);
+        _pid_info.integralLimit.min = static_cast<double>(0.0);
+        _pid_info.integralLimit.max = static_cast<double>(0.0);
+        _pid_info.outLim.min = static_cast<double>(0.0);
+        _pid_info.outLim.max = static_cast<double>(0.0);
+        _pid_info.slewNeg = static_cast<double>(0.0);
+        _pid_info.slewPos = static_cast<double>(0.0);
+        _pid_info.negativeHysteresis = static_cast<double>(0.0);
+        _pid_info.positiveHysteresis = static_cast<double>(0.0);
+    }
 
     virtual ~PIDController()
     {}
