@@ -16,6 +16,24 @@
       "message": "This PR is prepare for issue #23?",
       "revId": "bca74615478ca31772c72f099010a9e186c5e116",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e8e352cd_ee686520",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-07T12:30:46Z",
+      "side": 1,
+      "message": "I actually hadn\u0027t thought of that. Issue #23 is for a new feature, but this is an old patch that fixes an old bug, in which \"margin\" class was not being initialized similarly to \"temp\" class, as it should have been.",
+      "parentUuid": "1a5494ce_900e4d16",
+      "revId": "bca74615478ca31772c72f099010a9e186c5e116",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
