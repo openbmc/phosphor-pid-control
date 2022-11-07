@@ -1,6 +1,29 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "70271810_eab66a21",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-07T18:58:01Z",
+      "side": 1,
+      "message": "Was this tested with meson? (could it have built with CMake by accident?)",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "ffe61a4d_f521f971",
@@ -14,6 +37,46 @@
       "writtenOn": "2022-11-07T12:32:44Z",
       "side": 1,
       "message": "Nice, thanks for doing this. While I\u0027m personally against switching to Meson (I used to like the CLion editor and it has great integration with CMakeLists.txt but does not support Meson), it seems that the way of the world is to switch to Meson. For me to stand in the way of it would only get me ran over.\n",
+      "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9b244773_6067fb26",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-07T18:58:01Z",
+      "side": 1,
+      "message": "I believe we want 0.63.0 https://github.com/openbmc/bmcweb/commit/6107da1e94ce2e3b5ea975f13e7410583ecb815f",
+      "range": {
+        "startLine": 4,
+        "startChar": 20,
+        "endLine": 4,
+        "endChar": 30
+      },
+      "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0265a00a_6a3d94db",
+        "filename": "test/meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-07T18:58:01Z",
+      "side": 1,
+      "message": "This and below can probably be simplified with something similar to https://github.com/openbmc/google-misc/blob/master/subprojects/metrics-ipmi-blobs/test/meson.build#L23-L32\n\nWhere you just list the test names in the list\n\n```\ntests \u003d [\n  \u0027util_test\u0027,\n]\n\nforeach t : tests\n  test(t, executable(t.underscorify(), t + \u0027.cpp\u0027,\n                     implicit_include_directories: false,\n                     dependencies: [gtest, gmock, dep]))\nendforeach\n```",
       "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
