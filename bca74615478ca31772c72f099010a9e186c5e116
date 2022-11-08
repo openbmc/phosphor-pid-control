@@ -34,6 +34,41 @@
       "parentUuid": "1a5494ce_900e4d16",
       "revId": "bca74615478ca31772c72f099010a9e186c5e116",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "657597dd_31651de5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-08T09:41:05Z",
+      "side": 1,
+      "message": "Oh, I see. I agree to add margin type. Only static json support \"margin\" seems a little weird.",
+      "parentUuid": "e8e352cd_ee686520",
+      "revId": "bca74615478ca31772c72f099010a9e186c5e116",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37481ab_a3f9ff82",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-08T09:41:05Z",
+      "side": 1,
+      "message": "seems doesn\u0027t need this include?",
+      "revId": "bca74615478ca31772c72f099010a9e186c5e116",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
