@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "12dbf9ee_9e2eeeba",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 10
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-09T02:40:05Z",
+      "side": 1,
+      "message": "According to logs, it seems run-unit-test-docker.sh will test both makefile and meson. \n\nThe Meson build system\nVersion: 0.63.0\nSource dir: /data/sda/openbmc_gerrit/phosphor-pid-control\nBuild dir: /data/sda/openbmc_gerrit/phosphor-pid-control/build\nBuild type: native build\nProject name: phosphor-pid-control\nProject version: 1.0.0\nC++ compiler for the host machine: c++ (gcc 12.1.0 \"c++ (Ubuntu 12.1.0-2ubuntu1~22.04) 12.1.0\")\nC++ linker for the host machine: c++ ld.bfd 2.38\nHost machine cpu family: x86_64\nHost machine cpu: x86_64\nConfiguring config.h using configuration\nDependency systemd found: YES 249 (cached)\nConfiguring phosphor-pid-control.service using configuration\nDependency phosphor-dbus-interfaces found: YES 1.0.0 (cached)\nDependency phosphor-logging found: YES 1.0.0 (cached)\nDependency sdbusplus found: YES 1.0.0 (cached)\nDependency libsystemd found: YES 249 (cached)\nDependency libipmid found: YES 0.1 (cached)\nDependency gtest found: YES 1.12.1 (cached)\nDependency gmock found: YES 1.12.1 (cached)\nBuild targets in project: 17\n\nphosphor-pid-control 1.0.0",
+      "parentUuid": "70271810_eab66a21",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 0
+      },
+      "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "ffe61a4d_f521f971",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 10
@@ -64,6 +88,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5861e9a_87fa22fb",
+        "filename": "meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-09T02:40:05Z",
+      "side": 1,
+      "message": "Thanks for reminding. Done.",
+      "parentUuid": "9b244773_6067fb26",
+      "range": {
+        "startLine": 4,
+        "startChar": 20,
+        "endLine": 4,
+        "endChar": 30
+      },
+      "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "0265a00a_6a3d94db",
@@ -77,6 +125,24 @@
       "writtenOn": "2022-11-07T18:58:01Z",
       "side": 1,
       "message": "This and below can probably be simplified with something similar to https://github.com/openbmc/google-misc/blob/master/subprojects/metrics-ipmi-blobs/test/meson.build#L23-L32\n\nWhere you just list the test names in the list\n\n```\ntests \u003d [\n  \u0027util_test\u0027,\n]\n\nforeach t : tests\n  test(t, executable(t.underscorify(), t + \u0027.cpp\u0027,\n                     implicit_include_directories: false,\n                     dependencies: [gtest, gmock, dep]))\nendforeach\n```",
+      "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8a85e70c_363f1307",
+        "filename": "test/meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-09T02:40:05Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "0265a00a_6a3d94db",
       "revId": "90c01132ebec7e64913bace63df8dfd1e5209ebe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
