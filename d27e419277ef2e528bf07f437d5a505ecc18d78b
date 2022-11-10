@@ -16,6 +16,23 @@
       "message": "Dependency: https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/58427",
       "revId": "d27e419277ef2e528bf07f437d5a505ecc18d78b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97d7bc80_8cf23b16",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-10T17:06:47Z",
+      "side": 1,
+      "message": "Idea looks good. Any test cases?\n\nAlso, please rebase this change on top of 58427, so the dependency will be properly fulfilled.\n",
+      "revId": "d27e419277ef2e528bf07f437d5a505ecc18d78b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
