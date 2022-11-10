@@ -92,6 +92,11 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool manual(bool value) override;
     /* Method for reading whether in fail-safe mode over dbus */
     bool failSafe() const override;
+    /* Method for setting the pwm value for specific fan sensor over dbus */
+    std::tuple<std::string, double>
+        setPwm(std::tuple<std::string, double> value) override;
+    /* Method for setting the pwm value for all pwms in this zone over dbus */
+    double setPwmAll(double value) override;
 
   private:
     std::ofstream _log;
