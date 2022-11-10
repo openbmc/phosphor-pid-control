@@ -130,7 +130,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
             std::cerr << "\n";
         }
 
-        zone->emit_object_added();
+        zone->ModeObject::emit_object_added();
         zones[zoneId] = std::move(zone);
     }
 

@@ -87,6 +87,16 @@ void DbusPidZone::setManualMode(bool mode)
     if (!mode)
     {
         _redundantWrite = true;
+        // Clear manual PWM information if setting manual mode to false
+        std::tuple<std::string, double> value;
+        manualPwm(value);
+    }
+    else
+    {
+        if (std::get<0>(_manualPwmInfo) != "")
+        {
+            setPwm();
+        }
     }
 }
 
@@ -570,6 +580,83 @@ bool DbusPidZone::manual(bool value)
 bool DbusPidZone::failSafe() const
 {
     return getFailSafeMode();
+}
+
+void DbusPidZone::setPwm()
+{
+    auto& [sensorName, percent] = _manualPwmInfo;
+
+    if (percent > 100)
+    {
+        percent = 100;
+    }
+    else if (percent < 0)
+    {
+        percent = 0;
+    }
+
+    std::cerr << "zone " << getZoneID() << " " << sensorName
+              << " set PWM: " << percent << " %\n";
+
+    percent /= 100;
+
+    if (sensorName == "All")
+    {
+        for (const auto& f : _fanInputs)
+        {
+            auto sensor = getSensor(f);
+            auto redundantWrite = getRedundantWrite();
+            int64_t rawWritten;
+            sensor->write(percent, redundantWrite, &rawWritten);
+
+            auto unscaledWritten = static_cast<double>(rawWritten);
+            setOutputCache(sensor->getName(), {percent, unscaledWritten});
+        }
+    }
+    else
+    {
+        auto sensor = getSensor(sensorName);
+        auto redundantWrite = getRedundantWrite();
+        int64_t rawWritten;
+        sensor->write(percent, redundantWrite, &rawWritten);
+
+        auto unscaledWritten = static_cast<double>(rawWritten);
+        setOutputCache(sensor->getName(), {percent, unscaledWritten});
+    }
+}
+
+std::tuple<std::string, double>
+    DbusPidZone::manualPwm(std::tuple<std::string, double> value)
+{
+    auto& [sensorName, percent] = value;
+
+    // Clear the manual PWM setting
+    if (sensorName == "")
+    {
+        std::get<0>(_manualPwmInfo) = "";
+        std::get<1>(_manualPwmInfo) = 0;
+
+        return FanZoneObject::manualPwm(_manualPwmInfo);
+    }
+    else if (sensorName != "All")
+    {
+        if (std::find(_fanInputs.begin(), _fanInputs.end(), sensorName) ==
+            _fanInputs.end())
+        {
+            std::cerr << "Can't find sensor " << sensorName
+                      << " while setting pwm\n";
+            throw sdbusplus::exception::SdBusError(-EINVAL, "Invalid sensor");
+        }
+    }
+
+    _manualPwmInfo = value;
+
+    if (getManualMode() == true)
+    {
+        setPwm();
+    }
+
+    return FanZoneObject::manualPwm(value);
 }
 
 } // namespace pid_control

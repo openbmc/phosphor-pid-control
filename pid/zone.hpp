@@ -10,6 +10,7 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
+#include <xyz/openbmc_project/Control/FanZone/server.hpp>
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
 
 #include <fstream>
@@ -23,6 +24,9 @@ template <typename... T>
 using ServerObject = typename sdbusplus::server::object_t<T...>;
 using ModeInterface = sdbusplus::xyz::openbmc_project::Control::server::Mode;
 using ModeObject = ServerObject<ModeInterface>;
+using FanZoneInterface =
+    sdbusplus::xyz::openbmc_project::Control::server::FanZone;
+using FanZoneObject = ServerObject<FanZoneInterface>;
 
 namespace pid_control
 {
@@ -32,7 +36,10 @@ namespace pid_control
  * control mode changes.  It primarily holds all PID loops and holds the sensor
  * value cache that's used per iteration of the PID loops.
  */
-class DbusPidZone : public ZoneInterface, public ModeObject
+class DbusPidZone :
+    public ZoneInterface,
+    public ModeObject,
+    public FanZoneObject
 {
   public:
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
@@ -41,6 +48,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
         ModeObject(bus, objPath,
                    defer ? ModeObject::action::defer_emit
                          : ModeObject::action::emit_object_added),
+        FanZoneObject(bus, objPath,
+                      defer ? FanZoneObject::action::defer_emit
+                            : FanZoneObject::action::emit_object_added),
         _zoneId(zone), _maximumSetPoint(),
         _minThermalOutputSetPt(minThermalOutput),
         _failSafePercent(failSafePercent), _cycleTime(cycleTime), _mgr(mgr)
@@ -98,6 +108,11 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     /* Method for reading whether in fail-safe mode over dbus */
     bool failSafe() const override;
 
+    void setPwm(void);
+    /* Method for setting the pwm value for specific fan sensor over dbus */
+    std::tuple<std::string, double>
+        manualPwm(std::tuple<std::string, double> value) override;
+
   private:
     std::ofstream _log;
 
@@ -111,6 +126,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     const double _failSafePercent;
     const conf::CycleTime _cycleTime;
 
+    std::tuple<std::string, double> _manualPwmInfo;
     std::set<std::string> _failSafeSensors;
 
     std::vector<double> _SetPoints;
