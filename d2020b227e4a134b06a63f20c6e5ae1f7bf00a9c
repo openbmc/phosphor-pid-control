@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f25c82f5_fa2ce3ed",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 135,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-10T22:54:39Z",
+      "side": 1,
+      "message": "Done, added comment",
+      "parentUuid": "41bc58cf_0429de6c",
+      "range": {
+        "startLine": 134,
+        "startChar": 13,
+        "endLine": 135,
+        "endChar": 1
+      },
+      "revId": "d2020b227e4a134b06a63f20c6e5ae1f7bf00a9c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b43b7fb8_8412b577",
@@ -54,6 +78,30 @@
       "writtenOn": "2022-11-09T17:31:47Z",
       "side": 1,
       "message": "I don\u0027t think we want to have function definition in an interface class right? since everything else here is pure virtual",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 64,
+        "endChar": 5
+      },
+      "revId": "d2020b227e4a134b06a63f20c6e5ae1f7bf00a9c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "33bb3552_d1993995",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-10T22:54:39Z",
+      "side": 1,
+      "message": "OK, I made it \"\u003d 0\" and it still worked! Happily, other people over time have changed the other subclasses, so this compatibility interface is no longer needed.",
+      "parentUuid": "b43b7fb8_8412b577",
       "range": {
         "startLine": 55,
         "startChar": 0,
