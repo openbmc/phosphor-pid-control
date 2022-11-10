@@ -504,4 +504,58 @@ bool DbusPidZone::failSafe() const
     return getFailSafeMode();
 }
 
+std::tuple<std::string, double>
+    DbusPidZone::setPwm(std::tuple<std::string, double> value)
+{
+    auto& [sensorName, percent] = value;
+
+    if (percent > 100)
+    {
+        percent = 100;
+    }
+    else if (percent < 0)
+    {
+        percent = 0;
+    }
+
+    // Set to manual mode.
+    if (getManualMode() == false)
+    {
+        manual(true);
+    }
+
+    std::cerr << "zone " << getZoneID() << " " << sensorName
+              << " set PWM: " << percent << " %\n";
+
+    percent /= 100;
+
+    if (sensorName == "All")
+    {
+        for (const auto& f : _fanInputs)
+        {
+            auto sensor = getSensor(f);
+            auto redundantWrite = getRedundantWrite();
+            int64_t rawWritten;
+            sensor->write(percent, redundantWrite, &rawWritten);
+        }
+    }
+    else
+    {
+        if (std::find(_fanInputs.begin(), _fanInputs.end(), sensorName) ==
+            _fanInputs.end())
+        {
+            std::cerr << "Can't find sensor " << sensorName
+                      << " while setting pwm\n";
+            throw sdbusplus::exception::SdBusError(-EINVAL, "Invalid sensor");
+        }
+
+        auto sensor = getSensor(sensorName);
+        auto redundantWrite = getRedundantWrite();
+        int64_t rawWritten;
+        sensor->write(percent, redundantWrite, &rawWritten);
+    }
+
+    return ModeObject::setPwm(value);
+}
+
 } // namespace pid_control
