@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3af97f03_fa0dd6f7",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-11T00:28:50Z",
+      "side": 1,
+      "message": "Oh.. scaled RPM is actually PWM?",
+      "range": {
+        "startLine": 10,
+        "startChar": 29,
+        "endLine": 10,
+        "endChar": 63
+      },
+      "revId": "84b66ea61eedded15135149a30b8f1b00c368972",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f989b53_f50537dc",
+        "filename": "pid/fancontroller.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-11T00:28:50Z",
+      "side": 1,
+      "message": "Would it be easier to prevent this bug if we call this value as unscaledRPM instead?",
+      "range": {
+        "startLine": 49,
+        "startChar": 11,
+        "endLine": 49,
+        "endChar": 16
+      },
+      "revId": "84b66ea61eedded15135149a30b8f1b00c368972",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "73c818d8_cc2fe67e",
+        "filename": "pid/fancontroller.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-11T00:28:50Z",
+      "side": 1,
+      "message": "Do we need unit test coverage for these?",
+      "range": {
+        "startLine": 49,
+        "startChar": 0,
+        "endLine": 59,
+        "endChar": 0
+      },
+      "revId": "84b66ea61eedded15135149a30b8f1b00c368972",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
