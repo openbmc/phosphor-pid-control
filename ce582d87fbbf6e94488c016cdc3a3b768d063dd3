@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "620978a9_d138b910",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 661,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-11T00:29:20Z",
+      "side": 1,
+      "message": "Could we add unit test coverage here?",
+      "range": {
+        "startLine": 650,
+        "startChar": 6,
+        "endLine": 661,
+        "endChar": 21
+      },
+      "revId": "ce582d87fbbf6e94488c016cdc3a3b768d063dd3",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
