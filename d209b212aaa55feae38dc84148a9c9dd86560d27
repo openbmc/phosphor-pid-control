@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3560fa1d_be344b9c",
+        "filename": "pid/ec/logging.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-11T00:34:33Z",
+      "side": 1,
+      "message": "Would that work even on small embedded C libraries that don\u0027t support locale? I am leery of introducing a locale requirement to the BMC.",
+      "parentUuid": "cae00a54_5640cf2b",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 1
+      },
+      "revId": "d209b212aaa55feae38dc84148a9c9dd86560d27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a97374ad_a3fbbf86",
         "filename": "pid/ec/logging.hpp",
         "patchSetId": 15
