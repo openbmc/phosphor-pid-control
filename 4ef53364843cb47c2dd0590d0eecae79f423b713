@@ -65,6 +65,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b9f94ece_1a79f478",
+        "filename": "dbus/dbuspassive.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-11T00:47:42Z",
+      "side": 1,
+      "message": "Hmm. What should it be changed to? It would have a blast radius. The existing names make sense, in the greater context of the program, as they match the existing usages in the ValueCacheEntry and ReadReturn structures.",
+      "parentUuid": "ed1e30a2_5ba3c5a5",
+      "range": {
+        "startLine": 80,
+        "startChar": 11,
+        "endLine": 80,
+        "endChar": 20
+      },
+      "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b33066c_d9e46525",
@@ -136,6 +160,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "8b81d9cb_b4153e1d",
+        "filename": "interfaces.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-11T00:47:42Z",
+      "side": 1,
+      "message": "Now that, I can do. Added some nice comments.",
+      "parentUuid": "cac3a745_1498017a",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 20
+      },
+      "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "74681dbb_f01c2d06",
@@ -149,6 +197,30 @@
       "writtenOn": "2022-11-11T00:42:30Z",
       "side": 1,
       "message": "Does string_view work here?",
+      "range": {
+        "startLine": 61,
+        "startChar": 44,
+        "endLine": 61,
+        "endChar": 62
+      },
+      "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6c1675f5_2e26b5d3",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-11T00:47:42Z",
+      "side": 1,
+      "message": "It might, but I don\u0027t want to introduce any bugs regarding string ownership, or introduce any new requirements upon the callers. A string reference works fine, and is not a copy.",
+      "parentUuid": "74681dbb_f01c2d06",
       "range": {
         "startLine": 61,
         "startChar": 44,
