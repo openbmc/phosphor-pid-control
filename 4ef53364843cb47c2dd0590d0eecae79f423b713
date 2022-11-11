@@ -39,6 +39,30 @@
       },
       "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6723cc6_cbc8266a",
+        "filename": "interfaces.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-11T00:32:42Z",
+      "side": 1,
+      "message": "No, that\u0027s a confusion of scaled/unscaled versus input/output. Scaled is normalized to the (0.0, 1.0) range, based on preconfigured min and max, but unscaled is whatever raw value comes from the inputs.",
+      "parentUuid": "6b33066c_d9e46525",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 20
+      },
+      "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
