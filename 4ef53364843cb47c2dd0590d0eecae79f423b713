@@ -16,6 +16,29 @@
       "message": "It turns out the ZoneMock class still used the compatibility interface, to my surprise. I added the missing mock declaration. Now it all works as it should.\n",
       "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6b33066c_d9e46525",
+        "filename": "interfaces.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-11T00:30:26Z",
+      "side": 1,
+      "message": "Going back to this now that it seems scaled \u003d PWM and unscaled \u003d RPM - should we just use those names instead?",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 20
+      },
+      "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
