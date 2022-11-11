@@ -63,6 +63,30 @@
       },
       "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cac3a745_1498017a",
+        "filename": "interfaces.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-11-11T00:34:22Z",
+      "side": 1,
+      "message": "Ah! ok, could we add that in the comment here for future readers.\n\nThat was confusing to me",
+      "parentUuid": "d6723cc6_cbc8266a",
+      "range": {
+        "startLine": 23,
+        "startChar": 0,
+        "endLine": 24,
+        "endChar": 20
+      },
+      "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
