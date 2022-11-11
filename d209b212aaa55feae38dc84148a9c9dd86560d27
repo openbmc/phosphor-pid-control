@@ -192,6 +192,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4cb593b2_91247e16",
+        "filename": "pid/ec/logging.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-11T08:12:50Z",
+      "side": 1,
+      "message": "Sorry, my bad: it\u0027s a bmcweb style standard, not an overall OpenBMC style standard.",
+      "parentUuid": "86e6f93f_3cbb8568",
+      "range": {
+        "startLine": 38,
+        "startChar": 0,
+        "endLine": 53,
+        "endChar": 1
+      },
+      "revId": "d209b212aaa55feae38dc84148a9c9dd86560d27",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a97374ad_a3fbbf86",
