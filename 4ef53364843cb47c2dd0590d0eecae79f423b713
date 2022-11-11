@@ -113,6 +113,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eaaef069_f508a726",
+        "filename": "dbus/dbuspassive.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-11T02:20:23Z",
+      "side": 1,
+      "message": "That is correct. It is old code that predates that. To avoid introducing needless churn, it was decided a while ago to let it be grandfathered in, if I remember correctly.",
+      "parentUuid": "0141a8cc_5a6f18e6",
+      "range": {
+        "startLine": 80,
+        "startChar": 11,
+        "endLine": 80,
+        "endChar": 20
+      },
+      "revId": "4ef53364843cb47c2dd0590d0eecae79f423b713",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6b33066c_d9e46525",
