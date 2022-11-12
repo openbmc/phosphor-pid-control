@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97143338_621046de",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-12T15:59:48Z",
+      "side": 1,
+      "message": "Made sure to include logging.o in the Meson makefiles, not just the old-style makefiles, reflecting the recent change to use Meson instead\n",
+      "revId": "773698ed053359e84d0242dcf1b6bc86b4ebc228",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
