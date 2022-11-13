@@ -646,7 +646,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     // All non-fan PID classes should be initialized this way.
                     // As for why a fan should not use this code path, see
                     // the ed1dafdf168def37c65bfb7a5efd18d9dbe04727 commit.
-                    if ((pidClass == "temp") || (pidClass == "margin"))
+                    if ((pidClass == "temp") || (pidClass == "margin") ||
+                        (pidClass == "power") || (pidClass == "powersum"))
                     {
                         std::string inputSensorName =
                             getSensorNameFromPath(inputSensorPath);
