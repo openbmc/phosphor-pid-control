@@ -29,13 +29,26 @@ namespace pid_control
 
 ThermalType getThermalType(const std::string& typeString)
 {
-    /* Currently it only supports the two types. */
-    return (typeString == "temp") ? ThermalType::absolute : ThermalType::margin;
+    if (typeString == "margin")
+    {
+        return ThermalType::margin;
+    }
+    if ((typeString == "temp") || (typeString == "power"))
+    {
+        return ThermalType::absolute;
+    }
+    if (typeString == "powersum")
+    {
+        return ThermalType::summation;
+    }
+
+    throw ControllerBuildException("Unrecognized PID Type/Class string");
 }
 
 bool isThermalType(const std::string& typeString)
 {
-    static const std::vector<std::string> thermalTypes = {"temp", "margin"};
+    static const std::vector<std::string> thermalTypes = {"temp", "margin",
+                                                          "power", "powersum"};
     return std::count(thermalTypes.begin(), thermalTypes.end(), typeString);
 }
 
@@ -48,7 +61,6 @@ std::unique_ptr<PIDController> ThermalController::createThermalPid(
     if (inputs.empty())
     {
         throw ControllerBuildException("Thermal controller missing inputs");
-        return nullptr;
     }
 
     auto thermal = std::make_unique<ThermalController>(id, inputs, type, owner);
@@ -66,15 +78,26 @@ double ThermalController::inputProc(void)
 {
     double value;
     const double& (*compare)(const double&, const double&);
+    bool doSummation = false;
+
     if (type == ThermalType::margin)
     {
         value = std::numeric_limits<double>::max();
         compare = std::min<double>;
     }
-    else
+    else if (type == ThermalType::absolute)
     {
         value = std::numeric_limits<double>::lowest();
         compare = std::max<double>;
+    }
+    else if (type == ThermalType::summation)
+    {
+        doSummation = true;
+        value = 0.0;
+    }
+    else
+    {
+        throw ControllerBuildException("Unrecognized ThermalType");
     }
 
     bool acceptable = false;
@@ -88,7 +111,15 @@ double ThermalController::inputProc(void)
             continue;
         }
 
-        value = compare(value, cachedValue);
+        if (doSummation)
+        {
+            value += cachedValue;
+        }
+        else
+        {
+            value = compare(value, cachedValue);
+        }
+
         acceptable = true;
     }
 

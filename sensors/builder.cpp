@@ -162,7 +162,8 @@ SensorManager
                 name, info->timeout, std::move(ri), std::move(wi));
             mgmr.addSensor(info->type, name, std::move(sensor));
         }
-        else if (info->type == "temp" || info->type == "margin")
+        else if (info->type == "temp" || info->type == "margin" ||
+                 info->type == "power" || info->type == "powersum")
         {
             // These sensors are read-only, but only for this application
             // which only writes to fan sensors.

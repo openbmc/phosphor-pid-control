@@ -13,12 +13,16 @@ namespace pid_control
 /*
  * A ThermalController is a PID controller that reads a number of sensors and
  * provides the setpoints for the fans.
+ * With addition of support for power sensors, this name is misleading,
+ * as it now works for power sensors also, not just thermal sensors.
+ * If rewritten today, a better name would be "ComputationType".
  */
 
 enum class ThermalType
 {
     margin,
-    absolute
+    absolute,
+    summation
 };
 
 /**

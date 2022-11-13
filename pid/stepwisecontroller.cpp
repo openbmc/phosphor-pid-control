@@ -74,7 +74,6 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
     if (inputs.empty())
     {
         throw ControllerBuildException("Stepwise controller missing inputs");
-        return nullptr;
     }
 
     auto thermal = std::make_unique<StepwiseController>(id, inputs, owner);
