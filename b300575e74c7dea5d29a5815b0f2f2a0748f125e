@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01c6e82e_61240ccb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-13T07:30:12Z",
+      "side": 1,
+      "message": "Giving +2 to myself, after multiple +1 from others.\n\nAfter a little over two years, it feels good to finally get this in!\n",
+      "revId": "b300575e74c7dea5d29a5815b0f2f2a0748f125e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
