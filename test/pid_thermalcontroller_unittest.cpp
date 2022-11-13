@@ -151,6 +151,27 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
     EXPECT_EQ(5.0, p->inputProc());
 }
 
+TEST(ThermalControllerTest, InputProc_MultipleInputsSummation)
+{
+    // This test verifies inputProc behaves as expected with multiple summation
+    // inputs.
+
+    ZoneMock z;
+
+    std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::summation);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting1"))).WillOnce(Return(10.0));
+
+    EXPECT_EQ(15.0, p->inputProc());
+}
+
 TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
 {
 

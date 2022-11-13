@@ -40,7 +40,11 @@ INSTANTIATE_TEST_SUITE_P(
         std::make_tuple("margin", "9",
                         "/xyz/openbmc_project/sensors/temperature/9"),
         std::make_tuple("temp", "123",
-                        "/xyz/openbmc_project/sensors/temperature/123")));
+                        "/xyz/openbmc_project/sensors/temperature/123"),
+        std::make_tuple("power", "9000",
+                        "/xyz/openbmc_project/sensors/power/9000"),
+        std::make_tuple("powersum", "total",
+                        "/xyz/openbmc_project/sensors/power/total")));
 
 class FindSensorsTest : public ::testing::Test
 {
