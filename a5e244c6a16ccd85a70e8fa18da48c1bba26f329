@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "17d60c07_b2fb6780",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-14T19:59:01Z",
+      "side": 1,
+      "message": "Nice catch. Good find that somehow, over time, this function had been cloned.\n",
+      "revId": "a5e244c6a16ccd85a70e8fa18da48c1bba26f329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ca9c4a23_4febf31b",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-14T19:59:01Z",
+      "side": 1,
+      "message": "There is a subtle difference, I\u0027ve noticed: logging. In one function, logging is performed, by writing to the \"_log\" stream. However, in the other function, logging is never done. Might want to pass in a parameter, to distinguish these two use-cases.",
+      "revId": "a5e244c6a16ccd85a70e8fa18da48c1bba26f329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "08d337e0_1771c880",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-14T19:59:01Z",
+      "side": 1,
+      "message": "Although a \"using\" shortcut is handy to save typing here, I recommend against it, because it increases the cognitive burden of anybody reading this code. They have to cross-reference it back to see what \"tstamp\" is locally defined as. I would prefer it still be the full std::chrono::high_resolution_clock::time_point text, even though it\u0027s more typing.",
+      "revId": "a5e244c6a16ccd85a70e8fa18da48c1bba26f329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
