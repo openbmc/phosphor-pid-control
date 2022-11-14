@@ -13,6 +13,7 @@
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
 
 #include <fstream>
+#include <iostream>
 #include <map>
 #include <memory>
 #include <set>
@@ -99,6 +100,78 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool failSafe() const override;
 
   private:
+    template <bool fanSensorLogging>
+    void processSensorInputs(const std::vector<std::string>& sensorInputs,
+                             std::chrono::high_resolution_clock::time_point now)
+    {
+        for (const auto& sensorInput : sensorInputs)
+        {
+            auto sensor = _mgr.getSensor(sensorInput);
+            ReadReturn r = sensor->read();
+            _cachedValuesByName[sensorInput] = {r.value, r.unscaled};
+            int64_t timeout = sensor->getTimeout();
+            std::chrono::high_resolution_clock::time_point then = r.updated;
+
+            auto duration =
+                std::chrono::duration_cast<std::chrono::seconds>(now - then)
+                    .count();
+            auto period = std::chrono::seconds(timeout).count();
+            /*
+             * TODO(venture): We should check when these were last read.
+             * However, these are the fans, so if I'm not getting updated values
+             * for them... what should I do?
+             */
+            if constexpr (fanSensorLogging)
+            {
+                if (loggingEnabled)
+                {
+                    const auto& v = _cachedValuesByName[sensorInput];
+                    _log << "," << v.scaled << "," << v.unscaled;
+                    const auto& p = _cachedFanOutputs[sensorInput];
+                    _log << "," << p.scaled << "," << p.unscaled;
+                }
+            }
+
+            if (debugEnabled)
+            {
+                std::cerr << sensorInput << " sensor reading: " << r.value
+                          << "\n";
+            }
+
+            // check if fan fail.
+            if (sensor->getFailed())
+            {
+                _failSafeSensors.insert(sensorInput);
+                if (debugEnabled)
+                {
+                    std::cerr << sensorInput << " sensor get failed\n";
+                }
+            }
+            else if (timeout != 0 && duration >= period)
+            {
+                _failSafeSensors.insert(sensorInput);
+                if (debugEnabled)
+                {
+                    std::cerr << sensorInput << " sensor timeout\n";
+                }
+            }
+            else
+            {
+                // Check if it's in there: remove it.
+                auto kt = _failSafeSensors.find(sensorInput);
+                if (kt != _failSafeSensors.end())
+                {
+                    if (debugEnabled)
+                    {
+                        std::cerr << sensorInput
+                                  << " is erased from failsafe sensor set\n";
+                    }
+                    _failSafeSensors.erase(kt);
+                }
+            }
+        }
+    }
+
     std::ofstream _log;
 
     const int64_t _zoneId;
