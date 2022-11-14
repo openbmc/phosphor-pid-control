@@ -34,6 +34,8 @@ namespace pid_control
  */
 class DbusPidZone : public ZoneInterface, public ModeObject
 {
+    using tstamp = std::chrono::high_resolution_clock::time_point;
+
   public:
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
                 const SensorManager& mgr, sdbusplus::bus_t& bus,
@@ -97,6 +99,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool failSafe() const override;
 
   private:
+    void processSensorInputs(const std::vector<std::string>& sensorInputs,
+                             tstamp now);
+
     std::ofstream _log;
 
     const int64_t _zoneId;
