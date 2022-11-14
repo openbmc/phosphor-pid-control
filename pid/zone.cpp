@@ -348,7 +348,7 @@ void DbusPidZone::updateFanTelemetry(void)
      * is disabled?  I think it's a waste to try and log things even if the
      * data is just being dropped though.
      */
-    tstamp now = std::chrono::high_resolution_clock::now();
+    const auto now = std::chrono::high_resolution_clock::now();
     if (loggingEnabled)
     {
         _log << std::chrono::duration_cast<std::chrono::milliseconds>(
@@ -358,67 +358,7 @@ void DbusPidZone::updateFanTelemetry(void)
         _log << "," << _maximumSetPointName;
     }
 
-    for (const auto& f : _fanInputs)
-    {
-        auto sensor = _mgr.getSensor(f);
-        ReadReturn r = sensor->read();
-        _cachedValuesByName[f] = {r.value, r.unscaled};
-        int64_t timeout = sensor->getTimeout();
-        tstamp then = r.updated;
-
-        auto duration =
-            std::chrono::duration_cast<std::chrono::seconds>(now - then)
-                .count();
-        auto period = std::chrono::seconds(timeout).count();
-        /*
-         * TODO(venture): We should check when these were last read.
-         * However, these are the fans, so if I'm not getting updated values
-         * for them... what should I do?
-         */
-        if (loggingEnabled)
-        {
-            const auto& v = _cachedValuesByName[f];
-            _log << "," << v.scaled << "," << v.unscaled;
-            const auto& p = _cachedFanOutputs[f];
-            _log << "," << p.scaled << "," << p.unscaled;
-        }
-
-        if (debugEnabled)
-        {
-            std::cerr << f << " fan sensor reading: " << r.value << "\n";
-        }
-
-        // check if fan fail.
-        if (sensor->getFailed())
-        {
-            _failSafeSensors.insert(f);
-            if (debugEnabled)
-            {
-                std::cerr << f << " fan sensor get failed\n";
-            }
-        }
-        else if (timeout != 0 && duration >= period)
-        {
-            _failSafeSensors.insert(f);
-            if (debugEnabled)
-            {
-                std::cerr << f << " fan sensor timeout\n";
-            }
-        }
-        else
-        {
-            // Check if it's in there: remove it.
-            auto kt = _failSafeSensors.find(f);
-            if (kt != _failSafeSensors.end())
-            {
-                if (debugEnabled)
-                {
-                    std::cerr << f << " is erased from failsafe sensor set\n";
-                }
-                _failSafeSensors.erase(kt);
-            }
-        }
-    }
+    processSensorInputs</* fanSensorLogging */ true>(_fanInputs, now);
 
     if (loggingEnabled)
     {
@@ -434,59 +374,8 @@ void DbusPidZone::updateFanTelemetry(void)
 
 void DbusPidZone::updateSensors(void)
 {
-    using namespace std::chrono;
-    /* margin and temp are stored as temp */
-    tstamp now = high_resolution_clock::now();
-
-    for (const auto& t : _thermalInputs)
-    {
-        auto sensor = _mgr.getSensor(t);
-        ReadReturn r = sensor->read();
-        int64_t timeout = sensor->getTimeout();
-
-        _cachedValuesByName[t] = {r.value, r.unscaled};
-        tstamp then = r.updated;
-
-        auto duration = duration_cast<std::chrono::seconds>(now - then).count();
-        auto period = std::chrono::seconds(timeout).count();
-
-        if (debugEnabled)
-        {
-            std::cerr << t << " temperature sensor reading: " << r.value
-                      << "\n";
-        }
-
-        if (sensor->getFailed())
-        {
-            _failSafeSensors.insert(t);
-            if (debugEnabled)
-            {
-                std::cerr << t << " temperature sensor get failed\n";
-            }
-        }
-        else if (timeout != 0 && duration >= period)
-        {
-            // std::cerr << "Entering fail safe mode.\n";
-            _failSafeSensors.insert(t);
-            if (debugEnabled)
-            {
-                std::cerr << t << " temperature sensor get timeout\n";
-            }
-        }
-        else
-        {
-            // Check if it's in there: remove it.
-            auto kt = _failSafeSensors.find(t);
-            if (kt != _failSafeSensors.end())
-            {
-                if (debugEnabled)
-                {
-                    std::cerr << t << " is erased from failsafe sensor set\n";
-                }
-                _failSafeSensors.erase(kt);
-            }
-        }
-    }
+    processSensorInputs</* fanSensorLogging */ false>(
+        _thermalInputs, std::chrono::high_resolution_clock::now());
 
     return;
 }
