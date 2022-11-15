@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20945b2f_1ea5923d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-15T20:41:26Z",
+      "side": 1,
+      "message": "Looks good now. Clever use of templates. Has it been tested by running on a live system?\n",
+      "revId": "bfd45a184470c2627e1138164f51f82bacaba850",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
