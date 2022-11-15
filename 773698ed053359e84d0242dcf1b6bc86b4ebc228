@@ -136,6 +136,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6a9096f4_41821ea1",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 22
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-15T23:17:37Z",
+      "side": 1,
+      "message": "I just tried omitting them, and it failed to compile: no match for operator!\u003d",
+      "parentUuid": "e60a3e20_329ba030",
+      "range": {
+        "startLine": 40,
+        "startChar": 4,
+        "endLine": 44,
+        "endChar": 5
+      },
+      "revId": "773698ed053359e84d0242dcf1b6bc86b4ebc228",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bd344ec0_0f7afca0",
