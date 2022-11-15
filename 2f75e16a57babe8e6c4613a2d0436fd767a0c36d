@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "120ec96b_27e5af66",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-15T20:55:08Z",
+      "side": 1,
+      "message": "Cleaned up code around throw statements. No more redundant return.\n",
+      "revId": "2f75e16a57babe8e6c4613a2d0436fd767a0c36d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

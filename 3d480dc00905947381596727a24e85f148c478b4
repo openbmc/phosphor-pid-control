@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b3cc635_864bd569",
+        "filename": "pid/thermalcontroller.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 46,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-15T20:55:08Z",
+      "side": 1,
+      "message": "It is redundant, good catch. I was debating having it just follow the previous behavior of essentially returning garbage, or throwing. I think I will prefer to have it throw.\n\nInterestingly, the pattern of throw followed by return is elsewhere in this program as well... it might be an old bug. Will also clean it up.",
+      "parentUuid": "615f9bc1_d41eaa78",
+      "revId": "3d480dc00905947381596727a24e85f148c478b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6fe4e9b1_a38e63e8",
@@ -66,6 +84,24 @@
       "writtenOn": "2022-11-15T00:36:14Z",
       "side": 1,
       "message": "same here",
+      "revId": "3d480dc00905947381596727a24e85f148c478b4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fe34d26_9ef228a0",
+        "filename": "pid/thermalcontroller.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-15T20:55:08Z",
+      "side": 1,
+      "message": "Same.",
+      "parentUuid": "6fe4e9b1_a38e63e8",
       "revId": "3d480dc00905947381596727a24e85f148c478b4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
