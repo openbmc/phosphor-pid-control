@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c0f9d51_53d8c4f4",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1001087
+      },
+      "writtenOn": "2022-11-15T14:52:18Z",
+      "side": 1,
+      "message": "Since these two functions are called frequently (100ms), I added template with bool parameter to handle this in build time.",
+      "parentUuid": "ca9c4a23_4febf31b",
+      "revId": "a5e244c6a16ccd85a70e8fa18da48c1bba26f329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "08d337e0_1771c880",
@@ -48,6 +66,24 @@
       "writtenOn": "2022-11-14T19:59:01Z",
       "side": 1,
       "message": "Although a \"using\" shortcut is handy to save typing here, I recommend against it, because it increases the cognitive burden of anybody reading this code. They have to cross-reference it back to see what \"tstamp\" is locally defined as. I would prefer it still be the full std::chrono::high_resolution_clock::time_point text, even though it\u0027s more typing.",
+      "revId": "a5e244c6a16ccd85a70e8fa18da48c1bba26f329",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9d58cd84_30b642dc",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1001087
+      },
+      "writtenOn": "2022-11-15T14:52:18Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "08d337e0_1771c880",
       "revId": "a5e244c6a16ccd85a70e8fa18da48c1bba26f329",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
