@@ -73,6 +73,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "419d6b2e_6465cd61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-11-16T06:43:50Z",
+      "side": 1,
+      "message": "Hi Josh,\nThanks for your suggestion!\n\nI set the same topic for 58427 and this commit, but the openBMC CI didn\u0027t build with 58427.\nWould like to know is there any additional setting I need to set?",
+      "parentUuid": "e429c331_6e2f1fb1",
+      "revId": "d27e419277ef2e528bf07f437d5a505ecc18d78b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54a38c67_5007528b",
         "filename": "pid/zone.cpp",
         "patchSetId": 1
