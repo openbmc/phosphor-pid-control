@@ -22,6 +22,30 @@
       },
       "revId": "0d773bd46de85611bf731f600c83f8edce2deba8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e5f3993d_7d7483f0",
+        "filename": ".gitignore",
+        "patchSetId": 3
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-16T18:32:15Z",
+      "side": 1,
+      "message": "It happens when I try to build it locally. I\u0027m guessing something in the build script creates these backup files?",
+      "parentUuid": "d157a4f1_06d10462",
+      "range": {
+        "startLine": 17,
+        "startChar": 0,
+        "endLine": 17,
+        "endChar": 10
+      },
+      "revId": "0d773bd46de85611bf731f600c83f8edce2deba8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
