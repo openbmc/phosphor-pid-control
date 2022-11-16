@@ -50,6 +50,7 @@ unittest_source = {
                                    '../pid/util.cpp'],
     'pid_stepwisecontroller_unittest': ['../pid/ec/stepwise.cpp',
                                         '../pid/stepwisecontroller.cpp',
+                                        '../pid/tuning.cpp',
                                         '../pid/util.cpp'],
     'pid_thermalcontroller_unittest': ['../pid/ec/pid.cpp',
                                        '../pid/pidcontroller.cpp',
