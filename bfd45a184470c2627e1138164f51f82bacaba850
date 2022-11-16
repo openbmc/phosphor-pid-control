@@ -51,6 +51,24 @@
       "message": "Will update the patch because it seems there is a conflict.",
       "revId": "bfd45a184470c2627e1138164f51f82bacaba850",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d17026fc_f1f0baff",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001087
+      },
+      "writtenOn": "2022-11-16T05:02:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "d6020a11_822923a5",
+      "revId": "bfd45a184470c2627e1138164f51f82bacaba850",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
