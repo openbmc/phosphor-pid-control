@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef293a07_b1e70c8c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 20
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-17T08:47:10Z",
+      "side": 1,
+      "message": "A little bit late, but there\u0027s something to note: there\u0027s no way to set the D term from the dynamic configuration (dbus/dbusconfiguration). Only from the old static hardcoded JSON file. Another patch should take care of being able to set the D term from the D-Bus configuration.\n",
+      "revId": "0e8fc3980a6690d1b2be2b4e96a8018aa1eacc96",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
