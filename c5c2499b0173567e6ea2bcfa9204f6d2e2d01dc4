@@ -16,6 +16,29 @@
       "message": "Rebase master and fix the conflicts",
       "revId": "c5c2499b0173567e6ea2bcfa9204f6d2e2d01dc4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df954338_e40ceb55",
+        "filename": "meson_options.txt",
+        "patchSetId": 16
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-17T00:46:00Z",
+      "side": 1,
+      "message": "Need to set option value in meson.build, like below.\nhttps://github.com/openbmc/phosphor-pid-control/blob/master/meson.build#L17",
+      "range": {
+        "startLine": 4,
+        "startChar": 0,
+        "endLine": 4,
+        "endChar": 148
+      },
+      "revId": "c5c2499b0173567e6ea2bcfa9204f6d2e2d01dc4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
