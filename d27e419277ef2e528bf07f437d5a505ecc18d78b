@@ -127,6 +127,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f8e8f865_3a92ac88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-18T18:33:45Z",
+      "side": 1,
+      "message": "That is an unfortunate limitation of the Jenkins build system. I don\u0027t think it understands Gerrit topics, so it wouldn\u0027t know it needs to pull in 58427 also, when making the build. I wonder what the best workaround would be? We can ask around on Discord and see what people say.",
+      "parentUuid": "e6ef611f_37eca54b",
+      "revId": "d27e419277ef2e528bf07f437d5a505ecc18d78b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54a38c67_5007528b",
         "filename": "pid/zone.cpp",
         "patchSetId": 1
