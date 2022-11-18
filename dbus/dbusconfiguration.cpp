@@ -257,6 +257,32 @@ inline DbusVariantType getPIDAttribute(
     return search->second;
 }
 
+inline void getCycleTimeSetting(
+    const std::unordered_map<std::string, DbusVariantType>& zone,
+    const int zoneIndex, const std::string& attributeName, uint64_t& value)
+{
+    auto findAttributeName = zone.find(attributeName);
+    if (findAttributeName != zone.end())
+    {
+        double tmpAttributeValue =
+            std::visit(VariantToDoubleVisitor(), zone.at(attributeName));
+        if (tmpAttributeValue >= 1.0)
+        {
+            value = static_cast<uint64_t>(tmpAttributeValue);
+        }
+        else
+        {
+            std::cerr << "Zone " << zoneIndex << ": " << attributeName
+                      << " is invalid. Use default " << value << " ms\n";
+        }
+    }
+    else
+    {
+        std::cerr << "Zone " << zoneIndex << ": " << attributeName
+                  << " cannot find setting. Use default " << value << " ms\n";
+    }
+}
+
 void populatePidInfo(
     [[maybe_unused]] sdbusplus::bus_t& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
@@ -582,49 +608,10 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
 
-            auto findTimeInterval = zone.find("CycleIntervalTimeMS");
-            if (findTimeInterval != zone.end())
-            {
-                double tmp = 0.0;
-                auto ptrTimeInterval =
-                    std::get_if<double>(&(findTimeInterval->second));
-                if (ptrTimeInterval)
-                {
-                    tmp = *ptrTimeInterval;
-                }
-                if (tmp >= 1.0)
-                {
-                    details.cycleTime.cycleIntervalTimeMS = tmp;
-                }
-                else
-                {
-                    std::cerr << "CycleIntervalTimeMS cannot be 0. Use default "
-                              << details.cycleTime.cycleIntervalTimeMS
-                              << " ms\n";
-                }
-            }
-
-            auto findUpdateThermalsTime = zone.find("UpdateThermalsTimeMS");
-            if (findUpdateThermalsTime != zone.end())
-            {
-                double tmp = 0.0;
-                auto ptrUpdateThermalsTime =
-                    std::get_if<double>(&(findUpdateThermalsTime->second));
-                if (ptrUpdateThermalsTime)
-                {
-                    tmp = *ptrUpdateThermalsTime;
-                }
-                if (tmp >= 1.0)
-                {
-                    details.cycleTime.updateThermalsTimeMS = tmp;
-                }
-                else
-                {
-                    std::cerr
-                        << "UpdateThermalsTimeMS cannot be 0. Use default "
-                        << details.cycleTime.updateThermalsTimeMS << " ms\n";
-                }
-            }
+            getCycleTimeSetting(zone, index, "CycleIntervalTimeMS",
+                                details.cycleTime.cycleIntervalTimeMS);
+            getCycleTimeSetting(zone, index, "UpdateThermalsTimeMS",
+                                details.cycleTime.updateThermalsTimeMS);
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         // loop through all the PID configurations and fill out a sensor config
