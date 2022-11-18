@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c91a6149_d0fffa49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-18T01:03:23Z",
+      "side": 1,
+      "message": "Nice, thanks for adding this! We needed to be able to add the D term to the dynamic configuration path also, so this is good.\n",
+      "revId": "6cba45c5285bdab76940a91dc5bdb6a2c89dc612",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "82466d23_fd003cfb",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-18T01:03:23Z",
+      "side": 1,
+      "message": "I am concerned about code duplication here:\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/57660/20/pid/buildjson.cpp#144\n\nWe need to find some way to merge these common blocks of code, to avoid having to cut-and-paste duplicate code.",
+      "revId": "6cba45c5285bdab76940a91dc5bdb6a2c89dc612",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
