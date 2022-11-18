@@ -120,6 +120,32 @@ void from_json(const json& j, conf::ControllerInfo& c)
 }
 } // namespace conf
 
+inline void getCycleTimeSetting(const auto& zone, const int id,
+                                const std::string& attributeName,
+                                uint64_t& value)
+{
+    auto findAttributeName = zone.find(attributeName);
+    if (findAttributeName != zone.end())
+    {
+        uint64_t tmpAttributeValue;
+        findAttributeName->get_to(tmpAttributeValue);
+        if (tmpAttributeValue > 0)
+        {
+            value = tmpAttributeValue;
+        }
+        else
+        {
+            std::cerr << "Zone " << id << ": " << attributeName
+                      << " is invalid. Use default " << value << " ms\n";
+        }
+    }
+    else
+    {
+        std::cerr << "Zone " << id << ": " << attributeName
+                  << " cannot find setting. Use default " << value << " ms\n";
+    }
+}
+
 std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
     buildPIDsFromJson(const json& data)
 {
@@ -141,39 +167,10 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
         thisZoneConfig.minThermalOutput = zone["minThermalOutput"];
         thisZoneConfig.failsafePercent = zone["failsafePercent"];
 
-        auto findTimeInterval = zone.find("cycleIntervalTimeMS");
-        if (findTimeInterval != zone.end())
-        {
-            uint64_t tmp;
-            findTimeInterval->get_to(tmp);
-            if (tmp != 0)
-            {
-                thisZoneConfig.cycleTime.cycleIntervalTimeMS = tmp;
-            }
-            else
-            {
-                std::cerr << "cycleIntervalTimeMS cannot be 0. Use default "
-                          << thisZoneConfig.cycleTime.cycleIntervalTimeMS
-                          << " ms\n";
-            }
-        }
-
-        auto findUpdateThermalsTime = zone.find("updateThermalsTimeMS");
-        if (findUpdateThermalsTime != zone.end())
-        {
-            uint64_t tmp;
-            findUpdateThermalsTime->get_to(tmp);
-            if (tmp != 0)
-            {
-                thisZoneConfig.cycleTime.updateThermalsTimeMS = tmp;
-            }
-            else
-            {
-                std::cerr << "updateThermalsTimeMS cannot be 0. Use default "
-                          << thisZoneConfig.cycleTime.updateThermalsTimeMS
-                          << " ms\n";
-            }
-        }
+        getCycleTimeSetting(zone, id, "cycleIntervalTimeMS",
+                            thisZoneConfig.cycleTime.cycleIntervalTimeMS);
+        getCycleTimeSetting(zone, id, "updateThermalsTimeMS",
+                            thisZoneConfig.cycleTime.updateThermalsTimeMS);
 
         double updateCount =
             double(thisZoneConfig.cycleTime.updateThermalsTimeMS) /
