@@ -309,6 +309,8 @@ void populatePidInfo(
         VariantToDoubleVisitor(), getPIDAttribute(base, "PCoefficient"));
     info.pidInfo.integralCoeff = std::visit(
         VariantToDoubleVisitor(), getPIDAttribute(base, "ICoefficient"));
+    info.pidInfo.derivativeCoeff = std::visit(
+        VariantToDoubleVisitor(), getPIDAttribute(base, "DCoefficient"));
     info.pidInfo.feedFwdOffset = std::visit(
         VariantToDoubleVisitor(), getPIDAttribute(base, "FFOffCoefficient"));
     info.pidInfo.feedFwdGain = std::visit(
@@ -571,6 +573,59 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                                                   zone.at("MinThermalOutput"));
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
+
+            auto findCycleIntervalTimeMS = zone.find("cycleIntervalTimeMS");
+            if (findCycleIntervalTimeMS != zone.end())
+            {
+                double tmpCycleIntervalTimeMS =
+                    std::visit(VariantToDoubleVisitor(),
+                               zone.at("cycleIntervalTimeMS"));
+                if (tmpCycleIntervalTimeMS > 0)
+                {
+                    details.cycleTime.cycleIntervalTimeMS =
+                        tmpCycleIntervalTimeMS;
+                }
+                else
+                {
+                    std::cerr << "Zone " << index << ": "
+                              << "cycleIntervalTimeMS is invalid. Use default "
+                              << details.cycleTime.cycleIntervalTimeMS
+                              << " ms\n";
+                }
+            }
+
+            auto findUpdateThermalsTimeMS = zone.find("updateThermalsTimeMS");
+            if (findUpdateThermalsTimeMS != zone.end())
+            {
+                double tmpUpdateThermalsTimeMS =
+                    std::visit(VariantToDoubleVisitor(),
+                               zone.at("updateThermalsTimeMS"));
+                if (tmpUpdateThermalsTimeMS > 0)
+                {
+                    details.cycleTime.updateThermalsTimeMS =
+                        tmpUpdateThermalsTimeMS;
+                }
+                else
+                {
+                    std::cerr << "Zone " << index << ": "
+                              << "updateThermalsTimeMS is invalid. Use default "
+                              << details.cycleTime.updateThermalsTimeMS
+                              << " ms\n";
+                }
+            }
+
+            uint64_t updateCount = details.cycleTime.updateThermalsTimeMS /
+                                   details.cycleTime.cycleIntervalTimeMS;
+            if (details.cycleTime.updateThermalsTimeMS %
+                details.cycleTime.cycleIntervalTimeMS != 0)
+            {
+                std::cerr << "Zone " << index << ": "
+                << "updateThermalsTimeMS cannot be divided by "
+                   "cycleIntervalTimeMS without leaving a remainder. Using the "
+                   "smallest value "
+                << updateCount << " that is not less than the result.\n";
+            }
+            details.cycleTime.updateThermalsTimeMS = updateCount;
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         // loop through all the PID configurations and fill out a sensor config
