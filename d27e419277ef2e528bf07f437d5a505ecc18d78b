@@ -163,6 +163,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "38a238e1_422ef8a3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2022-11-20T12:36:16Z",
+      "side": 1,
+      "message": "\u003e Jenkins isn\u0027t topic-aware. So, we should remove the topic link, and instead, submit 58427 first.\n\nThe topic is still handy for humans to be able to identify all the interdependent changes.",
+      "parentUuid": "b10b469a_1e649bdc",
+      "revId": "d27e419277ef2e528bf07f437d5a505ecc18d78b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54a38c67_5007528b",
         "filename": "pid/zone.cpp",
         "patchSetId": 1
