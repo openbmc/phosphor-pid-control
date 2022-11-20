@@ -181,6 +181,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3538831c_e563e96f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-20T19:38:07Z",
+      "side": 1,
+      "message": "Most definitely. However, this Jenkins limitation is standing in the way of our ability to receive the +1 for this patch from it. The code is correct, it should be cleanly compiling, but it\u0027s not. We need a way to get 58427 to be taken into account by Jenkins. At this time, I don\u0027t see a way to make Jenkins aware of 58427 without submitting it first. Any other ideas?",
+      "parentUuid": "38a238e1_422ef8a3",
+      "revId": "d27e419277ef2e528bf07f437d5a505ecc18d78b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "54a38c67_5007528b",
         "filename": "pid/zone.cpp",
         "patchSetId": 1
