@@ -51,6 +51,24 @@
       "parentUuid": "82466d23_fd003cfb",
       "revId": "6cba45c5285bdab76940a91dc5bdb6a2c89dc612",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ecf8f5c_0ab0b3b8",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 577,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-24T05:33:51Z",
+      "side": 1,
+      "message": "Yes, thanks, this looks good now. Please go ahead and also update the similar code in the pid/buildjson.cpp file.",
+      "parentUuid": "68672522_23287e67",
+      "revId": "6cba45c5285bdab76940a91dc5bdb6a2c89dc612",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
