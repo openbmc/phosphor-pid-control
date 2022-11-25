@@ -16,6 +16,23 @@
       "message": "User could use Contorl.FanZone.ManualPwm to set pwm and set Contorl.Mode.Manual to true to take effect or set Contorl.Mode.Manual to true first and then use Contorl.FanZone.ManualPwm to set pwm.",
       "revId": "21789240ad8875cb2979e742789966f4f0abb82f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42248c9f_10af838c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-11-25T21:09:32Z",
+      "side": 1,
+      "message": "It looks like the build still has an error, related to an include file missing. This should not be caused by the lack of 58427, but rather, it might be a different error. Please check it.\n\n",
+      "revId": "21789240ad8875cb2979e742789966f4f0abb82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
