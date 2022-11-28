@@ -33,6 +33,24 @@
       "message": "It looks like the build still has an error, related to an include file missing. This should not be caused by the lack of 58427, but rather, it might be a different error. Please check it.\n\n",
       "revId": "21789240ad8875cb2979e742789966f4f0abb82f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb1d5e8e_4ba2a3e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 6
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-11-28T10:08:01Z",
+      "side": 1,
+      "message": "Hi Josh,\nI added new interface \"Control.FanZone\" in 58427 and need to include the library created by 58427 in this commit. \nTherefore, there are some errors about missing xyz/openbmc_project/Control/FanZone/server.hpp in the failure logs.",
+      "parentUuid": "42248c9f_10af838c",
+      "revId": "21789240ad8875cb2979e742789966f4f0abb82f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
