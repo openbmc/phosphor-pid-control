@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "85262f9c_1f2998bc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-29T00:55:40Z",
+      "side": 1,
+      "message": "I don\u0027t really understand about this option, can you give some example json?",
+      "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "68edf530_0d833ff7",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-29T00:55:40Z",
+      "side": 1,
+      "message": "Please also implement to dbusconfiguration.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/57660/comments/ef293a07_b1e70c8c",
+      "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b2045556_9543cd27",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-11-29T00:55:40Z",
+      "side": 1,
+      "message": "Maybe need to use \"const\" to setpt and input?",
+      "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
