@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "0ba7b599_52e6d1b0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-11-30T09:37:16Z",
+      "side": 1,
+      "message": "Hi Harvey,\nThe accumulateSetPoint could be added in the \u0027zones\u0027 filed in fan table.\n\n\u003e    \"zones\" : [\n\u003e        {\n\u003e            \"id\": 1,\n\u003e            \"failsafePercent\": 90.0,\n\u003e            \"minThermalOutput\": 0.0,\n\u003e            \"accumulateSetPoint\": true,\n\u003e            \"pids\": [\n\u003e                {\n\u003e                 ...",
+      "parentUuid": "85262f9c_1f2998bc",
+      "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68edf530_0d833ff7",
         "filename": "pid/buildjson.cpp",
         "patchSetId": 17
@@ -31,6 +49,24 @@
       "writtenOn": "2022-11-29T00:55:40Z",
       "side": 1,
       "message": "Please also implement to dbusconfiguration.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/57660/comments/ef293a07_b1e70c8c",
+      "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "732694d5_ad3380fa",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 194,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-11-30T09:37:16Z",
+      "side": 1,
+      "message": "Ok, I\u0027ll implement to dbusconfiguration. Thanks!",
+      "parentUuid": "68edf530_0d833ff7",
       "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
