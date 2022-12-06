@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "203ae64f_b6773a46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-12-06T01:46:12Z",
+      "side": 1,
+      "message": "Hi Harvey,\nThanks for adding this for PR-57660.\nDo we need to add these properties in entity-manager/schemas/pid.json \u0026 pid_zone.json?",
+      "revId": "66538dede4eb96d6f2b65083caf1af43a04e3692",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
