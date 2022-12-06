@@ -74,6 +74,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4f1f1141_bed54102",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-12-06T06:51:33Z",
+      "side": 1,
+      "message": "Hi Harvey,\nAfter enabling accumulateSetPoint, the output PWM of stepwise and pid controller could be accumulated if they have same profile name.\n\nAfter adding the compile flag \"check-hysteresis-using-setpoint\", PID contorller won\u0027t calculate PWM when temp \u003c setpoint.\n\nIf enable accumulateSetPoint and add the compile flag, when temp \u003c setpoint, the output value is controlled by stepwise, and when temp \u003e setpoint, the output value is controlled by PID and stepwise.",
+      "parentUuid": "d6ad155e_9fd230f7",
+      "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68edf530_0d833ff7",
         "filename": "pid/buildjson.cpp",
         "patchSetId": 17
