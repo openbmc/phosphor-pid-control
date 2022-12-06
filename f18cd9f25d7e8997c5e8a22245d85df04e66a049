@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6ad155e_9fd230f7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-06T02:34:49Z",
+      "side": 1,
+      "message": "If I understand correctly,\nafter enabling accumulateSetPoint, if adding stepwise and PID controllers to CPU_temp, when temp \u003c setpoint, the output value is controlled by stepwise, and when temp \u003e setpoint, the output value is controlled by PID.\nIs this correct?",
+      "parentUuid": "69e166db_43753b84",
+      "revId": "f18cd9f25d7e8997c5e8a22245d85df04e66a049",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "68edf530_0d833ff7",
         "filename": "pid/buildjson.cpp",
         "patchSetId": 17
