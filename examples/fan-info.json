@@ -1,5 +1,5 @@
 {
-    "sensors" : [
+    "sensors": [
         {
             "name": "fan1",
             "type": "fan",
@@ -59,7 +59,7 @@
             "timeout": 4
         }
     ],
-    "zones" : [
+    "zones": [
         {
             "id": 1,
             "minThermalOutput": 3000.0,
@@ -75,7 +75,7 @@
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffsetCoeff": 0.0,
-                        "feedFwdGainCoeff": 0.010,
+                        "feedFwdGainCoeff": 0.01,
                         "integralLimit_min": 0.0,
                         "integralLimit_max": 0.0,
                         "outLim_min": 30.0,
@@ -94,7 +94,7 @@
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffsetCoeff": 0.0,
-                        "feedFwdGainCoeff": 0.010,
+                        "feedFwdGainCoeff": 0.01,
                         "integralLimit_min": 0.0,
                         "integralLimit_max": 0.0,
                         "outLim_min": 30.0,
@@ -113,7 +113,7 @@
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffsetCoeff": 0.0,
-                        "feedFwdGainCoeff": 0.010,
+                        "feedFwdGainCoeff": 0.01,
                         "integralLimit_min": 0.0,
                         "integralLimit_max": 0.0,
                         "outLim_min": 30.0,
@@ -132,7 +132,7 @@
                         "proportionalCoeff": 0.0,
                         "integralCoeff": 0.0,
                         "feedFwdOffsetCoeff": 0.0,
-                        "feedFwdGainCoeff": 0.010,
+                        "feedFwdGainCoeff": 0.01,
                         "integralLimit_min": 0.0,
                         "integralLimit_max": 0.0,
                         "outLim_min": 30.0,

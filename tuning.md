@@ -4,7 +4,8 @@ The openBMC PID control daemon, swampd (phosphor-pid-control) requires the user
 to specify the sensors and PID coefficients. Determining good coefficients is
 beyond the scope of this document.
 
-**NOTE** The steps below may not be applicable if you are using D-Bus based configuration.
+**NOTE** The steps below may not be applicable if you are using D-Bus based
+configuration.
 
 ## Tuning Fan PID Using a Fixed RPM Setpoint
 
@@ -37,26 +38,24 @@ epoch_ms,setpt,fan1,fan2,...fanN,fleeting,failsafe
 
 ## Core Logging
 
-For even more detailed logging, flag `"-g"` can be specified
-to enable the daemon to log the computations made during the core
-of the PID loop.
+For even more detailed logging, flag `"-g"` can be specified to enable the
+daemon to log the computations made during the core of the PID loop.
 
-The log output is in CSV format, in the same directory as specified with
-the `"-l"` option. Default is the system temporary directory,
-typically `/tmp`.
+The log output is in CSV format, in the same directory as specified with the
+`"-l"` option. Default is the system temporary directory, typically `/tmp`.
 
-Two files will be created, for each PID loop configured. The
-`pidcoeffs.*` file will show the PID coefficients that are in use
-for the PID loop. The `pidcore.*` file will show the computations
-that take place, to transform the input into the output. The configured
-name of the PID loop is used as the suffix, for both of these files.
+Two files will be created, for each PID loop configured. The `pidcoeffs.*` file
+will show the PID coefficients that are in use for the PID loop. The `pidcore.*`
+file will show the computations that take place, to transform the input into the
+output. The configured name of the PID loop is used as the suffix, for both of
+these files.
 
-The `pidcoeffs.*` file will grow slowly, updated only when new
-coefficients are set using D-Bus without restarting the program. The
-`pidcore.*` file, on the other hand, will grow rapidly, as it will
-be updated during each PID loop pass in which there were changes. To
-prevent needless log file growth, identical logging lines are
-throttled, unless it has been at least 60 seconds since the last line.
+The `pidcoeffs.*` file will grow slowly, updated only when new coefficients are
+set using D-Bus without restarting the program. The `pidcore.*` file, on the
+other hand, will grow rapidly, as it will be updated during each PID loop pass
+in which there were changes. To prevent needless log file growth, identical
+logging lines are throttled, unless it has been at least 60 seconds since the
+last line.
 
 ## Fan RPM Tuning Helper script
 
@@ -68,10 +67,10 @@ fan responses.
 
 1.  Create initial `/usr/share/swampd/config.json` used for PID control
 2.  (Option 1) If using a fixed setpoint, write the value to
-    `/etc/thermal.d/setpoint`, run swampd manually with `swampd -l ${LOG_PATH}&`, and kill the
-    process after desired duration.
-3.  (Option 2) If sweeping fan setpoint, using the tuning helper script `fan_rpm_loop_test.sh` to
-    configure fan setpoint in steps and collect logs
+    `/etc/thermal.d/setpoint`, run swampd manually with
+    `swampd -l ${LOG_PATH}&`, and kill the process after desired duration.
+3.  (Option 2) If sweeping fan setpoint, using the tuning helper script
+    `fan_rpm_loop_test.sh` to configure fan setpoint in steps and collect logs
 4.  Parse logs from `${LOG_PATH}/zone_*.log` and analyze response data
-6.  Modify `/usr/share/swampd/config.json` as needed
-7.  Repeat from step 2 or step 3
+5.  Modify `/usr/share/swampd/config.json` as needed
+6.  Repeat from step 2 or step 3
