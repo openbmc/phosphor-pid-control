@@ -31,6 +31,7 @@ TEST(ZoneFromJson, emptyZone)
 TEST(ZoneFromJson, oneZoneOnePid)
 {
     // Parse a valid configuration with one zone and one PID.
+    // Intentionally omits "derivativeCoeff" to test that it is optional.
 
     std::map<int64_t, conf::PIDConf> pidConfig;
     std::map<int64_t, conf::ZoneConfig> zoneConfig;
@@ -50,7 +51,6 @@ TEST(ZoneFromJson, oneZoneOnePid)
               "samplePeriod": 0.1,
               "proportionalCoeff": 0.0,
               "integralCoeff": 0.0,
-              "derivativeCoeff": 0.0,
               "feedFwdOffsetCoeff": 0.0,
               "feedFwdGainCoeff": 0.010,
               "integralLimit_min": 0.0,

@@ -309,6 +309,7 @@ void populatePidInfo(
         VariantToDoubleVisitor(), getPIDAttribute(base, "PCoefficient"));
     info.pidInfo.integralCoeff = std::visit(
         VariantToDoubleVisitor(), getPIDAttribute(base, "ICoefficient"));
+    // DCoefficient is below, it is optional, same reason as in buildjson.cpp
     info.pidInfo.feedFwdOffset = std::visit(
         VariantToDoubleVisitor(), getPIDAttribute(base, "FFOffCoefficient"));
     info.pidInfo.feedFwdGain = std::visit(
@@ -325,25 +326,33 @@ void populatePidInfo(
         std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewNeg"));
     info.pidInfo.slewPos =
         std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewPos"));
+
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
+    double derivativeCoeff = 0;
 
     auto findNeg = base.find("NegativeHysteresis");
     auto findPos = base.find("PositiveHysteresis");
+    auto findDerivative = base.find("DCoefficient");
 
     if (findNeg != base.end())
     {
         negativeHysteresis =
             std::visit(VariantToDoubleVisitor(), findNeg->second);
     }
-
     if (findPos != base.end())
     {
         positiveHysteresis =
             std::visit(VariantToDoubleVisitor(), findPos->second);
     }
+    if (findDerivative != base.end())
+    {
+        derivativeCoeff = std::visit(VariantToDoubleVisitor(), findPos->second);
+    }
+
     info.pidInfo.negativeHysteresis = negativeHysteresis;
     info.pidInfo.positiveHysteresis = positiveHysteresis;
+    info.pidInfo.derivativeCoeff = derivativeCoeff;
 }
 
 bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,

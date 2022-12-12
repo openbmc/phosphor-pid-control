@@ -45,15 +45,21 @@ void from_json(const json& j, conf::ControllerInfo& c)
 
     auto positiveHysteresis = p.find("positiveHysteresis");
     auto negativeHysteresis = p.find("negativeHysteresis");
+    auto derivativeCoeff = p.find("derivativeCoeff");
     auto positiveHysteresisValue = 0.0;
     auto negativeHysteresisValue = 0.0;
+    auto derivativeCoeffValue = 0.0;
     if (positiveHysteresis != p.end())
     {
-        p.at("positiveHysteresis").get_to(positiveHysteresisValue);
+        positiveHysteresis->get_to(positiveHysteresisValue);
     }
     if (negativeHysteresis != p.end())
     {
-        p.at("negativeHysteresis").get_to(negativeHysteresisValue);
+        negativeHysteresis->get_to(negativeHysteresisValue);
+    }
+    if (derivativeCoeff != p.end())
+    {
+        derivativeCoeff->get_to(derivativeCoeffValue);
     }
 
     if (c.type != "stepwise")
@@ -61,7 +67,6 @@ void from_json(const json& j, conf::ControllerInfo& c)
         p.at("samplePeriod").get_to(c.pidInfo.ts);
         p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
         p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
-        p.at("derivativeCoeff").get_to(c.pidInfo.derivativeCoeff);
         p.at("feedFwdOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
         p.at("feedFwdGainCoeff").get_to(c.pidInfo.feedFwdGain);
         p.at("integralLimit_min").get_to(c.pidInfo.integralLimit.min);
@@ -71,8 +76,12 @@ void from_json(const json& j, conf::ControllerInfo& c)
         p.at("slewNeg").get_to(c.pidInfo.slewNeg);
         p.at("slewPos").get_to(c.pidInfo.slewPos);
 
+        // Unlike other coefficients, treat derivativeCoeff as an optional
+        // parameter, as support for it is fairly new, to avoid breaking
+        // existing configurations in the field that predate it.
         c.pidInfo.positiveHysteresis = positiveHysteresisValue;
         c.pidInfo.negativeHysteresis = negativeHysteresisValue;
+        c.pidInfo.derivativeCoeff = derivativeCoeffValue;
     }
     else
     {
