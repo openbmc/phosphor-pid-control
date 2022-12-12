@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a714f250_ad819799",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-12T07:51:20Z",
+      "side": 1,
+      "message": "Nice! This is like clang-format except it\u0027s for Markdown and JSON.\n",
+      "revId": "d015a59ac6524a6e2e5fde41fe62b373f928bf23",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
