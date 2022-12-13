@@ -34,6 +34,24 @@
       "parentUuid": "ca472d20_4e6895cb",
       "revId": "81e0e13e5671e8b6a3bfc0479ddec509b54e18d8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2504415f_dec5bba8",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 338,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-13T00:57:00Z",
+      "side": 1,
+      "message": "Fixed conflict.",
+      "parentUuid": "18fa9e63_62ca0d5e",
+      "revId": "81e0e13e5671e8b6a3bfc0479ddec509b54e18d8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
