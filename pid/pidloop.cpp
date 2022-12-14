@@ -64,9 +64,14 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
         processThermals(zone);
     }
 
-    timer->expires_after(
-        std::chrono::milliseconds(zone->getCycleIntervalTime()));
-    timer->async_wait([zone, timer, cycleCnt, isCanceling](
+    uint64_t msPerFanCycle = zone->getCycleIntervalTime();
+
+    // Push back the original expiration time of the timer, instead of just
+    // resetting it with expires_after() from now, to make sure the interval
+    // is of the expected duration, and not stretched out by CPU time taken.
+    timer->expires_at(timer->expiry() +
+                      std::chrono::milliseconds(msPerFanCycle));
+    timer->async_wait([zone, timer, cycleCnt, isCanceling, msPerFanCycle](
                           const boost::system::error_code& ec) mutable {
         if (ec == boost::asio::error::operation_aborted)
         {
@@ -110,9 +115,10 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
         // Get the latest fan speeds.
         zone->updateFanTelemetry();
 
-        if (zone->getUpdateThermalsCycle() <= cycleCnt)
+        uint64_t msPerThermalCycle = zone->getUpdateThermalsCycle();
+        if (msPerThermalCycle <= cycleCnt)
         {
-            cycleCnt = 0;
+            cycleCnt -= msPerThermalCycle;
 
             processThermals(zone);
         }
@@ -127,7 +133,9 @@ void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
             zone->writeLog(out.str());
         }
 
-        cycleCnt += 1;
+        // Count how many milliseconds have elapsed, so we can know when
+        // to perform thermal cycles, in proper ratio with fan cycles.
+        cycleCnt += msPerFanCycle;
 
         pidControlLoop(zone, timer, isCanceling, false, cycleCnt);
     });
