@@ -254,9 +254,7 @@ TEST(ZoneFromJson, getCycleInterval)
 
     EXPECT_EQ(pidConfig[1]["fan1-5"].type, "fan");
     EXPECT_EQ(zoneConfig[1].cycleTime.cycleIntervalTimeMS, 1000);
-    // updateThermalsTimeMS would be updated as updateThermalsTimeMS /
-    // cycleIntervalTimeMS
-    EXPECT_EQ(zoneConfig[1].cycleTime.updateThermalsTimeMS, 1);
+    EXPECT_EQ(zoneConfig[1].cycleTime.updateThermalsTimeMS, 1000);
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
 }
 

@@ -184,22 +184,6 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
             }
         }
 
-        double updateCount =
-            double(thisZoneConfig.cycleTime.updateThermalsTimeMS) /
-            double(thisZoneConfig.cycleTime.cycleIntervalTimeMS);
-
-        /* Check if updateThermalsTimeMS could be divided by cycleIntervalTimeMS
-         * without leaving a remainder */
-        if (updateCount != std::ceil(updateCount))
-        {
-            std::cerr
-                << "updateThermalsTimeMS cannot be divided by "
-                   "cycleIntervalTimeMS without leaving a remainder. Using the "
-                   "smallest integer that is not less than the result.\n";
-            updateCount = std::ceil(updateCount);
-        }
-        thisZoneConfig.cycleTime.updateThermalsTimeMS = updateCount;
-
         auto pids = zone["pids"];
         for (const auto& pid : pids)
         {

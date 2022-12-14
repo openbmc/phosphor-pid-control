@@ -581,6 +581,50 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                                                   zone.at("MinThermalOutput"));
             details.failsafePercent = std::visit(VariantToDoubleVisitor(),
                                                  zone.at("FailSafePercent"));
+
+            auto findTimeInterval = zone.find("CycleIntervalTimeMS");
+            if (findTimeInterval != zone.end())
+            {
+                double tmp = 0.0;
+                auto ptrTimeInterval =
+                    std::get_if<double>(&(findTimeInterval->second));
+                if (ptrTimeInterval)
+                {
+                    tmp = *ptrTimeInterval;
+                }
+                if (tmp >= 1.0)
+                {
+                    details.cycleTime.cycleIntervalTimeMS = tmp;
+                }
+                else
+                {
+                    std::cerr << "CycleIntervalTimeMS cannot be 0. Use default "
+                              << details.cycleTime.cycleIntervalTimeMS
+                              << " ms\n";
+                }
+            }
+
+            auto findUpdateThermalsTime = zone.find("UpdateThermalsTimeMS");
+            if (findUpdateThermalsTime != zone.end())
+            {
+                double tmp = 0.0;
+                auto ptrUpdateThermalsTime =
+                    std::get_if<double>(&(findUpdateThermalsTime->second));
+                if (ptrUpdateThermalsTime)
+                {
+                    tmp = *ptrUpdateThermalsTime;
+                }
+                if (tmp >= 1.0)
+                {
+                    details.cycleTime.updateThermalsTimeMS = tmp;
+                }
+                else
+                {
+                    std::cerr
+                        << "UpdateThermalsTimeMS cannot be 0. Use default "
+                        << details.cycleTime.updateThermalsTimeMS << " ms\n";
+                }
+            }
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         // loop through all the PID configurations and fill out a sensor config
