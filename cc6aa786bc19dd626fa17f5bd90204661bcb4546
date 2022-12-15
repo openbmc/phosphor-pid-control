@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2675b77a_4c38c0a7",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 585,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-15T12:18:47Z",
+      "side": 1,
+      "message": "The first word need to capitalize for D-Bus config.\nhttps://gerrit.openbmc.org/c/openbmc/entity-manager/+/58897",
+      "range": {
+        "startLine": 585,
+        "startChar": 47,
+        "endLine": 585,
+        "endChar": 66
+      },
+      "revId": "cc6aa786bc19dd626fa17f5bd90204661bcb4546",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "90156a70_de8173be",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 607,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-15T12:18:47Z",
+      "side": 1,
+      "message": "Same here.",
+      "range": {
+        "startLine": 607,
+        "startChar": 53,
+        "endLine": 607,
+        "endChar": 73
+      },
+      "revId": "cc6aa786bc19dd626fa17f5bd90204661bcb4546",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f992d48d_c2b60f3b",
+        "filename": "pid/pidloop.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 121,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-15T12:18:47Z",
+      "side": 1,
+      "message": "Why use minus UpdateThermalsCycle instead of setting it as 0 like before?\nBecause cycleCnt is uint64, when msPerThermalCycle bigger than cycleCnt, cycleCnt will become a large value.",
+      "range": {
+        "startLine": 121,
+        "startChar": 12,
+        "endLine": 121,
+        "endChar": 42
+      },
+      "revId": "cc6aa786bc19dd626fa17f5bd90204661bcb4546",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
