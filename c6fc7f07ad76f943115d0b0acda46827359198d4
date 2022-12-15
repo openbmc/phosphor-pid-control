@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3aad4306_2b2f373f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-15T10:09:07Z",
+      "side": 1,
+      "message": "I ended up doing much of the same thing, during my fix here: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/59721\n\nI like how your change uses a function to consolidate and minimize the duplicate code, though. Could such a function work for both the old JSON path and the new D-Bus path?\n",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
