@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ced9a54_9322b318",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-15T11:41:15Z",
+      "side": 1,
+      "message": "Reword msg title.",
+      "parentUuid": "623a6aec_e9fc31b5",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ef48d8e_2e73d63b",
@@ -31,6 +49,24 @@
       "writtenOn": "2022-12-15T10:48:17Z",
       "side": 1,
       "message": "nit: wording looks odd \"add and cycle\"",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4294ad46_454c9d21",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-15T11:41:15Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "8ef48d8e_2e73d63b",
       "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "09e30865_19ecaf2b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-15T11:41:15Z",
+      "side": 1,
+      "message": "Done. Thanks.",
+      "parentUuid": "0560cde5_bf0248f4",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "3aad4306_2b2f373f",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 12
@@ -65,6 +119,24 @@
       "writtenOn": "2022-12-15T10:09:07Z",
       "side": 1,
       "message": "I ended up doing much of the same thing, during my fix here: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/59721\n\nI like how your change uses a function to consolidate and minimize the duplicate code, though. Could such a function work for both the old JSON path and the new D-Bus path?\n",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cc73fec9_c2c4eefd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2022-12-15T11:41:15Z",
+      "side": 1,
+      "message": "Yes, if doesn\u0027t setting these two properties in statis JSON or D-bus config, it will use default value to calculate updateThermalsTimeMS as 1 sec.\n\nDefault value:\nhttps://github.com/openbmc/phosphor-pid-control/blob/master/conf.hpp#L45-L52",
+      "parentUuid": "3aad4306_2b2f373f",
       "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
