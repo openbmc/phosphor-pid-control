@@ -74,7 +74,13 @@ struct PidCoreLog
     {
         if (this != &move)
         {
-            *this = std::move(move);
+            // Move each field individually
+            nameOriginal = std::move(move.nameOriginal);
+            nameClean = std::move(move.nameClean);
+            fileContext = std::move(move.fileContext);
+            fileCoeffs = std::move(move.fileCoeffs);
+            lastLog = std::move(move.lastLog);
+            lastContext = std::move(move.lastContext);
 
             // Mark the moved object, so destructor knows it was moved
             move.moved = true;
