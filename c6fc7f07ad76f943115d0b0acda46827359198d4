@@ -1,6 +1,57 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "623a6aec_e9fc31b5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001496
+      },
+      "writtenOn": "2022-12-15T10:48:17Z",
+      "side": 1,
+      "message": "nit: replace \"dbusconfiguration\" with \"dbus configuration\"",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8ef48d8e_2e73d63b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1001496
+      },
+      "writtenOn": "2022-12-15T10:48:17Z",
+      "side": 1,
+      "message": "nit: wording looks odd \"add and cycle\"",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0560cde5_bf0248f4",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 12
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001496
+      },
+      "writtenOn": "2022-12-15T10:48:17Z",
+      "side": 1,
+      "message": "nit: Spell correction \"alse\"",
+      "revId": "c6fc7f07ad76f943115d0b0acda46827359198d4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3aad4306_2b2f373f",
