@@ -16,6 +16,23 @@
       "message": "Tested more here: https://gist.github.com/Krellan/e8769d8006742c693632f310c276b145\n\nI tried leaving the settings at the default, setting them to 100 and 1000, and setting them to 300 and 1100 (intentionally using intervals that are not a clean multiple of each other).\n\nIt worked. The thermal interval ticks were staggered appropriately amongst the fan interval ticks.\n",
       "revId": "9f9a06aa9c4d49749c2d94164ed00c6ef706e04f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c1d10e_9539c400",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-16T00:52:49Z",
+      "side": 1,
+      "message": "Giving +2 to myself, as others have already given +1\n",
+      "revId": "9f9a06aa9c4d49749c2d94164ed00c6ef706e04f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
