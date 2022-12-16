@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "75e2c5a2_3121bbb8",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-16T03:57:17Z",
+      "side": 1,
+      "message": "Nice, this looks good and clean. Because of difference of structure types, it\u0027s still necessary to have 2 functions, one in the D-Bus path, and another in the old JSON path. This lets each of these 2 functions be used 2 times, however, so it\u0027s still some code savings. Have both code paths been tested?\n\n",
+      "revId": "fec7162bf5ba62f54ce5c242720021977665f4f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "dc56ae74_57de8b37",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 132,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-16T03:57:17Z",
+      "side": 1,
+      "message": "Wow, didn\u0027t know that you could declare functions with \"auto\" as the type of the parameter. It\u0027s looking like Python 😊",
+      "revId": "fec7162bf5ba62f54ce5c242720021977665f4f0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
