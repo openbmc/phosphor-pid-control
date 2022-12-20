@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9abf803c_d02cac61",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-20T06:17:31Z",
+      "side": 1,
+      "message": "Good cleanup. At first I was hesitant about the removal of the gitignore lines, but if these files ever come back, that will make them stand out.\n",
+      "revId": "817b24579b0f2195a1e7969f69e73e510d7c8541",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
