@@ -16,6 +16,23 @@
       "message": "Gentle reminder: please help to review again.",
       "revId": "fae09affffcb2c33deb06615e2783f194d5555c4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e93c0243_cf3b86f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 19
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2022-12-20T08:06:09Z",
+      "side": 1,
+      "message": "Hi Josh,\nSould I download the commit to fix the conflict and force update again?",
+      "revId": "fae09affffcb2c33deb06615e2783f194d5555c4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
