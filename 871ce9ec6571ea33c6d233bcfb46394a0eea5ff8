@@ -16,6 +16,23 @@
       "message": "Rebased master and fixed the conflicts.\nPlease help to vote again. Thanks!",
       "revId": "871ce9ec6571ea33c6d233bcfb46394a0eea5ff8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "da42586e_9969184c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-21T02:58:19Z",
+      "side": 1,
+      "message": "Thanks for fixing all the compilation errors earlier",
+      "revId": "871ce9ec6571ea33c6d233bcfb46394a0eea5ff8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
