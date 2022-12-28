@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9da5488f_7a71b2e3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2022-12-28T22:49:10Z",
+      "side": 1,
+      "message": "Gentle ping on this review - is this upstreamable?",
+      "revId": "86c132432f46cf518958b1aa19cf887eb9c4ccfe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
