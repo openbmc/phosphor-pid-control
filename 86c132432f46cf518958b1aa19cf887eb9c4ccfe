@@ -16,6 +16,24 @@
       "message": "Gentle ping on this review - is this upstreamable?",
       "revId": "86c132432f46cf518958b1aa19cf887eb9c4ccfe",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2fd5844f_e9f6e6c0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2022-12-28T23:11:51Z",
+      "side": 1,
+      "message": "I recommend against it. It attempts to work around a fundamental design problem of dbus-sensors that has been discussed before: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/37357/2#message-6ed61f395d08ba174dfc42cfc5776f3bb6209a3f\n\nProblem is: D-Bus is expensive to send out notifications with, for various reasons. So, fans/sensors don\u0027t send out notifications unless the value changes. For a stable sensor/fan this is a problem, as there\u0027s no way to distinguish \"This bad device has a bug and has frozen up\" versus \"This good device is working great and has been producing a steady unchanging value for a while now\".\n\nThis change is the wrong solution, because it creates a lot of needless D-Bus traffic, which will slow down the rest of the system.\n\nI had a discussion a while ago that resulted in this design document, but it never got traction: go/the-three-es",
+      "parentUuid": "9da5488f_7a71b2e3",
+      "revId": "86c132432f46cf518958b1aa19cf887eb9c4ccfe",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
