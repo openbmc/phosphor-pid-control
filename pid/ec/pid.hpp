@@ -15,25 +15,22 @@ typedef struct
 } limits_t;
 
 /* Note: If you update these structs you need to update the copy code in
- * pid/util.cpp.
+ * pid/util.cpp and the initialization code in pid/buildjson.hpp files.
  */
 typedef struct
 {
-    bool initialized; // has pid been initialized
-
-    double ts;         // sample time in seconds
-    double integral;   // intergal of error
-    double lastOutput; // value of last output
-    double lastError;  // value of last error
-
+    bool initialized;         // has pid been initialized
+    double ts;                // sample time in seconds
+    double integral;          // integral of error
+    double lastOutput;        // value of last output
+    double lastError;         // value of last error
     double proportionalCoeff; // coeff for P
     double integralCoeff;     // coeff for I
     double derivativeCoeff;   // coeff for D
     double feedFwdOffset;     // offset coeff for feed-forward term
     double feedFwdGain;       // gain for feed-forward term
-
-    limits_t integralLimit; // clamp of integral
-    limits_t outLim;        // clamp of output
+    limits_t integralLimit;   // clamp of integral
+    limits_t outLim;          // clamp of output
     double slewNeg;
     double slewPos;
     double positiveHysteresis;

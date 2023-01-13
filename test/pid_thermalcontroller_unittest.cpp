@@ -1,3 +1,4 @@
+#include "conf.hpp"
 #include "pid/ec/logging.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/thermalcontroller.hpp"
@@ -25,7 +26,7 @@ TEST(ThermalControllerTest, BoringFactoryTest)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -41,7 +42,7 @@ TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {};
+    std::vector<pid_control::conf::SensorInput> inputs = {};
     double setpoint = 10.0;
     ec::pidinfo initial;
     std::unique_ptr<PIDController> p;
@@ -60,7 +61,7 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -79,7 +80,7 @@ TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -96,7 +97,7 @@ TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -117,7 +118,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsAbsolute)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"},
+                                                          {"fleeting1"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -138,7 +140,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"},
+                                                          {"fleeting1"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -159,7 +162,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsSummation)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0", "fleeting1"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"},
+                                                          {"fleeting1"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -173,6 +177,29 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsSummation)
     EXPECT_EQ(15.0, p->inputProc());
 }
 
+TEST(ThermalControllerTest, InputProc_MultipleInputsTempToMargin)
+{
+    // This test verifies inputProc behaves as expected with multiple margin
+    // inputs and TempToMargin in use.
+
+    ZoneMock z;
+
+    std::vector<pid_control::conf::SensorInput> inputs = {
+        {"absolute0", 85.0, true}, {"margin1"}};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("absolute0"))).WillOnce(Return(82.0));
+    EXPECT_CALL(z, getCachedValue(StrEq("margin1"))).WillOnce(Return(5.0));
+
+    // 82 degrees temp, 85 degrees Tjmax => 3 degrees of safety margin
+    EXPECT_EQ(3.0, p->inputProc());
+}
+
 TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
 {
 
@@ -182,7 +209,7 @@ TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
     initial.negativeHysteresis = 4.0;
@@ -215,7 +242,7 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
 
     ZoneMock z;
 
-    std::vector<std::string> inputs = {"fleeting0"};
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
     initial.positiveHysteresis = 5.0;
