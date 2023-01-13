@@ -312,7 +312,13 @@ void populatePidInfo(
         {
             interface = thresholds::criticalInterface;
         }
-        const std::string& path = sensorConfig.at(info.inputs.front()).readPath;
+
+        // Although this checks only the first vector element for the
+        // named threshold, it is OK, because the SetPointOffset parser
+        // splits up the input into individual vectors, each with only a
+        // single element, if it detects that SetPointOffset is in use.
+        const std::string& path =
+            sensorConfig.at(info.inputs.front().name).readPath;
 
         DbusHelper helper(sdbusplus::bus::new_system());
         std::string service = helper.getService(interface, path);
@@ -816,20 +822,33 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     }
                 }
 
+                std::vector<double> inputTempToMargin;
+
+                auto findTempToMargin = base.find("tempToMargin");
+                if (findTempToMargin != base.end())
+                {
+                    inputTempToMargin =
+                        std::get<std::vector<double>>(findTempToMargin->second);
+                }
+
+                std::vector<pid_control::conf::SensorInput> sensorInputs =
+                    spliceInputs(inputSensorNames, inputTempToMargin);
+
                 if (offsetType.empty())
                 {
                     conf::ControllerInfo& info =
                         conf[std::get<std::string>(base.at("Name"))];
-                    info.inputs = std::move(inputSensorNames);
+                    info.inputs = std::move(sensorInputs);
                     populatePidInfo(bus, base, info, nullptr, sensorConfig);
                 }
                 else
                 {
                     // we have to split up the inputs, as in practice t-control
                     // values will differ, making setpoints differ
-                    for (const std::string& input : inputSensorNames)
+                    for (const pid_control::conf::SensorInput& input :
+                         sensorInputs)
                     {
-                        conf::ControllerInfo& info = conf[input];
+                        conf::ControllerInfo& info = conf[input.name];
                         info.inputs.emplace_back(input);
                         populatePidInfo(bus, base, info, &offsetType,
                                         sensorConfig);
@@ -900,7 +919,17 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 }
                 conf::ControllerInfo& info =
                     conf[std::get<std::string>(base.at("Name"))];
-                info.inputs = std::move(inputs);
+
+                std::vector<double> inputTempToMargin;
+
+                auto findTempToMargin = base.find("tempToMargin");
+                if (findTempToMargin != base.end())
+                {
+                    inputTempToMargin =
+                        std::get<std::vector<double>>(findTempToMargin->second);
+                }
+
+                info.inputs = spliceInputs(inputs, inputTempToMargin);
 
                 info.type = "stepwise";
                 info.stepwiseInfo.ts = 1.0; // currently unused

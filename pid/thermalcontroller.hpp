@@ -1,5 +1,6 @@
 #pragma once
 
+#include "conf.hpp"
 #include "ec/pid.hpp"
 #include "pidcontroller.hpp"
 
@@ -44,14 +45,13 @@ bool isThermalType(const std::string& typeString);
 class ThermalController : public PIDController
 {
   public:
-    static std::unique_ptr<PIDController>
-        createThermalPid(ZoneInterface* owner, const std::string& id,
-                         const std::vector<std::string>& inputs,
-                         double setpoint, const ec::pidinfo& initial,
-                         const ThermalType& type);
+    static std::unique_ptr<PIDController> createThermalPid(
+        ZoneInterface* owner, const std::string& id,
+        const std::vector<pid_control::conf::SensorInput>& inputs,
+        double setpoint, const ec::pidinfo& initial, const ThermalType& type);
 
     ThermalController(const std::string& id,
-                      const std::vector<std::string>& inputs,
+                      const std::vector<pid_control::conf::SensorInput>& inputs,
                       const ThermalType& type, ZoneInterface* owner) :
         PIDController(id, owner),
         _inputs(inputs), type(type)
@@ -62,7 +62,7 @@ class ThermalController : public PIDController
     void outputProc(double value) override;
 
   private:
-    std::vector<std::string> _inputs;
+    std::vector<pid_control::conf::SensorInput> _inputs;
     ThermalType type;
 };
 
