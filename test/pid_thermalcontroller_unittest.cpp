@@ -173,6 +173,28 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsSummation)
     EXPECT_EQ(15.0, p->inputProc());
 }
 
+TEST(ThermalControllerTest, InputProc_MultipleInputsTempToMargin)
+{
+    // This test verifies inputProc behaves as expected with multiple margin
+    // inputs and TempToMargin in use.
+
+    ZoneMock z;
+
+    std::vector<SensorInput> inputs = {{"absolute0", 85.0, true}, {"margin1"}};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("absolute0"))).WillOnce(Return(82.0));
+    EXPECT_CALL(z, getCachedValue(StrEq("margin1"))).WillOnce(Return(5.0));
+
+    // 82 degrees temp, 85 degrees Tjmax => 3 degrees of safety margin
+    EXPECT_EQ(3.0, p->inputProc());
+}
+
 TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
 {
 
