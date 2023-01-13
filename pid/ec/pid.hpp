@@ -22,7 +22,7 @@ typedef struct
     bool initialized; // has pid been initialized
 
     double ts;         // sample time in seconds
-    double integral;   // intergal of error
+    double integral;   // integral of error
     double lastOutput; // value of last output
     double lastError;  // value of last error
 
