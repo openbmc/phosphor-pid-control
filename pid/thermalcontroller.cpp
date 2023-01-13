@@ -55,7 +55,7 @@ bool isThermalType(const std::string& typeString)
 
 std::unique_ptr<PIDController> ThermalController::createThermalPid(
     ZoneInterface* owner, const std::string& id,
-    const std::vector<std::string>& inputs, double setpoint,
+    const std::vector<pid_control::conf::SensorInput>& inputs, double setpoint,
     const ec::pidinfo& initial, const ThermalType& type)
 {
     // ThermalController requires at least 1 input
@@ -101,17 +101,41 @@ double ThermalController::inputProc(void)
         throw ControllerBuildException("Unrecognized ThermalType");
     }
 
-    std::string leaderName = *(_inputs.begin());
+    std::string leaderName = _inputs.begin()->name;
 
     bool acceptable = false;
     for (const auto& in : _inputs)
     {
-        double cachedValue = _owner->getCachedValue(in);
+        double cachedValue = _owner->getCachedValue(in.name);
 
         // Less than 0 is perfectly OK for temperature, but must not be NAN
         if (!(std::isfinite(cachedValue)))
         {
             continue;
+        }
+
+        // Perform TempToMargin conversion before further processing
+        if (type == ThermalType::margin)
+        {
+            if (in.convertTempToMargin)
+            {
+                if (!(std::isfinite(in.convertMarginZero)))
+                {
+                    throw ControllerBuildException("Unrecognized TempToMargin");
+                }
+
+                double marginValue = in.convertMarginZero - cachedValue;
+
+                if (debugEnabled)
+                {
+                    std::cerr << "Converting temp to margin: temp "
+                              << cachedValue << ", Tjmax "
+                              << in.convertMarginZero << ", margin "
+                              << marginValue << "\n";
+                }
+
+                cachedValue = marginValue;
+            }
         }
 
         double oldValue = value;
@@ -127,7 +151,7 @@ double ThermalController::inputProc(void)
 
         if (oldValue != value)
         {
-            leaderName = in;
+            leaderName = in.name;
             _owner->updateThermalPowerDebugInterface(_id, leaderName, value, 0);
         }
 
@@ -136,8 +160,11 @@ double ThermalController::inputProc(void)
 
     if (!acceptable)
     {
-        // While not optimal, zero is better than garbage
-        value = 0;
+        // If none of the inputs were acceptable, use the setpoint as
+        // the input value. This will continue to run the PID loop, but
+        // make it a no-op, as the error will be zero. This provides safe
+        // behavior until the inputs become acceptable.
+        value = setptProc();
     }
 
     if (debugEnabled)

@@ -23,6 +23,7 @@
 #include "pid/thermalcontroller.hpp"
 #include "pid/zone.hpp"
 #include "pid/zone_interface.hpp"
+#include "util.hpp"
 
 #include <sdbusplus/bus.hpp>
 
@@ -82,7 +83,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
         // For each PID create a Controller and a Sensor.
         for (const auto& [name, info] : pidConfig)
         {
-            std::vector<std::string> inputs;
+            std::vector<pid_control::conf::SensorInput> inputs;
             std::cerr << "PID name: " << name << "\n";
 
             /*
@@ -94,11 +95,11 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
-                    zone->addFanInput(i);
+                    zone->addFanInput(i.name);
                 }
 
-                auto pid = FanController::createFanPid(zone.get(), name, inputs,
-                                                       info.pidInfo);
+                auto pid = FanController::createFanPid(
+                    zone.get(), name, splitNames(inputs), info.pidInfo);
                 zone->addFanPID(std::move(pid));
                 zone->addPidFailSafePercent(name, info.failSafePercent);
             }
@@ -107,7 +108,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
-                    zone->addThermalInput(i);
+                    zone->addThermalInput(i.name);
                 }
 
                 auto pid = ThermalController::createThermalPid(
@@ -125,10 +126,10 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
-                    zone->addThermalInput(i);
+                    zone->addThermalInput(i.name);
                 }
                 auto stepwise = StepwiseController::createStepwiseController(
-                    zone.get(), name, inputs, info.stepwiseInfo);
+                    zone.get(), name, splitNames(inputs), info.stepwiseInfo);
                 zone->addThermalPID(std::move(stepwise));
                 zone->addPidControlProcess(
                     name, info.type, info.setpoint, modeControlBus,
@@ -139,7 +140,12 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
             std::cerr << "inputs: ";
             for (const auto& i : inputs)
             {
-                std::cerr << i << ", ";
+                std::cerr << i.name;
+                if (i.convertTempToMargin)
+                {
+                    std::cerr << "[" << i.convertMarginZero << "]";
+                }
+                std::cerr << ", ";
             }
             std::cerr << "\n";
         }

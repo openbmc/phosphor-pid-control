@@ -15,14 +15,14 @@ typedef struct
 } limits_t;
 
 /* Note: If you update these structs you need to update the copy code in
- * pid/util.cpp.
+ * pid/util.cpp and the initialization code in pid/buildjson.hpp files.
  */
 typedef struct
 {
     bool initialized;         // has pid been initialized
 
     double ts;                // sample time in seconds
-    double integral;          // intergal of error
+    double integral;          // integral of error
     double lastOutput;        // value of last output
     double lastError;         // value of last error
 
