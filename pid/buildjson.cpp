@@ -17,10 +17,12 @@
 #include "pid/buildjson.hpp"
 
 #include "conf.hpp"
+#include "util.hpp"
 
 #include <nlohmann/json.hpp>
 
 #include <iostream>
+#include <limits>
 #include <map>
 #include <tuple>
 
@@ -31,11 +33,24 @@ using json = nlohmann::json;
 
 namespace conf
 {
+
 void from_json(const json& j, conf::ControllerInfo& c)
 {
+    std::vector<std::string> inputNames;
+
     j.at("type").get_to(c.type);
-    j.at("inputs").get_to(c.inputs);
+    j.at("inputs").get_to(inputNames);
     j.at("setpoint").get_to(c.setpoint);
+
+    std::vector<double> inputTempToMargin;
+
+    auto findTempToMargin = j.find("tempToMargin");
+    if (findTempToMargin != j.end())
+    {
+        findTempToMargin->get_to(inputTempToMargin);
+    }
+
+    c.inputs = spliceInputs(inputNames, inputTempToMargin);
 
     /* TODO: We need to handle parsing other PID controller configurations.
      * We can do that by checking for different keys and making the decision
@@ -127,6 +142,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
         c.stepwiseInfo.negativeHysteresis = negativeHysteresisValue;
     }
 }
+
 } // namespace conf
 
 inline void getCycleTimeSetting(const auto& zone, const int id,
