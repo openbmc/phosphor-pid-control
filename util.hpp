@@ -41,6 +41,20 @@ const std::string propertiesintf = "org.freedesktop.DBus.Properties";
 std::string FixupPath(std::string original);
 
 /*
+ * Splice together two vectors, "Inputs" and "TempToMargin" from JSON,
+ * into one vector of SensorInput structures containing info from both.
+ */
+std::vector<conf::SensorInput>
+    spliceInputs(const std::vector<std::string>& inputNames,
+                 const std::vector<double>& inputTempToMargin);
+
+/*
+ * Recovers the original "Inputs" vector from spliceInputs().
+ */
+std::vector<std::string>
+    splitNames(const std::vector<conf::SensorInput>& sensorInputs);
+
+/*
  * Dump active configuration.
  */
 void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
