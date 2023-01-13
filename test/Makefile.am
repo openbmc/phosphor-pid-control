@@ -79,7 +79,8 @@ sensors_json_unittest_SOURCES = sensors_json_unittest.cpp
 sensors_json_unittest_LDADD = $(top_builddir)/sensors/buildjson.o
 
 pid_json_unittest_SOURCES = pid_json_unittest.cpp
-pid_json_unittest_LDADD = $(top_builddir)/pid/buildjson.o
+pid_json_unittest_LDADD = $(top_builddir)/pid/buildjson.o \
+ $(top_builddir)/conf.o
 
 json_parse_unittest_SOURCES = json_parse_unittest.cpp
 json_parse_unittest_LDADD = $(top_builddir)/buildjson/buildjson.o
