@@ -16,6 +16,40 @@
       "message": "Yay, Jenkins passes! Had to clean up the formatting a little, as clang-format locally did not agree with Jenkins, and also the old Makefile path still has to be maintained, as Jenkins does \"make check\" which still uses the old Make way.",
       "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ceff60b9_9d2debe0",
+        "filename": "conf.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001360
+      },
+      "writtenOn": "2023-01-25T23:33:08Z",
+      "side": 1,
+      "message": "If we design SensorInput as base class and have derived classes for each type of sensor? Will that reduce the complexity of dbus/dbusconfiguration.cpp::init(). \n\nFor example today convertTempToMargin is applicable to only PidClass \u003d Margin, but if we decide that we need to convertPowerToMargin, then this structure may become more complex.\n\nBut this will be larger change.",
+      "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "60846213_43d272ed",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1001360
+      },
+      "writtenOn": "2023-01-25T23:33:08Z",
+      "side": 1,
+      "message": "Not all `std::cerr` are controlled by debugEnabled.",
+      "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
