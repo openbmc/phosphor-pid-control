@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e253a824_94de3db6",
+        "filename": "conf.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-01-26T06:54:02Z",
+      "side": 1,
+      "message": "True, I thought about adding a multiplier/offset in there as well. That would be for a future feature. The advantage of the struct here is that I can add more to it as needed, and not have it just be a number.\n\nI think adding base/derived classes for this would increase complexity, not reduce it.",
+      "parentUuid": "ceff60b9_9d2debe0",
+      "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60846213_43d272ed",
@@ -48,6 +66,24 @@
       "writtenOn": "2023-01-25T23:33:08Z",
       "side": 1,
       "message": "Not all `std::cerr` are controlled by debugEnabled.",
+      "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "42adf5c7_37151019",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-01-26T06:54:02Z",
+      "side": 1,
+      "message": "That is true. The program prints some output unconditionally. That\u0027s the way it\u0027s always been. To hide all output under debugEnabled would be the subject of another change, not related to this change.",
+      "parentUuid": "60846213_43d272ed",
       "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
