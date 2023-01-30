@@ -89,6 +89,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "17a42788_19cf4cd7",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-01-30T07:06:04Z",
+      "side": 1,
+      "message": "Thanks for looking at this.",
+      "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "ceff60b9_9d2debe0",
@@ -147,6 +164,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d28eca90_577b88ea",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 109,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-01-30T07:06:04Z",
+      "side": 1,
+      "message": "No, it is intentional here. I want to pass in the complete vector of SensorInput structures, since this is a thermal PID loop. The splitName() function is only to support fan and stepwise loops, in which TempToMargin is intentionally not supported.",
+      "parentUuid": "ec54b3a6_cfd21e9e",
+      "range": {
+        "startLine": 109,
+        "startChar": 38,
+        "endLine": 109,
+        "endChar": 44
+      },
+      "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "60846213_43d272ed",
@@ -195,6 +236,30 @@
       "writtenOn": "2023-01-30T06:51:37Z",
       "side": 1,
       "message": "So...\"Inputs\" and \"TempToMargin\" name and value have to one-by-one. User have to write temp sensors first and then margin sensors.\n\nIs there any other method that lets the user hasn\u0027t this limitation?\nFor example, set \"None\" for margin sensors in \"TempToMargin\".",
+      "range": {
+        "startLine": 123,
+        "startChar": 4,
+        "endLine": 123,
+        "endChar": 55
+      },
+      "revId": "9586fb773add0078983eb4de59bd7bbf522db1a8",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "646301bc_8435aefc",
+        "filename": "util.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-01-30T07:06:04Z",
+      "side": 1,
+      "message": "I actually tried that earlier. Unfortunately, it would require changes in entity-manager, which are beyond the scope of this feature. I tried to have the value be a JSON object in my first proposed syntax: https://github.com/openbmc/phosphor-pid-control/issues/23\n\nIt didn\u0027t work, because entity-manager has strict limitations on the allowed types of a value. I had to make it a simple list of floating-point numbers instead. Yes, they match up 1:1 with sensors in \"Inputs\". If the user is mixing temperature sensors and margin sensors in the same PID loop, then margin sensors need to come at the end of the list.",
+      "parentUuid": "97e12caf_58419b05",
       "range": {
         "startLine": 123,
         "startChar": 4,
