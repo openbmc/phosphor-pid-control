@@ -158,8 +158,9 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
     }
 
     // we skip associations because the mapper populates these, not the sensors
-    const std::array<const char*, 1> skipList = {
-        "xyz.openbmc_project.Association"};
+    const std::array<const char*, 2> skipList = {
+        "xyz.openbmc_project.Association",
+        "xyz.openbmc_project.Association.Definitions"};
 
     sdbusplus::message_t message(m);
     if (std::string(message.get_member()) == "InterfacesAdded")
@@ -181,6 +182,19 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
                 if (data.empty())
                 {
                     return 1;
+                }
+            }
+        }
+
+        if constexpr (pid_control::conf::DEBUG)
+        {
+            std::cout << "New config detected: " << path.str << std::endl;
+            for (auto& d : data)
+            {
+                std::cout << "\tdata is " << d.first << std::endl;
+                for (auto& second : d.second)
+                {
+                    std::cout << "\t\tdata is " << second.first << std::endl;
                 }
             }
         }
