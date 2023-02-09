@@ -24,6 +24,7 @@
 #include "pid/zone.hpp"
 #include "pid/zone_interface.hpp"
 
+#include <sdbusplus/asio/object_server.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <cstdint>
@@ -47,8 +48,10 @@ static std::string getControlPath(int64_t zone)
 std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
     buildZones(const std::map<int64_t, conf::PIDConf>& zonePids,
                std::map<int64_t, conf::ZoneConfig>& zoneConfigs,
-               SensorManager& mgr, sdbusplus::bus_t& modeControlBus)
+               SensorManager& mgr,
+               sdbusplus::asio::object_server& modeControlServer)
 {
+    sdbusplus::bus_t bus = sdbusplus::bus::new_default();
     std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
 
     for (const auto& [zoneId, pidConfig] : zonePids)
@@ -70,7 +73,8 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
         auto zone = std::make_shared<DbusPidZone>(
             zoneId, zoneConf->second.minThermalOutput,
             zoneConf->second.failsafePercent, zoneConf->second.cycleTime, mgr,
-            modeControlBus, getControlPath(zoneId).c_str(), deferSignals);
+            bus, modeControlServer, getControlPath(zoneId).c_str(),
+            deferSignals);
 
         std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
 
