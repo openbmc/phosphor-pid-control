@@ -35,6 +35,7 @@
 #include <boost/asio/signal_set.hpp>
 #include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/asio/connection.hpp>
+#include <sdbusplus/asio/object_server.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
 
@@ -69,7 +70,9 @@ boost::asio::io_context io;
 boost::asio::signal_set signals(io, SIGHUP);
 
 /* buses for system control */
-static sdbusplus::asio::connection modeControlBus(io);
+std::shared_ptr<sdbusplus::asio::connection> modeControlConn =
+    std::make_shared<sdbusplus::asio::connection>(io);
+sdbusplus::asio::object_server modeControlServer(modeControlConn, true);
 static sdbusplus::asio::connection
     hostBus(io, sdbusplus::bus::new_system().release());
 static sdbusplus::asio::connection
@@ -142,15 +145,17 @@ void restartControlLoops()
     else
     {
         static boost::asio::steady_timer reloadTimer(io);
-        if (!dbus_configuration::init(modeControlBus, reloadTimer, sensorConfig,
-                                      zoneConfig, zoneDetailsConfig))
+        if (!dbus_configuration::init(*modeControlConn, reloadTimer,
+                                      sensorConfig, zoneConfig,
+                                      zoneDetailsConfig))
         {
             return; // configuration not ready
         }
     }
 
     mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
-    zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
+    zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, *modeControlConn,
+                       modeControlServer);
 
     if (0 == zones.size())
     {
@@ -330,13 +335,11 @@ int main(int argc, char* argv[])
         std::cerr << "Core logging enabled\n";
     }
 
-    static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
+    std::string modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     // Create a manager for the ModeBus because we own it.
-    sdbusplus::server::manager_t(static_cast<sdbusplus::bus_t&>(modeControlBus),
-                                 modeRoot);
+    modeControlServer.add_manager(modeRoot);
     hostBus.request_name("xyz.openbmc_project.Hwmon.external");
-    modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
-    sdbusplus::server::manager_t objManager(modeControlBus, modeRoot);
+    modeControlConn->request_name("xyz.openbmc_project.State.FanCtrl");
 
     // Enable SIGHUP handling to reload JSON config
     signals.async_wait(sighupHandler);
