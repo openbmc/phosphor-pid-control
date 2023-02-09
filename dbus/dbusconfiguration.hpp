@@ -44,7 +44,7 @@ namespace dbus_configuration
 /**
  * Initialize a dbus-based configuration.
  *
- * @param bus - the sdbusplus connection to use
+     * @param bus - the sdbusplus connection to use
  * @param timer - the timer to use
  * @param sensorConfig - The configuration converted sensor list.
  * @param zoneConfig - The configuration converted PID list.
