@@ -516,4 +516,9 @@ void DbusPidZone::addPidFailSafePercent(std::string name, double percent)
     _pidsFailSafePercent[name] = percent;
 }
 
+std::string DbusPidZone::leader() const
+{
+    return _maximumSetPointName;
+}
+
 } // namespace pid_control
