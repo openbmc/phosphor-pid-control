@@ -83,6 +83,12 @@ class ZoneInterface
      */
     virtual double getMaxSetPointRequest() const = 0;
 
+    /** Given the set points' Name added via addSetPoint, return the maximum
+     * value's name - called from the PID loop that uses that value to drive the
+     * fans.
+     */
+    virtual std::string getMaxSetPointNameRequest() const = 0;
+
     /** Return if the zone has any sensors in fail safe mode. */
     virtual bool getFailSafeMode() const = 0;
     /** Return the rpm or pwm percent value to drive fan pids when zone is in
