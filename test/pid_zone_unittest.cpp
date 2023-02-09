@@ -26,6 +26,7 @@ using ::testing::Return;
 using ::testing::StrEq;
 
 static std::string modeInterface = "xyz.openbmc_project.Control.Mode";
+static std::string debugZoneInterface = "xyz.openbmc_project.Debug.Pid.Zone";
 static std::string enableInterface = "xyz.openbmc_project.Object.Enable";
 
 namespace
@@ -60,6 +61,8 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     std::vector<std::string> properties;
     SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
                     &d);
+    SetupDbusObject(&sdbus_mock_mode, defer, objPath, debugZoneInterface,
+                    properties, &d);
 
     std::string sensorname = "temp1";
     std::string pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone1/" +
@@ -99,6 +102,8 @@ class PidZoneTest : public ::testing::Test
         mgr = std::move(m);
 
         SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface,
+                        properties, &property_index);
+        SetupDbusObject(&sdbus_mock_mode, defer, objPath, debugZoneInterface,
                         properties, &property_index);
 
         SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
