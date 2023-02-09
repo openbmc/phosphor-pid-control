@@ -6,6 +6,9 @@
 #include "test/helpers.hpp"
 #include "test/sensor_mock.hpp"
 
+#include <boost/asio/io_context.hpp>
+#include <sdbusplus/asio/connection.hpp>
+#include <sdbusplus/asio/object_server.hpp>
 #include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <chrono>
@@ -27,12 +30,21 @@ using ::testing::StrEq;
 
 static std::string modeInterface = "xyz.openbmc_project.Control.Mode";
 
+const char* appname = program_invocation_name;
+
 namespace
 {
 
 TEST(PidZoneConstructorTest, BoringConstructorTest)
 {
     // Build a PID Zone.
+
+    boost::asio::io_context io;
+    auto systemBus = std::make_shared<sdbusplus::asio::connection>(io);
+
+    systemBus->request_name("xyz.openbmc_project.State.FanCtrl.Test.Normal");
+    std::unique_ptr<sdbusplus::asio::object_server> objectServer;
+    objectServer = std::make_unique<sdbusplus::asio::object_server>(systemBus);
 
     sdbusplus::SdBusMock sdbus_mock_passive, sdbus_mock_host, sdbus_mock_mode;
     auto bus_mock_passive = sdbusplus::get_mocked_new(&sdbus_mock_passive);
@@ -47,7 +59,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SensorManager m(bus_mock_passive, bus_mock_host);
 
     bool defer = true;
-    const char* objPath = "/path/";
+    const char* objPath = "/xyz/openbmc_project/settings/fanctrl/zone1";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
@@ -59,7 +71,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
                     &d);
 
     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
-                  bus_mock_mode, objPath, defer);
+                  bus_mock_mode, *objectServer, objPath, defer);
     // Success.
 }
 
@@ -72,6 +84,20 @@ class PidZoneTest : public ::testing::Test
         property_index(), properties(), sdbus_mock_passive(), sdbus_mock_host(),
         sdbus_mock_mode()
     {
+        static boost::asio::io_context io;
+        std::shared_ptr<sdbusplus::asio::connection> systemBus =
+            std::make_shared<sdbusplus::asio::connection>(io);
+
+        // Need different name for the bus
+        std::string dbusTestName = {"xyz.openbmc_project.State.FanCtrl.Test."};
+        std::string fullPath = {appname};
+        std::size_t fileName = fullPath.find_last_of("/\\");
+        dbusTestName += fullPath.substr(fileName + 1);
+        systemBus->request_name(dbusTestName.c_str());
+
+        objectServer =
+            std::make_unique<sdbusplus::asio::object_server>(systemBus);
+
         EXPECT_CALL(sdbus_mock_host,
                     sd_bus_add_object_manager(
                         IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
@@ -88,9 +114,9 @@ class PidZoneTest : public ::testing::Test
         SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface,
                         properties, &property_index);
 
-        zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
-                                             failSafePercent, cycleTime, mgr,
-                                             bus_mock_mode, objPath, defer);
+        zone = std::make_unique<DbusPidZone>(
+            zoneId, minThermalOutput, failSafePercent, cycleTime, mgr,
+            bus_mock_mode, *objectServer, objPath, defer);
     }
 
     // unused
@@ -104,11 +130,13 @@ class PidZoneTest : public ::testing::Test
     double minThermalOutput = 1000.0;
     double failSafePercent = 0.75;
     bool defer = true;
-    const char* objPath = "/path/";
+    const char* objPath = "/xyz/openbmc_project/settings/fanctrl/zone1";
     SensorManager mgr;
     conf::CycleTime cycleTime;
 
     std::unique_ptr<DbusPidZone> zone;
+
+    std::unique_ptr<sdbusplus::asio::object_server> objectServer;
 };
 
 TEST_F(PidZoneTest, GetZoneId_ReturnsExpected)
