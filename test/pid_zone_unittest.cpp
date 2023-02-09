@@ -34,6 +34,10 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
 {
     // Build a PID Zone.
 
+    boost::asio::io_service io;
+    auto system_bus = std::make_shared<dbus::connection>(io, dbus_t::session);
+    dbus::DbusObjectServer object_server(system_bus);
+
     sdbusplus::SdBusMock sdbus_mock_passive, sdbus_mock_host, sdbus_mock_mode;
     auto bus_mock_passive = sdbusplus::get_mocked_new(&sdbus_mock_passive);
     auto bus_mock_host = sdbusplus::get_mocked_new(&sdbus_mock_host);
@@ -59,7 +63,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
                     &d);
 
     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
-                  bus_mock_mode, objPath, defer);
+                  bus_mock_mode, object_server, objPath, defer);
     // Success.
 }
 
@@ -72,6 +76,11 @@ class PidZoneTest : public ::testing::Test
         property_index(), properties(), sdbus_mock_passive(), sdbus_mock_host(),
         sdbus_mock_mode()
     {
+        boost::asio::io_service io;
+        auto system_bus = std::make_shared<dbus::connection>(
+            io, dbus_t::session);
+        dbus::DbusObjectServer object_server(system_bus);
+
         EXPECT_CALL(sdbus_mock_host,
                     sd_bus_add_object_manager(
                         IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
@@ -90,7 +99,8 @@ class PidZoneTest : public ::testing::Test
 
         zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
                                              failSafePercent, cycleTime, mgr,
-                                             bus_mock_mode, objPath, defer);
+                                             bus_mock_mode, object_server,
+                                             objPath, defer);
     }
 
     // unused
