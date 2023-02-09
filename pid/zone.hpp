@@ -8,6 +8,7 @@
 #include "tuning.hpp"
 #include "zone_interface.hpp"
 
+#include <sdbusplus/asio/object_server.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
@@ -42,7 +43,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
   public:
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
                 conf::CycleTime cycleTime, const SensorManager& mgr,
-                sdbusplus::bus_t& bus, const char* objPath, bool defer) :
+                sdbusplus::bus_t& bus,
+                sdbusplus::asio::object_server& modeControlServer,
+                const char* objPath, bool defer) :
         ModeObject(bus, objPath,
                    defer ? ModeObject::action::defer_emit
                          : ModeObject::action::emit_object_added),
@@ -53,6 +56,14 @@ class DbusPidZone : public ZoneInterface, public ModeObject
         if (loggingEnabled)
         {
             _log.open(loggingPath + "/zone_" + std::to_string(zone) + ".log");
+        }
+
+        zoneControlIntf = modeControlServer.add_unique_interface(
+            objPath, "xyz.openbmc_project.Control.Zone");
+        zoneControlIntf->register_property("Leader", std::string(""));
+        if (!zoneControlIntf->initialize())
+        {
+            std::cerr << "Failed to initialize Control.Zone interface\n";
         }
     }
 
@@ -68,6 +79,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     int64_t getZoneID(void) const override;
     void addSetPoint(double setPoint, const std::string& name) override;
     double getMaxSetPointRequest(void) const override;
+    std::string getMaxSetPointNameRequest(void) override;
     void addRPMCeiling(double ceiling) override;
     void clearSetPoints(void) override;
     void clearRPMCeilings(void) override;
@@ -217,6 +229,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
      * Pid fail safe Percent setting by each pid controller configuration.
      */
     std::map<std::string, double> _pidsFailSafePercent;
+
+    std::unique_ptr<sdbusplus::asio::dbus_interface> zoneControlIntf;
 };
 
 } // namespace pid_control

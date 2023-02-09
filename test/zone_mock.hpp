@@ -35,6 +35,7 @@ class ZoneMock : public ZoneInterface
     MOCK_METHOD0(clearRPMCeilings, void());
     MOCK_METHOD0(determineMaxSetPointRequest, void());
     MOCK_CONST_METHOD0(getMaxSetPointRequest, double());
+    MOCK_METHOD0(getMaxSetPointNameRequest, std::string());
 
     MOCK_METHOD0(processFans, void());
     MOCK_METHOD0(processThermals, void());

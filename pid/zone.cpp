@@ -74,6 +74,11 @@ double DbusPidZone::getMaxSetPointRequest(void) const
     return _maximumSetPoint;
 }
 
+std::string DbusPidZone::getMaxSetPointNameRequest(void)
+{
+    return _maximumSetPointName;
+}
+
 bool DbusPidZone::getManualMode(void) const
 {
     return _manualMode;
@@ -278,6 +283,7 @@ void DbusPidZone::determineMaxSetPointRequest(void)
         std::cerr << "PID Zone " << _zoneId << " max SetPoint "
                   << _maximumSetPoint << " requested by "
                   << _maximumSetPointName;
+        zoneControlIntf->set_property("Leader", _maximumSetPointName);
         for (const auto& sensor : _failSafeSensors)
         {
             if (sensor.find("Fan") == std::string::npos)
