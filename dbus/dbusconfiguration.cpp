@@ -396,11 +396,12 @@ void populatePidInfo(
     info.pidInfo.derivativeCoeff = derivativeCoeff;
 }
 
-bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
+bool init(boost::asio::steady_timer& timer,
           std::map<std::string, conf::SensorConfig>& sensorConfig,
           std::map<int64_t, conf::PIDConf>& zoneConfig,
           std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig)
 {
+    sdbusplus::bus_t bus = sdbusplus::bus::new_default();
 
     sensorConfig.clear();
     zoneConfig.clear();
