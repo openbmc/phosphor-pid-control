@@ -16,6 +16,23 @@
       "message": "Hi Josh, can this PR merge? Or need to check other things?",
       "revId": "1bba5c7076cbb6050b37e008a8b198f21d097d3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "65c28fe8_aeb212e0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-02-10T02:18:03Z",
+      "side": 1,
+      "message": "Has this been tested? I noticed many files have been removed from the gitignore file. Please make sure that you can still do a build locally, and after that, please make sure that \"git status\" shows that there are no unwanted files appearing.",
+      "revId": "1bba5c7076cbb6050b37e008a8b198f21d097d3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
