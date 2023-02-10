@@ -51,6 +51,24 @@
       "parentUuid": "65c28fe8_aeb212e0",
       "revId": "1bba5c7076cbb6050b37e008a8b198f21d097d3e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a09de0b1_f23c0481",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-02-10T02:41:14Z",
+      "side": 1,
+      "message": "Nice! Please add .pc and patches to the gitignore file.",
+      "parentUuid": "435cd880_d1cfdef7",
+      "revId": "1bba5c7076cbb6050b37e008a8b198f21d097d3e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
