@@ -34,13 +34,17 @@ struct SensorConfig
 
 /*
  * Structure for decorating an input sensor's name with additional
- * information, to help out with TempToMargin conversion.
+ * information, such as TempToMargin and MissingIsAcceptable.
+ * This information comes from the PID loop configuration,
+ * not from SensorConfig, in order for it to be able to work
+ * with dynamic sensors from entity-manager.
  */
 struct SensorInput
 {
     std::string name;
     double convertMarginZero = std::numeric_limits<double>::quiet_NaN();
     bool convertTempToMargin = false;
+    bool missingIsAcceptable = false;
 };
 
 /*
