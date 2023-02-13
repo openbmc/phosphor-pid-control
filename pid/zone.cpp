@@ -96,6 +96,17 @@ bool DbusPidZone::getFailSafeMode(void) const
     return !_failSafeSensors.empty();
 }
 
+void DbusPidZone::markSensorMissing(const std::string& name)
+{
+    if (_missingAcceptable.find(name) != _missingAcceptable.end())
+    {
+        // Disallow sensors in MissingIsAcceptable list from causing failsafe
+        return;
+    }
+
+    _failSafeSensors.emplace(name);
+}
+
 int64_t DbusPidZone::getZoneID(void) const
 {
     return _zoneId;
@@ -129,6 +140,7 @@ void DbusPidZone::clearSetPoints(void)
 {
     _SetPoints.clear();
     _maximumSetPoint = 0;
+    _maximumSetPointName.clear();
 }
 
 double DbusPidZone::getFailSafePercent(void) const
@@ -177,14 +189,25 @@ void DbusPidZone::setOutputCache(std::string_view name,
     _cachedFanOutputs[std::string{name}] = values;
 }
 
-void DbusPidZone::addFanInput(const std::string& fan)
+void DbusPidZone::addFanInput(const std::string& fan, bool missingAcceptable)
 {
     _fanInputs.push_back(fan);
+
+    if (missingAcceptable)
+    {
+        _missingAcceptable.emplace(fan);
+    }
 }
 
-void DbusPidZone::addThermalInput(const std::string& therm)
+void DbusPidZone::addThermalInput(const std::string& therm,
+                                  bool missingAcceptable)
 {
     _thermalInputs.push_back(therm);
+
+    if (missingAcceptable)
+    {
+        _missingAcceptable.emplace(therm);
+    }
 }
 
 // Updates desired RPM setpoint from optional text file
@@ -391,7 +414,8 @@ void DbusPidZone::updateFanTelemetry(void)
         // check if fan fail.
         if (sensor->getFailed())
         {
-            _failSafeSensors.insert(f);
+            markSensorMissing(f);
+
             if (debugEnabled)
             {
                 std::cerr << f << " fan sensor get failed\n";
@@ -399,7 +423,8 @@ void DbusPidZone::updateFanTelemetry(void)
         }
         else if (timeout != 0 && duration >= period)
         {
-            _failSafeSensors.insert(f);
+            markSensorMissing(f);
+
             if (debugEnabled)
             {
                 std::cerr << f << " fan sensor timeout\n";
@@ -415,6 +440,7 @@ void DbusPidZone::updateFanTelemetry(void)
                 {
                     std::cerr << f << " is erased from failsafe sensor set\n";
                 }
+
                 _failSafeSensors.erase(kt);
             }
         }
@@ -458,7 +484,8 @@ void DbusPidZone::updateSensors(void)
 
         if (sensor->getFailed())
         {
-            _failSafeSensors.insert(t);
+            markSensorMissing(t);
+
             if (debugEnabled)
             {
                 std::cerr << t << " temperature sensor get failed\n";
@@ -466,8 +493,8 @@ void DbusPidZone::updateSensors(void)
         }
         else if (timeout != 0 && duration >= period)
         {
-            // std::cerr << "Entering fail safe mode.\n";
-            _failSafeSensors.insert(t);
+            markSensorMissing(t);
+
             if (debugEnabled)
             {
                 std::cerr << t << " temperature sensor get timeout\n";
@@ -499,7 +526,7 @@ void DbusPidZone::initializeCache(void)
         _cachedFanOutputs[f] = {0, 0};
 
         // Start all fans in fail-safe mode.
-        _failSafeSensors.insert(f);
+        markSensorMissing(f);
     }
 
     for (const auto& t : _thermalInputs)
@@ -507,7 +534,7 @@ void DbusPidZone::initializeCache(void)
         _cachedValuesByName[t] = {0, 0};
 
         // Start all sensors in fail-safe mode.
-        _failSafeSensors.insert(t);
+        markSensorMissing(t);
     }
 }
 
