@@ -96,6 +96,17 @@ bool DbusPidZone::getFailSafeMode(void) const
     return !_failSafeSensors.empty();
 }
 
+void DbusPidZone::markSensorMissing(const std::string& name)
+{
+    if (_missingAcceptable.find(name) != _missingAcceptable.end())
+    {
+        // Disallow sensors in MissingIsAcceptable list from causing failsafe
+        return;
+    }
+
+    _failSafeSensors.emplace(name);
+}
+
 int64_t DbusPidZone::getZoneID(void) const
 {
     return _zoneId;
@@ -184,14 +195,25 @@ void DbusPidZone::setOutputCache(std::string_view name,
     _cachedFanOutputs[std::string{name}] = values;
 }
 
-void DbusPidZone::addFanInput(const std::string& fan)
+void DbusPidZone::addFanInput(const std::string& fan, bool missingAcceptable)
 {
     _fanInputs.push_back(fan);
+
+    if (missingAcceptable)
+    {
+        _missingAcceptable.emplace(fan);
+    }
 }
 
-void DbusPidZone::addThermalInput(const std::string& therm)
+void DbusPidZone::addThermalInput(const std::string& therm,
+                                  bool missingAcceptable)
 {
     _thermalInputs.push_back(therm);
+
+    if (missingAcceptable)
+    {
+        _missingAcceptable.emplace(therm);
+    }
 }
 
 // Updates desired RPM setpoint from optional text file
@@ -389,21 +411,23 @@ void DbusPidZone::updateSensors(void)
 
 void DbusPidZone::initializeCache(void)
 {
+    auto nan = std::numeric_limits<double>::quiet_NaN();
+
     for (const auto& f : _fanInputs)
     {
-        _cachedValuesByName[f] = {0, 0};
-        _cachedFanOutputs[f] = {0, 0};
+        _cachedValuesByName[f] = {nan, nan};
+        _cachedFanOutputs[f] = {nan, nan};
 
         // Start all fans in fail-safe mode.
-        _failSafeSensors.insert(f);
+        markSensorMissing(f);
     }
 
     for (const auto& t : _thermalInputs)
     {
-        _cachedValuesByName[t] = {0, 0};
+        _cachedValuesByName[t] = {nan, nan};
 
         // Start all sensors in fail-safe mode.
-        _failSafeSensors.insert(t);
+        markSensorMissing(t);
     }
     // Initialize Pid FailSafePercent
     initPidFailSafePercent();

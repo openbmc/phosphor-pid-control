@@ -670,6 +670,15 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 std::vector<std::string> inputSensorNames(
                     std::get<std::vector<std::string>>(base.at("Inputs")));
                 std::vector<std::string> outputSensorNames;
+                std::vector<std::string> missingAcceptableSensorNames;
+
+                auto findMissingAcceptable = base.find("MissingIsAcceptable");
+                if (findMissingAcceptable != base.end())
+                {
+                    missingAcceptableSensorNames =
+                        std::get<std::vector<std::string>>(
+                            findMissingAcceptable->second);
+                }
 
                 // assumption: all fan pids must have at least one output
                 if (pidClass == "fan")
@@ -689,6 +698,9 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
 
                 std::vector<SensorInterfaceType> inputSensorInterfaces;
                 std::vector<SensorInterfaceType> outputSensorInterfaces;
+                std::vector<SensorInterfaceType>
+                    missingAcceptableSensorInterfaces;
+
                 /* populate an interface list for different sensor direction
                  * types (input,output)
                  */
@@ -706,6 +718,12 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 {
                     findSensors(sensors, sensorNameToDbusName(sensorName),
                                 outputSensorInterfaces);
+                }
+                for (const std::string& sensorName :
+                     missingAcceptableSensorNames)
+                {
+                    findSensors(sensors, sensorNameToDbusName(sensorName),
+                                missingAcceptableSensorInterfaces);
                 }
 
                 inputSensorNames.clear();
@@ -746,6 +764,35 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                          */
                         throw std::runtime_error(
                             "sensor at dbus path [" + inputSensorPath +
+                            "] has an interface [" + dbusInterface +
+                            "] that does not match the expected interface of " +
+                            sensorInterface);
+                    }
+                }
+
+                // MissingIsAcceptable same postprocessing as Inputs
+                missingAcceptableSensorNames.clear();
+                for (const SensorInterfaceType&
+                         missingAcceptableSensorInterface :
+                     missingAcceptableSensorInterfaces)
+                {
+                    const std::string& dbusInterface =
+                        missingAcceptableSensorInterface.second;
+                    const std::string& missingAcceptableSensorPath =
+                        missingAcceptableSensorInterface.first;
+
+                    std::string missingAcceptableSensorName =
+                        getSensorNameFromPath(missingAcceptableSensorPath);
+                    missingAcceptableSensorNames.push_back(
+                        missingAcceptableSensorName);
+
+                    if (dbusInterface != sensorInterface)
+                    {
+                        /* MissingIsAcceptable same error checking as Inputs
+                         */
+                        throw std::runtime_error(
+                            "sensor at dbus path [" +
+                            missingAcceptableSensorPath +
                             "] has an interface [" + dbusInterface +
                             "] that does not match the expected interface of " +
                             sensorInterface);
@@ -864,7 +911,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 }
 
                 std::vector<pid_control::conf::SensorInput> sensorInputs =
-                    spliceInputs(inputSensorNames, inputTempToMargin);
+                    spliceInputs(inputSensorNames, inputTempToMargin,
+                                 missingAcceptableSensorNames);
 
                 if (offsetType.empty())
                 {
@@ -903,8 +951,18 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 conf::PIDConf& conf = zoneConfig[index];
 
                 std::vector<std::string> inputs;
+                std::vector<std::string> missingAcceptableSensors;
+                std::vector<std::string> missingAcceptableSensorNames;
                 std::vector<std::string> sensorNames =
                     std::get<std::vector<std::string>>(base.at("Inputs"));
+
+                auto findMissingAcceptable = base.find("MissingIsAcceptable");
+                if (findMissingAcceptable != base.end())
+                {
+                    missingAcceptableSensorNames =
+                        std::get<std::vector<std::string>>(
+                            findMissingAcceptable->second);
+                }
 
                 bool unavailableAsFailed = true;
                 auto findUnavailableAsFailed =
@@ -928,10 +986,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
 
                     for (const auto& sensorPathIfacePair : sensorPathIfacePairs)
                     {
-                        size_t idx =
-                            sensorPathIfacePair.first.find_last_of("/") + 1;
                         std::string shortName =
-                            sensorPathIfacePair.first.substr(idx);
+                            getSensorNameFromPath(sensorPathIfacePair.first);
 
                         inputs.push_back(shortName);
                         auto& config = sensorConfig[shortName];
@@ -950,6 +1006,30 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 {
                     continue;
                 }
+
+                // MissingIsAcceptable same postprocessing as Inputs
+                for (const std::string& missingAcceptableSensorName :
+                     missingAcceptableSensorNames)
+                {
+                    std::vector<std::pair<std::string, std::string>>
+                        sensorPathIfacePairs;
+                    if (!findSensors(
+                            sensors,
+                            sensorNameToDbusName(missingAcceptableSensorName),
+                            sensorPathIfacePairs))
+                    {
+                        break;
+                    }
+
+                    for (const auto& sensorPathIfacePair : sensorPathIfacePairs)
+                    {
+                        std::string shortName =
+                            getSensorNameFromPath(sensorPathIfacePair.first);
+
+                        missingAcceptableSensors.push_back(shortName);
+                    }
+                }
+
                 conf::ControllerInfo& info = conf[pidName];
 
                 std::vector<double> inputTempToMargin;
@@ -961,7 +1041,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         std::get<std::vector<double>>(findTempToMargin->second);
                 }
 
-                info.inputs = spliceInputs(inputs, inputTempToMargin);
+                info.inputs = spliceInputs(inputs, inputTempToMargin,
+                                           missingAcceptableSensors);
 
                 info.type = "stepwise";
                 info.stepwiseInfo.ts = 1.0; // currently unused
