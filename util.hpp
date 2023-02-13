@@ -46,7 +46,8 @@ std::string FixupPath(std::string original);
  */
 std::vector<conf::SensorInput>
     spliceInputs(const std::vector<std::string>& inputNames,
-                 const std::vector<double>& inputTempToMargin);
+                 const std::vector<double>& inputTempToMargin,
+                 const std::vector<std::string>& missingAcceptableNames);
 
 /*
  * Recovers the original "Inputs" vector from spliceInputs().
