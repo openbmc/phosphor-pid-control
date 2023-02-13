@@ -175,7 +175,7 @@ void FanController::outputProc(double value)
     {
         auto sensor = _owner->getSensor(it);
         auto redundantWrite = _owner->getRedundantWrite();
-        int64_t rawWritten;
+        int64_t rawWritten = -1;
         sensor->write(percent, redundantWrite, &rawWritten);
 
         // The outputCache will be used later,
