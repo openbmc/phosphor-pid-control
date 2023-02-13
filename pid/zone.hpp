@@ -60,6 +60,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool getRedundantWrite(void) const override;
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
+    void markSensorMissing(const std::string& name);
 
     int64_t getZoneID(void) const override;
     void addSetPoint(double setPoint, const std::string& name) override;
@@ -88,8 +89,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     double getCachedValue(const std::string& name) override;
     ValueCacheEntry getCachedValues(const std::string& name) override;
 
-    void addFanInput(const std::string& fan);
-    void addThermalInput(const std::string& therm);
+    void addFanInput(const std::string& fan, bool missingAcceptable);
+    void addThermalInput(const std::string& therm, bool missingAcceptable);
 
     void initializeLog(void) override;
     void writeLog(const std::string& value) override;
@@ -185,6 +186,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     const conf::CycleTime _cycleTime;
 
     std::set<std::string> _failSafeSensors;
+    std::set<std::string> _missingAcceptable;
 
     std::vector<double> _SetPoints;
     std::vector<double> _RPMCeilings;

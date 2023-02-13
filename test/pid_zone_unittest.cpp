@@ -234,8 +234,8 @@ TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
     EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
-    zone->addThermalInput(name1);
-    zone->addThermalInput(name2);
+    zone->addThermalInput(name1, false);
+    zone->addThermalInput(name2, false);
 
     // Initialize Zone
     zone->initializeCache();
@@ -286,8 +286,8 @@ TEST_F(PidZoneTest, FanInputTest_VerifiesFanValuesCached)
     EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
-    zone->addFanInput(name1);
-    zone->addFanInput(name2);
+    zone->addFanInput(name1, false);
+    zone->addFanInput(name2, false);
 
     // Initialize Zone
     zone->initializeCache();
@@ -333,8 +333,8 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
     mgr.addSensor(type, name2, std::move(sensor2));
     EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
 
-    zone->addThermalInput(name1);
-    zone->addThermalInput(name2);
+    zone->addThermalInput(name1, false);
+    zone->addThermalInput(name2, false);
 
     // Initialize Zone
     zone->initializeCache();
@@ -370,6 +370,79 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
     EXPECT_TRUE(zone->getFailSafeMode());
 }
 
+TEST_F(PidZoneTest, ThermalInput_MissingIsAcceptableNoFailSafe)
+{
+    // This is similar to the above test, but because missingIsAcceptable
+    // is set, the zone should not enter failsafe mode when it goes missing.
+
+    int64_t timeout = 1;
+
+    std::string name1 = "temp1";
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
+    SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
+
+    std::string name2 = "temp2";
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout);
+    SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
+
+    std::string type = "unchecked";
+    mgr.addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
+    mgr.addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+
+    zone->addThermalInput(name1, true);
+    zone->addThermalInput(name2, false);
+
+    // Initialize Zone
+    zone->initializeCache();
+
+    // Verify now in failsafe mode.
+    EXPECT_TRUE(zone->getFailSafeMode());
+
+    ReadReturn r1;
+    r1.value = 10.0;
+    r1.updated = std::chrono::high_resolution_clock::now();
+    EXPECT_CALL(*sensor_ptr1, read()).WillOnce(Return(r1));
+
+    ReadReturn r2;
+    r2.value = 11.0;
+    r2.updated = std::chrono::high_resolution_clock::now();
+    EXPECT_CALL(*sensor_ptr2, read()).WillOnce(Return(r2));
+
+    zone->updateSensors();
+    EXPECT_FALSE(zone->getFailSafeMode());
+
+    // Ok, so we're not in failsafe mode, so let's set updated to the past.
+    // sensor1 will have an updated field older than its timeout value, but
+    // sensor2 will be fine. :D
+    r1.updated -= std::chrono::seconds(3);
+    r2.updated = std::chrono::high_resolution_clock::now();
+
+    EXPECT_CALL(*sensor_ptr1, read()).WillOnce(Return(r1));
+    EXPECT_CALL(*sensor_ptr2, read()).WillOnce(Return(r2));
+
+    // MissingIsAcceptable is true for sensor1, so the zone should not be
+    // thrown into failsafe mode.
+    zone->updateSensors();
+    EXPECT_FALSE(zone->getFailSafeMode());
+
+    // Do the same thing, but for the opposite sensors: r1 is good,
+    // but r2 is set to some time in the past.
+    r1.updated = std::chrono::high_resolution_clock::now();
+    r2.updated -= std::chrono::seconds(3);
+
+    EXPECT_CALL(*sensor_ptr1, read()).WillOnce(Return(r1));
+    EXPECT_CALL(*sensor_ptr2, read()).WillOnce(Return(r2));
+
+    // Now, the zone should be in failsafe mode, because sensor2 does not
+    // have MissingIsAcceptable set true, it is still subject to failsafe.
+    zone->updateSensors();
+    EXPECT_TRUE(zone->getFailSafeMode());
+}
+
 TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
 {
     // This will add a couple fan inputs, and verify the values are cached.
@@ -393,8 +466,8 @@ TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
     EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
-    zone->addFanInput(name1);
-    zone->addFanInput(name2);
+    zone->addFanInput(name1, false);
+    zone->addFanInput(name2, false);
 
     // Initialize Zone
     zone->initializeCache();
@@ -446,8 +519,8 @@ TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
     EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
-    zone->addFanInput(name1);
-    zone->addFanInput(name2);
+    zone->addFanInput(name1, false);
+    zone->addFanInput(name2, false);
 
     // Initialize Zone
     zone->initializeCache();
@@ -497,7 +570,7 @@ TEST_F(PidZoneTest, GetSensorTest_ReturnsExpected)
     mgr.addSensor(type, name1, std::move(sensor1));
     EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
 
-    zone->addThermalInput(name1);
+    zone->addThermalInput(name1, false);
 
     // Verify method under test returns the pointer we expect.
     EXPECT_EQ(mgr.getSensor(name1), zone->getSensor(name1));
