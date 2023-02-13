@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3fabeea8_efc90542",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 22
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-02-13T05:49:01Z",
+      "side": 1,
+      "message": "Rebased master and fixed the conflict.\nPlease help to review again. Thanks!",
+      "revId": "d07386fe76142b93388b0c7c12340a8700768e69",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
