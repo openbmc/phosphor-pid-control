@@ -863,8 +863,18 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         std::get<std::vector<double>>(findTempToMargin->second);
                 }
 
+                std::vector<std::string> missingAcceptableNames;
+
+                auto findMissingAcceptable = base.find("MissingIsAcceptable");
+                if (findMissingAcceptable != base.end())
+                {
+                    missingAcceptableNames = std::get<std::vector<std::string>>(
+                        findMissingAcceptable->second);
+                }
+
                 std::vector<pid_control::conf::SensorInput> sensorInputs =
-                    spliceInputs(inputSensorNames, inputTempToMargin);
+                    spliceInputs(inputSensorNames, inputTempToMargin,
+                                 missingAcceptableNames);
 
                 if (offsetType.empty())
                 {
@@ -961,7 +971,17 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         std::get<std::vector<double>>(findTempToMargin->second);
                 }
 
-                info.inputs = spliceInputs(inputs, inputTempToMargin);
+                std::vector<std::string> missingAcceptableNames;
+
+                auto findMissingAcceptable = base.find("MissingIsAcceptable");
+                if (findMissingAcceptable != base.end())
+                {
+                    missingAcceptableNames = std::get<std::vector<std::string>>(
+                        findMissingAcceptable->second);
+                }
+
+                info.inputs = spliceInputs(inputs, inputTempToMargin,
+                                           missingAcceptableNames);
 
                 info.type = "stepwise";
                 info.stepwiseInfo.ts = 1.0; // currently unused
