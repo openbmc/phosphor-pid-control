@@ -104,15 +104,16 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
 
 std::vector<conf::SensorInput>
     spliceInputs(const std::vector<std::string>& inputNames,
-                 const std::vector<double>& inputTempToMargin)
+                 const std::vector<double>& inputTempToMargin,
+                 const std::vector<std::string>& missingAcceptableNames)
 {
     std::vector<conf::SensorInput> results;
 
-    // Default to the TempToMargin feature disabled
+    // Default to TempToMargin and MissingIsAcceptable disabled
     for (const auto& inputName : inputNames)
     {
         conf::SensorInput newInput{
-            inputName, std::numeric_limits<double>::quiet_NaN(), false};
+            inputName, std::numeric_limits<double>::quiet_NaN(), false, false};
 
         results.emplace_back(newInput);
     }
@@ -131,6 +132,23 @@ std::vector<conf::SensorInput>
         // Both vectors have this index, combine both into SensorInput
         results[index].convertMarginZero = inputTempToMargin[index];
         results[index].convertTempToMargin = true;
+    }
+
+    std::set<std::string> acceptableSet;
+
+    // Copy vector to set, to avoid O(n^2) runtime below
+    for (const auto& name : missingAcceptableNames)
+    {
+        acceptableSet.emplace(name);
+    }
+
+    // Flag missingIsAcceptable true if name found in that set
+    for (auto& result : results)
+    {
+        if (acceptableSet.find(result.name) != acceptableSet.end())
+        {
+            result.missingIsAcceptable = true;
+        }
     }
 
     return results;

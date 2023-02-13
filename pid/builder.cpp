@@ -90,7 +90,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
-                    zone->addFanInput(i.name);
+                    zone->addFanInput(i.name, i.missingIsAcceptable);
                 }
 
                 auto pid = FanController::createFanPid(
@@ -102,7 +102,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
-                    zone->addThermalInput(i.name);
+                    zone->addThermalInput(i.name, i.missingIsAcceptable);
                 }
 
                 auto pid = ThermalController::createThermalPid(
@@ -116,7 +116,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 for (const auto& i : info.inputs)
                 {
                     inputs.push_back(i);
-                    zone->addThermalInput(i.name);
+                    zone->addThermalInput(i.name, i.missingIsAcceptable);
                 }
                 auto stepwise = StepwiseController::createStepwiseController(
                     zone.get(), name, splitNames(inputs), info.stepwiseInfo);
@@ -130,6 +130,10 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 if (i.convertTempToMargin)
                 {
                     std::cerr << "[" << i.convertMarginZero << "]";
+                }
+                if (i.missingIsAcceptable)
+                {
+                    std::cerr << "?";
                 }
                 std::cerr << ", ";
             }

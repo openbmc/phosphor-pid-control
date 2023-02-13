@@ -159,8 +159,13 @@ double ThermalController::inputProc(void)
 
     if (!acceptable)
     {
-        // While not optimal, zero is better than garbage
-        value = 0;
+        value = getSetpoint();
+        
+        if (!(std::isfinite(value)))
+        {
+            // While not optimal, zero is better than garbage
+            value = 0;
+        }
     }
 
     if (debugEnabled)
