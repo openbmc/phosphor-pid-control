@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a8c887e9_9b30507f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-02-14T18:23:12Z",
+      "side": 1,
+      "message": "No objection received from anybody else in a while. Will merge, assuming rebase to latest master works.",
+      "revId": "9f50997ee718e833cb5db59443bfd3dd77479e52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
