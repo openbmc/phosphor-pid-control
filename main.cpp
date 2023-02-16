@@ -61,8 +61,6 @@ std::map<int64_t, conf::ZoneConfig> zoneDetailsConfig = {};
 
 } // namespace pid_control
 
-/** the swampd daemon will check for the existence of this file. */
-constexpr auto jsonConfigurationPath = "/usr/share/swampd/config.json";
 std::string configPath = "";
 
 /* async io context for operation */
@@ -79,6 +77,28 @@ static sdbusplus::asio::connection
 
 namespace pid_control
 {
+
+std::string searchConfigurationPath()
+{
+    using path = std::filesystem::path;
+    auto configFile = []() -> path {
+        static constexpr auto name = "config.json";
+
+        for (auto pathSeg :
+             {std::filesystem::current_path(), path{"/var/lib/swampd"},
+              path{"/usr/share/swampd"}})
+        {
+            auto file = pathSeg / name;
+            if (std::filesystem::exists(file))
+            {
+                return file;
+            }
+        }
+        return name;
+    }();
+
+    return configFile;
+}
 
 void restartControlLoops()
 {
@@ -102,7 +122,7 @@ void restartControlLoops()
     isCanceling = false;
 
     const std::string& path =
-        (configPath.length() > 0) ? configPath : jsonConfigurationPath;
+        (configPath.length() > 0) ? configPath : searchConfigurationPath();
 
     if (std::filesystem::exists(path))
     {
