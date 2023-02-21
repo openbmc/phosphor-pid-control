@@ -39,6 +39,30 @@
       },
       "revId": "696929de99263efa2ede56560f0509bd2f477c71",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "77b4f884_1a1ac395",
+        "filename": "main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2023-02-21T06:36:18Z",
+      "side": 1,
+      "message": "Remove `using path \u003d std::filesystem::path;`, I think it not necessary after function cleanup.\n\nAlso try to change path related std::string to std::filesystem::path to reduce convertion between this two types.",
+      "parentUuid": "2ef41cf3_0c6839dd",
+      "range": {
+        "startLine": 52,
+        "startChar": 0,
+        "endLine": 52,
+        "endChar": 35
+      },
+      "revId": "696929de99263efa2ede56560f0509bd2f477c71",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
