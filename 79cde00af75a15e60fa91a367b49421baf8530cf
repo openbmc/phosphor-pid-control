@@ -16,6 +16,24 @@
       "message": "I agree with PL\u0027s comments. Please do those suggestions. Other than that, looks good.",
       "revId": "79cde00af75a15e60fa91a367b49421baf8530cf",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9f8d7d4f_1788eb3b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001264
+      },
+      "writtenOn": "2023-02-22T05:30:10Z",
+      "side": 1,
+      "message": "Hi Josh, Sorry for confusion,\nI was uploaded patchset 7 based on Harvey\u0027s comment in Patchset 6, then replied with what I have changed.\nCould you help review on patchset 7? Thank you.",
+      "parentUuid": "a3d4ef19_3eeed5eb",
+      "revId": "79cde00af75a15e60fa91a367b49421baf8530cf",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
