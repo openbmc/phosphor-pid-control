@@ -187,15 +187,6 @@ void tryRestartControlLoops(bool first)
             return;
         }
 
-        // for the last loop, don't elminate the failure of restartControlLoops.
-        if (count >= 5)
-        {
-            restartControlLoops();
-            // reset count after succesful restartControlLoops()
-            count = 0;
-            return;
-        }
-
         // retry when restartControlLoops() has some failure.
         try
         {
