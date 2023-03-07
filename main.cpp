@@ -167,7 +167,7 @@ void restartControlLoops()
     }
 }
 
-void tryRestartControlLoops(bool first)
+void tryRestartControlLoops(bool first, std::optional<int> maxtries)
 {
     static int count = 0;
     static const auto delayTime = std::chrono::seconds(10);
@@ -181,14 +181,14 @@ void tryRestartControlLoops(bool first)
         return;
     }
 
-    auto restartLbd = [](const boost::system::error_code& error) {
+    auto restartLbd = [maxtries](const boost::system::error_code& error) {
         if (error == boost::asio::error::operation_aborted)
         {
             return;
         }
 
         // for the last loop, don't elminate the failure of restartControlLoops.
-        if (count >= 5)
+        if (maxtries.has_value() && count >= *maxtries)
         {
             restartControlLoops();
             // reset count after succesful restartControlLoops()
@@ -208,7 +208,7 @@ void tryRestartControlLoops(bool first)
             std::cerr << count
                       << " Failed during restartControlLoops, try again: "
                       << e.what() << "\n";
-            tryRestartControlLoops(false);
+            tryRestartControlLoops(false, maxtries);
         }
     };
     count++;
@@ -363,7 +363,7 @@ int main(int argc, char* argv[])
      * it.
      */
 
-    pid_control::tryRestartControlLoops();
+    pid_control::tryRestartControlLoops(true, std::nullopt);
 
     io.run();
     return 0;

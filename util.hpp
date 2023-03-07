@@ -14,7 +14,7 @@
 namespace pid_control
 {
 
-void tryRestartControlLoops(bool first = true);
+void tryRestartControlLoops(bool first = true, std::optional<int> maxtries = 5);
 
 /*
  * Given a configuration structure, fill out the information we use within the
