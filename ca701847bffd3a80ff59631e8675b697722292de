@@ -16,6 +16,24 @@
       "message": "Looks reasonable. I like the idea of delaying PID startup indefinitely until all the sensors are ready. I don\u0027t think the old limit of 5 retries was there for any reason. It might simplify this code to get rid of the hardcoded number 5 completely.\n\nAlso, are all the calls to tryRestartControlLoops() accounted for? There is one also in dbusconfiguration.cpp file.",
       "revId": "ca701847bffd3a80ff59631e8675b697722292de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fbf06101_8bbf7909",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2023-03-08T22:46:17Z",
+      "side": 1,
+      "message": "\u003e It might simplify this code to get rid of the hardcoded number 5 completely.\n\nYou mean to just allow indefinite retries in any context that function is called from?\n\n\u003e Also, are all the calls to tryRestartControlLoops() accounted for?\n\nI set the default argument in `util.hpp` so that all other call-sites retained their existing behavior (5 retries), since the case I was concerned with was just the initial daemon start-up.  I didn\u0027t audit for other callers though; do you think the ones in dbusconfiguration.cpp\u0027s `eventHandler()` function and the `sighupHandler()` function should get the same behavioral change?  If so, then yeah I guess we might as well just get rid of the limit entirely...",
+      "parentUuid": "55bf84d9_abe43217",
+      "revId": "ca701847bffd3a80ff59631e8675b697722292de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
