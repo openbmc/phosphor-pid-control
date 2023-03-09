@@ -34,6 +34,24 @@
       "parentUuid": "55bf84d9_abe43217",
       "revId": "ca701847bffd3a80ff59631e8675b697722292de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71d6cbcf_b724fe1c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-03-09T05:25:44Z",
+      "side": 1,
+      "message": "Yes. I can\u0027t think of a case where exiting out to systemd would be any better than trying again. The code in tryRestartControlLoops() is pretty messy, and it should be cleaned up, instead of being made more complicated in an effort to preserve old behavior that nobody really knows why it was done originally and seemed like a bad idea to me anyway.\n\nAs for the other calls (event handler and SIGHUP handler), yes, they too should try until they succeed. Reason is, if they fail, what happens then? Either the program exits, or it continues in some undefined state, either way is not optimal.\n\nHopefully the fans will be in failsafe mode during this retry period. If they are not, then that would be a bug in the way it was originally designed. In the absence of good sensor information, we need to be in failsafe.",
+      "parentUuid": "fbf06101_8bbf7909",
+      "revId": "ca701847bffd3a80ff59631e8675b697722292de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
