@@ -69,6 +69,24 @@
       "message": "Hmm. One behavior I noticed is that when a PID loop using nonexistent sensors is configured (perhaps accidentally), it becomes very difficult to send busctl commands to phosphor-pid-control, because it is in a restart loop internally. This would be a problem, if the behavior is changed to do this indefinitely. To test it, try using busctl commands to query the zone control objects (FailSafe and Manual), and see if it still works reliably when doing indefinite retries. We might need to refactor something internally, if it doesn\u0027t work.",
       "revId": "ca701847bffd3a80ff59631e8675b697722292de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c33d36a_18bb4d58",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2023-03-15T05:04:53Z",
+      "side": 1,
+      "message": "Would this patch change anything in that regard though?  Without this change I\u0027d expect it would spend most of its time in the same state, just punctuated by periodically disappearing from dbus (when it crashses) and reappearing (when systemd restarts it).\n\nI\u0027m not familiar with swampd\u0027s dbus interface(s) offhand, but:\n\nWith the patch, with sensors not yet instantiated (prior to host power-on) I see:\n\n```\nroot@spc621d8hm3:~# busctl list | grep swampd \n:1.12                                            190 swampd          root             :1.12         phosphor-pid-control.service                                           -       -\n:1.13                                            190 swampd          root             :1.13         phosphor-pid-control.service                                           -       -\n:1.14                                            190 swampd          root             :1.14         phosphor-pid-control.service                                           -       -\nxyz.openbmc_project.Hwmon.external               190 swampd          root             :1.13         phosphor-pid-control.service                                           -       -\nxyz.openbmc_project.State.FanCtrl                190 swampd          root             :1.12         phosphor-pid-control.service                                           -       -\nroot@spc621d8hm3:~# busctl tree :1.12\n`-/xyz\n  `-/xyz/openbmc_project\n    `-/xyz/openbmc_project/settings\n      `-/xyz/openbmc_project/settings/fanctrl\nroot@spc621d8hm3:~# busctl tree :1.13\nFailed to introspect object / of service :1.13: Unknown object \u0027/\u0027.\nNo objects discovered.\nroot@spc621d8hm3:~# busctl tree :1.14\nFailed to introspect object / of service :1.14: Unknown object \u0027/\u0027.\nNo objects discovered.\nroot@spc621d8hm3:~# busctl introspect :1.12 /xyz/openbmc_project/settings/fanctrl\nNAME                                TYPE      SIGNATURE  RESULT/VALUE  FLAGS\norg.freedesktop.DBus.Introspectable interface -          -             -\n.Introspect                         method    -          s             -\norg.freedesktop.DBus.ObjectManager  interface -          -             -\n.GetManagedObjects                  method    -          a{oa{sa{sv}}} -\n.InterfacesAdded                    signal    oa{sa{sv}} -             -\n.InterfacesRemoved                  signal    oas        -             -\norg.freedesktop.DBus.Peer           interface -          -             -\n.GetMachineId                       method    -          s             -\n.Ping                               method    -          -             -\norg.freedesktop.DBus.Properties     interface -          -             -\n.Get                                method    ss         v             -\n.GetAll                             method    s          a{sv}         -\n.Set                                method    ssv        -             -\n.PropertiesChanged                  signal    sa{sv}as   -             -\n```\n\nIn the same scenario without the patch I see the same thing.",
+      "parentUuid": "e43ec607_08c825b3",
+      "revId": "ca701847bffd3a80ff59631e8675b697722292de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
