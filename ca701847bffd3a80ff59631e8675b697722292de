@@ -87,6 +87,24 @@
       "parentUuid": "e43ec607_08c825b3",
       "revId": "ca701847bffd3a80ff59631e8675b697722292de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9367dd4c_42a7c2b4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-03-20T10:39:02Z",
+      "side": 1,
+      "message": "The bug happens when using the thermal zones under State.FanCtrl service.\n\nHere\u0027s an example for \"zone0\" in this case:\n\nbusctl get-property xyz.openbmc_project.State.FanCtrl /xyz/openbmc_project/settings/fanctrl/zone0 xyz.openbmc_project.Control.Mode Manual\n\nThis command will work normally when swampd is stable. This command will fail to work, however, when swampd is still doing these retries.",
+      "parentUuid": "9c33d36a_18bb4d58",
+      "revId": "ca701847bffd3a80ff59631e8675b697722292de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
