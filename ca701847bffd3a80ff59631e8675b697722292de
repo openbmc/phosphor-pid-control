@@ -105,6 +105,24 @@
       "parentUuid": "9c33d36a_18bb4d58",
       "revId": "ca701847bffd3a80ff59631e8675b697722292de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6b20531a_8b7c5e46",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2023-03-21T09:15:06Z",
+      "side": 1,
+      "message": "Got it, thanks for the extra info.\n\nI still don\u0027t see how it\u0027s an issue with this change though -- if the daemon just repeatedly crashes and restarts (as is the current behavior) it still won\u0027t be progressing past the initial retry-loop phase anyway, right?  So it seems like it remaining in that retry loop instead of blowing up and starting over with an entirely new process wouldn\u0027t break anything that wasn\u0027t already failing anyway...",
+      "parentUuid": "9367dd4c_42a7c2b4",
+      "revId": "ca701847bffd3a80ff59631e8675b697722292de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
