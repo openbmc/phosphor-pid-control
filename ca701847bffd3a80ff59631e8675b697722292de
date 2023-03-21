@@ -123,6 +123,24 @@
       "parentUuid": "9367dd4c_42a7c2b4",
       "revId": "ca701847bffd3a80ff59631e8675b697722292de",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f4abdca7_5110e88b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-03-21T09:54:32Z",
+      "side": 1,
+      "message": "That makes sense. This bug should probably be tracked as a separate issue. Adding your change won\u0027t make the bug worse or better, because the behavior will still be the same (it will just retry indefinitely instead of exiting out and letting systemd restart it).",
+      "parentUuid": "6b20531a_8b7c5e46",
+      "revId": "ca701847bffd3a80ff59631e8675b697722292de",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
