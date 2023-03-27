@@ -33,6 +33,24 @@
       "message": "Looks good. One thing is that the variable \"count\" no longer really serves a purpose, since the retries are infinite now. The code could be further simplified by removing this variable entirely, as well as the code that uses it, since it doesn\u0027t seem to have a purpose now.",
       "revId": "6386e56994a10906b5d0a0f1de52fa2d76d3c0fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "11e4e620_f808259c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2023-03-27T23:45:02Z",
+      "side": 1,
+      "message": "I thought about removing `count`, but the ramifications on the `if (first \u0026\u0026 count !\u003d 0)` check weren\u0027t immediately obvious to me, so I left it as it was.  Granted, looking back at it now I might be even more confused...the body of that `if` block resets it to 1, not 0, so it seems like it would only differentiate between the _very_ first call to `tryRestartControlLoops()` in the entire lifetime of the process and subsequent calls with `first \u003d\u003d true`...the actual intent of the code isn\u0027t really clear to me.  Do you have any insight here?",
+      "parentUuid": "8f8248c1_3c96ee55",
+      "revId": "6386e56994a10906b5d0a0f1de52fa2d76d3c0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
