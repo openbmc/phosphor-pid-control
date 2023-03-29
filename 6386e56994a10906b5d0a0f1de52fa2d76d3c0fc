@@ -51,6 +51,24 @@
       "parentUuid": "8f8248c1_3c96ee55",
       "revId": "6386e56994a10906b5d0a0f1de52fa2d76d3c0fc",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1f6974fe_5237de7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-03-29T02:08:50Z",
+      "side": 1,
+      "message": "It looks like the `count` logic is rather confused. If it had a purpose, it no longer does now. My preference is to remove it entirely, to simplify the behavior of the program.",
+      "parentUuid": "11e4e620_f808259c",
+      "revId": "6386e56994a10906b5d0a0f1de52fa2d76d3c0fc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
