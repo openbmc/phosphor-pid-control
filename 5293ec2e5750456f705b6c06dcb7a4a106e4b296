@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3f154c63_2e333524",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-03-31T23:09:08Z",
+      "side": 1,
+      "message": "Good simplification and removal of that obsolete \"count\" variable",
+      "revId": "5293ec2e5750456f705b6c06dcb7a4a106e4b296",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
