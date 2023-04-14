@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "178cca1d_183fe8a5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-04-14T12:35:19Z",
+      "side": 1,
+      "message": "Thanks for review, will make the fixes.",
+      "revId": "4353ab686bbfe7679d0873b91e0bb4df8856c879",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22c9cf19_de37946d",
@@ -43,6 +60,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c41a21c3_346724f4",
+        "filename": "pid/thermalcontroller.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-04-14T12:35:19Z",
+      "side": 1,
+      "message": "Good point. It should fail out at configuration time, not here.",
+      "parentUuid": "22c9cf19_de37946d",
+      "range": {
+        "startLine": 122,
+        "startChar": 36,
+        "endLine": 122,
+        "endChar": 56
+      },
+      "revId": "4353ab686bbfe7679d0873b91e0bb4df8856c879",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "df452388_f82b42fe",
         "filename": "pid/thermalcontroller.cpp",
         "patchSetId": 12
@@ -54,6 +95,30 @@
       "writtenOn": "2023-04-14T03:39:29Z",
       "side": 1,
       "message": "Should margin type use a different value?",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 18
+      },
+      "revId": "4353ab686bbfe7679d0873b91e0bb4df8856c879",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "aff83597_4fa4a192",
+        "filename": "pid/thermalcontroller.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-04-14T12:35:19Z",
+      "side": 1,
+      "message": "This is how it was before. While not part of this patch, you have a valid point, however. I think it would be better to fall back to using whatever the setpoint of this PID loop is, not zero. If input equals setpoint, PID calculations will have no effect, which is a reasonable behavior if unable to come up with a usable value (the zone should already be in failsafe by this point). This will work for both temperature and margin input.",
+      "parentUuid": "df452388_f82b42fe",
       "range": {
         "startLine": 162,
         "startChar": 0,
