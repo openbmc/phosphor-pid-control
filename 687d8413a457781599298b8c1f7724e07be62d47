@@ -51,6 +51,24 @@
       "parentUuid": "aee7ca2a_795f55b8",
       "revId": "687d8413a457781599298b8c1f7724e07be62d47",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f30e6cbf_41f1f8e9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001504
+      },
+      "writtenOn": "2023-04-20T23:33:11Z",
+      "side": 1,
+      "message": "Hi Patrick, I saw you checked in the these two scripts in https://gerrit.openbmc.org/plugins/gitiles/openbmc/phosphor-pid-control/+/ca97c83d151ba5d5cca0518420662abc298cce50.  The last two lines will cause shellcheck CI failure. I\u0027m trying to fix it. The fix works as it will execute main when got executed, and won\u0027t execute main when sourced. Just need to make sure if there any other concerns if you have with the fix.",
+      "parentUuid": "abecee43_7f06f516",
+      "revId": "687d8413a457781599298b8c1f7724e07be62d47",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
