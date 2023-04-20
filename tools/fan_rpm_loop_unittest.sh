@@ -44,6 +44,8 @@ function main() {
     echo "All tests completed."
 }
 
-return 0 2>/dev/null
-main "$@"
+if [ "$0" = "${BASH_SOURCE[0]}" ]; then
+    # not sourced, execute main function
+    main "$@"
+fi
 

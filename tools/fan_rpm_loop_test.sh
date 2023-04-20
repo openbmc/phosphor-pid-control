@@ -84,5 +84,7 @@ function main() {
     RunRpmSteps "${max_rpm}" "${min_rpm}"  1 30
 }
 
-return 0 2>/dev/null
-main "$@"
+if [ "$0" = "${BASH_SOURCE[0]}" ]; then
+    # not sourced, execute main function
+    main "$@"
+fi
