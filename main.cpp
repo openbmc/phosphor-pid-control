@@ -287,6 +287,10 @@ int main(int argc, char* argv[])
         {
             loggingPath = altPath;
         }
+        else
+        {
+            loggingPath = defLoggingPath;
+        }
 
         loggingEnabled = true;
     }
