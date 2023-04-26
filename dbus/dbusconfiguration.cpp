@@ -249,6 +249,10 @@ void createMatches(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer)
         "type='signal',member='InterfacesAdded',arg0path='/xyz/openbmc_project/"
         "sensors/'",
         eventHandler, &timer);
+    matches.emplace_back(bus,
+                         "type='signal',member='InterfacesRemoved',arg0path='/"
+                         "xyz/openbmc_project/sensors/'",
+                         eventHandler, &timer);
 }
 
 /**
