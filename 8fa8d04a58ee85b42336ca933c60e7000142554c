@@ -67,6 +67,24 @@
       "message": "On second thought, I have a concern. With this patch, if a zone is created with missing inputs, what happens? Are those missing inputs simply ignored? Or does the zone get thrown into failsafe mode, due to having some sensors that are missing?\n\nI am concerned that this could cause a system to overheat if a temperature sensor gets unplugged, and is no longer detected, for example.\n\nPreviously, unless 100% of the inputs were present, the zone would be thrown into failsafe mode, and I think we need to preserve this behavior for safety. (In the future, I want to add some kind of optional flag, to designate certain inputs as optional, but for now, all inputs must be valid in order to keep a zone out of failsafe mode.)\n",
       "revId": "8fa8d04a58ee85b42336ca933c60e7000142554c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "078cd226_20d179a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2023-04-27T23:50:13Z",
+      "side": 1,
+      "message": "I am coming back on this patch, will follow up on these questions",
+      "parentUuid": "d248635a_da7922ca",
+      "revId": "8fa8d04a58ee85b42336ca933c60e7000142554c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
