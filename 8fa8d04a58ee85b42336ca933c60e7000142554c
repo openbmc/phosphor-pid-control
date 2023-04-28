@@ -85,6 +85,24 @@
       "parentUuid": "d248635a_da7922ca",
       "revId": "8fa8d04a58ee85b42336ca933c60e7000142554c",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6d1657e3_a9c35d51",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-04-28T16:00:48Z",
+      "side": 1,
+      "message": "Great, thanks, I will await your follow up.",
+      "parentUuid": "078cd226_20d179a0",
+      "revId": "8fa8d04a58ee85b42336ca933c60e7000142554c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
