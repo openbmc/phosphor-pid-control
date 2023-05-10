@@ -169,9 +169,20 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
     // At least one value must be above the minimum thermal setpoint used in
     // the constructor otherwise it'll choose that value
     std::vector<double> values = {100, 200, 300, 400, 500, 5000};
+
+    sdbusplus::SdBusMock sdbus_mock;
+    auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
+    std::string pidsensorpath = "";
+    std::string sensorname = "";
+
     for (auto v : values)
     {
-        zone->addSetPoint(v, "");
+        sensorname = std::to_string(v);
+        pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone0/" +
+                        sensorname;
+        zone->addPidControlProcess(sensorname, bus_mock, pidsensorpath.c_str(),
+                                   true);
+        zone->addSetPoint(v, sensorname);
     }
 
     // This will pull the maximum RPM setpoint request.
@@ -192,9 +203,20 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
     // configured minimal thermal setpoint RPM value.
 
     std::vector<double> values = {100, 200, 300, 400, 500};
+
+    sdbusplus::SdBusMock sdbus_mock;
+    auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
+    std::string pidsensorpath = "";
+    std::string sensorname = "";
+
     for (auto v : values)
     {
-        zone->addSetPoint(v, "");
+        sensorname = std::to_string(v);
+        pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone0/" +
+                        sensorname;
+        zone->addPidControlProcess(sensorname, bus_mock, pidsensorpath.c_str(),
+                                   true);
+        zone->addSetPoint(v, sensorname);
     }
 
     // This will pull the maximum RPM setpoint request.
