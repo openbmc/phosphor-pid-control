@@ -44,6 +44,11 @@ static std::string getControlPath(int64_t zone)
     return std::string(objectPath) + std::to_string(zone);
 }
 
+static std::string getPidControlPath(int64_t zone, std::string pidname)
+{
+    return std::string(objectPath) + std::to_string(zone) + "/" + pidname;
+}
+
 std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
     buildZones(const std::map<int64_t, conf::PIDConf>& zonePids,
                std::map<int64_t, conf::ZoneConfig>& zoneConfigs,
@@ -109,6 +114,9 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                     getThermalType(info.type));
 
                 zone->addThermalPID(std::move(pid));
+                zone->addPidControlProcess(
+                    name, modeControlBus,
+                    getPidControlPath(zoneId, name).c_str(), deferSignals);
             }
             else if (info.type == "stepwise")
             {
@@ -120,6 +128,9 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 auto stepwise = StepwiseController::createStepwiseController(
                     zone.get(), name, inputs, info.stepwiseInfo);
                 zone->addThermalPID(std::move(stepwise));
+                zone->addPidControlProcess(
+                    name, modeControlBus,
+                    getPidControlPath(zoneId, name).c_str(), deferSignals);
             }
 
             std::cerr << "inputs: ";
