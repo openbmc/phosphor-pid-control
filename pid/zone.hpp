@@ -11,6 +11,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
+#include <xyz/openbmc_project/Object/Enable/server.hpp>
 
 #include <fstream>
 #include <iostream>
@@ -24,6 +25,8 @@ template <typename... T>
 using ServerObject = typename sdbusplus::server::object_t<T...>;
 using ModeInterface = sdbusplus::xyz::openbmc_project::Control::server::Mode;
 using ModeObject = ServerObject<ModeInterface>;
+using ProcessInterface = sdbusplus::xyz::openbmc_project::Object::server::Enable;
+using ProcessObject = ServerObject<ProcessInterface>;
 
 namespace pid_control
 {
@@ -98,6 +101,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool manual(bool value) override;
     /* Method for reading whether in fail-safe mode over dbus */
     bool failSafe() const override;
+    /* Method for control process for each loop at runtime */
+    void addPidControlProcess(std::string name, sdbusplus::bus_t& bus, const char* objPath, bool defer);
 
   private:
     template <bool fanSensorLogging>
@@ -196,6 +201,12 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
     std::vector<std::unique_ptr<Controller>> _fans;
     std::vector<std::unique_ptr<Controller>> _thermals;
+
+    std::map<std::string, std::unique_ptr<ProcessObject>> _pidsControlProcess;
+    bool isPidProcessEnabled(std::string name)
+    {
+         return _pidsControlProcess[name]->enabled();
+    }
 };
 
 } // namespace pid_control
