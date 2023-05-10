@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0f066f0c_bd6bde29",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-10T18:13:04Z",
+      "side": 1,
+      "message": "Good large-scale change. As long as it is fully synchronized with Jenkins, so it does not cause spurious validation failures, I am OK with this.",
+      "revId": "8c051121ade815a46e39d5c669fee77302df2b6d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
