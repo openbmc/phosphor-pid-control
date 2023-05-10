@@ -35,6 +35,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f38cb27_10e066ba",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-10T01:28:06Z",
+      "side": 1,
+      "message": "Yay, the interface has been merged! https://gerrit.openbmc.org/c/openbmc/entity-manager/+/61118\n\nWe are now clear to go ahead with implementation of this interface.",
+      "revId": "4353ab686bbfe7679d0873b91e0bb4df8856c879",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "22c9cf19_de37946d",
@@ -72,6 +89,30 @@
       "side": 1,
       "message": "Good point. It should fail out at configuration time, not here.",
       "parentUuid": "22c9cf19_de37946d",
+      "range": {
+        "startLine": 122,
+        "startChar": 36,
+        "endLine": 122,
+        "endChar": 56
+      },
+      "revId": "4353ab686bbfe7679d0873b91e0bb4df8856c879",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49dcf928_f3ccd2f6",
+        "filename": "pid/thermalcontroller.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-10T01:28:06Z",
+      "side": 1,
+      "message": "There are still some unresolved bugs regarding initialization at configuration time. Please see https://github.com/openbmc/phosphor-pid-control/issues/33 FR. I did not want to complicate this patch by also changing the code that deals with initial configuration parsing, as that should be part of a separate cleanup. I will put a TODO in here, though.",
+      "parentUuid": "c41a21c3_346724f4",
       "range": {
         "startLine": 122,
         "startChar": 36,
