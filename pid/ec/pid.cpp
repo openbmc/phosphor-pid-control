@@ -109,8 +109,8 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
     coreContext.derivativeTerm = derivativeTerm;
 
     // FF
-    feedFwdTerm =
-        (setpoint + pidinfoptr->feedFwdOffset) * pidinfoptr->feedFwdGain;
+    feedFwdTerm = (setpoint + pidinfoptr->feedFwdOffset) *
+                  pidinfoptr->feedFwdGain;
 
     coreContext.feedFwdTerm = feedFwdTerm;
 
@@ -134,8 +134,8 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
         if (pidinfoptr->slewNeg != 0.0f)
         {
             // Don't decrease too fast
-            double minOut =
-                pidinfoptr->lastOutput + pidinfoptr->slewNeg * pidinfoptr->ts;
+            double minOut = pidinfoptr->lastOutput +
+                            pidinfoptr->slewNeg * pidinfoptr->ts;
 
             coreContext.minOut = minOut;
 
@@ -147,8 +147,8 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
         if (pidinfoptr->slewPos != 0.0f)
         {
             // Don't increase too fast
-            double maxOut =
-                pidinfoptr->lastOutput + pidinfoptr->slewPos * pidinfoptr->ts;
+            double maxOut = pidinfoptr->lastOutput +
+                            pidinfoptr->slewPos * pidinfoptr->ts;
 
             coreContext.maxOut = maxOut;
 

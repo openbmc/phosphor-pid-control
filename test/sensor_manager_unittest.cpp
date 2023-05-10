@@ -53,8 +53,8 @@ TEST(SensorManagerTest, AddSensorInvalidTypeTest)
     std::string name = "name";
     std::string type = "invalid";
     int64_t timeout = 1;
-    std::unique_ptr<Sensor> sensor =
-        std::make_unique<SensorMock>(name, timeout);
+    std::unique_ptr<Sensor> sensor = std::make_unique<SensorMock>(name,
+                                                                  timeout);
     Sensor* sensor_ptr = sensor.get();
 
     s.addSensor(type, name, std::move(sensor));

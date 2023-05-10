@@ -53,8 +53,8 @@ ipmi_ret_t ZoneControlIpmiHandler::getFailsafeModeState(const uint8_t* reqBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
-    ipmi_ret_t rc =
-        _control->getFanCtrlProperty(request->zone, &current, failsafeProperty);
+    ipmi_ret_t rc = _control->getFanCtrlProperty(request->zone, &current,
+                                                 failsafeProperty);
     if (rc)
     {
         return rc;
@@ -85,8 +85,8 @@ ipmi_ret_t ZoneControlIpmiHandler::getManualModeState(const uint8_t* reqBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
-    ipmi_ret_t rc =
-        _control->getFanCtrlProperty(request->zone, &current, manualProperty);
+    ipmi_ret_t rc = _control->getFanCtrlProperty(request->zone, &current,
+                                                 manualProperty);
     if (rc)
     {
         return rc;

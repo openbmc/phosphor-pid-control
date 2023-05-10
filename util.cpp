@@ -38,7 +38,6 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
     std::cout << "{\n";
     for (const auto& pair : sensorConfig)
     {
-
         std::cout << "\t{" << pair.first << ",\n\t\t{";
         std::cout << pair.second.type << ", ";
         std::cout << pair.second.readPath << ", ";

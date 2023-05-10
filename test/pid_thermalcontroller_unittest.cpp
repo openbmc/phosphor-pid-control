@@ -175,7 +175,6 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsSummation)
 
 TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
 {
-
     // This test verifies Negative hysteresis behaves as expected by
     // crossing the setpoint and noticing readings don't change until past the
     // hysteresis value

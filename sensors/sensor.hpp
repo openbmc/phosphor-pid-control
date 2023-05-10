@@ -31,8 +31,7 @@ class Sensor
         _name(name), _timeout(timeout)
     {}
 
-    virtual ~Sensor()
-    {}
+    virtual ~Sensor() {}
 
     virtual ReadReturn read(void) = 0;
     virtual void write(double value) = 0;

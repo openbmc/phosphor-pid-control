@@ -78,9 +78,9 @@ void DbusWritePercent::write(double value, bool force, int64_t* written)
         }
     }
     auto writeBus = sdbusplus::bus::new_default();
-    auto mesg =
-        writeBus.new_method_call(connectionName.c_str(), path.c_str(),
-                                 "org.freedesktop.DBus.Properties", "Set");
+    auto mesg = writeBus.new_method_call(connectionName.c_str(), path.c_str(),
+                                         "org.freedesktop.DBus.Properties",
+                                         "Set");
     mesg.append(pwmInterface, "Target",
                 std::variant<uint64_t>(static_cast<uint64_t>(ovalue)));
 
@@ -141,9 +141,9 @@ void DbusWrite::write(double value, bool force, int64_t* written)
         }
     }
     auto writeBus = sdbusplus::bus::new_default();
-    auto mesg =
-        writeBus.new_method_call(connectionName.c_str(), path.c_str(),
-                                 "org.freedesktop.DBus.Properties", "Set");
+    auto mesg = writeBus.new_method_call(connectionName.c_str(), path.c_str(),
+                                         "org.freedesktop.DBus.Properties",
+                                         "Set");
     mesg.append(pwmInterface, "Target",
                 std::variant<uint64_t>(static_cast<uint64_t>(value)));
 

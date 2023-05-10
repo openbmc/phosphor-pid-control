@@ -32,7 +32,6 @@ double stepwise(const ec::StepwiseInfo& info, double input)
 
     for (size_t ii = 1; ii < ec::maxStepwisePoints; ii++)
     {
-
         if (std::isnan(info.reading[ii]))
         {
             break;

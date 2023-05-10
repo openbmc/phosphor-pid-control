@@ -34,11 +34,9 @@ struct ValueCacheEntry
 class ReadInterface
 {
   public:
-    ReadInterface()
-    {}
+    ReadInterface() {}
 
-    virtual ~ReadInterface()
-    {}
+    virtual ~ReadInterface() {}
 
     virtual ReadReturn read(void) = 0;
 
@@ -55,11 +53,9 @@ class ReadInterface
 class WriteInterface
 {
   public:
-    WriteInterface(int64_t min, int64_t max) : _min(min), _max(max)
-    {}
+    WriteInterface(int64_t min, int64_t max) : _min(min), _max(max) {}
 
-    virtual ~WriteInterface()
-    {}
+    virtual ~WriteInterface() {}
 
     virtual void write(double value) = 0;
 

@@ -21,7 +21,6 @@ namespace pid_control
 
 class ValueHelper : public ValueInterface
 {
-
   public:
     auto operator()() const
     {

@@ -298,7 +298,6 @@ TEST_F(DbusPassiveTestObj, VerifyIgnoresOtherPropertySignal)
 
 TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdAssert)
 {
-
     // Verifies when a threshold is crossed the sensor goes into error state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
         .WillOnce(Return(nullptr));
@@ -375,7 +374,6 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdAssert)
 
 TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
 {
-
     // Verifies when a threshold is deasserted a failed sensor goes back into
     // the normal state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
@@ -453,7 +451,6 @@ TEST_F(DbusPassiveTestObj, VerifyCriticalThresholdDeassert)
 
 TEST_F(DbusPassiveTestObj, VerifyAvailableDeassert)
 {
-
     // Verifies when Availble is deasserted && unavailableAsFailed == true,
     // the sensor goes into error state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
@@ -531,7 +528,6 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableDeassert)
 
 TEST_F(DbusPassiveTestObj, VerifyAvailableAssert)
 {
-
     // Verifies when Availble is asserted && unavailableAsFailed == true,
     // an error sensor goes back to normal state
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
@@ -658,7 +654,6 @@ class DbusPassiveTestUnaSensorNotAsFailedObj : public ::testing::Test
 
 TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableDeassert)
 {
-
     // Verifies when Availble is deasserted && unavailableAsFailed == false,
     // the sensor remains at OK state but reading goes to NaN.
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
@@ -738,7 +733,6 @@ TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableDeassert)
 
 TEST_F(DbusPassiveTestUnaSensorNotAsFailedObj, VerifyAvailableAssert)
 {
-
     // Verifies when a sensor's state goes from unavailble to available
     // && unavailableAsFailed == false, this sensor remains at OK state.
     EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))

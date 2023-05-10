@@ -10,8 +10,7 @@ namespace pid_control
 class ReadOnly : public WriteInterface
 {
   public:
-    ReadOnly() : WriteInterface(0, 0)
-    {}
+    ReadOnly() : WriteInterface(0, 0) {}
 
     void write(double value) override;
 };
@@ -19,8 +18,7 @@ class ReadOnly : public WriteInterface
 class ReadOnlyNoExcept : public WriteInterface
 {
   public:
-    ReadOnlyNoExcept() : WriteInterface(0, 0)
-    {}
+    ReadOnlyNoExcept() : WriteInterface(0, 0) {}
 
     void write(double value) override;
 };

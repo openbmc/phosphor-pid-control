@@ -41,8 +41,7 @@ class PIDController : public Controller
         _pid_info.positiveHysteresis = static_cast<double>(0.0);
     }
 
-    virtual ~PIDController()
-    {}
+    virtual ~PIDController() {}
 
     virtual double inputProc(void) override = 0;
     virtual double setptProc(void) = 0;

@@ -49,59 +49,59 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
     match(bus,
           "type='signal',member='PropertiesChanged',arg0namespace='" +
               std::string(redundancy::interface) + "'",
-          std::move([this](sdbusplus::message_t& message) {
-              std::string objectName;
-              std::unordered_map<
-                  std::string,
-                  std::variant<std::string, std::vector<std::string>>>
-                  result;
-              try
-              {
-                  message.read(objectName, result);
-              }
-              catch (const sdbusplus::exception_t&)
-              {
-                  std::cerr << "Error reading match data";
-                  return;
-              }
-              auto findStatus = result.find("Status");
-              if (findStatus == result.end())
-              {
-                  return;
-              }
-              std::string status = std::get<std::string>(findStatus->second);
+          std::move(
+              [this](sdbusplus::message_t& message) {
+    std::string objectName;
+    std::unordered_map<std::string,
+                       std::variant<std::string, std::vector<std::string>>>
+        result;
+    try
+    {
+        message.read(objectName, result);
+    }
+    catch (const sdbusplus::exception_t&)
+    {
+        std::cerr << "Error reading match data";
+        return;
+    }
+    auto findStatus = result.find("Status");
+    if (findStatus == result.end())
+    {
+        return;
+    }
+    std::string status = std::get<std::string>(findStatus->second);
 
-              auto methodCall = passiveBus.new_method_call(
-                  message.get_sender(), message.get_path(),
-                  properties::interface, properties::get);
-              methodCall.append(redundancy::interface, redundancy::collection);
-              std::variant<std::vector<std::string>> collection;
+    auto methodCall =
+        passiveBus.new_method_call(message.get_sender(), message.get_path(),
+                                   properties::interface, properties::get);
+    methodCall.append(redundancy::interface, redundancy::collection);
+    std::variant<std::vector<std::string>> collection;
 
-              try
-              {
-                  auto reply = passiveBus.call(methodCall);
-                  reply.read(collection);
-              }
-              catch (const sdbusplus::exception_t&)
-              {
-                  std::cerr << "Error reading match data";
-                  return;
-              }
+    try
+    {
+        auto reply = passiveBus.call(methodCall);
+        reply.read(collection);
+    }
+    catch (const sdbusplus::exception_t&)
+    {
+        std::cerr << "Error reading match data";
+        return;
+    }
 
-              auto data = std::get<std::vector<std::string>>(collection);
-              if (status.rfind("Failed") != std::string::npos)
-              {
-                  failed.insert(data.begin(), data.end());
-              }
-              else
-              {
-                  for (const auto& d : data)
-                  {
-                      failed.erase(d);
-                  }
-              }
+    auto data = std::get<std::vector<std::string>>(collection);
+    if (status.rfind("Failed") != std::string::npos)
+    {
+        failed.insert(data.begin(), data.end());
+    }
+    else
+    {
+        for (const auto& d : data)
+        {
+            failed.erase(d);
+        }
+    }
           })),
-    passiveBus(bus)
+passiveBus(bus)
 {
     populateFailures();
 }

@@ -21,8 +21,7 @@ class DbusHelper : public DbusHelperInterface
     static constexpr char availabilityIntf[] =
         "xyz.openbmc_project.State.Decorator.Availability";
 
-    explicit DbusHelper(sdbusplus::bus_t bus) : _bus(std::move(bus))
-    {}
+    explicit DbusHelper(sdbusplus::bus_t bus) : _bus(std::move(bus)) {}
     ~DbusHelper() = default;
 
     DbusHelper(const DbusHelper&) = delete;

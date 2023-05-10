@@ -9,8 +9,7 @@ namespace pid_control
 class WriteOnly : public ReadInterface
 {
   public:
-    WriteOnly() : ReadInterface()
-    {}
+    WriteOnly() : ReadInterface() {}
 
     ReadReturn read(void) override;
 };

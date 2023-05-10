@@ -84,10 +84,10 @@ inline std::string sensorNameToDbusName(const std::string& sensorName)
 std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
 {
     std::vector<std::string> ret;
-    auto mapper =
-        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                            "/xyz/openbmc_project/object_mapper",
-                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+    auto mapper = bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                                      "/xyz/openbmc_project/object_mapper",
+                                      "xyz.openbmc_project.ObjectMapper",
+                                      "GetSubTree");
     mapper.append("/", 0, std::array<const char*, 1>{thermalControlIface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
@@ -151,7 +151,6 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
 
 int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
 {
-
     if (context == nullptr || m == nullptr)
     {
         throw std::runtime_error("Invalid match");
@@ -282,8 +281,8 @@ inline void getCycleTimeSetting(
     auto findAttributeName = zone.find(attributeName);
     if (findAttributeName != zone.end())
     {
-        double tmpAttributeValue =
-            std::visit(VariantToDoubleVisitor(), zone.at(attributeName));
+        double tmpAttributeValue = std::visit(VariantToDoubleVisitor(),
+                                              zone.at(attributeName));
         if (tmpAttributeValue >= 1.0)
         {
             value = static_cast<uint64_t>(tmpAttributeValue);
@@ -366,10 +365,10 @@ void populatePidInfo(
                                          getPIDAttribute(base, "OutLimitMax"));
     info.pidInfo.outLim.min = std::visit(VariantToDoubleVisitor(),
                                          getPIDAttribute(base, "OutLimitMin"));
-    info.pidInfo.slewNeg =
-        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewNeg"));
-    info.pidInfo.slewPos =
-        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewPos"));
+    info.pidInfo.slewNeg = std::visit(VariantToDoubleVisitor(),
+                                      getPIDAttribute(base, "SlewNeg"));
+    info.pidInfo.slewPos = std::visit(VariantToDoubleVisitor(),
+                                      getPIDAttribute(base, "SlewPos"));
 
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
@@ -381,18 +380,18 @@ void populatePidInfo(
 
     if (findNeg != base.end())
     {
-        negativeHysteresis =
-            std::visit(VariantToDoubleVisitor(), findNeg->second);
+        negativeHysteresis = std::visit(VariantToDoubleVisitor(),
+                                        findNeg->second);
     }
     if (findPos != base.end())
     {
-        positiveHysteresis =
-            std::visit(VariantToDoubleVisitor(), findPos->second);
+        positiveHysteresis = std::visit(VariantToDoubleVisitor(),
+                                        findPos->second);
     }
     if (findDerivative != base.end())
     {
-        derivativeCoeff =
-            std::visit(VariantToDoubleVisitor(), findDerivative->second);
+        derivativeCoeff = std::visit(VariantToDoubleVisitor(),
+                                     findDerivative->second);
     }
 
     info.pidInfo.negativeHysteresis = negativeHysteresis;
@@ -405,17 +404,16 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
           std::map<int64_t, conf::PIDConf>& zoneConfig,
           std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig)
 {
-
     sensorConfig.clear();
     zoneConfig.clear();
     zoneDetailsConfig.clear();
 
     createMatches(bus, timer);
 
-    auto mapper =
-        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                            "/xyz/openbmc_project/object_mapper",
-                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+    auto mapper = bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                                      "/xyz/openbmc_project/object_mapper",
+                                      "xyz.openbmc_project.ObjectMapper",
+                                      "GetSubTree");
     mapper.append("/", 0,
                   std::array<const char*, 6>{
                       objectManagerInterface, pidConfigurationInterface,
@@ -452,7 +450,6 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
             auto& owner = owners[ownerPair.first];
             for (const std::string& interface : ownerPair.second)
             {
-
                 if (interface == objectManagerInterface)
                 {
                     owner.second = objectPair.first;
