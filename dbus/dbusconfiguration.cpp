@@ -634,7 +634,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
         {
             const auto& base =
                 configuration.second.at(pidConfigurationInterface);
-            const std::string pidName = std::get<std::string>(base.at("Name"));
+            const std::string pidName =
+                sensorNameToDbusName(std::get<std::string>(base.at("Name")));
             const std::string pidClass =
                 std::get<std::string>(base.at("Class"));
             const std::vector<std::string>& zones =
@@ -833,8 +834,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
 
                 if (offsetType.empty())
                 {
-                    conf::ControllerInfo& info =
-                        conf[std::get<std::string>(base.at("Name"))];
+                    conf::ControllerInfo& info = conf[pidName];
                     info.inputs = std::move(inputSensorNames);
                     populatePidInfo(bus, base, info, nullptr, sensorConfig);
                 }
@@ -857,6 +857,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
         if (findStepwise != configuration.second.end())
         {
             const auto& base = findStepwise->second;
+            const std::string pidName =
+                sensorNameToDbusName(std::get<std::string>(base.at("Name")));
             const std::vector<std::string>& zones =
                 std::get<std::vector<std::string>>(base.at("Zones"));
             for (const std::string& zone : zones)
@@ -913,8 +915,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 {
                     continue;
                 }
-                conf::ControllerInfo& info =
-                    conf[std::get<std::string>(base.at("Name"))];
+                conf::ControllerInfo& info = conf[pidName];
                 info.inputs = std::move(inputs);
 
                 info.type = "stepwise";
