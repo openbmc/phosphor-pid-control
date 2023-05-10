@@ -45,6 +45,7 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
     EXPECT_CALL(*sdbus_mock,
                 sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),
                                          StrEq(intf), NotNull(), NotNull()))
+        .Times(::testing::AnyNumber())
         .WillOnce(Return(0));
 
     if (!defer)
