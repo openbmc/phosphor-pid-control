@@ -26,6 +26,7 @@ using ::testing::Return;
 using ::testing::StrEq;
 
 static std::string modeInterface = "xyz.openbmc_project.Control.Mode";
+static std::string enableInterface = "xyz.openbmc_project.Object.Enable";
 
 namespace
 {
@@ -169,9 +170,22 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
     // At least one value must be above the minimum thermal setpoint used in
     // the constructor otherwise it'll choose that value
     std::vector<double> values = {100, 200, 300, 400, 500, 5000};
+
+    sdbusplus::SdBusMock sdbus_mock;
+    auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
+    std::string sensorname = "temp1";
+    std::string pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone0/" +
+                                sensorname;
+    double property_index1;
+    std::vector<std::string> properties1;
+    SetupDbusObject(&sdbus_mock, true, pidsensorpath.c_str(), enableInterface,
+                    properties1, &property_index1);
+    zone->addPidControlProcess(sensorname, bus_mock, pidsensorpath.c_str(),
+                               true);
+
     for (auto v : values)
     {
-        zone->addSetPoint(v, "");
+        zone->addSetPoint(v, sensorname);
     }
 
     // This will pull the maximum RPM setpoint request.
@@ -192,9 +206,22 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
     // configured minimal thermal setpoint RPM value.
 
     std::vector<double> values = {100, 200, 300, 400, 500};
+
+    sdbusplus::SdBusMock sdbus_mock;
+    auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
+    std::string sensorname = "temp1";
+    std::string pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone0/" +
+                                sensorname;
+    double property_index1;
+    std::vector<std::string> properties1;
+    SetupDbusObject(&sdbus_mock, true, pidsensorpath.c_str(), enableInterface,
+                    properties1, &property_index1);
+    zone->addPidControlProcess(sensorname, bus_mock, pidsensorpath.c_str(),
+                               true);
+
     for (auto v : values)
     {
-        zone->addSetPoint(v, "");
+        zone->addSetPoint(v, sensorname);
     }
 
     // This will pull the maximum RPM setpoint request.
