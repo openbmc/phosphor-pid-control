@@ -103,6 +103,12 @@ int64_t DbusPidZone::getZoneID(void) const
 
 void DbusPidZone::addSetPoint(double setPoint, const std::string& name)
 {
+    /* exclude disabled pidloop from _maximumSetPoint calculation*/
+    if (!isPidProcessEnabled(name))
+    {
+        return;
+    }
+
     _SetPoints.push_back(setPoint);
     /*
      * if there are multiple thermal controllers with the same
@@ -129,6 +135,7 @@ void DbusPidZone::clearSetPoints(void)
 {
     _SetPoints.clear();
     _maximumSetPoint = 0;
+    _maximumSetPointName = "";
 }
 
 double DbusPidZone::getFailSafePercent(void) const
@@ -264,7 +271,7 @@ void DbusPidZone::determineMaxSetPointRequest(void)
     if (minThermalThreshold >= _maximumSetPoint)
     {
         _maximumSetPoint = minThermalThreshold;
-        _maximumSetPointName = "";
+        _maximumSetPointName = "Minimum";
     }
     else if (_maximumSetPointName.compare(_maximumSetPointNamePrev))
     {
@@ -459,6 +466,17 @@ bool DbusPidZone::manual(bool value)
 bool DbusPidZone::failSafe() const
 {
     return getFailSafeMode();
+}
+
+void DbusPidZone::addPidControlProcess(std::string name, sdbusplus::bus_t& bus,
+                                       const char* objPath, bool defer)
+{
+    _pidsControlProcess[name] = std::make_unique<ProcessObject>(
+        bus, objPath,
+        defer ? ProcessObject::action::defer_emit
+              : ProcessObject::action::emit_object_added);
+    // Default enable setting = true
+    _pidsControlProcess[name]->enabled(true);
 }
 
 } // namespace pid_control
