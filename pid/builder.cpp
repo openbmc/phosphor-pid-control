@@ -32,16 +32,24 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <regex>
 
 namespace pid_control
 {
 
 static constexpr bool deferSignals = true;
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
+const std::regex illegalPidMemberRegex("[^A-Za-z0-9_]");
 
 static std::string getControlPath(int64_t zone)
 {
     return std::string(objectPath) + std::to_string(zone);
+}
+
+static std::string getPidControlPath(int64_t zone, std::string pidname)
+{
+    std::regex_replace( pidname.begin(), pidname.begin(), pidname.end(), illegalPidMemberRegex, "_");
+    return std::string(objectPath) + std::to_string(zone) + "/" + pidname;
 }
 
 std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
@@ -109,6 +117,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                     getThermalType(info.type));
 
                 zone->addThermalPID(std::move(pid));
+                zone->addPidControlProcess(name, modeControlBus,getPidControlPath(zoneId, name).c_str(), deferSignals);
             }
             else if (info.type == "stepwise")
             {
@@ -120,6 +129,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 auto stepwise = StepwiseController::createStepwiseController(
                     zone.get(), name, inputs, info.stepwiseInfo);
                 zone->addThermalPID(std::move(stepwise));
+                zone->addPidControlProcess(name, modeControlBus,getPidControlPath(zoneId, name).c_str(), deferSignals);
             }
 
             std::cerr << "inputs: ";
