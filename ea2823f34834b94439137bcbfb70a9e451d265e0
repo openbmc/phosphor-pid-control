@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fad2fb6f_ff5337c9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-10T01:24:36Z",
+      "side": 1,
+      "message": "Yay, https://gerrit.openbmc.org/c/openbmc/entity-manager/+/61118 has been merged!\nThe interface has now been defined. This implementation is now free to go ahead and use it.",
+      "revId": "ea2823f34834b94439137bcbfb70a9e451d265e0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
