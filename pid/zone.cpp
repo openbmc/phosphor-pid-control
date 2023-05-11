@@ -398,6 +398,27 @@ void DbusPidZone::initializeCache(void)
         // Start all sensors in fail-safe mode.
         _failSafeSensors.insert(t);
     }
+    /*
+     Currently, find the max failsafe percent pwm settings from zone and
+     controller, and assign it to zone failsafe percent.
+    */
+    std::cerr << "zone: Zone" << _zoneId
+              << " failSafePercent: " << _failSafePercent <<"\n";
+    for (auto it = _pidsFailSafePercent.begin();
+         it != _pidsFailSafePercent.end(); it++)
+    {
+        _failSafePercent = std::max(_failSafePercent, it->second);
+        std::cerr << "pid: " << it->first << " failSafePercent: " << it->second
+                  << "\n";
+    }
+
+    // if failsafe percent config zero, will assign highest value 100%.
+    if (_failSafePercent == 0)
+    {
+        _failSafePercent = 100;
+    }
+    std::cerr << "Final zone" << _zoneId
+              << " failSafePercent: " << _failSafePercent <<"\n";
 }
 
 void DbusPidZone::dumpCache(void)
