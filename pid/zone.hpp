@@ -99,6 +99,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     /* Method for reading whether in fail-safe mode over dbus */
     bool failSafe() const override;
 
+    void initPidFailSafePercent(void);
+    void addPidFailSafePercent(std::string name, double percent);
+
   private:
     template <bool fanSensorLogging>
     void processSensorInputs(const std::vector<std::string>& sensorInputs,
@@ -181,7 +184,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool _manualMode = false;
     bool _redundantWrite = false;
     const double _minThermalOutputSetPt;
-    const double _failSafePercent;
+    double _failSafePercent;
     const conf::CycleTime _cycleTime;
 
     std::set<std::string> _failSafeSensors;
@@ -196,6 +199,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
     std::vector<std::unique_ptr<Controller>> _fans;
     std::vector<std::unique_ptr<Controller>> _thermals;
+
+    /* <key = pidname, value = pid failsafe percent>*/
+    std::map<std::string, double> _pidsFailSafePercent;
 };
 
 } // namespace pid_control
