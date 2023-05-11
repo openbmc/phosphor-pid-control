@@ -317,6 +317,15 @@ void populatePidInfo(
                                    getPIDAttribute(base, "SetPoint"));
     }
 
+    int failsafepercent = 0;
+    auto findFailSafe = base.find("FailSafePercent");
+    if (findFailSafe != base.end())
+    {
+        failsafepercent = std::visit(VariantToDoubleVisitor(),
+                                     getPIDAttribute(base, "FailSafePercent"));
+    }
+    info.failSafePercent = failsafepercent;
+
     if (thresholdProperty != nullptr)
     {
         std::string interface;
@@ -620,8 +629,15 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
 
             details.minThermalOutput = std::visit(VariantToDoubleVisitor(),
                                                   zone.at("MinThermalOutput"));
-            details.failsafePercent = std::visit(VariantToDoubleVisitor(),
-                                                 zone.at("FailSafePercent"));
+
+            int failsafepercent = 0;
+            auto findFailSafe = zone.find("FailSafePercent");
+            if (findFailSafe != zone.end())
+            {
+                failsafepercent = std::visit(VariantToDoubleVisitor(),
+                                             zone.at("FailSafePercent"));
+            }
+            details.failsafePercent = failsafepercent;
 
             getCycleTimeSetting(zone, index, "CycleIntervalTimeMS",
                                 details.cycleTime.cycleIntervalTimeMS);
