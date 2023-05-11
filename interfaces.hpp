@@ -7,7 +7,7 @@ namespace pid_control
 
 struct ReadReturn
 {
-    double value;
+    double value = 0;
     std::chrono::high_resolution_clock::time_point updated;
     double unscaled = value;
 
