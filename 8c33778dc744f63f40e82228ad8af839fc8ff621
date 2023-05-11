@@ -1,0 +1,106 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5e9d28f7_02474c20",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-11T01:46:03Z",
+      "side": 1,
+      "message": "Overall, this looks good. I just have some nitpick concerns about error handling and edge cases.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "88b1bb1a_dadc5a39",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-11T01:46:03Z",
+      "side": 1,
+      "message": "It might be possible to re-use an existing function here:\n\nhttps://github.com/openbmc/phosphor-pid-control/blob/8c051121ade815a46e39d5c669fee77302df2b6d/dbus/dbusconfiguration.cpp#L77\n\nI would prefer to have only one D-Bus escaping function in the program, since only one should be needed. We should probably clean up `sensorNameToDbusName()` and use that, instead of adding another function to serve the same purpose.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7a935995_209db390",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-11T01:46:03Z",
+      "side": 1,
+      "message": "What happens if `pidname` is an empty string? This can happen, because PID loops do not necessarily have to have names (see my later comment). It is an error for an D-Bus object path component to be empty. If an empty string is passed in, we should fall back to `\"_\"`.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b893f56f_e215c9a4",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-11T01:46:03Z",
+      "side": 1,
+      "message": "Please also clear the _maximumSetPointName string here, so that it will properly show up as an empty string, instead of incorrectly holding over the previous contents. Because of the disable feature, we are going to see the case of an empty _SetPoints vector much more often in practice now. So, it is important that we have correct default behavior in this situation.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "846a2e3b_6242016a",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-11T01:46:03Z",
+      "side": 1,
+      "message": "This will also happen much more frequently now, with the disable feature we are adding. I request this string be changed from `\"\"` to `\"Minimum\"`, to more correctly identify the source of the setpoint when this happens. This will also align with the behavior of `\"Ceiling\"` above.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8eb7bddb_a2d5f417",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-11T01:46:03Z",
+      "side": 1,
+      "message": "What happens if `name` already exists in the map? We should print a warning message when this happens. This will help users detect this configuration mistake.\n\nAlso, we should also print a warning message if `name` is an empty string. I think, but I am not sure, that `name` is optional using the old hardcoded JSON file syntax (not the modern `entity-manager` syntax). So, it could theoretically be empty, in an old configuration, and we should not consider this to be an error.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
