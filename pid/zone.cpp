@@ -398,6 +398,8 @@ void DbusPidZone::initializeCache(void)
         // Start all sensors in fail-safe mode.
         _failSafeSensors.insert(t);
     }
+    // Initialize Pid FailSafePercent
+    initPidFailSafePercent();
 }
 
 void DbusPidZone::dumpCache(void)
@@ -459,6 +461,34 @@ bool DbusPidZone::manual(bool value)
 bool DbusPidZone::failSafe() const
 {
     return getFailSafeMode();
+}
+
+void DbusPidZone::initPidFailSafePercent(void)
+{
+    // Currently, find the max failsafe percent pwm settings from zone and
+    // controller, and assign it to zone failsafe percent.
+
+    std::cerr << "zone: Zone" << _zoneId
+              << " failSafePercent: " << _failSafePercent << "\n";
+    for (const auto& [name, value] : _pidsFailSafePercent)
+    {
+        _failSafePercent = std::max(_failSafePercent, value);
+        std::cerr << "pid: " << name << " failSafePercent: " << value << "\n";
+    }
+
+    // when the final failsafe percent is zero , it indicate no failsafe
+    // percent is configured  , set it to 100% as the default setting.
+    if (_failSafePercent == 0)
+    {
+        _failSafePercent = 100;
+    }
+    std::cerr << "Final zone" << _zoneId
+              << " failSafePercent: " << _failSafePercent << "\n";
+}
+
+void DbusPidZone::addPidFailSafePercent(std::string name, double percent)
+{
+    _pidsFailSafePercent[name] = percent;
 }
 
 } // namespace pid_control
