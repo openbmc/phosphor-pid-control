@@ -53,7 +53,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     const char* objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0.75;
+    double failSafePercent = 0;
     conf::CycleTime cycleTime;
 
     double d;
@@ -122,7 +122,7 @@ class PidZoneTest : public ::testing::Test
     sdbusplus::SdBusMock sdbus_mock_enable;
     int64_t zoneId = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0.75;
+    double failSafePercent = 0;
     bool defer = true;
     const char* objPath = "/path/";
     SensorManager mgr;
@@ -291,7 +291,42 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
 TEST_F(PidZoneTest, GetFailSafePercent_ReturnsExpected)
 {
     // Verify the value used to create the object is stored.
-    EXPECT_EQ(failSafePercent, zone->getFailSafePercent());
+    // when the final failsafe percent is zero , it indicate
+    // no failsafe percent is configured  , set it to 100% as
+    // the default setting.
+
+    std::vector<double> values = {0, 0, 0};
+    int64_t defaultPercent = 100;
+
+    zone->addPidFailSafePercent("temp1", values[0]);
+    zone->addPidFailSafePercent("temp2", values[1]);
+    zone->addPidFailSafePercent("temp3", values[2]);
+
+    zone->initPidFailSafePercent();
+
+    EXPECT_EQ(defaultPercent, zone->getFailSafePercent());
+}
+
+TEST_F(PidZoneTest, GetFailSafePercent_VerifyReturnsExpected)
+{
+    // Tests adding PID controller with FailSafePercent to the zone,
+    // and verifies it's returned as expected.
+
+    std::vector<double> values = {60, 80, 70};
+    double max_value = 0;
+
+    for (const auto& value : values)
+    {
+        max_value = std::max(max_value, value);
+    }
+
+    zone->addPidFailSafePercent("temp1", values[0]);
+    zone->addPidFailSafePercent("temp2", values[1]);
+    zone->addPidFailSafePercent("temp3", values[2]);
+
+    zone->initPidFailSafePercent();
+
+    EXPECT_EQ(max_value, zone->getFailSafePercent());
 }
 
 TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)

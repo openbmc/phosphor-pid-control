@@ -62,6 +62,14 @@ void from_json(const json& j, conf::ControllerInfo& c)
         derivativeCoeff->get_to(derivativeCoeffValue);
     }
 
+    auto failSafePercent = j.find("FailSafePercent");
+    auto failSafePercentValue = 0;
+    if (failSafePercent != j.end())
+    {
+        failSafePercent->get_to(failSafePercentValue);
+    }
+    c.failSafePercent = failSafePercentValue;
+
     if (c.type != "stepwise")
     {
         p.at("samplePeriod").get_to(c.pidInfo.ts);

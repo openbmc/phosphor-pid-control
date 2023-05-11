@@ -40,6 +40,7 @@ struct ControllerInfo
     double setpoint;                 // initial setpoint for thermal.
     ec::pidinfo pidInfo;             // pid details
     ec::StepwiseInfo stepwiseInfo;
+    double failSafePercent;
 };
 
 struct CycleTime
