@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b6a56798_e6c78f6e",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001707
+      },
+      "writtenOn": "2023-05-11T01:57:20Z",
+      "side": 1,
+      "message": "will study it",
+      "parentUuid": "88b1bb1a_dadc5a39",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a935995_209db390",
         "filename": "pid/builder.cpp",
         "patchSetId": 2
@@ -71,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "19562da9_ac1d6444",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1001707
+      },
+      "writtenOn": "2023-05-11T01:57:20Z",
+      "side": 1,
+      "message": "hello josh:\nI was thinking of reset _maximumSetPointName here before , at that time\nbecause it follow the same logic as reset _maximumSetPoint\nhowever \njust found  _maximumSetPointName will be cleared out in if (minThermalThreshold \u003e\u003d _maximumSetPoint) condition , \n\nwe will reset the string here because you suggested to change to Minimum\nin #272",
+      "parentUuid": "b893f56f_e215c9a4",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "846a2e3b_6242016a",
         "filename": "pid/zone.cpp",
         "patchSetId": 2
@@ -88,6 +124,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "8609b024_90209503",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1001707
+      },
+      "writtenOn": "2023-05-11T01:57:20Z",
+      "side": 1,
+      "message": "get you point",
+      "parentUuid": "846a2e3b_6242016a",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8eb7bddb_a2d5f417",
         "filename": "pid/zone.cpp",
         "patchSetId": 2
@@ -99,6 +153,24 @@
       "writtenOn": "2023-05-11T01:46:03Z",
       "side": 1,
       "message": "What happens if `name` already exists in the map? We should print a warning message when this happens. This will help users detect this configuration mistake.\n\nAlso, we should also print a warning message if `name` is an empty string. I think, but I am not sure, that `name` is optional using the old hardcoded JSON file syntax (not the modern `entity-manager` syntax). So, it could theoretically be empty, in an old configuration, and we should not consider this to be an error.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1eb1af3b_a3b5674e",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1001707
+      },
+      "writtenOn": "2023-05-11T01:57:20Z",
+      "side": 1,
+      "message": "are you talking about the same name of two pidloops?\nwe will check empty name string case two",
+      "parentUuid": "8eb7bddb_a2d5f417",
       "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
