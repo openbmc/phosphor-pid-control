@@ -18,6 +18,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "761c9b3e_829dacdf",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-11T02:00:10Z",
+      "side": 1,
+      "message": "The CI (Jenkins) is not running because the owner of this change is not in the allowlist. I am not sure how to do this, it\u0027s not something I have access to. Please ask on the Discord.",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "88b1bb1a_dadc5a39",
