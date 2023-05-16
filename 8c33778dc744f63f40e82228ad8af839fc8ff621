@@ -125,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a9914681_dfcec764",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1001707
+      },
+      "writtenOn": "2023-05-16T03:05:07Z",
+      "side": 1,
+      "message": "we dont need to worry about pidname is an empty string case\n\ncase1 : dbus-configuration method (entity manager)\nthis empty string will cause entity manager fail to run , so the user will fix this mis-configuration naturally\n\ncase2: config.json (static way)\npid service will fail during building json stage\n\n generally speaking, the empty pidname string will not be able passed on to \n buildzone stage",
+      "parentUuid": "7a935995_209db390",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b893f56f_e215c9a4",
         "filename": "pid/zone.cpp",
         "patchSetId": 2
