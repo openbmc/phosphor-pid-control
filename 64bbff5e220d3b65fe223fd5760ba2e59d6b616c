@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6fba362e_f685e6fe",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 15
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-18T07:56:50Z",
+      "side": 1,
+      "message": "The log from Jenkins has a segfault when running the unit test. Can you try running the unit tests manually with gdb and seeing where it crashes?",
+      "revId": "64bbff5e220d3b65fe223fd5760ba2e59d6b616c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
