@@ -53,7 +53,7 @@ and the environmental air temperature must be no greater than 15C.
 
 ### IPMI Access to Phosphor-pid-control
 
-[OEM-IPMI Definitions](ipmid.md)
+[OEM-IPMI Definitions](ipmi.md)
 
 #### Set Sensor Value
 
