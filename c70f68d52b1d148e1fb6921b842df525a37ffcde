@@ -35,6 +35,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "d73714ce_fe7e5dca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-24T00:52:00Z",
+      "side": 1,
+      "message": "What is the current status of this patch? It came up in discussion with other patches.",
+      "revId": "c70f68d52b1d148e1fb6921b842df525a37ffcde",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "2ba8c0df_2568cd5f",
