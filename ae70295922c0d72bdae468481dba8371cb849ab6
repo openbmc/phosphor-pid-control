@@ -1,0 +1,72 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "392ff1c9_ba8d69c5",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-24T23:45:33Z",
+      "side": 1,
+      "message": "In this example, where does 70 come from?",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "89a9dda6_d3fc3ec4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-24T23:45:33Z",
+      "side": 1,
+      "message": "I like the idea of preserving the zone-wide user-configured failsafe value as a separate variable. Then, projects that use https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/38112 can adapt as necessary, and it will be easier to avoid breaking them.",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c4617b84_02196f99",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-24T23:45:33Z",
+      "side": 1,
+      "message": "If the zone-wide failsafe percent is preserved (see other comment), then `_failSafePercent` can be initialized here: `_failSafePercent \u003d _zoneFailSafePercent;`\n\nThat would make this function idempotent.",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a42b2b98_c1a6246f",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-24T23:45:33Z",
+      "side": 1,
+      "message": "It might be a good idea to maintain the zone-wide failsafe configuration value separately. That would make the `initPidFailSafePercent` function idempotent. For example `_zoneFailSafePercent(failSafePercent)`",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "22000f22_fc446a1b",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-24T23:45:33Z",
+      "side": 1,
+      "message": "Understood. How about this, instead: I suggest adding another variable `_zoneFailSafePercent` and initializing it in the constructor, to receive the zone-wide failsafe value that the user has configured. That will preserve it, for later use.",
+      "parentUuid": "2b4533a3_f397c2a7",
+      "revId": "e86b1aca207ebebbfd6f02b554a2c5a593517152",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "02c1bc92_331c3c7d",
         "filename": "pid/zone.cpp",
         "patchSetId": 5
@@ -49,6 +67,24 @@
       "writtenOn": "2023-05-18T08:03:01Z",
       "side": 1,
       "message": "Please use modern C++ \"for each\" syntax: `for (auto it : _pidsFailSafePercent)`\n\nAlso, unless needing to make a copy of the variable, use `const auto\u0026` instead of `auto`",
+      "revId": "e86b1aca207ebebbfd6f02b554a2c5a593517152",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d132e78_9dba5d13",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 408,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-24T23:45:33Z",
+      "side": 1,
+      "message": "It looks like this comment has been taken care of. Please mark \"Resolved\" for comments that have been solved.",
+      "parentUuid": "02c1bc92_331c3c7d",
       "revId": "e86b1aca207ebebbfd6f02b554a2c5a593517152",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
