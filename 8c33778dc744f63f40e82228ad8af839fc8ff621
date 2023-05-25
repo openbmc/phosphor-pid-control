@@ -108,6 +108,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "35fdc8cc_57a5dfaa",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-25T00:22:32Z",
+      "side": 1,
+      "message": "OK, let me know where the conversion takes place at. The `pidname` still needs to be validated as a D-Bus object name before being used directly, otherwise it will crash when used.",
+      "parentUuid": "649b38b1_30308d10",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a935995_209db390",
         "filename": "pid/builder.cpp",
         "patchSetId": 2
@@ -137,6 +155,24 @@
       "side": 1,
       "message": "we dont need to worry about pidname is an empty string case\n\ncase1 : dbus-configuration method (entity manager)\nthis empty string will cause entity manager fail to run , so the user will fix this mis-configuration naturally\n\ncase2: config.json (static way)\npid service will fail during building json stage\n\n generally speaking, the empty pidname string will not be able passed on to \n buildzone stage",
       "parentUuid": "7a935995_209db390",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "462b5d39_7b7c7f4a",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-25T00:22:32Z",
+      "side": 1,
+      "message": "Understood, good analysis.",
+      "parentUuid": "a9914681_dfcec764",
       "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -176,6 +212,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "925cefb2_6f35248f",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-25T00:22:32Z",
+      "side": 1,
+      "message": "That is correct. Thanks.",
+      "parentUuid": "19562da9_ac1d6444",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "846a2e3b_6242016a",
@@ -211,6 +265,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "2d09b4cd_2488e85e",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 272,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-25T00:22:32Z",
+      "side": 1,
+      "message": "Thanks",
+      "parentUuid": "8609b024_90209503",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8eb7bddb_a2d5f417",
@@ -242,6 +314,24 @@
       "side": 1,
       "message": "are you talking about the same name of two pidloops?\nwe will check empty name string case two",
       "parentUuid": "8eb7bddb_a2d5f417",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1a00994e_7e8c5b09",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 471,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-25T00:22:32Z",
+      "side": 1,
+      "message": "Thanks for adding the warning message in `buildjson.cpp` earlier. That should be sufficient.",
+      "parentUuid": "1eb1af3b_a3b5674e",
       "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
