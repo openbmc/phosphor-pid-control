@@ -16,6 +16,23 @@
       "message": "Nice, good catch",
       "revId": "02839e372a32d3a346c956d545b7fe97a91bd755",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9ca26a15_26a0e5fb",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-25T01:08:06Z",
+      "side": 1,
+      "message": "It now points to https://github.com/openbmc/phosphor-pid-control/blob/master/ipmi.md",
+      "revId": "02839e372a32d3a346c956d545b7fe97a91bd755",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
