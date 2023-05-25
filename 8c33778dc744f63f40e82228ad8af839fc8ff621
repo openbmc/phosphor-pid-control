@@ -126,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e8891910_27ecf4ba",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-25T04:19:36Z",
+      "side": 1,
+      "message": "We perform the conversion during the dbus config and utilize the sensorNameToDbusName() function you recommended. This helps us avoid crashes during usage.\nIn dbus/dbusconfiguration.cpp\nconst std::string pidName \u003d sensorNameToDbusName(std::get\u003cstd::string\u003e(base.at(\"Name\")));",
+      "parentUuid": "35fdc8cc_57a5dfaa",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "7a935995_209db390",
         "filename": "pid/builder.cpp",
         "patchSetId": 2

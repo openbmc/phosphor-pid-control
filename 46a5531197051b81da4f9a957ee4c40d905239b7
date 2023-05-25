@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "12d14c03_91161bf8",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 16
+      },
+      "lineNbr": 25,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-25T04:19:36Z",
+      "side": 1,
+      "message": "OK, I will modify the commit message.",
+      "parentUuid": "6e7fc4fd_94f09e79",
+      "revId": "46a5531197051b81da4f9a957ee4c40d905239b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "47bd0701_bc6240a6",
@@ -37,6 +55,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ec19c191_81b9d433",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 860,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-25T04:19:36Z",
+      "side": 1,
+      "message": "#J",
+      "revId": "46a5531197051b81da4f9a957ee4c40d905239b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "21efe393_b5f18f6a",
         "filename": "pid/builder.cpp",
         "patchSetId": 16
@@ -48,6 +83,24 @@
       "writtenOn": "2023-05-25T00:22:32Z",
       "side": 1,
       "message": "Once the function is changed to use C++ strings throughout, then `.c_str()` will no longer be necessary.",
+      "revId": "46a5531197051b81da4f9a957ee4c40d905239b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4be2ae1d_dcc949a9",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 119,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-25T04:19:36Z",
+      "side": 1,
+      "message": "OK, I will remove it.",
+      "parentUuid": "21efe393_b5f18f6a",
       "revId": "46a5531197051b81da4f9a957ee4c40d905239b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -99,6 +152,24 @@
       "writtenOn": "2023-05-25T00:22:32Z",
       "side": 1,
       "message": "Mixing C and C++ strings in the same function is awkward. Please standardize on `std::string` syntax.",
+      "revId": "46a5531197051b81da4f9a957ee4c40d905239b7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0ccbe8cf_7a453711",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-25T04:19:36Z",
+      "side": 1,
+      "message": "OK, I will use C++ consistently.",
+      "parentUuid": "81d21fcd_2bbd3afb",
       "revId": "46a5531197051b81da4f9a957ee4c40d905239b7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
