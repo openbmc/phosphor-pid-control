@@ -54,6 +54,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76c1c959_36602ef4",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-26T03:30:11Z",
+      "side": 1,
+      "message": "Following your suggestion, I have added _zoneFailSafePercent and assigned the Fail Safe Percent value to the Zone during initialization.\nWith this change, the below comments have also been updated. Thank you.",
+      "parentUuid": "22000f22_fc446a1b",
+      "revId": "e86b1aca207ebebbfd6f02b554a2c5a593517152",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "02c1bc92_331c3c7d",

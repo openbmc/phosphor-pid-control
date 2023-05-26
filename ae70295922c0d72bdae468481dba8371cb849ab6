@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "719bce96_65de1c4c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-26T03:30:11Z",
+      "side": 1,
+      "message": "I made a mistake accidentally, thank you for pointing it out.",
+      "parentUuid": "392ff1c9_ba8d69c5",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "89a9dda6_d3fc3ec4",
@@ -52,6 +70,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "89764509_5dad3c59",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 470,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-26T03:30:11Z",
+      "side": 1,
+      "message": "Mark Resolved",
+      "parentUuid": "c4617b84_02196f99",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a42b2b98_c1a6246f",
@@ -65,6 +101,24 @@
       "writtenOn": "2023-05-24T23:45:33Z",
       "side": 1,
       "message": "It might be a good idea to maintain the zone-wide failsafe configuration value separately. That would make the `initPidFailSafePercent` function idempotent. For example `_zoneFailSafePercent(failSafePercent)`",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "62df9367_dbd66482",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1001708
+      },
+      "writtenOn": "2023-05-26T03:30:11Z",
+      "side": 1,
+      "message": "Mark Resolved",
+      "parentUuid": "a42b2b98_c1a6246f",
       "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
