@@ -160,6 +160,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "f27d5ecb_b3c5b782",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-05-26T01:15:28Z",
+      "side": 1,
+      "message": "Thanks! Good analysis, I had missed seeing that fix earlier.",
+      "parentUuid": "7240697a_16ad7fd1",
+      "revId": "8c33778dc744f63f40e82228ad8af839fc8ff621",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7a935995_209db390",
