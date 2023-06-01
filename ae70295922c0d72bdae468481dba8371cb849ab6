@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "6a193d0a_d076db50",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001707
+      },
+      "writtenOn": "2023-06-01T06:25:28Z",
+      "side": 1,
+      "message": "it seems typing error , will fix it",
+      "parentUuid": "392ff1c9_ba8d69c5",
+      "revId": "ae70295922c0d72bdae468481dba8371cb849ab6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "89a9dda6_d3fc3ec4",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 7
