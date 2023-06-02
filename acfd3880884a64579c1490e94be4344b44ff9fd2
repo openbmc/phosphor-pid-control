@@ -16,6 +16,23 @@
       "message": "Looks good now.",
       "revId": "acfd3880884a64579c1490e94be4344b44ff9fd2",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2e0753ff_b9fecffc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 12
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-02T08:32:56Z",
+      "side": 1,
+      "message": "When the other change is submitted, this change will need to be rebased in order to stack on top of the other change: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/63214",
+      "revId": "acfd3880884a64579c1490e94be4344b44ff9fd2",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

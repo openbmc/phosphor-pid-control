@@ -87,6 +87,24 @@
       "parentUuid": "e1520d4f_0ef52ff0",
       "revId": "c4597dec7f350e91d0e6f98088094007cf8f640f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "25a774eb_73776b9c",
+        "filename": "interfaces.hpp",
+        "patchSetId": 11
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-02T08:32:56Z",
+      "side": 1,
+      "message": "Good, thanks for making the edit in the other change as well. That will prevent these 2 changes from conflicting with each other, when 1 gets submitted first, and now the second change has to be rebased on top of it.",
+      "parentUuid": "8cdaac37_aa232638",
+      "revId": "c4597dec7f350e91d0e6f98088094007cf8f640f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
