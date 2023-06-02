@@ -16,6 +16,24 @@
       "message": "Since https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/41810 is abandoned, should this also be abandoned?",
       "revId": "0b2618440e4c81e1db6d713cefade41a14529d6e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c033946d_50576035",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-06-02T15:41:57Z",
+      "side": 1,
+      "message": "Yes, this can be abandoned.",
+      "parentUuid": "a64adfa4_9c221c7a",
+      "revId": "0b2618440e4c81e1db6d713cefade41a14529d6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
