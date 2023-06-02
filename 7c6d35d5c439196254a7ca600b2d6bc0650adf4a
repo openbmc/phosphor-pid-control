@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a6a7a68_cedb69f0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 21
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-02T08:25:41Z",
+      "side": 1,
+      "message": "Thanks for making the change, giving +2 again as it got stripped by Gerrit",
+      "revId": "7c6d35d5c439196254a7ca600b2d6bc0650adf4a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
