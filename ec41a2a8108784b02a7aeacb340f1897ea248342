@@ -86,6 +86,24 @@
       "parentUuid": "e5c318cb_4fab4fa1",
       "revId": "ec41a2a8108784b02a7aeacb340f1897ea248342",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e776612_f6eb84ba",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 19
+      },
+      "lineNbr": 138,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-02T08:26:17Z",
+      "side": 1,
+      "message": "It\u0027s \"Ready To Submit\" now, so you can go ahead and hit the big purple button at top. That should take care of merging it in.",
+      "parentUuid": "021e48a3_2feb4566",
+      "revId": "ec41a2a8108784b02a7aeacb340f1897ea248342",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
