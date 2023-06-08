@@ -1,5 +1,6 @@
 /**
  * Copyright 2019 Google Inc.
+ * Copyright 2022-2023 Raptor Engineering, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,104 +36,136 @@ void from_json(const json& j, conf::ControllerInfo& c)
 {
     j.at("type").get_to(c.type);
     j.at("inputs").get_to(c.inputs);
-    j.at("setpoint").get_to(c.setpoint);
+    if (c.type != "simplefan")
+    {
+        j.at("setpoint").get_to(c.setpoint);
+    }
 
     /* TODO: We need to handle parsing other PID controller configurations.
      * We can do that by checking for different keys and making the decision
      * accordingly.
      */
-    auto p = j.at("pid");
+    if (c.type != "simplefan")
+    {
+        auto p = j.at("pid");
 
-    auto positiveHysteresis = p.find("positiveHysteresis");
-    auto negativeHysteresis = p.find("negativeHysteresis");
-    auto derivativeCoeff = p.find("derivativeCoeff");
-    auto positiveHysteresisValue = 0.0;
-    auto negativeHysteresisValue = 0.0;
-    auto derivativeCoeffValue = 0.0;
-    if (positiveHysteresis != p.end())
-    {
-        positiveHysteresis->get_to(positiveHysteresisValue);
-    }
-    if (negativeHysteresis != p.end())
-    {
-        negativeHysteresis->get_to(negativeHysteresisValue);
-    }
-    if (derivativeCoeff != p.end())
-    {
-        derivativeCoeff->get_to(derivativeCoeffValue);
-    }
-
-    auto failSafePercent = j.find("FailSafePercent");
-    auto failSafePercentValue = 0;
-    if (failSafePercent != j.end())
-    {
-        failSafePercent->get_to(failSafePercentValue);
-    }
-    c.failSafePercent = failSafePercentValue;
-
-    if (c.type != "stepwise")
-    {
-        p.at("samplePeriod").get_to(c.pidInfo.ts);
-        p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
-        p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
-        p.at("feedFwdOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
-        p.at("feedFwdGainCoeff").get_to(c.pidInfo.feedFwdGain);
-        p.at("integralLimit_min").get_to(c.pidInfo.integralLimit.min);
-        p.at("integralLimit_max").get_to(c.pidInfo.integralLimit.max);
-        p.at("outLim_min").get_to(c.pidInfo.outLim.min);
-        p.at("outLim_max").get_to(c.pidInfo.outLim.max);
-        p.at("slewNeg").get_to(c.pidInfo.slewNeg);
-        p.at("slewPos").get_to(c.pidInfo.slewPos);
-
-        // Unlike other coefficients, treat derivativeCoeff as an optional
-        // parameter, as support for it is fairly new, to avoid breaking
-        // existing configurations in the field that predate it.
-        c.pidInfo.positiveHysteresis = positiveHysteresisValue;
-        c.pidInfo.negativeHysteresis = negativeHysteresisValue;
-        c.pidInfo.derivativeCoeff = derivativeCoeffValue;
-    }
-    else
-    {
-        p.at("samplePeriod").get_to(c.stepwiseInfo.ts);
-        p.at("isCeiling").get_to(c.stepwiseInfo.isCeiling);
-
-        for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+        auto positiveHysteresis = p.find("positiveHysteresis");
+        auto negativeHysteresis = p.find("negativeHysteresis");
+        auto derivativeCoeff = p.find("derivativeCoeff");
+        auto positiveHysteresisValue = 0.0;
+        auto negativeHysteresisValue = 0.0;
+        auto derivativeCoeffValue = 0.0;
+        auto failSafePercent = j.find("FailSafePercent");
+        auto failSafePercentValue = 0;
+        if (failSafePercent != j.end())
         {
-            c.stepwiseInfo.reading[i] =
-                std::numeric_limits<double>::quiet_NaN();
-            c.stepwiseInfo.output[i] = std::numeric_limits<double>::quiet_NaN();
+            failSafePercent->get_to(failSafePercentValue);
+        }
+        c.failSafePercent = failSafePercentValue;
+
+        if (positiveHysteresis != p.end())
+        {
+            positiveHysteresis->get_to(positiveHysteresisValue);
+        }
+        if (negativeHysteresis != p.end())
+        {
+            negativeHysteresis->get_to(negativeHysteresisValue);
+        }
+        if (derivativeCoeff != p.end())
+        {
+            derivativeCoeff->get_to(derivativeCoeffValue);
         }
 
-        auto reading = p.find("reading");
-        if (reading != p.end())
+        if (c.type != "stepwise")
         {
-            auto r = p.at("reading");
-            for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+            auto algorithmType = p.find("algorithmType");
+
+            c.pidInfo.ts = 0.1; // Spectified in seconds.  Must match main loop,
+                                // currently 100ms per pid/pidloop.cpp
+
+            if (algorithmType != p.end())
             {
-                auto n = r.find(std::to_string(i));
-                if (n != r.end())
+                std::string algorithmTypeKey;
+                p.at("algorithmType").get_to(algorithmTypeKey);
+                if (algorithmTypeKey == "google")
                 {
-                    r.at(std::to_string(i)).get_to(c.stepwiseInfo.reading[i]);
+                    c.pidInfo.algorithmId = ec::PIDControlType::GOOGLE;
+                }
+                else if (algorithmTypeKey == "pid")
+                {
+                    c.pidInfo.algorithmId = ec::PIDControlType::PID;
                 }
             }
-        }
+            else
+            {
+                c.pidInfo.algorithmId = ec::PIDControlType::GOOGLE;
+            }
 
-        auto output = p.find("output");
-        if (output != p.end())
+            p.at("samplePeriod").get_to(c.pidInfo.ts);
+            p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
+            p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
+            p.at("feedFwdOffsetCoeff").get_to(c.pidInfo.feedFwdOffset);
+            p.at("feedFwdGainCoeff").get_to(c.pidInfo.feedFwdGain);
+            p.at("integralLimit_min").get_to(c.pidInfo.integralLimit.min);
+            p.at("integralLimit_max").get_to(c.pidInfo.integralLimit.max);
+            p.at("outLim_min").get_to(c.pidInfo.outLim.min);
+            p.at("outLim_max").get_to(c.pidInfo.outLim.max);
+            p.at("slewNeg").get_to(c.pidInfo.slewNeg);
+            p.at("slewPos").get_to(c.pidInfo.slewPos);
+
+            // Unlike other coefficients, treat derivativeCoeff as an optional
+            // parameter, as support for it is fairly new, to avoid breaking
+            // existing configurations in the field that predate it.
+            c.pidInfo.positiveHysteresis = positiveHysteresisValue;
+            c.pidInfo.negativeHysteresis = negativeHysteresisValue;
+            c.pidInfo.derivativeCoeff = derivativeCoeffValue;
+        }
+        else
         {
-            auto o = p.at("output");
+            p.at("samplePeriod").get_to(c.stepwiseInfo.ts);
+            p.at("isCeiling").get_to(c.stepwiseInfo.isCeiling);
+
             for (size_t i = 0; i < ec::maxStepwisePoints; i++)
             {
-                auto n = o.find(std::to_string(i));
-                if (n != o.end())
+                c.stepwiseInfo.reading[i] =
+                    std::numeric_limits<double>::quiet_NaN();
+                c.stepwiseInfo.output[i] =
+                    std::numeric_limits<double>::quiet_NaN();
+            }
+
+            auto reading = p.find("reading");
+            if (reading != p.end())
+            {
+                auto r = p.at("reading");
+                for (size_t i = 0; i < ec::maxStepwisePoints; i++)
                 {
-                    o.at(std::to_string(i)).get_to(c.stepwiseInfo.output[i]);
+                    auto n = r.find(std::to_string(i));
+                    if (n != r.end())
+                    {
+                        r.at(std::to_string(i))
+                            .get_to(c.stepwiseInfo.reading[i]);
+                    }
                 }
             }
-        }
 
-        c.stepwiseInfo.positiveHysteresis = positiveHysteresisValue;
-        c.stepwiseInfo.negativeHysteresis = negativeHysteresisValue;
+            auto output = p.find("output");
+            if (output != p.end())
+            {
+                auto o = p.at("output");
+                for (size_t i = 0; i < ec::maxStepwisePoints; i++)
+                {
+                    auto n = o.find(std::to_string(i));
+                    if (n != o.end())
+                    {
+                        o.at(std::to_string(i))
+                            .get_to(c.stepwiseInfo.output[i]);
+                    }
+                }
+            }
+
+            c.stepwiseInfo.positiveHysteresis = positiveHysteresisValue;
+            c.stepwiseInfo.negativeHysteresis = negativeHysteresisValue;
+        }
     }
 }
 } // namespace conf

@@ -17,6 +17,7 @@
 #include "pidcontroller.hpp"
 
 #include "ec/pid.hpp"
+#include "ec/pid_standard.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -49,7 +50,14 @@ void PIDController::process(void)
     if (info->positiveHysteresis == 0 && info->negativeHysteresis == 0)
     {
         // Calculate new output
-        output = ec::pid(info, input, setpt, &name);
+        if (info->algorithmId == ec::PIDControlType::PID)
+        {
+            output = ec::pid_standard(info, input, setpt);
+        }
+        else
+        {
+            output = ec::pid(info, input, setpt, &name);
+        }
 
         // this variable isn't actually used in this context, but we're setting
         // it here incase somebody uses it later it's the correct value
@@ -74,7 +82,14 @@ void PIDController::process(void)
             lastInput = input;
         }
 
-        output = ec::pid(info, lastInput, setpt, &name);
+        if (info->algorithmId == ec::PIDControlType::PID)
+        {
+            output = ec::pid_standard(info, lastInput, setpt, &name);
+        }
+        else
+        {
+            output = ec::pid(info, lastInput, setpt, &name);
+        }
     }
 
     // Output new value
