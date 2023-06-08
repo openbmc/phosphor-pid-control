@@ -78,6 +78,8 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
                       << ",\n";
             std::cout << "\t\t\t" << pidconf.second.pidInfo.integralCoeff
                       << ",\n";
+            std::cout << "\t\t\t" << pidconf.second.pidInfo.derivativeCoeff
+                      << ",\n";
             std::cout << "\t\t\t" << pidconf.second.pidInfo.feedFwdOffset
                       << ",\n";
             std::cout << "\t\t\t" << pidconf.second.pidInfo.feedFwdGain
