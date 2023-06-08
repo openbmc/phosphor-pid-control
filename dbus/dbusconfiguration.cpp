@@ -304,6 +304,7 @@ void populatePidInfo(
     [[maybe_unused]] sdbusplus::bus_t& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
     conf::ControllerInfo& info, const std::string* thresholdProperty,
+    const double pidTimestep,
     const std::map<std::string, conf::SensorConfig>& sensorConfig)
 {
     info.type = std::get<std::string>(getPIDAttribute(base, "Class"));
@@ -356,7 +357,8 @@ void populatePidInfo(
         info.setpoint += reading;
     }
 
-    info.pidInfo.ts = 1.0; // currently unused
+    info.pidInfo.ts =
+        pidTimestep; // Spectified in seconds.  Must match main loop.
     info.pidInfo.proportionalCoeff = std::visit(
         VariantToDoubleVisitor(), getPIDAttribute(base, "PCoefficient"));
     info.pidInfo.integralCoeff = std::visit(
@@ -661,6 +663,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 auto index = getZoneIndex(zone, foundZones);
 
                 conf::PIDConf& conf = zoneConfig[index];
+                auto& details = zoneDetailsConfig[index];
                 std::vector<std::string> inputSensorNames(
                     std::get<std::vector<std::string>>(base.at("Inputs")));
                 std::vector<std::string> outputSensorNames;
@@ -848,11 +851,25 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     }
                 }
 
+                // Determine loop interval in seconds for this particular PID
+                // The interval varies based on whether it is a thermal PID or
+                // a fan speed PID
+                double pidTimestep;
+                if (pidClass == "fan")
+                {
+                    pidTimestep = details.cycleTime.cycleIntervalTimeMS / 1000.0;
+                }
+                else
+                {
+                    pidTimestep = details.cycleTime.cycleIntervalTimeMS / 1000.0;
+                }
+
                 if (offsetType.empty())
                 {
                     conf::ControllerInfo& info = conf[pidName];
                     info.inputs = std::move(inputSensorNames);
-                    populatePidInfo(bus, base, info, nullptr, sensorConfig);
+                    populatePidInfo(bus, base, info, nullptr, pidTimestep,
+                                    sensorConfig);
                 }
                 else
                 {
@@ -863,7 +880,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         conf::ControllerInfo& info = conf[input];
                         info.inputs.emplace_back(input);
                         populatePidInfo(bus, base, info, &offsetType,
-                                        sensorConfig);
+                                        pidTimestep, sensorConfig);
                     }
                 }
             }
