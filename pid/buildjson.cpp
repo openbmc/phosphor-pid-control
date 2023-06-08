@@ -1,5 +1,6 @@
 /**
  * Copyright 2019 Google Inc.
+ * Copyright 2022-2023 Raptor Engineering, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,12 +36,19 @@ void from_json(const json& j, conf::ControllerInfo& c)
 {
     j.at("type").get_to(c.type);
     j.at("inputs").get_to(c.inputs);
-    j.at("setpoint").get_to(c.setpoint);
+    if (c.type != "simplefan")
+    {
+        j.at("setpoint").get_to(c.setpoint);
+    }
 
     /* TODO: We need to handle parsing other PID controller configurations.
      * We can do that by checking for different keys and making the decision
      * accordingly.
      */
+    if (c.type == "simplefan")
+        return;
+
+
     auto p = j.at("pid");
 
     auto positiveHysteresis = p.find("positiveHysteresis");
@@ -49,6 +57,14 @@ void from_json(const json& j, conf::ControllerInfo& c)
     auto positiveHysteresisValue = 0.0;
     auto negativeHysteresisValue = 0.0;
     auto derivativeCoeffValue = 0.0;
+    auto failSafePercent = j.find("FailSafePercent");
+    auto failSafePercentValue = 0;
+    if (failSafePercent != j.end())
+    {
+        failSafePercent->get_to(failSafePercentValue);
+    }
+    c.failSafePercent = failSafePercentValue;
+
     if (positiveHysteresis != p.end())
     {
         positiveHysteresis->get_to(positiveHysteresisValue);
@@ -62,16 +78,31 @@ void from_json(const json& j, conf::ControllerInfo& c)
         derivativeCoeff->get_to(derivativeCoeffValue);
     }
 
-    auto failSafePercent = j.find("FailSafePercent");
-    auto failSafePercentValue = 0;
-    if (failSafePercent != j.end())
-    {
-        failSafePercent->get_to(failSafePercentValue);
-    }
-    c.failSafePercent = failSafePercentValue;
-
     if (c.type != "stepwise")
     {
+        auto algorithmType = p.find("algorithmType");
+
+        c.pidInfo.ts = 0.1; // Spectified in seconds.  Must match main loop,
+                                // currently 100ms per pid/pidloop.cpp
+
+        if (algorithmType != p.end())
+        {
+            std::string algorithmTypeKey;
+            p.at("algorithmType").get_to(algorithmTypeKey);
+            if (algorithmTypeKey == "google")
+            {
+                c.pidInfo.algorithmId = ec::PIDControlType::GOOGLE;
+            }
+            else if (algorithmTypeKey == "pid")
+            {
+                c.pidInfo.algorithmId = ec::PIDControlType::STANDARD;
+            }
+        }
+        else
+        {
+            c.pidInfo.algorithmId = ec::PIDControlType::GOOGLE;
+        }
+
         p.at("samplePeriod").get_to(c.pidInfo.ts);
         p.at("proportionalCoeff").get_to(c.pidInfo.proportionalCoeff);
         p.at("integralCoeff").get_to(c.pidInfo.integralCoeff);
@@ -100,7 +131,8 @@ void from_json(const json& j, conf::ControllerInfo& c)
         {
             c.stepwiseInfo.reading[i] =
                 std::numeric_limits<double>::quiet_NaN();
-            c.stepwiseInfo.output[i] = std::numeric_limits<double>::quiet_NaN();
+            c.stepwiseInfo.output[i] =
+                std::numeric_limits<double>::quiet_NaN();
         }
 
         auto reading = p.find("reading");
@@ -112,7 +144,8 @@ void from_json(const json& j, conf::ControllerInfo& c)
                 auto n = r.find(std::to_string(i));
                 if (n != r.end())
                 {
-                    r.at(std::to_string(i)).get_to(c.stepwiseInfo.reading[i]);
+                    r.at(std::to_string(i))
+                        .get_to(c.stepwiseInfo.reading[i]);
                 }
             }
         }
@@ -126,7 +159,8 @@ void from_json(const json& j, conf::ControllerInfo& c)
                 auto n = o.find(std::to_string(i));
                 if (n != o.end())
                 {
-                    o.at(std::to_string(i)).get_to(c.stepwiseInfo.output[i]);
+                    o.at(std::to_string(i))
+                        .get_to(c.stepwiseInfo.output[i]);
                 }
             }
         }
