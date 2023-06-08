@@ -1,0 +1,208 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e28d7a4b_5c5d6b88",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "This seems like a good idea, but I have some implementation questions. Also, what exactly is different between the \"Google\" and the \"standard\" PID loop algorithm?\n\nI have some algorithmic changes I also want to make, however, I don\u0027t want to break existing PID loop tunings by changing any default computational behavior. I want to make this a selectable feature, though, perhaps with a flag. I like your idea of having a different name for it, however.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a625a0bd_e12a3fc1",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "There is a reason the thermal PID loops run at 1.0 seconds and the fan PID loops run at 0.1 seconds by default. This should not be changed without a good reason.\n\nThe thermal loops often have to process many more sensors than the fan loops do, putting more load on the system. Also, thermal sensors tend to change slower than fan sensors. So, it is intentional for the main loop to only process the thermal PID only 1 out of each 10 iterations, while processing the fan PID every iteration.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6dc6b7b8_406e2d0e",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "Is there a difference between \"fan\" and \"simplefan\", other than selection of the PID loop algorithm? If not, it might make for a cleaner design to just add another field, perhaps \"Algorithm\", that can be set to values like \"google\" or \"standard\".",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3bfb3b9f_9ae79482",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "This code looks copied, but differs. Among other things, addPidFailSafePercent() is not done. Is this intentional?",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baf441d1_1607c8c5",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "Instead of doing an indentation of everything that follows, it might be simpler here to test for the opposite condition, and if true, take an early return here. That will avoid having to change the entire rest of the function.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e9f65336_a3b55d66",
+        "filename": "pid/ec/pid_common.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "PID as a constant is too generic, as it is already a PIDControlType. To be common with your other code, I suggest SIMPLE or STANDARD.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ad1e5bde_9860e18d",
+        "filename": "pid/ec/pid_standard.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "I am curious. What about this function is different from the way the PID algorithm used to be computed previously?\n\nAlso, it looks like a lot of cut-and-paste code. I would prefer only the different parts be changed, instead of copying the entire file.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "8b5f602a_cfbf6560",
+        "filename": "pid/simplefancontroller.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "How does a simple fan controller differ from the default fan controller? It looks to be much the same code. I would prefer to avoid massive cut-and-paste code duplication here. Perhaps we can only override what actually changes, instead of having to cut-and-paste the entire class.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9f92d063_4c2e1048",
+        "filename": "pid/simplefancontroller.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "Does it output RPM values, or does it output PWM values? Usually, the thermal PID loop outputs the desired RPM values, then the fan PID loop converts RPM to PWM and outputs the actual PWM values to the hardware.\n\nSome systems have a smart fan controller, in which RPM drives the fans, not PWM. In this case, the thermal PID loop outputs RPM, and no further processing is necessary, as the fan hardware can receive the desired RPM directly. PWM is not used at all.\n\nAlso, in another case, the RPM is not cared about at all by the user, and the thermal PID loop is tuned to output the desired PWM percentage. RPM is not used at all.\n\nIn both of these cases, usually a dummy PID loop that\u0027s 1:1 is used, to just copy the setpoint to the output, and ignore the input.\n\nhttps://github.com/openbmc/phosphor-pid-control/issues/32",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "27b0d508_8bafdf31",
+        "filename": "pid/util.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "Hmm. It seems last_error got duplicated here? Lines 58 and 60",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d68ee3c0_addb5d86",
+        "filename": "test/meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "This reminds me. What\u0027s the difference between a \"Google\" PID loop, and a \"standard\" PID loop? Do they provide different output results? If so, then we need to have a test case for each of these.\n\nThe test case must be able to catch the condition in which the user erroneously specifies a Google loop instead of a standard loop, and also vice versa.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "509dbbaf_d5d08739",
+        "filename": "util.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-08T20:55:18Z",
+      "side": 1,
+      "message": "Wow, good catch, this was forgotten about.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
