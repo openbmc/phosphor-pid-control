@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "aa2b1978_a1d7ab49",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "I had written up a quick summary on Github, which I\u0027ll paste below.  In a nutshell, the Google algorithm is a pseudo-PI[D] controller chained with another PI controller, which from a control theory perspective isn\u0027t something we want to ship (potential for instability).  The algorithm Raptor added is standard PID, without the unwanted chained PI controller tacked on.\n\nThank you for not breaking our tuning. :)  The algorithm here (standard PID) is already used on Kestrel (Zephyr RTOS), and we already have the tuned coefficients for our platforms as a result.\n\n\"The existing Google EC algorithm is not workable for the Raptor and SIE (patches coming in the future) platforms, as it is not a standard PID controller. Raptor uses standard PID controllers in its firmware, for example in its Kestrel BMC products, as after extensive testing we have found that our fan control hardware is best controlled (i.e. minimum overshoot and hunting) via a standard PID algorithm.\n\nIn this patch, the algorithm type used defaults to the Google algorithm, but can be changed in the JSON configuration file.\n\nThis is the first set of patches in a series that aims to add full support for the Raptor Computing Systems POWER9 platforms to OpenBMC.\"",
+      "parentUuid": "e28d7a4b_5c5d6b88",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a625a0bd_e12a3fc1",
@@ -31,6 +49,24 @@
       "writtenOn": "2023-06-08T20:55:18Z",
       "side": 1,
       "message": "There is a reason the thermal PID loops run at 1.0 seconds and the fan PID loops run at 0.1 seconds by default. This should not be changed without a good reason.\n\nThe thermal loops often have to process many more sensors than the fan loops do, putting more load on the system. Also, thermal sensors tend to change slower than fan sensors. So, it is intentional for the main loop to only process the thermal PID only 1 out of each 10 iterations, while processing the fan PID every iteration.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "da2b4076_089297b9",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 359,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "In testing, this speed was insufficient to get proper control of the fans on two of our platforms, with oscillation / hunting behavior observed.  If I were to make this a tunable would that be acceptable?",
+      "parentUuid": "a625a0bd_e12a3fc1",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -54,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d6f846ae_83c2d3e8",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "Yes, the default \"fan\" controller adds a second unwanted PI controller into the control loop.",
+      "parentUuid": "6dc6b7b8_406e2d0e",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3bfb3b9f_9ae79482",
         "filename": "pid/builder.cpp",
         "patchSetId": 10
@@ -65,6 +119,24 @@
       "writtenOn": "2023-06-08T20:55:18Z",
       "side": 1,
       "message": "This code looks copied, but differs. Among other things, addPidFailSafePercent() is not done. Is this intentional?",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "53cbe8b1_4e0102a6",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "Could be an inadvertent difference due to the age of the original patches.  I\u0027ll take a closer look.",
+      "parentUuid": "3bfb3b9f_9ae79482",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -88,6 +160,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f1436bbd_62046c38",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "If that\u0027s acceptable from a style perspective, I\u0027m happy to do so.",
+      "parentUuid": "baf441d1_1607c8c5",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e9f65336_a3b55d66",
         "filename": "pid/ec/pid_common.hpp",
         "patchSetId": 10
@@ -99,6 +189,24 @@
       "writtenOn": "2023-06-08T20:55:18Z",
       "side": 1,
       "message": "PID as a constant is too generic, as it is already a PIDControlType. To be common with your other code, I suggest SIMPLE or STANDARD.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3973dcb2_8cf04b8a",
+        "filename": "pid/ec/pid_common.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "Will fix.",
+      "parentUuid": "e9f65336_a3b55d66",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -122,6 +230,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "622f6595_b5e99b93",
+        "filename": "pid/ec/pid_standard.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "The existing controller is not a true PID, if you trace the mathematics of it it\u0027s some kind of combination stepwise and PI controller.  This was a significant source of heartburn during development, as it simply wouldn\u0027t tune on our hardware platforms.\n\nI\u0027d prefer a separate file simply to keep the mathematics clean vs. a bunch of if statements.  Is that OK?",
+      "parentUuid": "ad1e5bde_9860e18d",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b5f602a_cfbf6560",
         "filename": "pid/simplefancontroller.cpp",
         "patchSetId": 10
@@ -133,6 +259,24 @@
       "writtenOn": "2023-06-08T20:55:18Z",
       "side": 1,
       "message": "How does a simple fan controller differ from the default fan controller? It looks to be much the same code. I would prefer to avoid massive cut-and-paste code duplication here. Perhaps we can only override what actually changes, instead of having to cut-and-paste the entire class.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "9fc06ca3_70011222",
+        "filename": "pid/simplefancontroller.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "The simple fan controller doesn\u0027t add the unwanted second PI controller in the control loop.  Interestingly, this should also fix issue #32 over on Github.",
+      "parentUuid": "8b5f602a_cfbf6560",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -156,6 +300,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "b46762b8_a1a07629",
+        "filename": "pid/simplefancontroller.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "The last case is what we\u0027re looking for.  I don\u0027t see why we need the added complexity and computational overhead of the dummy PI loop?",
+      "parentUuid": "9f92d063_4c2e1048",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "27b0d508_8bafdf31",
         "filename": "pid/util.cpp",
         "patchSetId": 10
@@ -173,6 +335,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "47346264_397e6cd1",
+        "filename": "pid/util.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 60,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "Merge issue during rebase.  I\u0027ll fix this up.",
+      "parentUuid": "27b0d508_8bafdf31",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d68ee3c0_addb5d86",
         "filename": "test/meson.build",
         "patchSetId": 10
@@ -184,6 +364,24 @@
       "writtenOn": "2023-06-08T20:55:18Z",
       "side": 1,
       "message": "This reminds me. What\u0027s the difference between a \"Google\" PID loop, and a \"standard\" PID loop? Do they provide different output results? If so, then we need to have a test case for each of these.\n\nThe test case must be able to catch the condition in which the user erroneously specifies a Google loop instead of a standard loop, and also vice versa.",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1d6d20bb_eb930c4f",
+        "filename": "test/meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000037
+      },
+      "writtenOn": "2023-06-08T21:13:15Z",
+      "side": 1,
+      "message": "Difference was explained above, I\u0027ll need to look into the test cases for it.",
+      "parentUuid": "d68ee3c0_addb5d86",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
