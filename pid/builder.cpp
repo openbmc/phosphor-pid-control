@@ -1,5 +1,6 @@
 /**
  * Copyright 2017 Google Inc.
+ * Copyright 2022-2023 Raptor Engineering, LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +20,7 @@
 #include "conf.hpp"
 #include "pid/controller.hpp"
 #include "pid/fancontroller.hpp"
+#include "pid/simplefancontroller.hpp"
 #include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 #include "pid/zone.hpp"
@@ -99,6 +101,19 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
 
                 auto pid = FanController::createFanPid(zone.get(), name, inputs,
                                                        info.pidInfo);
+                zone->addFanPID(std::move(pid));
+                zone->addPidFailSafePercent(name, info.failSafePercent);
+            }
+            else if (info.type == "simplefan")
+            {
+                for (const auto& i : info.inputs)
+                {
+                    inputs.push_back(i);
+                    zone->addFanInput(i);
+                }
+
+                auto pid = SimpleFanController::createFanPid(
+                    zone.get(), name, inputs, info.pidInfo);
                 zone->addFanPID(std::move(pid));
                 zone->addPidFailSafePercent(name, info.failSafePercent);
             }
