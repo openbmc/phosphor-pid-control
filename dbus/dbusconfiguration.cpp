@@ -356,7 +356,8 @@ void populatePidInfo(
         info.setpoint += reading;
     }
 
-    info.pidInfo.ts = 1.0; // currently unused
+    info.pidInfo.ts = 0.1; // Spectified in seconds.  Must match main loop,
+                           // currently 100ms per pid/pidloop.cpp
     info.pidInfo.proportionalCoeff = std::visit(
         VariantToDoubleVisitor(), getPIDAttribute(base, "PCoefficient"));
     info.pidInfo.integralCoeff = std::visit(
