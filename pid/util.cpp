@@ -55,6 +55,7 @@ void dumpPIDStruct(ec::pid_info_t* info)
               << " outLim.min: " << info->outLim.min
               << " outLim.max: " << info->outLim.max
               << " slewNeg: " << info->slewNeg << " slewPos: " << info->slewPos
+              << " last_error: " << info->lastError
               << " last_output: " << info->lastOutput
               << " last_error: " << info->lastError
               << " integral: " << info->integral << std::endl;
