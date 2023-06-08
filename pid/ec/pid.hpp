@@ -8,6 +8,12 @@ namespace pid_control
 namespace ec
 {
 
+enum class PIDControlType
+{
+    GOOGLE,
+    PID,
+};
+
 typedef struct
 {
     double min;
@@ -20,6 +26,7 @@ typedef struct
 typedef struct
 {
     bool initialized;         // has pid been initialized
+    PIDControlType algorithmId;  // algorithm type
 
     double ts;                // sample time in seconds
     double integral;          // intergal of error
@@ -46,6 +53,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
 /* Condensed version for use by the configuration. */
 struct pidinfo
 {
+    PIDControlType algorithmId; // algorithm type
     double ts;                  // sample time in seconds
     double proportionalCoeff;   // coeff for P
     double integralCoeff;       // coeff for I
