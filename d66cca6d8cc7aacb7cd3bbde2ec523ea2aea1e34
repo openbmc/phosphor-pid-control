@@ -37,6 +37,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "9f50219f_1e4eed5e",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-09T08:28:33Z",
+      "side": 1,
+      "message": "Hmm.....Seems can become global. I will check this.",
+      "parentUuid": "baa97e29_bc5d554f",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e6dbf928_d3c93fa3",
         "filename": "main.cpp",
         "patchSetId": 36
@@ -48,6 +66,24 @@
       "writtenOn": "2023-06-09T07:50:41Z",
       "side": 1,
       "message": "Good catch removing objManager, it was created but never used! I am curious, is calling add_manager() the same thing as creating a manager_t object? Or, does it have different behavior?",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9c144e94_77295ca6",
+        "filename": "main.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-09T08:28:33Z",
+      "side": 1,
+      "message": "If using the original method, I can\u0027t create a new interface and property(maybe I didn\u0027t find the right way to create). So I change to this add_manager() method.\n```\n        zoneControlIntf \u003d modeControlServer.add_unique_interface(\n            objPath, \"xyz.openbmc_project.Control.Zone\");\n        zoneControlIntf-\u003eregister_property(\"Leader\", std::string(\"\"));\n        if (!zoneControlIntf-\u003einitialize())\n        {\n            std::cerr \u003c\u003c \"Failed to initialize Control.Zone interface\\n\";\n        }\n```",
+      "parentUuid": "e6dbf928_d3c93fa3",
       "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -71,6 +107,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7c7121ad_384bc501",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-09T08:28:33Z",
+      "side": 1,
+      "message": "Same. I will check this.",
+      "parentUuid": "e4fa824d_ca7de71f",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "11190922_57a8dd10",
         "filename": "pid/zone.cpp",
         "patchSetId": 36
@@ -82,6 +136,24 @@
       "writtenOn": "2023-06-09T07:50:41Z",
       "side": 1,
       "message": "This is really good. I am also looking forward to adding some of the other parameters mentioned in https://github.com/openbmc/phosphor-pid-control/issues/27 to this new interface, such as Input and Setpoint and Output numeric properties. (In situations with more than one input, choose the input that comes from the Leader.) I might do this as a second patch that follows this patch.",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c648884c_210a221f",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-09T08:28:33Z",
+      "side": 1,
+      "message": "OK, I will move the code about creating new interface and property to another PR.",
+      "parentUuid": "11190922_57a8dd10",
       "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -103,6 +175,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "12403286_18c630f3",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-09T08:28:33Z",
+      "side": 1,
+      "message": "Because many test case call this \"PidZoneTest\" class. So if hardcore fullPath, the dbusTestName dbus path will become the same. systemBus-\u003erequest_name will be failed(name exist) when running all test case.",
+      "parentUuid": "d714d203_577b1966",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b5e13044_9ca185e9",
@@ -116,6 +206,24 @@
       "writtenOn": "2023-06-09T07:50:41Z",
       "side": 1,
       "message": "It is good that the new D-Bus object is set up here for testing, but I do not see any actual uses of it added. Would it be possible to add a test for Leader?",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7d5f7738_6485054f",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-09T08:28:33Z",
+      "side": 1,
+      "message": "objectServer is as input parameter to DbusPidZone to create new interface and property. I will try to add a test.",
+      "parentUuid": "b5e13044_9ca185e9",
       "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
