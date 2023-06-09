@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "89901a68_d8ed938f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:50:41Z",
+      "side": 1,
+      "message": "Looking good so far!",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "baa97e29_bc5d554f",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:50:41Z",
+      "side": 1,
+      "message": "I am curious why a bus is now created on-the-fly in this function, instead of having it passed in from outside this function. Is there now more than one bus created? I thought it was a global singleton.",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e6dbf928_d3c93fa3",
+        "filename": "main.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 340,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:50:41Z",
+      "side": 1,
+      "message": "Good catch removing objManager, it was created but never used! I am curious, is calling add_manager() the same thing as creating a manager_t object? Or, does it have different behavior?",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e4fa824d_ca7de71f",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:50:41Z",
+      "side": 1,
+      "message": "Same question as in init() earlier. Why create a new bus inside this function, instead of using the global singleton?",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "11190922_57a8dd10",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:50:41Z",
+      "side": 1,
+      "message": "This is really good. I am also looking forward to adding some of the other parameters mentioned in https://github.com/openbmc/phosphor-pid-control/issues/27 to this new interface, such as Input and Setpoint and Output numeric properties. (In situations with more than one input, choose the input that comes from the Leader.) I might do this as a second patch that follows this patch.",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d714d203_577b1966",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 108,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:50:41Z",
+      "side": 1,
+      "message": "This is clever logic, but I am curious why the need for appname. Since this is test code, can the name just be hardcoded for testing purposes? Or, is program_invocation_name required somehow? Unfortunately, the testing infrastructure hides main() from us, so we can\u0027t just easily take the classic argv[0].",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b5e13044_9ca185e9",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:50:41Z",
+      "side": 1,
+      "message": "It is good that the new D-Bus object is set up here for testing, but I do not see any actual uses of it added. Would it be possible to add a test for Leader?",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
