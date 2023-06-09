@@ -126,6 +126,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "69e27c9e_0ff7d410",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "Ah, so the PID loop algorithm does not change? In this case, instead of calling it \"simplefan\", perhaps call it \"single\" to represent the fact that it is just a single PID loop doing the work of both a thermal and a fan PID loop.",
+      "parentUuid": "d6f846ae_83c2d3e8",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3bfb3b9f_9ae79482",
         "filename": "pid/builder.cpp",
         "patchSetId": 10
@@ -338,6 +356,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "167b9898_643d97e9",
+        "filename": "pid/ec/pid_standard.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "What exactly is changed here, between the original pid.cpp file, and this copy of it? The code looks about 99% the same to me, except for some differences in line spacing.\n\nI would rather it remain the same file, unless the PID algorithm is being completely rewritten, which does not look to be the case here. If only a few lines are being changed, use an if/else block to isolate the differences. Please do not cut-and-paste the entire file.\n\nAlso, the pid.cpp and stepwise.cpp are two different algorithms. They are already cleanly isolated. The PID controller and stepwise controller are separate subclasses. See the controller.hpp file for the common ancestor. A properly configured system should not have any \"combination stepwise and PI controller\". I am not sure where this misunderstanding came from.",
+      "parentUuid": "9fab9fae_61ad0bf2",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "8b5f602a_cfbf6560",
         "filename": "pid/simplefancontroller.cpp",
         "patchSetId": 10
@@ -367,6 +403,24 @@
       "side": 1,
       "message": "The simple fan controller doesn\u0027t add the unwanted second PI controller in the control loop.  Interestingly, this should also fix issue #32 over on Github.",
       "parentUuid": "8b5f602a_cfbf6560",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ce2d90b_8190fc23",
+        "filename": "pid/simplefancontroller.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 146,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "OK. See my other comment in simplefancontroller.hpp for my reasoning about that. I think it\u0027s good to fix issue #32, but I honestly don\u0027t think this technique is the best way to fix it.",
+      "parentUuid": "9fc06ca3_70011222",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -420,6 +474,24 @@
       "side": 1,
       "message": "One thing I\u0027m interested. The first thermal controller output actually can be RPM or PWM according parameter setting, and we can setting second loop parameters that only have FFGain to output to fan directly. Why need add a new controller to remove second PID loop? Does it make a large delay in your system?",
       "parentUuid": "b46762b8_a1a07629",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1720ef00_4cedb3d6",
+        "filename": "pid/simplefancontroller.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "Agree with Harvey here. It would be good to refactor to make only a single PID loop necessary. The code right now assumes a pipeline of a thermal PID loop feeding into a fan PID loop, hence the need for two PID loops. This should be refactored, so that a single PID loop is all that is necessary. I agree with that. However, I do not think that adding an additional duplicate PID controller class is the best way to do it. It adds a lot of duplicated cut-and-paste code. The refactoring should take place at the glue where the thermal PID controller and fan PID controller come together, instead of by creating a third PID controller.",
+      "parentUuid": "0a36eee4_0abb9c47",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -526,6 +598,24 @@
       "side": 1,
       "message": "The existing test cases are unaffected by this.  In fact I don\u0027t really see anything (on quick glance) that\u0027s checking PID output, so I think we\u0027re OK with the existing test cases?",
       "parentUuid": "1d6d20bb_eb930c4f",
+      "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "74fbdfa2_d90a1ab3",
+        "filename": "test/meson.build",
+        "patchSetId": 10
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "The PID loop input and output are both tested. Take a look at \"outputProc\" in the test directory, you will see it used in several places. It\u0027s true that outputProc is often the final statement of the test case, so it may look like the output is discarded at first glance, but the result is actually tested retroactively by the EXPECT_CALL statement just above it.",
+      "parentUuid": "dd1230bb_08ab5c31",
       "revId": "8acf95d35c71710da729f800fb12b23e2003e847",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },

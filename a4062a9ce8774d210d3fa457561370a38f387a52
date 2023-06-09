@@ -1,6 +1,57 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "9591f2f0_f2a77c00",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 14
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "Thanks for explanations. There are still some serious reservations about the overall design of this feature, though.",
+      "revId": "a4062a9ce8774d210d3fa457561370a38f387a52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "fd8c94e6_a163ce05",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 307,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "The pidTimestep can not be passed in here, as it is a zone-wide parameter, not a per-PID-loop parameter. See commentary below.",
+      "revId": "a4062a9ce8774d210d3fa457561370a38f387a52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d0ac7a5b_043c2edc",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 361,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "The \"ts\" parameter should probably be removed completely here. Unfortunately, the way the code is written now, we can not vary the timing as a per-PID-loop parameter. It needs to be instead a zone-wide parameter. Each zone has its own main loop. The fan PID loops are ran as a ratio of the thermal PID loops. The individual PID loops are not individually timed. Take a look at the pidControlLoop() function.",
+      "revId": "a4062a9ce8774d210d3fa457561370a38f387a52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "8ad6c00e_711213f1",
@@ -26,6 +77,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "bd962a78_7a37b7ce",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 867,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "Hmm, both sides of the if/else statement have the same code in them? It does not make sense to have this be an if/else statement, if both sides do the exact same thing.",
+      "revId": "a4062a9ce8774d210d3fa457561370a38f387a52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "cdbdf67b_e2a214b2",
         "filename": "pid/buildjson.cpp",
         "patchSetId": 14
@@ -43,6 +111,47 @@
         "endLine": 59,
         "endChar": 53
       },
+      "revId": "a4062a9ce8774d210d3fa457561370a38f387a52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e038af4_e2b53dde",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "Agreed. It looks like a simple error made during rebasing to the latest upstream changes. Should be easy to fix, by moving it back to the original location, if there is no reason to change it.",
+      "parentUuid": "cdbdf67b_e2a214b2",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 53
+      },
+      "revId": "a4062a9ce8774d210d3fa457561370a38f387a52",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3773ed7e_5aa83a36",
+        "filename": "pid/ec/pid_standard.cpp",
+        "patchSetId": 14
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-09T07:24:05Z",
+      "side": 1,
+      "message": "What is this semicolon doing here?",
       "revId": "a4062a9ce8774d210d3fa457561370a38f387a52",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
