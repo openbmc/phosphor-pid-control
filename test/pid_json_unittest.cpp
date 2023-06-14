@@ -249,12 +249,14 @@ TEST(ZoneFromJson, getCycleInterval)
     )"_json;
 
     std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2);
-    EXPECT_EQ(pidConfig.size(), 1);
-    EXPECT_EQ(zoneConfig.size(), 1);
+    EXPECT_EQ(pidConfig.size(), static_cast<u_int64_t>(1));
+    EXPECT_EQ(zoneConfig.size(), static_cast<u_int64_t>(1));
 
     EXPECT_EQ(pidConfig[1]["fan1-5"].type, "fan");
-    EXPECT_EQ(zoneConfig[1].cycleTime.cycleIntervalTimeMS, 1000);
-    EXPECT_EQ(zoneConfig[1].cycleTime.updateThermalsTimeMS, 1000);
+    EXPECT_EQ(zoneConfig[1].cycleTime.cycleIntervalTimeMS,
+              static_cast<u_int64_t>(1000));
+    EXPECT_EQ(zoneConfig[1].cycleTime.updateThermalsTimeMS,
+              static_cast<u_int64_t>(1000));
     EXPECT_DOUBLE_EQ(zoneConfig[1].minThermalOutput, 3000.0);
 }
 
