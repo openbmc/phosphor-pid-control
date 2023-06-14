@@ -231,6 +231,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "01c29b8d_3da7d04d",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-06-14T23:40:34Z",
+      "side": 1,
+      "message": "Yes, we should do it right, even though it takes longer.\n\nAt the same time, we can get all the ideas in https://github.com/openbmc/phosphor-pid-control/issues/27 in there: `Leader`, `Input`, and `Output`. Since it is difficult to change an interface once committed, we should get it right the first time, even though the code might not be ready to implement all of those fields yet.",
+      "parentUuid": "6aaf4a64_45b1aa1b",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d714d203_577b1966",
         "filename": "test/pid_zone_unittest.cpp",
         "patchSetId": 36
