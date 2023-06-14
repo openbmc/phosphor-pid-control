@@ -53,6 +53,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7ddcb25a_3474cac2",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 416,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-14T08:26:25Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "9f50219f_1e4eed5e",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e6dbf928_d3c93fa3",
@@ -123,6 +141,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e17613fa_749d00a3",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-14T08:26:25Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "7c7121ad_384bc501",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "11190922_57a8dd10",
@@ -154,6 +190,24 @@
       "side": 1,
       "message": "OK, I will move the code about creating new interface and property to another PR.",
       "parentUuid": "11190922_57a8dd10",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a94fae81_9be060fd",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-14T08:26:25Z",
+      "side": 1,
+      "message": "My misunderstanding. Ack.",
+      "parentUuid": "c648884c_210a221f",
       "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -224,6 +278,24 @@
       "side": 1,
       "message": "objectServer is as input parameter to DbusPidZone to create new interface and property. I will try to add a test.",
       "parentUuid": "b5e13044_9ca185e9",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f58b4a3e_6e92400f",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 164,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-06-14T08:26:25Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "7d5f7738_6485054f",
       "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
