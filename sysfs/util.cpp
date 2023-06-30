@@ -24,27 +24,21 @@ namespace pid_control
 {
 
 /*
- * There are two basic paths I want to support:
- * 1. /sys/class/hwmon/hwmon0/pwm1
- * 2. /sys/devices/platform/ahb/1e786000.pwm-tacho-controller/hwmon/<asterisk
- * asterisk>/pwm1
- *
- * In this latter case, I want to fill in that gap.  Assuming because it's this
- * path that it'll only have one directory there.
+ * Replace "**" in the provided path string with an appopriate concrete path
+ * component (the first directory entry found, on the assumption that there
+ * will only be a single candidate).
  */
 
-static constexpr auto platform = "/sys/devices/platform/";
 namespace fs = std::filesystem;
 
 std::string FixupPath(std::string original)
 {
-    std::string::size_type n, x;
+    std::string::size_type n;
 
     /* TODO: Consider the merits of using regex for this. */
     n = original.find("**");
-    x = original.find(platform);
 
-    if ((n != std::string::npos) && (x != std::string::npos))
+    if (n != std::string::npos)
     {
         /* This path has some missing pieces and we support it. */
         std::string base = original.substr(0, n);
