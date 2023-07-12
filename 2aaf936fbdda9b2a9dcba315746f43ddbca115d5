@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d92069f5_10cdd47c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-12T17:21:38Z",
+      "side": 1,
+      "message": "Good cleanup. Since it builds successfully, that proves the necessary infrastructure is already in place.",
+      "revId": "2aaf936fbdda9b2a9dcba315746f43ddbca115d5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
