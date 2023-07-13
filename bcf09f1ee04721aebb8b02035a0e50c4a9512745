@@ -16,6 +16,23 @@
       "message": "Sounds like a good idea. I am curious why Jenkins is now so unhappy, though. Did something else change, to break this test?",
       "revId": "bcf09f1ee04721aebb8b02035a0e50c4a9512745",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5e5c864d_f055142d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-13T23:53:48Z",
+      "side": 1,
+      "message": "(oops, marked earlier comment as Resolved, wanted it unresolved)",
+      "revId": "bcf09f1ee04721aebb8b02035a0e50c4a9512745",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
