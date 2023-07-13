@@ -1,5 +1,7 @@
 #include "util.hpp"
 
+#include <sdbusplus/bus/match.hpp>
+
 #include <cmath>
 #include <cstdint>
 #include <iostream>
@@ -121,11 +123,8 @@ std::string getSensorPath(const std::string& type, const std::string& id)
 
 std::string getMatch(const std::string& path)
 {
-    return std::string("type='signal',"
-                       "interface='org.freedesktop.DBus.Properties',"
-                       "member='PropertiesChanged',"
-                       "path='" +
-                       path + "'");
+    return sdbusplus::bus::match::rules::propertiesChangedNamespace(
+        path, "xyz.openbmc_project");
 }
 
 bool validType(const std::string& type)
