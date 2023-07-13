@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0fa52e62_e4fa9dde",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-13T23:54:36Z",
+      "side": 1,
+      "message": "Wow, did not know that sdbusplus offered this feature. Good find. Still unsure why the Jenkins check is failing, though.",
+      "revId": "90b0a66d9d95247ef269b3657a5b09c6ec8b3658",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
