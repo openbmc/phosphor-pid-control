@@ -9,6 +9,8 @@ project(
     ]
 )
 
+cxx = meson.get_compiler('cpp')
+
 conf_data = configuration_data()
 
 bindir = get_option('prefix') / get_option('bindir')
@@ -50,12 +52,26 @@ sdbusplus_dep = dependency('sdbusplus')
 libsystemd_dep = dependency('libsystemd')
 ipmid_dep = dependency('libipmid')
 
+if cxx.has_header('nlohmann/json.hpp')
+    nlohmann_json_dep = declare_dependency()
+else
+    nlohmann_json_dep = dependency('nlohmann-json')
+endif
+
+if cxx.has_header('CLI/CLI.hpp')
+    CLI11_dep = declare_dependency()
+else
+    CLI11_dep = dependency('CLI11')
+endif
+
 deps = [
+    CLI11_dep,
+    ipmid_dep,
+    libsystemd_dep,
+    nlohmann_json_dep,
     phosphor_dbus_interfaces_dep,
     phosphor_logging_dep,
     sdbusplus_dep,
-    libsystemd_dep,
-    ipmid_dep,
 ]
 
 root_inc = include_directories(

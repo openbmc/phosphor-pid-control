@@ -1,27 +1,3 @@
-# Test suite logs
-*.log
-
-# Code Coverage
-*.gcda
-*.gcno
-*.trs
-*-coverage*
-
-pidlist-gen.cpp
-sensorlist-gen.cpp
-zoneinfo-gen.cpp
-setsensor
-swampd
-*_unittest
-*_unittest.log
-*_unittest.trs
-test-suite.log
-
-# IDEs
-.idea/
-
-# Patches
-.pc/
-patches/
-
-phosphor-pid-control.service
+build*/
+subprojects/*
+!subprojects/*.wrap
