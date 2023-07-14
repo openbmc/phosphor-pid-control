@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb08e142_95b3c3bb",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-14T00:43:30Z",
+      "side": 1,
+      "message": "Good, thanks.",
+      "parentUuid": "78eb4ee3_b0002179",
+      "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bcc8f17e_ed1104f7",
@@ -139,6 +157,24 @@
       "side": 1,
       "message": "Yep.  Meson subprojects are only used [locally] when the dependency can\u0027t be found.  Yocto explicitly disables that feature of Meson and I thought we also did in our CI infrastructure, but I\u0027m not positive on that last one.",
       "parentUuid": "16f41972_f75944ac",
+      "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3ab01165_ccd48275",
+        "filename": "subprojects/CLI11.wrap",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-14T00:43:30Z",
+      "side": 1,
+      "message": "OK, that\u0027s good to know.",
+      "parentUuid": "ffee0124_43738e89",
       "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
