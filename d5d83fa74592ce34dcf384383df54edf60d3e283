@@ -16,6 +16,24 @@
       "message": "Good find. Are there any other needless uses of c_str() in the program? It might be good to also get those cleaned up at the same time, while we are here.",
       "revId": "d5d83fa74592ce34dcf384383df54edf60d3e283",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ccb861bc_f1a01843",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-14T00:00:22Z",
+      "side": 1,
+      "message": "Maybe?\n\n```\n$ git grep c_str | wc -l       \n29\n```\n\nI\u0027m not sure how it becomes my responsibility to make a disposition on all of them though?",
+      "parentUuid": "eef39ec3_48df2919",
+      "revId": "d5d83fa74592ce34dcf384383df54edf60d3e283",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
