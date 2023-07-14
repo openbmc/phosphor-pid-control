@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "78eb4ee3_b0002179",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-14T00:36:51Z",
+      "side": 1,
+      "message": "Yep, absolutely.  If you find any temp files, go ahead and add them back.  Though... I\u0027d be curious what they are because generally that means to me we\u0027ve got a mistake where something isn\u0027t working in the out-of-tree build directory directed by Meson.\n\nWe\u0027ve kind of suggested people add their own editor config / swap files to their own global gitignore.",
+      "parentUuid": "753bcc99_8e630e0a",
+      "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bcc8f17e_ed1104f7",
         "filename": "subprojects/CLI11.wrap",
         "patchSetId": 1
@@ -103,6 +121,24 @@
       "side": 1,
       "message": "Oh. If it affects local builds only, that is fine. If Yocto continues to enforce its own recipe SRCREV hashes, in lieu of just taking whatever from HEAD, that is what I most care about. Non-Yocto builds are mostly just for local testing anyway, and in these cases, people usually are after the latest and greatest, rather than something stable.",
       "parentUuid": "459af101_24174286",
+      "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ffee0124_43738e89",
+        "filename": "subprojects/CLI11.wrap",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-07-14T00:36:51Z",
+      "side": 1,
+      "message": "Yep.  Meson subprojects are only used [locally] when the dependency can\u0027t be found.  Yocto explicitly disables that feature of Meson and I thought we also did in our CI infrastructure, but I\u0027m not positive on that last one.",
+      "parentUuid": "16f41972_f75944ac",
       "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
