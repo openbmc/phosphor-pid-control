@@ -16,6 +16,24 @@
       "message": "Seems like a good idea to me. Will leave it open a little longer, in case there are any objections",
       "revId": "47c93d631de16c0ca8731032e436e0ac7a1dc67e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "299d94c4_2e8825fd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000733
+      },
+      "writtenOn": "2023-07-14T08:43:07Z",
+      "side": 1,
+      "message": "Ping...okay to proceed at this point?",
+      "parentUuid": "a44863a8_a853923c",
+      "revId": "47c93d631de16c0ca8731032e436e0ac7a1dc67e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
