@@ -34,6 +34,23 @@
       "parentUuid": "a44863a8_a853923c",
       "revId": "47c93d631de16c0ca8731032e436e0ac7a1dc67e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cf3af8e9_7f38a3d3",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-14T11:16:47Z",
+      "side": 1,
+      "message": "Thanks for the ping! You\u0027re good.",
+      "revId": "47c93d631de16c0ca8731032e436e0ac7a1dc67e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
