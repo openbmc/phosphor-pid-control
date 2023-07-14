@@ -38,6 +38,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "753bcc99_8e630e0a",
+        "filename": ".gitignore",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-14T00:30:40Z",
+      "side": 1,
+      "message": "Good point. Since the move to Meson, CLion has became useless, I don\u0027t use it anymore (it was great during the days of CMakeLists, though).\n\nHow about this: OK to clean up .gitignore for now, but if there are temporary filenames that keep coming back into existence, re-add them to this file.",
+      "parentUuid": "89d3d4ac_78c6bf91",
+      "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "bcc8f17e_ed1104f7",
         "filename": "subprojects/CLI11.wrap",
         "patchSetId": 1
@@ -67,6 +85,24 @@
       "side": 1,
       "message": "The convention we use everywhere is to use HEAD.  There are many examples of this already.\n\nThe problem with using a specific commit is that we then have to somehow keep it sync\u0027d with ... Yocto\u0027s recipes?  And nobody does that work.",
       "parentUuid": "bcc8f17e_ed1104f7",
+      "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "16f41972_f75944ac",
+        "filename": "subprojects/CLI11.wrap",
+        "patchSetId": 1
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-14T00:30:40Z",
+      "side": 1,
+      "message": "Oh. If it affects local builds only, that is fine. If Yocto continues to enforce its own recipe SRCREV hashes, in lieu of just taking whatever from HEAD, that is what I most care about. Non-Yocto builds are mostly just for local testing anyway, and in these cases, people usually are after the latest and greatest, rather than something stable.",
+      "parentUuid": "459af101_24174286",
       "revId": "a83fae58bb6471d1ba514ec1c2b8431489ee3615",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
