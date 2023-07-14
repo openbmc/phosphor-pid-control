@@ -34,6 +34,24 @@
       "parentUuid": "0fa52e62_e4fa9dde",
       "revId": "90b0a66d9d95247ef269b3657a5b09c6ec8b3658",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ccbc60b4_c7092aee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-07-14T00:31:09Z",
+      "side": 1,
+      "message": "Great! I\u0027m glad it is a known issue and a fix is underway.",
+      "parentUuid": "72d2cf44_05327139",
+      "revId": "90b0a66d9d95247ef269b3657a5b09c6ec8b3658",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
