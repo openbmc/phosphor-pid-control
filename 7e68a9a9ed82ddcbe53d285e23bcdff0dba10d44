@@ -16,6 +16,24 @@
       "message": "I am not sure of the purpose of this. Is it to load multiple configurations onto D-Bus at the same time, then use a version number or other selector, to distinguish between them?",
       "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a4947547_f8567144",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2023-08-04T01:37:01Z",
+      "side": 1,
+      "message": "No, it loads one configuration onto D-Bus with a version number included. When we doing thermal calibration, we would have multiple versions of configuaration for testing. It is easy to know what version currently testing if we have a version number on D-Bus. It is also helpful to know what version currently running after BMC firmware update.",
+      "parentUuid": "3f6f8dd4_869af193",
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
