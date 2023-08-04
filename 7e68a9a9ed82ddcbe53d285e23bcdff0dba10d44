@@ -34,6 +34,24 @@
       "parentUuid": "3f6f8dd4_869af193",
       "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "0e0f22b6_570ecb62",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-08-04T15:42:42Z",
+      "side": 1,
+      "message": "Hmm. Wouldn\u0027t you be able to see what version is running by looking at the current configuration, that is, the D-Bus `Inventory` objects in `entity-manager`? Those would tell you exactly what parameters are in use, more so than simply looking at a version number field. Or, is there a desire to support the old `config.json` file-based configuration as well?\n\nI still don\u0027t really understand what the benefit would be of adding a version number here, or what `phosphor-pid-control` is intended to do with the version number. Is it something only used by the external tools you mentioned?\n\nThere are already two different code paths for providing configuration information to `phosphor-pid-control`, and I am really hesitant to add a third.",
+      "parentUuid": "a4947547_f8567144",
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
