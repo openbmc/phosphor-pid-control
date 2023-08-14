@@ -300,6 +300,30 @@ inline void getCycleTimeSetting(
     }
 }
 
+void setFanConfigVersion(sdbusplus::bus_t& bus, const std::string& version)
+{
+    try
+    {
+        auto msg = bus.new_method_call(
+            "xyz.openbmc_project.Software.BMC.Updater",
+            "/xyz/openbmc_project/software/fan_configuration",
+            "org.freedesktop.DBus.Properties", "Set");
+
+        std::variant<std::string> data = version;
+        msg.append("xyz.openbmc_project.Software.Version");
+        msg.append("Version");
+        msg.append(data);
+
+        auto reply = bus.call(msg);
+    }
+    catch (const sdbusplus::exception_t& ex)
+    {
+        std::cerr << " Set Fan Configuration Version failed: " << ex.what()
+                  << "\n";
+        return;
+    }
+}
+
 void populatePidInfo(
     [[maybe_unused]] sdbusplus::bus_t& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
