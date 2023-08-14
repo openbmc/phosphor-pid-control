@@ -30,7 +30,20 @@ using `--conf` command line option.
 
 The JSON object should be a dictionary with two keys, `sensors` and `zones`.
 `sensors` is a list of the sensor dictionaries, whereas `zones` is a list of
-zones.
+zones. `version` is an optional key that will be use to update the fan
+configuration version in the object path of phosphor-bmc-code-mgmt service.
+
+### Version
+
+```
+"version": "1.0.0",
+...
+```
+
+When having different source fans or fan controllers using the same BMC
+firmware, user may have different configurations for fan control. Instead of
+checking details of configuration, having a version of configuration should be
+easy for user to know the current setting.
 
 ### Sensors
 

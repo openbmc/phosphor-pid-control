@@ -40,6 +40,13 @@ namespace pid_control
 {
 namespace dbus_configuration
 {
+/**
+ * Set Fan Configuration version to the object in phosphor-software-manager.
+ *
+ * @param bus - the sdbusplus connection to use
+ * @param version - version to set
+ */
+void setFanConfigVersion(sdbusplus::bus_t& bus, const std::string& version);
 
 /**
  * Initialize a dbus-based configuration.

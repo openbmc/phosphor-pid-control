@@ -58,6 +58,8 @@ std::map<std::string, conf::SensorConfig> sensorConfig = {};
 std::map<int64_t, conf::PIDConf> zoneConfig = {};
 /* The configuration converted Zone configuration. */
 std::map<int64_t, conf::ZoneConfig> zoneDetailsConfig = {};
+/* The configuration converted fan configuration version */
+std::string fanConfigVersion = "";
 
 } // namespace pid_control
 
@@ -132,6 +134,12 @@ void restartControlLoops()
             sensorConfig = buildSensorsFromJson(jsonData);
             std::tie(zoneConfig,
                      zoneDetailsConfig) = buildPIDsFromJson(jsonData);
+            if (jsonData.count("version") != 0)
+            {
+                fanConfigVersion = jsonData["version"];
+                dbus_configuration::setFanConfigVersion(modeControlBus,
+                                                        fanConfigVersion);
+            }
         }
         catch (const std::exception& e)
         {
