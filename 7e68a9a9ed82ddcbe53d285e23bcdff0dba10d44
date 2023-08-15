@@ -87,6 +87,23 @@
       "message": "OK. Since it\u0027s to support the JSON file also, this makes more sense, because we don\u0027t have a way to query Entity Manager at runtime for the old config.json format. Therefore, this functionality is not redundant with what\u0027s already there.",
       "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fb56b68_c5410f36",
+        "filename": "fan-versioning.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000940
+      },
+      "writtenOn": "2023-08-15T09:57:43Z",
+      "side": 1,
+      "message": "Do you mean we can have multiple FAN control algorithm and can select to run the right one on a specified criteria?\nI am thinking about the case of the same BMC firmware for different hardware variants (the same motherboard and BMC board but with different chassis and hardware device plugged on it, for example). In this case, as different airflow, different FAN control tables are used.",
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
