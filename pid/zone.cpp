@@ -470,6 +470,11 @@ bool DbusPidZone::failSafe() const
     return getFailSafeMode();
 }
 
+std::string DbusPidZone::leader() const
+{
+    return _maximumSetPointName;
+}
+
 void DbusPidZone::addPidControlProcess(std::string name, sdbusplus::bus_t& bus,
                                        std::string objPath, bool defer)
 {
