@@ -16,6 +16,29 @@
       "message": "Given previous discussion, this seems reasonable to me.",
       "revId": "5a80b4ed6cdd8bd392efed19796d0ef88bd63920",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "932dae7f_bf281d44",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-08-22T11:58:29Z",
+      "side": 1,
+      "message": "Why aren\u0027t we exposing the object directly from this process?  Writing a field into another process does not seem appropriate to me.",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 5
+      },
+      "revId": "5a80b4ed6cdd8bd392efed19796d0ef88bd63920",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
