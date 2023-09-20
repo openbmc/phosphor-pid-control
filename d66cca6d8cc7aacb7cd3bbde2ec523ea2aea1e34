@@ -212,6 +212,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "91cce2d3_e09ee85d",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 281,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-09-20T07:01:06Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "a94fae81_9be060fd",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6aaf4a64_45b1aa1b",
@@ -243,6 +261,24 @@
       "side": 1,
       "message": "Yes, we should do it right, even though it takes longer.\n\nAt the same time, we can get all the ideas in https://github.com/openbmc/phosphor-pid-control/issues/27 in there: `Leader`, `Input`, and `Output`. Since it is difficult to change an interface once committed, we should get it right the first time, even though the code might not be ready to implement all of those fields yet.",
       "parentUuid": "6aaf4a64_45b1aa1b",
+      "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3de949e9_a9a269d2",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 36
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-09-20T07:01:06Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "01c29b8d_3da7d04d",
       "revId": "d66cca6d8cc7aacb7cd3bbde2ec523ea2aea1e34",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
