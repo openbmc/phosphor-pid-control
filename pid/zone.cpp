@@ -470,7 +470,8 @@ bool DbusPidZone::failSafe() const
     return getFailSafeMode();
 }
 
-void DbusPidZone::addPidControlProcess(std::string name, sdbusplus::bus_t& bus,
+void DbusPidZone::addPidControlProcess(std::string name, std::string type,
+                                       double setpoint, sdbusplus::bus_t& bus,
                                        std::string objPath, bool defer)
 {
     _pidsControlProcess[name] = std::make_unique<ProcessObject>(
@@ -479,6 +480,24 @@ void DbusPidZone::addPidControlProcess(std::string name, sdbusplus::bus_t& bus,
               : ProcessObject::action::emit_object_added);
     // Default enable setting = true
     _pidsControlProcess[name]->enabled(true);
+    _pidsControlProcess[name]->setpoint(setpoint);
+
+    if (type == "temp")
+    {
+        _pidsControlProcess[name]->classType("Temperature");
+    }
+    else if (type == "margin")
+    {
+        _pidsControlProcess[name]->classType("Margin");
+    }
+    else if (type == "power")
+    {
+        _pidsControlProcess[name]->classType("Power");
+    }
+    else if (type == "powersum")
+    {
+        _pidsControlProcess[name]->classType("PowerSum");
+    }
 }
 
 bool DbusPidZone::isPidProcessEnabled(std::string name)
@@ -519,6 +538,21 @@ void DbusPidZone::addPidFailSafePercent(std::string name, double percent)
 std::string DbusPidZone::leader() const
 {
     return _maximumSetPointName;
+}
+
+void DbusPidZone::updateThermalPowerDebugInterface(std::string pidName,
+                                                   std::string leader,
+                                                   double input, double output)
+{
+    if (leader.empty())
+    {
+        _pidsControlProcess[pidName]->output(output);
+    }
+    else
+    {
+        _pidsControlProcess[pidName]->leader(leader);
+        _pidsControlProcess[pidName]->input(input);
+    }
 }
 
 } // namespace pid_control

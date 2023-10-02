@@ -11,6 +11,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
+#include <xyz/openbmc_project/Debug/Pid/ThermalPower/server.hpp>
 #include <xyz/openbmc_project/Debug/Pid/Zone/server.hpp>
 #include <xyz/openbmc_project/Object/Enable/server.hpp>
 
@@ -30,7 +31,10 @@ using DebugZoneInterface =
 using ModeObject = ServerObject<ModeInterface, DebugZoneInterface>;
 using ProcessInterface =
     sdbusplus::xyz::openbmc_project::Object::server::Enable;
-using ProcessObject = ServerObject<ProcessInterface>;
+using DebugThermalPowerInterface =
+    sdbusplus::xyz::openbmc_project::Debug::Pid::server::ThermalPower;
+using ProcessObject =
+    ServerObject<ProcessInterface, DebugThermalPowerInterface>;
 
 namespace pid_control
 {
@@ -108,12 +112,17 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     /* Method for recording the maximum SetPoint PID config name */
     std::string leader() const override;
     /* Method for control process for each loop at runtime */
-    void addPidControlProcess(std::string name, sdbusplus::bus_t& bus,
+    void addPidControlProcess(std::string name, std::string type,
+                              double setpoint, sdbusplus::bus_t& bus,
                               std::string objPath, bool defer);
     bool isPidProcessEnabled(std::string name);
 
     void initPidFailSafePercent(void);
     void addPidFailSafePercent(std::string name, double percent);
+
+    void updateThermalPowerDebugInterface(std::string pidName,
+                                          std::string leader, double input,
+                                          double output) override;
 
   private:
     template <bool fanSensorLogging>
