@@ -51,6 +51,10 @@ class ZoneMock : public ZoneInterface
 
     MOCK_METHOD0(initializeLog, void());
     MOCK_METHOD1(writeLog, void(const std::string&));
+
+    MOCK_METHOD4(updateThermalPowerDebugInterface,
+                 void(std::string pidName, std::string leader, double input,
+                      double output));
 };
 
 } // namespace pid_control
