@@ -101,6 +101,8 @@ double ThermalController::inputProc(void)
         throw ControllerBuildException("Unrecognized ThermalType");
     }
 
+    std::string leaderName = *(_inputs.begin());
+
     bool acceptable = false;
     for (const auto& in : _inputs)
     {
@@ -112,6 +114,8 @@ double ThermalController::inputProc(void)
             continue;
         }
 
+        double oldValue = value;
+
         if (doSummation)
         {
             value += cachedValue;
@@ -119,6 +123,12 @@ double ThermalController::inputProc(void)
         else
         {
             value = compare(value, cachedValue);
+        }
+
+        if (oldValue != value)
+        {
+            leaderName = in;
+            _owner->updateThermalPowerDebugInterface(_id, leaderName, value, 0);
         }
 
         acceptable = true;
@@ -133,7 +143,7 @@ double ThermalController::inputProc(void)
     if (debugEnabled)
     {
         std::cerr << getID() << " choose the temperature value: " << value
-                  << "\n";
+                  << " " << leaderName << "\n";
     }
 
     return value;
@@ -162,6 +172,7 @@ double ThermalController::setptProc(void)
 void ThermalController::outputProc(double value)
 {
     _owner->addSetPoint(value, _id);
+    _owner->updateThermalPowerDebugInterface(_id, "", 0, value);
 
     if (debugEnabled)
     {

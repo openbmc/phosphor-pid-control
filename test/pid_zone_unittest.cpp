@@ -28,6 +28,8 @@ using ::testing::StrEq;
 static std::string modeInterface = "xyz.openbmc_project.Control.Mode";
 static std::string debugZoneInterface = "xyz.openbmc_project.Debug.Pid.Zone";
 static std::string enableInterface = "xyz.openbmc_project.Object.Enable";
+static std::string debugThermalPowerInterface =
+    "xyz.openbmc_project.Debug.Pid.ThermalPower";
 
 namespace
 {
@@ -73,6 +75,12 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                     enableInterface, propertiesenable, &de);
 
+    EXPECT_CALL(sdbus_mock_enable,
+                sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(pidsensorpath.c_str()),
+                                         StrEq(debugThermalPowerInterface), NotNull(), NotNull()))
+        .Times(::testing::AnyNumber())
+        .WillOnce(Return(0));
+
     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
                   bus_mock_mode, objPath, defer);
     // Success.
@@ -109,6 +117,11 @@ class PidZoneTest : public ::testing::Test
         SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                         enableInterface, propertiesenable,
                         &propertyenable_index);
+        EXPECT_CALL(sdbus_mock_enable,
+                    sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(pidsensorpath.c_str()),
+                                            StrEq(debugThermalPowerInterface), NotNull(), NotNull()))
+            .Times(::testing::AnyNumber())
+            .WillOnce(Return(0));
 
         zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
                                              failSafePercent, cycleTime, mgr,
@@ -128,12 +141,14 @@ class PidZoneTest : public ::testing::Test
     int64_t zoneId = 1;
     double minThermalOutput = 1000.0;
     double failSafePercent = 0;
+    double setpoint = 50.0;
     bool defer = true;
     const char* objPath = "/path/";
     SensorManager mgr;
     conf::CycleTime cycleTime;
 
     std::string sensorname = "temp1";
+    std::string sensorType = "temp";
     std::string pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone1/" +
                                 sensorname;
 
@@ -174,8 +189,8 @@ TEST_F(PidZoneTest, AddPidControlProcessGetAndSetEnableTest_BehavesAsExpected)
         return 0;
         }));
 
-    zone->addPidControlProcess(sensorname, bus_mock_enable,
-                               pidsensorpath.c_str(), defer);
+    zone->addPidControlProcess(sensorname, sensorType, setpoint,
+                               bus_mock_enable, pidsensorpath.c_str(), defer);
     EXPECT_TRUE(zone->isPidProcessEnabled(sensorname));
 }
 
@@ -232,8 +247,8 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
         return 0;
         }));
 
-    zone->addPidControlProcess(sensorname, bus_mock_enable,
-                               pidsensorpath.c_str(), defer);
+    zone->addPidControlProcess(sensorname, sensorType, setpoint,
+                               bus_mock_enable, pidsensorpath.c_str(), defer);
 
     // At least one value must be above the minimum thermal setpoint used in
     // the constructor otherwise it'll choose that value
@@ -276,8 +291,8 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
         return 0;
         }));
 
-    zone->addPidControlProcess(sensorname, bus_mock_enable,
-                               pidsensorpath.c_str(), defer);
+    zone->addPidControlProcess(sensorname, sensorType, setpoint,
+                               bus_mock_enable, pidsensorpath.c_str(), defer);
 
     std::vector<double> values = {100, 200, 300, 400, 500};
 
