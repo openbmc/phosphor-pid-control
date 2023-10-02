@@ -115,9 +115,9 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                     getThermalType(info.type));
 
                 zone->addThermalPID(std::move(pid));
-                zone->addPidControlProcess(name, modeControlBus,
-                                           getPidControlPath(zoneId, name),
-                                           deferSignals);
+                zone->addPidControlProcess(
+                    name, info.type, info.setpoint, modeControlBus,
+                    getPidControlPath(zoneId, name), deferSignals);
                 zone->addPidFailSafePercent(name, info.failSafePercent);
             }
             else if (info.type == "stepwise")
@@ -130,9 +130,9 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 auto stepwise = StepwiseController::createStepwiseController(
                     zone.get(), name, inputs, info.stepwiseInfo);
                 zone->addThermalPID(std::move(stepwise));
-                zone->addPidControlProcess(name, modeControlBus,
-                                           getPidControlPath(zoneId, name),
-                                           deferSignals);
+                zone->addPidControlProcess(
+                    name, info.type, info.setpoint, modeControlBus,
+                    getPidControlPath(zoneId, name), deferSignals);
                 zone->addPidFailSafePercent(name, info.failSafePercent);
             }
 
