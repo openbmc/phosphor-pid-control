@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8714ff17_87d9b03a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-02T10:09:25Z",
+      "side": 1,
+      "message": "Nice! Glad to see this done. This will help a lot of people better see what\u0027s going on internally.",
+      "revId": "37180062d950d6414d257effdb4082c3b541a964",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
