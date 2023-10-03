@@ -16,6 +16,23 @@
       "message": "Nice! Glad to see this done. This will help a lot of people better see what\u0027s going on internally.",
       "revId": "37180062d950d6414d257effdb4082c3b541a964",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bb1da61f_3a25e83f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-03T21:52:47Z",
+      "side": 1,
+      "message": "There should be no further upstream objections, because https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/60152 is merged, for the interface, and this change merely conforms to that accepted interface. Leaving this open for a little while longer, just in case.",
+      "revId": "37180062d950d6414d257effdb4082c3b541a964",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
