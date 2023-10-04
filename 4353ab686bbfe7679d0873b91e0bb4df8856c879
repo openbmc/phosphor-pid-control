@@ -123,6 +123,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b141d0d4_774627dc",
+        "filename": "pid/thermalcontroller.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 122,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-04T06:33:41Z",
+      "side": 1,
+      "message": "Since this function already throws an exception to detect a configuration error elsewhere, I added another throwing of the same exception.\n\nThis will indicate configuration error in a clean enough way, that matches the existing expected behavior of this function.\n\nI agree that a configuration error like this should be caught during initialization, not here during the main loop, but that should be the subject of a future cleanup.",
+      "parentUuid": "49dcf928_f3ccd2f6",
+      "range": {
+        "startLine": 122,
+        "startChar": 36,
+        "endLine": 122,
+        "endChar": 56
+      },
+      "revId": "4353ab686bbfe7679d0873b91e0bb4df8856c879",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "df452388_f82b42fe",
@@ -184,6 +208,30 @@
       "side": 1,
       "message": "Agreed. Thanks!",
       "parentUuid": "aff83597_4fa4a192",
+      "range": {
+        "startLine": 162,
+        "startChar": 0,
+        "endLine": 163,
+        "endChar": 18
+      },
+      "revId": "4353ab686bbfe7679d0873b91e0bb4df8856c879",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4f4e18aa_61e71be6",
+        "filename": "pid/thermalcontroller.cpp",
+        "patchSetId": 12
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-04T06:33:41Z",
+      "side": 1,
+      "message": "I have made the change, to have it simply take the setpoint, and use that as the input, when none of the inputs are acceptable. This will make the PID loop effectively a no-op when there are no inputs. This avoids some very wrong behavior for margin loops if a margin value of zero were to be used instead! Good catch!",
+      "parentUuid": "f393c478_7bcd1247",
       "range": {
         "startLine": 162,
         "startChar": 0,
