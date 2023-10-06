@@ -115,6 +115,30 @@
       },
       "revId": "e4fefbfa2ab577229c5604e7542e024d6b26d5ad",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a7fb261d_1ad53e1a",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 872,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-10-06T02:24:59Z",
+      "side": 1,
+      "message": "In phosphor-pid-control, [findSensors](https://github.com/openbmc/phosphor-pid-control/blob/master/dbus/dbusutil.cpp#L77-L91) function supports regular expressions, so [Inputs and Outputs](https://github.com/openbmc/phosphor-pid-control/blob/master/dbus/dbusconfiguration.cpp#L694-L703) string can use regular expression.\nI think MissingIsAcceptable can also change to use this function?\n\nexample \"Inputs\" in my machine \u003d\u003e\n```\nbusctl introspect xyz.openbmc_project.EntityManager /xyz/openbmc_project/inventory/system/board/izumiEMR/DIMM_CPU0_PID\n.Inputs                               property  as        2 \"DIMM[0-9]\" \"DIMM1[0-5]\" emits-change writable\n\nswampd[3989]: PID name: DIMM_CPU0_PID\nswampd[3989]: inputs: DIMM11,\n```",
+      "parentUuid": "31e5116c_4b4ecf0f",
+      "range": {
+        "startLine": 871,
+        "startChar": 20,
+        "endLine": 872,
+        "endChar": 55
+      },
+      "revId": "e4fefbfa2ab577229c5604e7542e024d6b26d5ad",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
