@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c22af925_cb62aa03",
+        "filename": "util.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-10-12T11:13:40Z",
+      "side": 1,
+      "message": "Some questions about this part:\nIt seems \"TempToMargin\" vector size has to smaller than \"Inputs\" size. Is it true?\nIf so, I think there may have some problems. For example:\nIf \"Inputs\" likes \u003d\u003e\n```\n            \"Inputs\": [\n                \"DIMM[0-9]\",\n                \"DIMM1[0-5]\"\n            ],\n```\nAnd dbus-sensors only creates some dimms that exist on MB.\nSo pid-control initial logs may like \u003d\u003e\n```\nApr 09 14:11:09 bmc swampd[29035]: PID name: DIMM_CPU0_PID\nApr 09 14:11:09 bmc swampd[29035]: inputs: DIMM11,\n```\n\nHow to set the \"TempToMargin\" in json? Because we may not know the number of the input sensor until runtime.",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 5
+      },
+      "revId": "fb061518aa62bdb3c73806050e65b4b824595956",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
