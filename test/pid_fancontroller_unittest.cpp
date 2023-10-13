@@ -10,6 +10,8 @@
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
+#include "config.h"
+
 namespace pid_control
 {
 namespace

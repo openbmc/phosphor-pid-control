@@ -24,6 +24,8 @@
 #include <cmath>
 #include <iostream>
 
+#include "config.h"
+
 namespace pid_control
 {
 
