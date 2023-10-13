@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "config.h"
+
 #include "fancontroller.hpp"
 
 #include "tuning.hpp"

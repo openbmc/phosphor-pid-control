@@ -1,3 +1,5 @@
+#include "config.h"
+
 #include "pid/ec/logging.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/fancontroller.hpp"
