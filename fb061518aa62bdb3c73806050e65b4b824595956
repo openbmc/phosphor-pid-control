@@ -46,6 +46,30 @@
       },
       "revId": "fb061518aa62bdb3c73806050e65b4b824595956",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5c56eab6_1fc51393",
+        "filename": "util.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-10-13T10:11:16Z",
+      "side": 1,
+      "message": "Got it. I think there might be some comments or messages that need to be added in README or elsewhere to remind User if they want to use `TempToMargin` setting?",
+      "parentUuid": "0ef725c6_f1e80163",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 5
+      },
+      "revId": "fb061518aa62bdb3c73806050e65b4b824595956",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
