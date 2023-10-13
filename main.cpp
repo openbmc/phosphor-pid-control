@@ -59,6 +59,18 @@ std::map<int64_t, conf::PIDConf> zoneConfig = {};
 /* The configuration converted Zone configuration. */
 std::map<int64_t, conf::ZoneConfig> zoneDetailsConfig = {};
 
+namespace state
+{
+/* Set to true while canceling is in progress */
+static bool isCanceling = false;
+/* The zones build from configuration */
+static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
+/* The timers used by the PID loop */
+static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
+/* The sensors build from configuration */
+static SensorManager mgmr;
+} // namespace state
+
 } // namespace pid_control
 
 std::filesystem::path configPath = "";
@@ -66,7 +78,7 @@ std::filesystem::path configPath = "";
 /* async io context for operation */
 boost::asio::io_context io;
 /* async signal_set for signal handling */
-boost::asio::signal_set signals(io, SIGHUP);
+boost::asio::signal_set signals(io, SIGHUP, SIGTERM);
 
 /* buses for system control */
 static sdbusplus::asio::connection modeControlBus(io);
@@ -96,26 +108,27 @@ std::filesystem::path searchConfigurationPath()
     return name;
 }
 
-void restartControlLoops()
+void stopControlLoops()
 {
-    static SensorManager mgmr;
-    static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
-    static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
-    static bool isCanceling = false;
-
-    for (const auto& timer : timers)
+    for (const auto& timer : state::timers)
     {
         timer->cancel();
     }
-    isCanceling = true;
-    timers.clear();
+    state::isCanceling = true;
+    state::timers.clear();
 
-    if (zones.size() > 0 && zones.begin()->second.use_count() > 1)
+    if (state::zones.size() > 0 && state::zones.begin()->second.use_count() > 1)
     {
         throw std::runtime_error("wait for count back to 1");
     }
-    zones.clear();
-    isCanceling = false;
+
+    state::zones.clear();
+    state::isCanceling = false;
+}
+
+void restartControlLoops()
+{
+    stopControlLoops();
 
     const std::filesystem::path path =
         (!configPath.empty()) ? configPath : searchConfigurationPath();
@@ -149,21 +162,23 @@ void restartControlLoops()
         }
     }
 
-    mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
-    zones = buildZones(zoneConfig, zoneDetailsConfig, mgmr, modeControlBus);
+    state::mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
+    state::zones = buildZones(zoneConfig, zoneDetailsConfig, state::mgmr,
+                              modeControlBus);
 
-    if (0 == zones.size())
+    if (0 == state::zones.size())
     {
         std::cerr << "No zones defined, exiting.\n";
         std::exit(EXIT_FAILURE);
     }
 
-    for (const auto& i : zones)
+    for (const auto& i : state::zones)
     {
-        std::shared_ptr<boost::asio::steady_timer> timer = timers.emplace_back(
-            std::make_shared<boost::asio::steady_timer>(io));
+        std::shared_ptr<boost::asio::steady_timer> timer =
+            state::timers.emplace_back(
+                std::make_shared<boost::asio::steady_timer>(io));
         std::cerr << "pushing zone " << i.first << "\n";
-        pidControlLoop(i.second, timer, &isCanceling);
+        pidControlLoop(i.second, timer, &state::isCanceling);
     }
 }
 
@@ -207,9 +222,50 @@ void tryRestartControlLoops(bool first)
     return;
 }
 
+void tryTerminateControlLoops(bool first)
+{
+    static const auto delayTime = std::chrono::milliseconds(50);
+    static boost::asio::steady_timer timer(io);
+
+    auto stopLbd = [](const boost::system::error_code& error) {
+        if (error == boost::asio::error::operation_aborted)
+        {
+            return;
+        }
+
+        // retry when stopControlLoops() has some failure.
+        try
+        {
+            stopControlLoops();
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Failed during stopControlLoops, try again: "
+                      << e.what() << "\n";
+            tryTerminateControlLoops(false);
+            return;
+        }
+        io.stop();
+    };
+
+    // first time of trying to stop the control loop without a delay
+    if (first)
+    {
+        boost::asio::post(io, std::bind(stopLbd, boost::system::error_code()));
+    }
+    // re-try control loop, set up a delay.
+    else
+    {
+        timer.expires_after(delayTime);
+        timer.async_wait(stopLbd);
+    }
+
+    return;
+}
+
 } // namespace pid_control
 
-void sighupHandler(const boost::system::error_code& error, int signal_number)
+void signalHandler(const boost::system::error_code& error, int signal_number)
 {
     static boost::asio::steady_timer timer(io);
 
@@ -219,19 +275,26 @@ void sighupHandler(const boost::system::error_code& error, int signal_number)
                   << " handler error: " << error.message() << "\n";
         return;
     }
+    if (signal_number == SIGTERM)
+    {
+        pid_control::tryTerminateControlLoops(true);
+    }
+    else
+    {
+        timer.expires_after(std::chrono::seconds(1));
+        timer.async_wait([](const boost::system::error_code ec) {
+            if (ec)
+            {
+                std::cout << "Signal timer error: " << ec.message() << "\n";
+                return;
+            }
 
-    timer.expires_after(std::chrono::seconds(1));
-    timer.async_wait([](const boost::system::error_code ec) {
-        if (ec)
-        {
-            std::cout << "Signal timer error: " << ec.message() << "\n";
-            return;
-        }
+            std::cout << "reloading configuration\n";
+            pid_control::tryRestartControlLoops();
+        });
+    }
 
-        std::cout << "reloading configuration\n";
-        pid_control::tryRestartControlLoops();
-    });
-    signals.async_wait(sighupHandler);
+    signals.async_wait(signalHandler);
 }
 
 int main(int argc, char* argv[])
@@ -339,7 +402,7 @@ int main(int argc, char* argv[])
     sdbusplus::server::manager_t objManager(modeControlBus, modeRoot);
 
     // Enable SIGHUP handling to reload JSON config
-    signals.async_wait(sighupHandler);
+    signals.async_wait(signalHandler);
 
     /*
      * All sensors are managed by one manager, but each zone has a pointer to
