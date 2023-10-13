@@ -21,6 +21,7 @@ conf_data.set('STRICT_FAILSAFE_PWM', get_option('strict-failsafe-pwm'))
 configure_file(output: 'config.h',
     configuration: conf_data
 )
+add_project_arguments('-include', 'config.h', language : 'cpp')
 
 if get_option('oe-sdk').enabled()
     OECORE_TARGET_SYSROOT = run_command('sh', '-c', 'echo $OECORE_TARGET_SYSROOT').stdout().strip()
