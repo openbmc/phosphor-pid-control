@@ -23,6 +23,12 @@ failsafe mode, even when the calculated PWM is higher than failsafe PWM. Without
 this enabled, the PWM is calculated and set to the calculated PWM **or** the
 failsafe PWM, whichever is higher.
 
+### --offline-failsafe-pwm
+
+This build flag is used to set the fans to failsafe percent when offline.
+The controller is offline when it's rebuilding the configuration or when it's
+about to shutdown.
+
 ## JSON Configuration
 
 Default config file path `/usr/share/swampd/config.json` can be overridden by

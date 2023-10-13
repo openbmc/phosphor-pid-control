@@ -188,4 +188,34 @@ void FanController::outputProc(double value)
     return;
 }
 
+FanController::~FanController()
+{
+#ifdef OFFLINE_FAILSAFE_PWM
+    double percent = _owner->getFailSafePercent();
+    if (debugEnabled)
+    {
+        std::cerr << "Zone " << _owner->getZoneID()
+                  << " offline fans output pwm: " << percent << "\n";
+    }
+
+    // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.
+    percent /= 100.0;
+
+    // PidSensorMap for writing.
+    for (const auto& it : _inputs)
+    {
+        auto sensor = _owner->getSensor(it);
+        auto redundantWrite = _owner->getRedundantWrite();
+        int64_t rawWritten;
+        sensor->write(percent, redundantWrite, &rawWritten);
+
+        // The outputCache will be used later,
+        // to store a record of the PWM commanded,
+        // so that this information can be included during logging.
+        auto unscaledWritten = static_cast<double>(rawWritten);
+        _owner->setOutputCache(sensor->getName(), {percent, unscaledWritten});
+    }
+#endif
+}
+
 } // namespace pid_control
