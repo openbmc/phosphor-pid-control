@@ -70,6 +70,30 @@
       },
       "revId": "fb061518aa62bdb3c73806050e65b4b824595956",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74def8d0_1401e101",
+        "filename": "util.cpp",
+        "patchSetId": 16
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-13T10:32:59Z",
+      "side": 1,
+      "message": "There is some documentation here, during the discussion of the feature: https://github.com/openbmc/phosphor-pid-control/issues/23\n\nI agree that there should be more tutorials or README files added to explain things better here. However, doing that is beyond the scope of this patch.",
+      "parentUuid": "5c56eab6_1fc51393",
+      "range": {
+        "startLine": 121,
+        "startChar": 0,
+        "endLine": 133,
+        "endChar": 5
+      },
+      "revId": "fb061518aa62bdb3c73806050e65b4b824595956",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
