@@ -29,7 +29,7 @@ class FanController : public PIDController
         PIDController(id, owner),
         _inputs(inputs), _direction(FanSpeedDirection::NEUTRAL)
     {}
-
+    ~FanController();
     double inputProc(void) override;
     double setptProc(void) override;
     void outputProc(double value) override;
