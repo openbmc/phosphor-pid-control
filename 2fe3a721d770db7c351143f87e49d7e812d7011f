@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f3af38f9_0b697769",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-16T23:48:32Z",
+      "side": 1,
+      "message": "This is good. It makes sense to have this option be a compile-time option, because it needs to exist outside of every thermal zone, and it needs to be part of the program even if there is a JSON parsing failure.\n\nHowever, this only covers the case of a clean shutdown. Users will still need to protect their systems by using systemd service files, because if `phosphor-pid-control` crashes out prematurely, the destructor will not have a chance to run.",
+      "revId": "2fe3a721d770db7c351143f87e49d7e812d7011f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
