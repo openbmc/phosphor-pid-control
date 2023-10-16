@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ad671ea6_99eff514",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-16T23:45:38Z",
+      "side": 1,
+      "message": "Interesting. This adds `config.h` to every compilation unit, correct? Wouldn\u0027t it be simpler just to make sure that it is added to every file? I would much prefer our headers be listed in the source files, so they are obvious to see, instead of being stuffed in at build time by command-line options.",
+      "revId": "db3113aa935991ef25e40a2b0b7f22bb79f80a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
