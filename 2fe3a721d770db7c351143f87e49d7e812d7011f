@@ -33,6 +33,24 @@
       "message": "Just pointing this out for others to see: an example of a systemd service file is https://gerrit.openbmc.org/c/openbmc/openbmc/+/65559\n\nThis is platform-specific, and will need to be customized on a per-platform basis.",
       "revId": "2fe3a721d770db7c351143f87e49d7e812d7011f",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "474d874d_9726baf0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001422
+      },
+      "writtenOn": "2023-10-17T06:46:20Z",
+      "side": 1,
+      "message": "That\u0027s correct. I\u0027ll update the commit message.",
+      "parentUuid": "f3af38f9_0b697769",
+      "revId": "2fe3a721d770db7c351143f87e49d7e812d7011f",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
