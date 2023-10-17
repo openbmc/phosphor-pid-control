@@ -68,6 +68,24 @@
       "parentUuid": "ee57b8e2_aee6a731",
       "revId": "fd373dadf467315ed25e51a2b20b02557f739414",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a20c756b_8b0accfc",
+        "filename": "main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-17T22:55:39Z",
+      "side": 1,
+      "message": "Ah. It is still a group of related globals which are all static. Would it be possible to wrap them in a `struct` container? That would make it easier to follow, and cut down on the proliferation of globals. Perhaps name the struct `StartStopState` or something like that.",
+      "parentUuid": "307db189_ebaaf4c1",
+      "revId": "fd373dadf467315ed25e51a2b20b02557f739414",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
