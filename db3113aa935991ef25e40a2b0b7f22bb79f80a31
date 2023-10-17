@@ -34,6 +34,24 @@
       "parentUuid": "ad671ea6_99eff514",
       "revId": "db3113aa935991ef25e40a2b0b7f22bb79f80a31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "f2ce7d42_7393e8c1",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-17T22:53:31Z",
+      "side": 1,
+      "message": "I still recommend adding the `#include` line explicitly, to all the source files that need it. That will be much easier to follow, instead of adding it JIT during the compilation as a command-line option.",
+      "parentUuid": "7d45211c_ca84acea",
+      "revId": "db3113aa935991ef25e40a2b0b7f22bb79f80a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
