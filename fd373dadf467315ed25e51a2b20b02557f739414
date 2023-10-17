@@ -50,6 +50,24 @@
       "message": "I am curious why all these static variables need to move outside their functions. Do these statics need to become globals? In general, it is best to minimize the scope of global variables, to avoid bugs from them being changed accidentally.",
       "revId": "fd373dadf467315ed25e51a2b20b02557f739414",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "307db189_ebaaf4c1",
+        "filename": "main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1001422
+      },
+      "writtenOn": "2023-10-17T06:54:29Z",
+      "side": 1,
+      "message": "Those variable need to be modified in stopControlLoops() and restartControlLoops() thus were moved to global scope.",
+      "parentUuid": "ee57b8e2_aee6a731",
+      "revId": "fd373dadf467315ed25e51a2b20b02557f739414",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
