@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "19f4103e_162253c6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-18T21:12:05Z",
+      "side": 1,
+      "message": "Good! Namespace is also a good solution for the problem of keeping track of all the globals. It will make it easier to identify where they are being used.",
+      "revId": "60f572c2b720d3c7f85ed676624503870032fb06",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
