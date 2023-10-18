@@ -52,6 +52,24 @@
       "parentUuid": "7d45211c_ca84acea",
       "revId": "db3113aa935991ef25e40a2b0b7f22bb79f80a31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "59324046_08eb353c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001422
+      },
+      "writtenOn": "2023-10-18T10:48:50Z",
+      "side": 1,
+      "message": "Done. Including config.h directly.",
+      "parentUuid": "f2ce7d42_7393e8c1",
+      "revId": "db3113aa935991ef25e40a2b0b7f22bb79f80a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
