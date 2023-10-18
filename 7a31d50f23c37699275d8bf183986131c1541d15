@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "20fc7a36_713a9292",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-18T21:10:05Z",
+      "side": 1,
+      "message": "Thanks! Also forgot to mention, many IDE will analyze only the source code files for dependency tracking, and so they will miss extra includes that are inserted JIT as command-line options during build.",
+      "revId": "7a31d50f23c37699275d8bf183986131c1541d15",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
