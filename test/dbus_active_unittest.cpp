@@ -45,10 +45,10 @@ TEST(DbusActiveReadTest, Read_VerifyCallsToDbusForValue)
         .WillOnce(Invoke([&]([[maybe_unused]] const std::string& service,
                              [[maybe_unused]] const std::string& path,
                              SensorProperties* prop) {
-            prop->scale = -3;
-            prop->value = 10000;
-            prop->unit = "x";
-        }));
+        prop->scale = -3;
+        prop->value = 10000;
+        prop->unit = "x";
+    }));
 
     DbusActiveRead ar(bus_mock, path, service, std::move(helper));
 

@@ -49,8 +49,7 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
     match(bus,
           "type='signal',member='PropertiesChanged',arg0namespace='" +
               std::string(redundancy::interface) + "'",
-          std::move(
-              [this](sdbusplus::message_t& message) {
+          std::move([this](sdbusplus::message_t& message) {
     std::string objectName;
     std::unordered_map<std::string,
                        std::variant<std::string, std::vector<std::string>>>
@@ -100,8 +99,8 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
             failed.erase(d);
         }
     }
-          })),
-passiveBus(bus)
+})),
+    passiveBus(bus)
 {
     populateFailures();
 }

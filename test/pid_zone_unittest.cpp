@@ -190,7 +190,7 @@ TEST_F(PidZoneTest, AddPidControlProcessGetAndSetEnableTest_BehavesAsExpected)
                 [[maybe_unused]] const char* interface, const char** names) {
         EXPECT_STREQ("Enable", names[0]);
         return 0;
-        }));
+    }));
 
     zone->addPidControlProcess(sensorname, sensorType, setpoint,
                                bus_mock_enable, pidsensorpath.c_str(), defer);
@@ -248,7 +248,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
                 [[maybe_unused]] const char* interface, const char** names) {
         EXPECT_STREQ("Enable", names[0]);
         return 0;
-        }));
+    }));
 
     zone->addPidControlProcess(sensorname, sensorType, setpoint,
                                bus_mock_enable, pidsensorpath.c_str(), defer);
@@ -292,7 +292,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
                 [[maybe_unused]] const char* interface, const char** names) {
         EXPECT_STREQ("Enable", names[0]);
         return 0;
-        }));
+    }));
 
     zone->addPidControlProcess(sensorname, sensorType, setpoint,
                                bus_mock_enable, pidsensorpath.c_str(), defer);
@@ -708,7 +708,7 @@ TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)
                 [[maybe_unused]] const char* interface, const char** names) {
         EXPECT_STREQ("Manual", names[0]);
         return 0;
-        }));
+    }));
 
     // Method under test will set the manual mode to true and broadcast this
     // change on dbus.

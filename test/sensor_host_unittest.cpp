@@ -95,7 +95,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
                 [[maybe_unused]] const char* interface, const char** names) {
         EXPECT_STREQ("Value", names[0]);
         return 0;
-        }));
+    }));
 
     std::chrono::high_resolution_clock::time_point t1 =
         std::chrono::high_resolution_clock::now();
