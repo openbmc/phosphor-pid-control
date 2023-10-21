@@ -33,6 +33,24 @@
       "message": "Wow, Jenkins passed? Good change, all whitespace.",
       "revId": "e1dbb59a08819d3e0cf8aa1e4718a37feb817902",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "95fdcfe0_e30bb603",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2023-10-21T01:58:10Z",
+      "side": 1,
+      "message": "Yep.  I merged the clang-17 update in the CI tooling (and then retriggered all of these).",
+      "parentUuid": "e98a24a7_c7d07442",
+      "revId": "e1dbb59a08819d3e0cf8aa1e4718a37feb817902",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
