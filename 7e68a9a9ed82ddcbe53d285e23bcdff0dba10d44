@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": true,
+      "key": {
+        "uuid": "3fd2e572_9564e158",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-26T21:29:11Z",
+      "side": 1,
+      "message": "This summary is good. It should also be at the top of the document itself, not just this commit message.",
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": false,
       "key": {
         "uuid": "3f6f8dd4_869af193",
@@ -102,6 +119,23 @@
       "writtenOn": "2023-08-15T09:57:43Z",
       "side": 1,
       "message": "Do you mean we can have multiple FAN control algorithm and can select to run the right one on a specified criteria?\nI am thinking about the case of the same BMC firmware for different hardware variants (the same motherboard and BMC board but with different chassis and hardware device plugged on it, for example). In this case, as different airflow, different FAN control tables are used.",
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7984d75e_b8f1651a",
+        "filename": "fan-versioning.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-10-26T21:29:11Z",
+      "side": 1,
+      "message": "Will it be possible to write, not just read, the current fan configuration setting choice?\n\nReason is, I have recently become aware of a demand for this feature. Have multiple PID control settings on the system, and be able to change between these somehow, perhaps externally (via other changes to external-facing services such as `bmcweb`).\n\nFor example, one could have three versions of settings, \"quiet\", \"normal\", and \"turbo\", and expose an interface to let the user choose one of these three choices. Each of these three versions would activate a different set of pre-tuned thermal parameters appropriate for the platform.\n\nFor safety, the user would not be allowed to change any of the underlying PID loop coefficients or parameters. However, the user would be freely allowed to swap between these three versions at will. This would provide the best balance between safety and flexibility.",
       "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
