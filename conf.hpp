@@ -84,6 +84,10 @@ struct ZoneConfig
 
     /* Customize time settings for every cycle */
     CycleTime cycleTime;
+
+    /* Enable accumulation of the output PWM of different controllers with same
+     * sensor */
+    bool accumulateSetPoint;
 };
 
 using PIDConf = std::map<std::string, ControllerInfo>;
