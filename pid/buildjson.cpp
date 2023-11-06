@@ -66,12 +66,18 @@ void from_json(const json& j, conf::ControllerInfo& c)
      */
     auto p = j.at("pid");
 
+    auto checkHysterWithSetpt = p.find("checkHysterWithSetpt");
     auto positiveHysteresis = p.find("positiveHysteresis");
     auto negativeHysteresis = p.find("negativeHysteresis");
     auto derivativeCoeff = p.find("derivativeCoeff");
+    auto checkHysterWithSetptValue = false;
     auto positiveHysteresisValue = 0.0;
     auto negativeHysteresisValue = 0.0;
     auto derivativeCoeffValue = 0.0;
+    if (checkHysterWithSetpt != p.end())
+    {
+        checkHysterWithSetpt->get_to(checkHysterWithSetptValue);
+    }
     if (positiveHysteresis != p.end())
     {
         positiveHysteresis->get_to(positiveHysteresisValue);
@@ -113,6 +119,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
         c.pidInfo.positiveHysteresis = positiveHysteresisValue;
         c.pidInfo.negativeHysteresis = negativeHysteresisValue;
         c.pidInfo.derivativeCoeff = derivativeCoeffValue;
+        c.pidInfo.checkHysterWithSetpt = checkHysterWithSetptValue;
     }
     else
     {
@@ -212,6 +219,14 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
                             thisZoneConfig.cycleTime.cycleIntervalTimeMS);
         getCycleTimeSetting(zone, id, "updateThermalsTimeMS",
                             thisZoneConfig.cycleTime.updateThermalsTimeMS);
+
+        bool accumulateSetPoint = false;
+        auto findAccSetPoint = zone.find("accumulateSetPoint");
+        if (findAccSetPoint != zone.end())
+        {
+            findAccSetPoint->get_to(accumulateSetPoint);
+        }
+        thisZoneConfig.accumulateSetPoint = accumulateSetPoint;
 
         auto pids = zone["pids"];
         for (const auto& pid : pids)

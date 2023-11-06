@@ -19,10 +19,12 @@ typedef struct
  */
 typedef struct
 {
-    bool initialized;         // has pid been initialized
+    bool initialized;          // has pid been initialized
+    bool checkHysterWithSetpt; // compare current input and setpoint to check
+                               // hysteresis
 
-    double ts;                // sample time in seconds
-    double integral;          // integral of error
+    double ts;                 // sample time in seconds
+    double integral;           // integral of error
     double lastOutput;        // value of last output
     double lastError;         // value of last error
 
@@ -46,6 +48,9 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
 /* Condensed version for use by the configuration. */
 struct pidinfo
 {
+    bool checkHysterWithSetpt;  // compare current input and setpoint to check
+                                // hysteresis
+
     double ts;                  // sample time in seconds
     double proportionalCoeff;   // coeff for P
     double integralCoeff;       // coeff for I
