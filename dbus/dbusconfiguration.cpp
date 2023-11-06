@@ -385,14 +385,20 @@ void populatePidInfo(
     info.pidInfo.slewPos = std::visit(VariantToDoubleVisitor(),
                                       getPIDAttribute(base, "SlewPos"));
 
+    bool checkHysterWithSetpt = false;
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
     double derivativeCoeff = 0;
 
+    auto findCheckHysterFlag = base.find("CheckHysterWithSetpt");
     auto findNeg = base.find("NegativeHysteresis");
     auto findPos = base.find("PositiveHysteresis");
     auto findDerivative = base.find("DCoefficient");
 
+    if (findCheckHysterFlag != base.end())
+    {
+        checkHysterWithSetpt = std::get<bool>(findCheckHysterFlag->second);
+    }
     if (findNeg != base.end())
     {
         negativeHysteresis = std::visit(VariantToDoubleVisitor(),
@@ -409,6 +415,7 @@ void populatePidInfo(
                                      findDerivative->second);
     }
 
+    info.pidInfo.checkHysterWithSetpt = checkHysterWithSetpt;
     info.pidInfo.negativeHysteresis = negativeHysteresis;
     info.pidInfo.positiveHysteresis = positiveHysteresis;
     info.pidInfo.derivativeCoeff = derivativeCoeff;
@@ -649,6 +656,14 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                                 details.cycleTime.cycleIntervalTimeMS);
             getCycleTimeSetting(zone, index, "UpdateThermalsTimeMS",
                                 details.cycleTime.updateThermalsTimeMS);
+
+            bool accumulateSetPoint = false;
+            auto findAccSetPoint = zone.find("AccumulateSetPoint");
+            if (findAccSetPoint != zone.end())
+            {
+                accumulateSetPoint = std::get<bool>(findAccSetPoint->second);
+            }
+            details.accumulateSetPoint = accumulateSetPoint;
         }
         auto findBase = configuration.second.find(pidConfigurationInterface);
         // loop through all the PID configurations and fill out a sensor config

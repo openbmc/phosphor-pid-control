@@ -53,6 +53,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SensorManager m(bus_mock_passive, bus_mock_host);
 
     bool defer = true;
+    bool accSetPoint = false;
     const char* objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
@@ -83,7 +84,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
         .WillOnce(Return(0));
 
     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
-                  bus_mock_mode, objPath, defer);
+                  bus_mock_mode, objPath, defer, accSetPoint);
     // Success.
 }
 
@@ -126,9 +127,9 @@ class PidZoneTest : public ::testing::Test
             .Times(::testing::AnyNumber())
             .WillOnce(Return(0));
 
-        zone = std::make_unique<DbusPidZone>(zoneId, minThermalOutput,
-                                             failSafePercent, cycleTime, mgr,
-                                             bus_mock_mode, objPath, defer);
+        zone = std::make_unique<DbusPidZone>(
+            zoneId, minThermalOutput, failSafePercent, cycleTime, mgr,
+            bus_mock_mode, objPath, defer, accSetPoint);
     }
 
     // unused
@@ -146,6 +147,7 @@ class PidZoneTest : public ::testing::Test
     double failSafePercent = 0;
     double setpoint = 50.0;
     bool defer = true;
+    bool accSetPoint = false;
     const char* objPath = "/path/";
     SensorManager mgr;
     conf::CycleTime cycleTime;
