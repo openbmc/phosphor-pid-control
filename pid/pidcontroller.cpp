@@ -30,21 +30,39 @@
 namespace pid_control
 {
 
-void PIDController::process(void)
+double PIDController::calPIDOutput(const double setpt, const double input,
+                                   ec::pid_info_t* info)
 {
-    double input;
-    double setpt;
     double output;
-
-    // Get setpt value
-    setpt = setptProc();
-
-    // Get input value
-    input = inputProc();
-
-    auto info = getPIDInfo();
     auto name = getID();
 
+#ifdef CHECK_HYSTERESIS_USING_SETPOINT
+    // over the hysteresis bounds, keep counting pid
+    if (input > (setpt + info->positiveHysteresis))
+    {
+        // Calculate new output
+        output = ec::pid(info, input, setpt, &name);
+
+        // this variable isn't actually used in this context, but we're setting
+        // it here incase somebody uses it later it's the correct value
+        lastInput = input;
+    }
+    // under the hysteresis bounds, initialize pid
+    else if (input < (setpt - info->negativeHysteresis))
+    {
+        lastInput = setpt;
+        info->integral = 0;
+        output = 0;
+    }
+    // inside the hysteresis bounds, keep last output
+    else
+    {
+        lastInput = input;
+        output = info->lastOutput;
+    }
+
+    info->lastOutput = output;
+#else
     // if no hysteresis, maintain previous behavior
     if (info->positiveHysteresis == 0 && info->negativeHysteresis == 0)
     {
@@ -58,7 +76,7 @@ void PIDController::process(void)
     else
     {
         // initialize if not set yet
-        if (std::isnan(lastInput))
+        if (!(std::isfinite(lastInput)))
         {
             lastInput = input;
         }
@@ -76,6 +94,36 @@ void PIDController::process(void)
 
         output = ec::pid(info, lastInput, setpt, &name);
     }
+#endif
+
+    return output;
+}
+
+void PIDController::process(void)
+{
+    double input;
+    double setpt;
+    double output;
+
+    // Get setpt value
+    setpt = setptProc();
+
+    // Get input value
+    input = inputProc();
+
+    auto info = getPIDInfo();
+
+    // No valid input just skip it.
+    if ((input == std::numeric_limits<double>::lowest()) ||
+        (input == std::numeric_limits<double>::max()))
+    {
+        return;
+    }
+
+    // Calculate output value
+    output = calPIDOutput(setpt, input, info);
+
+    info->lastOutput = output;
 
     // Output new value
     outputProc(output);

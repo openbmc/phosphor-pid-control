@@ -120,15 +120,26 @@ void DbusPidZone::addSetPoint(double setPoint, const std::string& name)
         return;
     }
 
-    _SetPoints.push_back(setPoint);
+    auto profileName = name;
+    if (getAccSetPoint())
+    {
+        /*
+         * If the name of controller is Linear_Temp_CPU0.
+         * The profile name will be Temp_CPU0.
+         */
+        profileName = name.substr(name.find("_") + 1);
+    }
+
+    _SetPoints[profileName] += setPoint;
+
     /*
      * if there are multiple thermal controllers with the same
      * value, pick the first one in the iterator
      */
-    if (_maximumSetPoint < setPoint)
+    if (_maximumSetPoint < _SetPoints[profileName])
     {
-        _maximumSetPoint = setPoint;
-        _maximumSetPointName = name;
+        _maximumSetPoint = _SetPoints[profileName];
+        _maximumSetPointName = profileName;
     }
 }
 
@@ -208,7 +219,16 @@ void DbusPidZone::addFanInput(const std::string& fan, bool missingAcceptable)
 void DbusPidZone::addThermalInput(const std::string& therm,
                                   bool missingAcceptable)
 {
-    _thermalInputs.push_back(therm);
+    /*
+     * One sensor may have stepwise and PID at the same time.
+     * Searching the sensor name before inserting it to avoid duplicated sensor
+     * names.
+     */
+    if (std::find(_thermalInputs.begin(), _thermalInputs.end(), therm) ==
+        _thermalInputs.end())
+    {
+        _thermalInputs.push_back(therm);
+    }
 
     if (missingAcceptable)
     {
@@ -283,6 +303,33 @@ void DbusPidZone::determineMaxSetPointRequest(void)
             _maximumSetPoint = *result;
             // When using lowest ceiling, controller name is ceiling.
             _maximumSetPointName = "Ceiling";
+        }
+    }
+
+    /*
+     * Combine the maximum SetPoint Name if the controllers have same profile
+     * name. e.g., PID_BB_INLET_TEMP_C + Stepwise_BB_INLET_TEMP_C.
+     */
+    if (getAccSetPoint())
+    {
+        auto profileName = _maximumSetPointName;
+        _maximumSetPointName = "";
+
+        for (auto& p : _thermals)
+        {
+            auto controllerID = p->getID();
+            auto found = controllerID.find(profileName);
+            if (found != std::string::npos)
+            {
+                if (_maximumSetPointName.empty())
+                {
+                    _maximumSetPointName = controllerID;
+                }
+                else
+                {
+                    _maximumSetPointName += " + " + controllerID;
+                }
+            }
         }
     }
 
@@ -577,6 +624,11 @@ void DbusPidZone::updateThermalPowerDebugInterface(std::string pidName,
         _pidsControlProcess[pidName]->leader(leader);
         _pidsControlProcess[pidName]->input(input);
     }
+}
+
+bool DbusPidZone::getAccSetPoint(void) const
+{
+    return _accumulateSetPoint;
 }
 
 } // namespace pid_control
