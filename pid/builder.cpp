@@ -101,7 +101,8 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 auto pid = FanController::createFanPid(
                     zone.get(), name, splitNames(inputs), info.pidInfo);
                 zone->addFanPID(std::move(pid));
-                zone->addPidFailSafePercent(name, info.failSafePercent);
+                zone->addPidFailSafePercent(splitNames(inputs),
+                                            info.failSafePercent);
             }
             else if (isThermalType(info.type))
             {
@@ -119,7 +120,8 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 zone->addPidControlProcess(
                     name, info.type, info.setpoint, modeControlBus,
                     getPidControlPath(zoneId, name), deferSignals);
-                zone->addPidFailSafePercent(name, info.failSafePercent);
+                zone->addPidFailSafePercent(splitNames(inputs),
+                                            info.failSafePercent);
             }
             else if (info.type == "stepwise")
             {
@@ -134,7 +136,8 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 zone->addPidControlProcess(
                     name, info.type, info.setpoint, modeControlBus,
                     getPidControlPath(zoneId, name), deferSignals);
-                zone->addPidFailSafePercent(name, info.failSafePercent);
+                zone->addPidFailSafePercent(splitNames(inputs),
+                                            info.failSafePercent);
             }
 
             std::cerr << "inputs: ";
