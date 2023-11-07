@@ -79,7 +79,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void addRPMCeiling(double ceiling) override;
     void clearSetPoints(void) override;
     void clearRPMCeilings(void) override;
-    double getFailSafePercent(void) const override;
+    double getFailSafePercent(void) override;
     double getMinThermalSetPoint(void) const;
     uint64_t getCycleIntervalTime(void) const override;
     uint64_t getUpdateThermalsCycle(void) const override;
@@ -118,8 +118,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
                               std::string objPath, bool defer);
     bool isPidProcessEnabled(std::string name);
 
-    void initPidFailSafePercent(void);
-    void addPidFailSafePercent(std::string name, double percent);
+    void addPidFailSafePercent(std::vector<std::string> inputs, double percent);
 
     void updateThermalPowerDebugInterface(std::string pidName,
                                           std::string leader, double input,
@@ -210,13 +209,11 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool _manualMode = false;
     bool _redundantWrite = false;
     const double _minThermalOutputSetPt;
-    // Current fail safe Percent.
-    double _failSafePercent;
     // Zone fail safe Percent setting by configuration.
     const double _zoneFailSafePercent;
     const conf::CycleTime _cycleTime;
 
-    std::set<std::string> _failSafeSensors;
+    std::map<std::string, double> _failSafeSensors;
     std::set<std::string> _missingAcceptable;
 
     std::vector<double> _SetPoints;
@@ -232,10 +229,10 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
     std::map<std::string, std::unique_ptr<ProcessObject>> _pidsControlProcess;
     /*
-     * <key = pidname, value = pid failsafe percent>
-     * Pid fail safe Percent setting by each pid controller configuration.
+     * <key = sensor name, value = sensor failsafe percent>
+     * sensor fail safe Percent setting by each pid controller configuration.
      */
-    std::map<std::string, double> _pidsFailSafePercent;
+    std::map<std::string, double> _sensorFailSafePercent;
 };
 
 } // namespace pid_control

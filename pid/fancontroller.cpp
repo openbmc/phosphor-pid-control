@@ -158,7 +158,12 @@ void FanController::outputProc(double value)
         }
         else
         {
-            failsafePrint = true;
+            if (!failsafePrint)
+            {
+                std::cerr << "Zone " << _owner->getZoneID() << " exit failsafe"
+                          << std::endl;
+                failsafePrint = true;
+            }
             if (debugEnabled)
             {
                 std::cerr << "Zone " << _owner->getZoneID()
