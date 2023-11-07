@@ -105,6 +105,10 @@ void DbusPidZone::markSensorMissing(const std::string& name)
     }
 
     _failSafeSensors.emplace(name);
+    if (_sensorFailSafePercent[name] > _failSafePercent)
+    {
+        _failSafePercent = _sensorFailSafePercent[name];
+    }
 }
 
 int64_t DbusPidZone::getZoneID(void) const
@@ -149,9 +153,18 @@ void DbusPidZone::clearSetPoints(void)
     _maximumSetPointName.clear();
 }
 
-double DbusPidZone::getFailSafePercent(void) const
+void DbusPidZone::getFailSafePercent(std::set<std::string>& name,
+                                     double& percent) const
 {
-    return _failSafePercent;
+    name = _failSafeSensors;
+    if (_failSafePercent == 0)
+    {
+        percent = _zoneFailSafePercent;
+    }
+    else
+    {
+        percent = _failSafePercent;
+    }
 }
 
 double DbusPidZone::getMinThermalSetPoint(void) const
@@ -429,8 +442,6 @@ void DbusPidZone::initializeCache(void)
         // Start all sensors in fail-safe mode.
         markSensorMissing(t);
     }
-    // Initialize Pid FailSafePercent
-    initPidFailSafePercent();
 }
 
 void DbusPidZone::dumpCache(void)
@@ -529,34 +540,22 @@ bool DbusPidZone::isPidProcessEnabled(std::string name)
     return _pidsControlProcess[name]->enabled();
 }
 
-void DbusPidZone::initPidFailSafePercent(void)
+void DbusPidZone::addPidFailSafePercent(std::vector<std::string> inputs,
+                                        double percent)
 {
-    // Currently, find the max failsafe percent pwm settings from zone and
-    // controller, and assign it to zone failsafe percent.
-
-    _failSafePercent = _zoneFailSafePercent;
-    std::cerr << "zone: Zone" << _zoneId
-              << " zoneFailSafePercent: " << _zoneFailSafePercent << "\n";
-
-    for (const auto& [name, value] : _pidsFailSafePercent)
+    for (const auto& sensorName : inputs)
     {
-        _failSafePercent = std::max(_failSafePercent, value);
-        std::cerr << "pid: " << name << " failSafePercent: " << value << "\n";
+        if (_sensorFailSafePercent.find(sensorName) !=
+            _sensorFailSafePercent.end())
+        {
+            _sensorFailSafePercent[sensorName] =
+                std::max(_sensorFailSafePercent[sensorName], percent);
+        }
+        else
+        {
+            _sensorFailSafePercent[sensorName] = percent;
+        }
     }
-
-    // when the final failsafe percent is zero , it indicate no failsafe
-    // percent is configured  , set it to 100% as the default setting.
-    if (_failSafePercent == 0)
-    {
-        _failSafePercent = 100;
-    }
-    std::cerr << "Final zone" << _zoneId
-              << " failSafePercent: " << _failSafePercent << "\n";
-}
-
-void DbusPidZone::addPidFailSafePercent(std::string name, double percent)
-{
-    _pidsFailSafePercent[name] = percent;
 }
 
 std::string DbusPidZone::leader() const
