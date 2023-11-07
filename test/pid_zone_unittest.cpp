@@ -56,7 +56,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     const char* objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0;
+    double failSafePercent = 100;
     conf::CycleTime cycleTime;
 
     double d;
@@ -143,7 +143,7 @@ class PidZoneTest : public ::testing::Test
     sdbusplus::SdBusMock sdbus_mock_enable;
     int64_t zoneId = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0;
+    double failSafePercent = 100;
     double setpoint = 50.0;
     bool defer = true;
     const char* objPath = "/path/";
@@ -318,16 +318,24 @@ TEST_F(PidZoneTest, GetFailSafePercent_ReturnsExpected)
     // no failsafe percent is configured  , set it to 100% as
     // the default setting.
 
-    std::vector<double> values = {0, 0, 0};
+    std::vector<std::string> input1 = {"temp1"};
+    std::vector<std::string> input2 = {"temp2"};
+    std::vector<std::string> input3 = {"temp3"};
+    std::vector<double> values = {60, 80, 70};
     int64_t defaultPercent = 100;
 
-    zone->addPidFailSafePercent("temp1", values[0]);
-    zone->addPidFailSafePercent("temp2", values[1]);
-    zone->addPidFailSafePercent("temp3", values[2]);
+    zone->addPidFailSafePercent(input1, values[0]);
+    zone->addPidFailSafePercent(input2, values[1]);
+    zone->addPidFailSafePercent(input3, values[2]);
 
-    zone->initPidFailSafePercent();
+    zone->markSensorMissing("temp1");
 
-    EXPECT_EQ(defaultPercent, zone->getFailSafePercent());
+    double finalFailSafePercent = 0;
+    std::string finalFailSafeName = "";
+    zone->getFailSafePercent(finalFailSafeName, finalFailSafePercent);
+
+    EXPECT_EQ("", finalFailSafeName);
+    EXPECT_EQ(defaultPercent, finalFailSafePercent);
 }
 
 TEST_F(PidZoneTest, GetFailSafePercent_VerifyReturnsExpected)
@@ -335,21 +343,25 @@ TEST_F(PidZoneTest, GetFailSafePercent_VerifyReturnsExpected)
     // Tests adding PID controller with FailSafePercent to the zone,
     // and verifies it's returned as expected.
 
+    std::vector<std::string> input1 = {"temp1"};
+    std::vector<std::string> input2 = {"temp2"};
+    std::vector<std::string> input3 = {"temp3"};
     std::vector<double> values = {60, 80, 70};
-    double max_value = 0;
 
-    for (const auto& value : values)
-    {
-        max_value = std::max(max_value, value);
-    }
+    zone->addPidFailSafePercent(input1, values[0]);
+    zone->addPidFailSafePercent(input2, values[1]);
+    zone->addPidFailSafePercent(input3, values[2]);
 
-    zone->addPidFailSafePercent("temp1", values[0]);
-    zone->addPidFailSafePercent("temp2", values[1]);
-    zone->addPidFailSafePercent("temp3", values[2]);
+    zone->markSensorMissing("temp1");
+    zone->markSensorMissing("temp2");
+    zone->markSensorMissing("temp3");
 
-    zone->initPidFailSafePercent();
+    double finalFailSafePercent = 0;
+    std::string finalFailSafeName = "";
+    zone->getFailSafePercent(finalFailSafeName, finalFailSafePercent);
 
-    EXPECT_EQ(max_value, zone->getFailSafePercent());
+    EXPECT_EQ("temp2", finalFailSafeName);
+    EXPECT_EQ(80, finalFailSafePercent);
 }
 
 TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
