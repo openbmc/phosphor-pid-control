@@ -88,7 +88,7 @@ class ZoneInterface
     /** Return the rpm or pwm percent value to drive fan pids when zone is in
      * fail safe.
      */
-    virtual double getFailSafePercent() const = 0;
+    virtual double getFailSafePercent() = 0;
 
     /** Return the zone's cycle time settings */
     virtual uint64_t getCycleIntervalTime(void) const = 0;
