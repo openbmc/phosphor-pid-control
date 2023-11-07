@@ -132,33 +132,45 @@ void FanController::outputProc(double value)
     {
         if (_owner->getFailSafeMode())
         {
-            double failsafePercent = _owner->getFailSafePercent();
+            double finalFailSafePercent = 0;
+            std::set<std::string> finalFailSafeName;
+            _owner->getFailSafePercent(finalFailSafeName, finalFailSafePercent);
 
 #ifdef STRICT_FAILSAFE_PWM
             // Unconditionally replace the computed PWM with the
             // failsafe PWM if STRICT_FAILSAFE_PWM is defined.
-            percent = failsafePercent;
+            percent = finalFailSafePercent;
 #else
             // Ensure PWM is never lower than the failsafe PWM.
             // The computed PWM is still allowed to rise higher than
             // failsafe PWM if STRICT_FAILSAFE_PWM is NOT defined.
             // This is the default behavior.
-            if (percent < failsafePercent)
+            if (percent < finalFailSafePercent)
             {
-                percent = failsafePercent;
+                percent = finalFailSafePercent;
             }
 
             if (failsafePrint || debugEnabled)
             {
-                std::cerr << "Zone " << _owner->getZoneID()
-                          << " fans output failsafe pwm: " << percent << "\n";
+                std::cerr << "Zone " << _owner->getZoneID() << ", sensor ";
+                for (const auto& name : finalFailSafeName)
+                {
+                    std::cerr << name << " ";
+                }
+                std::cerr << "failed, failsafe " << finalFailSafePercent
+                          << " duty" << std::endl;
                 failsafePrint = false;
             }
 #endif
         }
         else
         {
-            failsafePrint = true;
+            if (!failsafePrint)
+            {
+                std::cerr << "Zone " << _owner->getZoneID() << " exit failsafe"
+                          << std::endl;
+                failsafePrint = true;
+            }
             if (debugEnabled)
             {
                 std::cerr << "Zone " << _owner->getZoneID()
