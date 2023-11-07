@@ -163,7 +163,14 @@ TEST(FanControllerTest, OutputProc_VerifiesIfFailsafeEnabledInputIsIgnored)
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
-    EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(75.0));
+
+    std::string _failSafeName = "fan0";
+    double _failSafePercent = 75.0;
+
+    EXPECT_CALL(z, getFailSafePercent(_failSafeName, _failSafePercent))
+        .WillOnce(Invoke([&]([[maybe_unused]] std::string& name,
+                             [[maybe_unused]] double& percent) {
+    }));
 
     int64_t timeout = 0;
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
@@ -243,7 +250,14 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeWhenInputHigher)
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getFailSafeMode()).WillOnce(Return(true));
-    EXPECT_CALL(z, getFailSafePercent()).WillOnce(Return(failsafePWM));
+
+    std::string _failSafeName = "fan0";
+    double _failSafePercent = failsafePWM;
+
+    EXPECT_CALL(z, getFailSafePercent(_failSafeName, _failSafePercent))
+        .WillOnce(Invoke([&]([[maybe_unused]] std::string& name,
+                             [[maybe_unused]] double& percent) {
+    }));
 
     int64_t timeout = 0;
     std::unique_ptr<Sensor> s1 = std::make_unique<SensorMock>("fan0", timeout);
