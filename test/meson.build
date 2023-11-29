@@ -12,7 +12,7 @@ if not gtest.found() or not gmock.found()
         ])
         gmock = gtest_proj.dependency('gmock')
     else
-        assert(not get_option('tests').enabled(), 'Googletest is required')
+        assert(not get_option('tests').allowed(), 'Googletest is required')
     endif
 endif
 
@@ -80,7 +80,7 @@ foreach t : unit_tests
                            swampd_sources,
                        ],
                        link_args: dynamic_linker,
-                       build_rpath: get_option('oe-sdk').enabled() ? rpath : '',
+                       build_rpath: get_option('oe-sdk').allowed() ? rpath : '',
                        dependencies: [
                            gtest,
                            gmock,

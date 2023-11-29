@@ -22,7 +22,7 @@ configure_file(output: 'config.h',
     configuration: conf_data
 )
 
-if get_option('oe-sdk').enabled()
+if get_option('oe-sdk').allowed()
     OECORE_TARGET_SYSROOT = run_command('sh', '-c', 'echo $OECORE_TARGET_SYSROOT').stdout().strip()
     if OECORE_TARGET_SYSROOT == ''
         error('OECORE_TARGET_SYSROOT must be set with enable oe-sdk')
