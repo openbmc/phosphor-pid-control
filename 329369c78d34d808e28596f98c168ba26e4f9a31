@@ -105,6 +105,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a5988bae_eeca6248",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-12T18:16:42Z",
+      "side": 1,
+      "message": "Agreed, this looks like a magic number flag. This is something that is explicitly not needed with floating-point numbers, as we have `NaN` to indicate \"not available\" or \"not initialized yet\". Please use these instead.",
+      "parentUuid": "deb82697_7dbf3ed2",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d7d9001a_ebe4a9b0",
         "filename": "pid/pidcontroller.hpp",
         "patchSetId": 26
@@ -116,6 +134,30 @@
       "writtenOn": "2023-12-12T18:11:11Z",
       "side": 1,
       "message": "Why is const added here?  This has no bearing on the ABI or API since these doubles are POD.",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 76,
+        "endChar": 29
+      },
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "702ecdee_84f3a706",
+        "filename": "pid/pidcontroller.hpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-12T18:16:42Z",
+      "side": 1,
+      "message": "Agreed, and these doubles are being passed in by copy, so `const` here has no effect, and needlessly constrains the caller.",
+      "parentUuid": "d7d9001a_ebe4a9b0",
       "range": {
         "startLine": 76,
         "startChar": 24,
