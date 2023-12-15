@@ -1,0 +1,123 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1589098b_23c097ea",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-15T00:50:45Z",
+      "side": 1,
+      "message": "Good idea, I have a suggestion for an alternate implementation that would just compute the failsafe value whenever needed, instead of trying to compute it at addition/removal time which can get out of sync quickly if additions and removals come in random order.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cca113c8_1d61da8f",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-15T00:50:45Z",
+      "side": 1,
+      "message": "Instead of tracking a separate variable `_failSafePercent` as a class member, I would feel better if this value was computed every time it was needed. Sweep the list of failsafe sensors and take the maximum. Failsafe is not the standard condition, so it is OK to take a few extra CPU cycles here. The logic would become simpler and safer, especially as sensors are added and removed independently of each other.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4ba4b9d9_8e0c645f",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 160,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-15T00:50:45Z",
+      "side": 1,
+      "message": "Again, please use `NaN` instead of testing for zero here.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c558b7e_be632593",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-15T00:50:45Z",
+      "side": 1,
+      "message": "This logic can be simplified, see the algorithm in my above comment. I feel this should be done as needed, instead of trying to maintain a cached value.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0a9f145a_9990db54",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-15T00:50:45Z",
+      "side": 1,
+      "message": "If the failsafe sensors list is non-empty, then the failsafe percentage will remain unchanged, instead of falling back down to the next highest percentage that is still in the list, which would be the expected behavior.\n\nThis seems like a bug to me, and could be averted by computing the failsafe value as needed, based on the contents of the failsafe sensor list (and the corresponding failsafe values for each of these sensors), instead of trying to maintain a cached value that can quickly become out of sync.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "deb9bdd0_bd8d9c8e",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-15T00:50:45Z",
+      "side": 1,
+      "message": "Instead of using zero as a \"not active\" flag, please use `std::numeric_limits\u003cdouble\u003e::quiet_NaN()`. This variable is a floating-point number, so using `NaN` is the safest and most standard way of flagging a value as not filled in yet.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0d38fce2_14356f90",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-15T00:50:45Z",
+      "side": 1,
+      "message": "I would feel better if `_failSafePercent` was not a variable here, but instead, computed when needed. We already have all the necessary information. Here\u0027s an example algorithm:\n\nInitialize to the `_zoneFailSafePercent` value. Then, iterate through each sensor name in the `_failSafeSensors` list. For each sensor name, look up the corresponding failsafe value from the `_sensorFailSafePercent` map. Take the maximum of these values. The resulting final maximum is the failsafe value to use, for the fans in this zone.\n\nThis algorithm should be safe and easy to do when needed, instead of having to worry about maintaining the cached value correctly for each addition and removal of a sensor from the `_failSafeSensors` list, especially if the additions and removals come in random order.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
