@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "3719b5e1_7b055c0d",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-12-18T08:12:05Z",
+      "side": 1,
+      "message": "I don\u0027t quite understand what `trying to maintain a cached value` means.\nThis function only do in the initial pid/builder.cpp.",
+      "parentUuid": "1c558b7e_be632593",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a9f145a_9990db54",
         "filename": "pid/zone.hpp",
         "patchSetId": 10
@@ -82,6 +100,24 @@
       "writtenOn": "2023-12-15T00:50:45Z",
       "side": 1,
       "message": "If the failsafe sensors list is non-empty, then the failsafe percentage will remain unchanged, instead of falling back down to the next highest percentage that is still in the list, which would be the expected behavior.\n\nThis seems like a bug to me, and could be averted by computing the failsafe value as needed, based on the contents of the failsafe sensor list (and the corresponding failsafe values for each of these sensors), instead of trying to maintain a cached value that can quickly become out of sync.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf12ba31_26290ce2",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 201,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-12-18T08:12:05Z",
+      "side": 1,
+      "message": "Oh, yeah...something\u0027s wrong here. I will fix it. Thanks.",
+      "parentUuid": "0a9f145a_9990db54",
       "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -116,6 +152,24 @@
       "writtenOn": "2023-12-15T00:50:45Z",
       "side": 1,
       "message": "I would feel better if `_failSafePercent` was not a variable here, but instead, computed when needed. We already have all the necessary information. Here\u0027s an example algorithm:\n\nInitialize to the `_zoneFailSafePercent` value. Then, iterate through each sensor name in the `_failSafeSensors` list. For each sensor name, look up the corresponding failsafe value from the `_sensorFailSafePercent` map. Take the maximum of these values. The resulting final maximum is the failsafe value to use, for the fans in this zone.\n\nThis algorithm should be safe and easy to do when needed, instead of having to worry about maintaining the cached value correctly for each addition and removal of a sensor from the `_failSafeSensors` list, especially if the additions and removals come in random order.",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dae29ecf_3e0a70c0",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1000847
+      },
+      "writtenOn": "2023-12-18T08:12:05Z",
+      "side": 1,
+      "message": "Hi Josh, let me clarify.\nThe Original my method \u003d\u003e\n1. `addPidFailSafePercent` only do at the beginning(pid/builder.cpp).\nThe result `_sensorFailSafePercent` map will like below(if EM json has the setting),\n```\n{sensorA, sensorA_failsafe_duty},\n{sensorB, sensorB_failsafe_duty},\n{sensorC, sensorC_failsafe_duty},\n{sensorD, sensorD_failsafe_duty},\n...\n...\n...\n```\n2. when detecting sensor failed each pid loop, will insert sensor name to `_failSafeSensors`, and get sensor failsafe duty from `_sensorFailSafePercent` then compare and update the zone\u0027s `_failSafePercent` variable.\n3. In final `fancontroller.cpp` output will print log for all fail sensor name in `_failSafeSensors` and final failsafe duty `_failSafePercent`.\n\nIf I understand correctly, you mean \u003d\u003e\nI can modify the `_failSafePercent` from variable to vector or other struct and insert all fail sensor\u0027s duty into it. And determine the maximum value in final `getFailSafePercent`?",
+      "parentUuid": "0d38fce2_14356f90",
       "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
