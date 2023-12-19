@@ -47,7 +47,10 @@ class FanController : public PIDController
   private:
     std::vector<std::string> _inputs;
     FanSpeedDirection _direction;
-    bool failsafePrint = true;
+
+    // Cosmetic only, to reduce frequency of repetitive messages
+    bool failsafeTransition = true;
+    bool failsafePrevState = false;
 };
 
 } // namespace pid_control
