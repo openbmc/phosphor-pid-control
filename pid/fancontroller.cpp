@@ -130,7 +130,16 @@ void FanController::outputProc(double value)
     /* If doing tuning, don't go into failsafe mode. */
     if (!tuningEnabled)
     {
-        if (_owner->getFailSafeMode())
+        bool failsafeCurrState = _owner->getFailSafeMode();
+
+        // Note when failsafe state transitions happen
+        if (failsafePrevState != failsafeCurrState)
+        {
+            failsafePrevState = failsafeCurrState;
+            failsafeTransition = true;
+        }
+
+        if (failsafeCurrState)
         {
             double failsafePercent = _owner->getFailSafePercent();
 
@@ -147,23 +156,36 @@ void FanController::outputProc(double value)
             {
                 percent = failsafePercent;
             }
-
-            if (failsafePrint || debugEnabled)
-            {
-                std::cerr << "Zone " << _owner->getZoneID()
-                          << " fans output failsafe pwm: " << percent << "\n";
-                failsafePrint = false;
-            }
 #endif
+        }
+
+        // Always print if debug enabled
+        if (debugEnabled)
+        {
+            std::cerr << "Zone " << _owner->getZoneID() << " fans, "
+                      << (failsafeCurrState ? "failsafe" : "normal")
+                      << " mode, output pwm: " << percent << "\n";
         }
         else
         {
-            failsafePrint = true;
-            if (debugEnabled)
+            // Only print once per transition when not debugging
+            if (failsafeTransition)
             {
-                std::cerr << "Zone " << _owner->getZoneID()
-                          << " fans output pwm: " << percent << "\n";
+                failsafeTransition = false;
+                std::cerr << "Zone " << _owner->getZoneID() << " fans, "
+                          << (failsafeCurrState ? "entering failsafe"
+                                                : "returning to normal")
+                          << " mode, output pwm: " << percent << "\n";
             }
+        }
+    }
+    else
+    {
+        if (debugEnabled)
+        {
+            std::cerr << "Zone " << _owner->getZoneID()
+                      << " fans, tuning mode, bypassing failsafe, output pwm: "
+                      << percent << "\n";
         }
     }
 
