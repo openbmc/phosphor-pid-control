@@ -125,6 +125,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "2cbe4993_fb0bf2c3",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 10
+      },
+      "lineNbr": 543,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-20T22:13:09Z",
+      "side": 1,
+      "message": "I meant to suggest to compute the value at the moment it is needed, just in time, instead of trying to compute the value in advance and then store it for later use. This will solve the bug of what happens when a sensor is removed from the failsafe list which would cause the previously cached failsafe duty to now become incorrect. The correct behavior would be to scan all sensors remaining in the failsafe list and recompute the value. It is easiest just to do this at runtime. It takes slightly more CPU, true, but failsafe is not expected to be a normal running situation.",
+      "parentUuid": "3719b5e1_7b055c0d",
+      "revId": "94c82b935d50161756ca3a545ec16acdf7e17985",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0a9f145a_9990db54",
         "filename": "pid/zone.hpp",
         "patchSetId": 10
