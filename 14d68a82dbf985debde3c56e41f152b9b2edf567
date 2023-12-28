@@ -22,6 +22,30 @@
       },
       "revId": "14d68a82dbf985debde3c56e41f152b9b2edf567",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8dd710c2_94c0cbbd",
+        "filename": "pid/fancontroller.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-28T02:07:43Z",
+      "side": 1,
+      "message": "Good point, thanks! That\u0027s intentional: when the process is started up, that counts as a state transition that is worth logging about, as it goes from uncontrolled state (essentially manual mode) to either failsafe mode or normal mode.",
+      "parentUuid": "fd99b710_6f52f2e8",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 35
+      },
+      "revId": "14d68a82dbf985debde3c56e41f152b9b2edf567",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
