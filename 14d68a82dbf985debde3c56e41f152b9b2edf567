@@ -46,6 +46,30 @@
       },
       "revId": "14d68a82dbf985debde3c56e41f152b9b2edf567",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eb907652_0c8af97e",
+        "filename": "pid/fancontroller.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1000388
+      },
+      "writtenOn": "2023-12-28T17:43:27Z",
+      "side": 1,
+      "message": "What I meant here was that we could point out explicitly in comment that this is intentional (I had to read through the code to figure out why it was set to true).\n\nIt\u0027s a minor nit though",
+      "parentUuid": "8dd710c2_94c0cbbd",
+      "range": {
+        "startLine": 52,
+        "startChar": 4,
+        "endLine": 52,
+        "endChar": 35
+      },
+      "revId": "14d68a82dbf985debde3c56e41f152b9b2edf567",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
