@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8c72490a_972dc586",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2023-12-28T02:31:35Z",
+      "side": 1,
+      "message": "Giving myself +2 because somebody else gave +1",
+      "revId": "df597657fd0d1c248d1685e3b69478c80fc33461",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
