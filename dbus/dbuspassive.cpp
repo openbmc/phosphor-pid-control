@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "config.h"
+
 #include "dbuspassive.hpp"
 
 #include "dbushelper_interface.hpp"
@@ -305,6 +307,23 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
         }
         owner->setFailed(asserted);
     }
+#ifdef UNC_FAILSAFE
+    else if (msgSensor == "xyz.openbmc_project.Sensor.Threshold.Warning")
+    {
+        auto warningAlarmHigh = msgData.find("WarningAlarmHigh");
+        if (warningAlarmHigh == msgData.end())
+        {
+            return 0;
+        }
+
+        bool asserted = false;
+        if (warningAlarmHigh != msgData.end())
+        {
+            asserted = std::get<bool>(warningAlarmHigh->second);
+        }
+        owner->setFailed(asserted);
+    }
+#endif
     else if (msgSensor == "xyz.openbmc_project.State.Decorator.Availability")
     {
         auto available = msgData.find("Available");

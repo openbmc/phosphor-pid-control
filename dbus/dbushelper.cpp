@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#include "config.h"
 
 #include "dbushelper.hpp"
 
@@ -160,7 +161,9 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
     catch (const sdbusplus::exception_t&)
     {
         // do nothing, sensors don't have to expose critical thresholds
+#ifndef UNC_FAILSAFE
         return false;
+#endif
     }
 
     auto findCriticalLow = criticalMap.find("CriticalAlarmLow");
@@ -178,6 +181,32 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
     {
         asserted = std::get<bool>(findCriticalHigh->second);
     }
+#ifdef UNC_FAILSAFE
+    if (!asserted)
+    {
+        auto warning = _bus.new_method_call(service.c_str(), path.c_str(),
+                                            propertiesintf, "GetAll");
+        warning.append(warningThreshInf);
+        PropertyMap warningMap;
+
+        try
+        {
+            auto msg = _bus.call(warning);
+            msg.read(warningMap);
+        }
+        catch (const sdbusplus::exception_t&)
+        {
+            // sensors don't have to expose non-critical thresholds
+            return false;
+        }
+        auto findWarningHigh = warningMap.find("WarningAlarmHigh");
+
+        if (findWarningHigh != warningMap.end())
+        {
+            asserted = std::get<bool>(findWarningHigh->second);
+        }
+    }
+#endif
     return asserted;
 }
 
