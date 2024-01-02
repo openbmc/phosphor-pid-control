@@ -18,6 +18,8 @@ class DbusHelper : public DbusHelperInterface
     static constexpr char propertiesintf[] = "org.freedesktop.DBus.Properties";
     static constexpr char criticalThreshInf[] =
         "xyz.openbmc_project.Sensor.Threshold.Critical";
+    static constexpr char warningThreshInf[] =
+        "xyz.openbmc_project.Sensor.Threshold.Warning";
     static constexpr char availabilityIntf[] =
         "xyz.openbmc_project.State.Decorator.Availability";
 
