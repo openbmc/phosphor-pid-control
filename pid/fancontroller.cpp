@@ -15,8 +15,6 @@
  */
 #include "config.h"
 
-#include "config.h"
-
 #include "fancontroller.hpp"
 
 #include "tuning.hpp"
