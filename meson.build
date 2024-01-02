@@ -17,6 +17,7 @@ bindir = get_option('prefix') / get_option('bindir')
 conf_data.set('BINDIR', bindir)
 conf_data.set('SYSTEMD_TARGET', get_option('systemd_target'))
 conf_data.set('STRICT_FAILSAFE_PWM', get_option('strict-failsafe-pwm'))
+conf_data.set('UNC_FAILSAFE', get_option('unc-failsafe'))
 
 configure_file(output: 'config.h',
     configuration: conf_data
