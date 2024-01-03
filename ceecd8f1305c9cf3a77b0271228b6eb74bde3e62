@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fd4a78b7_a02fd9cd",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-01-03T09:30:03Z",
+      "side": 1,
+      "message": "Idea seems good. I like how it is a Meson option that defaults to false, for unchanged backwards-compatible behavior.",
+      "revId": "ceecd8f1305c9cf3a77b0271228b6eb74bde3e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
