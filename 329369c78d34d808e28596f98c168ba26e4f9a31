@@ -71,6 +71,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a79b51d5_697cd6ff",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-01-08T10:55:02Z",
+      "side": 1,
+      "message": "Revised to use `checkHysterWithSetpt` flag in pid info.",
+      "parentUuid": "670c800a_01f3b02c",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5cdcfa6f_f8f6a704",
         "filename": "pid/pidcontroller.cpp",
         "patchSetId": 26
@@ -82,6 +100,24 @@
       "writtenOn": "2023-12-12T18:11:11Z",
       "side": 1,
       "message": "This part of the change isn\u0027t obvious.  `NaN` is an explicit value which we use elsewhere for \"undefined\" and that is what the comment on line 78 suggests.  You\u0027ve changed it to \"not finite\" which means that infinite values are now also covered.  It gives the impression that that fixes something you\u0027ve not documented.",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df684ef4_4b7204ee",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-01-08T10:55:02Z",
+      "side": 1,
+      "message": "Modified the annotation.",
+      "parentUuid": "5cdcfa6f_f8f6a704",
       "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -123,6 +159,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "ea03de86_ea4d8b74",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-01-08T10:55:02Z",
+      "side": 1,
+      "message": "Revised to use min.",
+      "parentUuid": "a5988bae_eeca6248",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d7d9001a_ebe4a9b0",
         "filename": "pid/pidcontroller.hpp",
         "patchSetId": 26
@@ -158,6 +212,30 @@
       "side": 1,
       "message": "Agreed, and these doubles are being passed in by copy, so `const` here has no effect, and needlessly constrains the caller.",
       "parentUuid": "d7d9001a_ebe4a9b0",
+      "range": {
+        "startLine": 76,
+        "startChar": 24,
+        "endLine": 76,
+        "endChar": 29
+      },
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e57d3a6c_225f6882",
+        "filename": "pid/pidcontroller.hpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-01-08T10:55:02Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "702ecdee_84f3a706",
       "range": {
         "startLine": 76,
         "startChar": 24,
