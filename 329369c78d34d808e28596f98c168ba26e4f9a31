@@ -267,6 +267,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "a727f862_2f1ccb2e",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-01-10T06:05:42Z",
+      "side": 1,
+      "message": "The purpose to use `lowest()` and `max()` is that the initial value set in `ThermalController::inputProc` is `std::numeric_limits\u003cdouble\u003e::max()` or `std::numeric_limits\u003cdouble\u003e::lowest()`.\n\nDo you think that we need to check if the `input` from `ThermalController::inputProc` is valid here?",
+      "parentUuid": "386ad670_19ecdfbd",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d7d9001a_ebe4a9b0",
         "filename": "pid/pidcontroller.hpp",
         "patchSetId": 26
