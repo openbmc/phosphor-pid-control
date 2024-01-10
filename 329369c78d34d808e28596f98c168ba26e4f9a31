@@ -89,6 +89,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "266b1fa4_cc51aba6",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-01-10T02:55:08Z",
+      "side": 1,
+      "message": "Please mark this as Resolved if it\u0027s fixed.",
+      "parentUuid": "a79b51d5_697cd6ff",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5cdcfa6f_f8f6a704",
         "filename": "pid/pidcontroller.cpp",
         "patchSetId": 26
@@ -118,6 +136,24 @@
       "side": 1,
       "message": "Modified the annotation.",
       "parentUuid": "5cdcfa6f_f8f6a704",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c69a6018_1b55552f",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-01-10T02:55:08Z",
+      "side": 1,
+      "message": "Please mark this as Resolved if it\u0027s fixed.",
+      "parentUuid": "df684ef4_4b7204ee",
       "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -171,6 +207,24 @@
       "side": 1,
       "message": "Revised to use min.",
       "parentUuid": "a5988bae_eeca6248",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "386ad670_19ecdfbd",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-01-10T02:55:08Z",
+      "side": 1,
+      "message": "I still don\u0027t like the idea of using `min()` or `max()` as flag values here, to indicate uninitialized input. Please use `NaN` as a sentinel/placeholder value as required. Use `std::numeric_limits\u003cdouble\u003e::quiet_NaN()` as an initializer. This is what is already being done by the rest of the program, to indicate invalid/uninitialized/empty values safely. Please use `isfinite()` to test for validity.",
+      "parentUuid": "ea03de86_ea4d8b74",
       "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
