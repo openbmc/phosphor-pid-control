@@ -16,6 +16,29 @@
       "message": "Idea seems good. I like how it is a Meson option that defaults to false, for unchanged backwards-compatible behavior.",
       "revId": "ceecd8f1305c9cf3a77b0271228b6eb74bde3e62",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "abccd9da_c1356beb",
+        "filename": "dbus/dbushelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001202
+      },
+      "writtenOn": "2024-01-11T22:04:04Z",
+      "side": 1,
+      "message": "This is a general question about this commit... If you want the warning limit to trigger failsafe mode, why not implement it for both upper and lower warning limits?\n\nThe fact that you only check the upper warning limit seems inconsistent with the existing behavior. Earlier in this function, it checks both the upper and lower critical limits.",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 9
+      },
+      "revId": "ceecd8f1305c9cf3a77b0271228b6eb74bde3e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
