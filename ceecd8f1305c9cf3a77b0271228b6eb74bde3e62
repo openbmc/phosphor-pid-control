@@ -39,6 +39,30 @@
       },
       "revId": "ceecd8f1305c9cf3a77b0271228b6eb74bde3e62",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7bffec87_a381f4eb",
+        "filename": "dbus/dbushelper.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 207,
+      "author": {
+        "id": 1001538
+      },
+      "writtenOn": "2024-01-16T15:37:06Z",
+      "side": 1,
+      "message": "This commit only wants to trigger a failsafe if the upper non-critical is exceeded, not if any warning limit is hit. While the current behavior only checks for critical limits, this commit adds the UNC limit as a triggering factor. If the need to add the lower warning limit as a trigger for failsafe is wanted, I think it can be added as a different meson option for better configurability.",
+      "parentUuid": "abccd9da_c1356beb",
+      "range": {
+        "startLine": 202,
+        "startChar": 0,
+        "endLine": 207,
+        "endChar": 9
+      },
+      "revId": "ceecd8f1305c9cf3a77b0271228b6eb74bde3e62",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
