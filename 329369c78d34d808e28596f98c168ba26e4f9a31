@@ -319,6 +319,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "6510b8c7_452c89ac",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 26
+      },
+      "lineNbr": 117,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-01-24T22:16:43Z",
+      "side": 1,
+      "message": "That is acceptable behavior to me, thanks. As you noted, the validation checks are already being made elsewhere, so checking them again here is not necessary (and it can be confusing or misleading).",
+      "parentUuid": "8e0aafcc_84ba8a0f",
+      "revId": "329369c78d34d808e28596f98c168ba26e4f9a31",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "d7d9001a_ebe4a9b0",
