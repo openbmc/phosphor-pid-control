@@ -33,6 +33,23 @@
       "message": "The Jenkins error is from `phosphor-softpoweroff` which is not the subject of this change. I would ask around on Discord if Jenkins continues to fail.",
       "revId": "9788963c948448271f5d76e633ff9b17014d5a83",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "822c583f_39a50f85",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-02-02T05:50:33Z",
+      "side": 1,
+      "message": "Hi\nWould like to ask is there any other questions about this commit?",
+      "revId": "9788963c948448271f5d76e633ff9b17014d5a83",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
