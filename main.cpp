@@ -209,6 +209,9 @@ void tryRestartControlLoops(bool first)
     // first time of trying to restart the control loop without a delay
     if (first)
     {
+        //first can be called because new config is detected
+        //while waiting for the retry timer
+        timer.cancel();
         boost::asio::post(io,
                           std::bind(restartLbd, boost::system::error_code()));
     }
