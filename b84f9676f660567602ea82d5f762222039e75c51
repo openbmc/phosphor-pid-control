@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b526d9d0_b17fa334",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-03-01T01:49:05Z",
+      "side": 1,
+      "message": "Good idea. The handler will still be called if the timer is cancelled, though, as Boost is not very good or reliable about timer cancelling. Maybe set a global flag or something, so that the timer routine knows to do nothing and just exit, if Boost calls it when we are trying to cancel it instead.\nhttps://stackoverflow.com/questions/43168199/cancelling-boost-asio-deadline-timer-safely",
+      "revId": "b84f9676f660567602ea82d5f762222039e75c51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
