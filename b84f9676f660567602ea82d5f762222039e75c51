@@ -16,6 +16,24 @@
       "message": "Good idea. The handler will still be called if the timer is cancelled, though, as Boost is not very good or reliable about timer cancelling. Maybe set a global flag or something, so that the timer routine knows to do nothing and just exit, if Boost calls it when we are trying to cancel it instead.\nhttps://stackoverflow.com/questions/43168199/cancelling-boost-asio-deadline-timer-safely",
       "revId": "b84f9676f660567602ea82d5f762222039e75c51",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2cdf64b3_c4ceca77",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000559
+      },
+      "writtenOn": "2024-03-07T05:25:24Z",
+      "side": 1,
+      "message": "This line in the handler would help it to know nothing to do when timer is cancelled.\nhttps://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/69727/5/main.cpp#193\n\nAgree there still a race condition even with above line. But it would be rare. Do you still want to see using a global flag in this patch?",
+      "parentUuid": "b526d9d0_b17fa334",
+      "revId": "b84f9676f660567602ea82d5f762222039e75c51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
