@@ -34,6 +34,24 @@
       "parentUuid": "b526d9d0_b17fa334",
       "revId": "b84f9676f660567602ea82d5f762222039e75c51",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5d5a5950_d4b0a730",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-03-12T02:55:14Z",
+      "side": 1,
+      "message": "Yes please. In general, use of `cancel()` is a code smell. Boost has never been really reliable about the behaviour of a cancelled timer. Sometimes it will be called immediately, sometimes it will be called later, sometimes it won\u0027t be called at all.\n\nIt\u0027s often just better and safer to have a global flag `isCancelling` or something like that, then your timer handler can know to simply do nothing when it is called. It\u0027s similar to the `weak_ptr` trick used to protect timer handlers from trying to use objects that were deleted before the timer handler was called.",
+      "parentUuid": "2cdf64b3_c4ceca77",
+      "revId": "b84f9676f660567602ea82d5f762222039e75c51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
