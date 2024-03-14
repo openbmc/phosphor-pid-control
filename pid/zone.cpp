@@ -93,7 +93,8 @@ void DbusPidZone::setManualMode(bool mode)
 bool DbusPidZone::getFailSafeMode(void) const
 {
     // If any keys are present at least one sensor is in fail safe mode.
-    return !_failSafeSensors.empty();
+    // If no one thermal input present, zone is in fail safe mode.
+    return !_failSafeSensors.empty() || _thermalInputs.empty();
 }
 
 void DbusPidZone::markSensorMissing(const std::string& name)
