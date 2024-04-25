@@ -6,6 +6,7 @@ project(
         'warning_level=3',
         'werror=true',
         'cpp_std=c++23',
+        'b_lto=true',
     ]
 )
 
