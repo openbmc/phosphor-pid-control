@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f48e8c5_8ed5712d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-04-26T00:25:45Z",
+      "side": 1,
+      "message": "Good cleanup, to address bit rot against a third-party library that changed.",
+      "revId": "8dc277cc790efa2a25a4778693cba1bfa24ab741",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
