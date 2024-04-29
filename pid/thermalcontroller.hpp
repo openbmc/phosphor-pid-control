@@ -53,8 +53,7 @@ class ThermalController : public PIDController
     ThermalController(const std::string& id,
                       const std::vector<pid_control::conf::SensorInput>& inputs,
                       const ThermalType& type, ZoneInterface* owner) :
-        PIDController(id, owner),
-        _inputs(inputs), type(type)
+        PIDController(id, owner), _inputs(inputs), type(type)
     {}
 
     double inputProc(void) override;

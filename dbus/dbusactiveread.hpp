@@ -22,8 +22,8 @@ class DbusActiveRead : public ReadInterface
     DbusActiveRead(sdbusplus::bus_t& bus, const std::string& path,
                    const std::string& service,
                    std::unique_ptr<DbusHelperInterface> helper) :
-        ReadInterface(),
-        _bus(bus), _path(path), _service(service), _helper(std::move(helper))
+        ReadInterface(), _bus(bus), _path(path), _service(service),
+        _helper(std::move(helper))
     {}
 
     ReadReturn read(void) override;

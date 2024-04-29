@@ -18,8 +18,8 @@ class PluggableSensor : public Sensor
     PluggableSensor(const std::string& name, int64_t timeout,
                     std::unique_ptr<ReadInterface> reader,
                     std::unique_ptr<WriteInterface> writer) :
-        Sensor(name, timeout),
-        _reader(std::move(reader)), _writer(std::move(writer))
+        Sensor(name, timeout), _reader(std::move(reader)),
+        _writer(std::move(writer))
     {}
 
     ReadReturn read(void) override;
