@@ -1,0 +1,8 @@
+Code-Review+2: Josh Lehan <krellan@google.com>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Konstantin Aladyshev <aladyshev22@gmail.com>
+Submitted-at: Tue, 30 Apr 2024 09:31:32 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/71089
+Comments-Total: 2
+Project: openbmc/phosphor-pid-control
+Branch: refs/heads/master
