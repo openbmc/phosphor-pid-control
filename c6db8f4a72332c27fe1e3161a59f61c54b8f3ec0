@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "cedd99b6_2136814f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-05-25T09:47:05Z",
+      "side": 1,
+      "message": "Looks good, and reasonable to have it be a configuration option that will not be done by default, so behavior of existing systems will remain unchanged",
+      "revId": "c6db8f4a72332c27fe1e3161a59f61c54b8f3ec0",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
