@@ -36,6 +36,10 @@ using DebugThermalPowerInterface =
     sdbusplus::xyz::openbmc_project::Debug::Pid::server::ThermalPower;
 using ProcessObject =
     ServerObject<ProcessInterface, DebugThermalPowerInterface>;
+using FailSafeSensorsMap =
+    std::map<std::string, std::pair<std::string, double>>;
+using FailSafeSensorPair =
+    std::pair<std::string, std::pair<std::string, double>>;
 
 namespace pid_control
 {
@@ -74,7 +78,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool getRedundantWrite(void) const override;
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
-    void markSensorMissing(const std::string& name);
+    void markSensorMissing(const std::string& name,
+                           const std::string& failReason);
     bool getAccSetPoint(void) const override;
 
     int64_t getZoneID(void) const override;
@@ -84,6 +89,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void clearSetPoints(void) override;
     void clearRPMCeilings(void) override;
     double getFailSafePercent(void) override;
+    FailSafeSensorsMap getFailSafeSensors(void) const override;
     double getMinThermalSetPoint(void) const;
     uint64_t getCycleIntervalTime(void) const override;
     uint64_t getUpdateThermalsCycle(void) const override;
@@ -171,7 +177,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
             // check if fan fail.
             if (sensor->getFailed())
             {
-                markSensorMissing(sensorInput);
+                markSensorMissing(sensorInput, sensor->getFailReason());
 
                 if (debugEnabled)
                 {
@@ -180,7 +186,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
             }
             else if (timeout != 0 && duration >= period)
             {
-                markSensorMissing(sensorInput);
+                markSensorMissing(sensorInput, "Sensor timeout");
 
                 if (debugEnabled)
                 {
@@ -225,7 +231,10 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     const double _zoneFailSafePercent;
     const conf::CycleTime _cycleTime;
 
-    std::map<std::string, double> _failSafeSensors;
+    /*
+     * <map key = sensor name, value = sensor fail reason and failsafe percent>
+     */
+    FailSafeSensorsMap _failSafeSensors;
     std::set<std::string> _missingAcceptable;
 
     std::map<std::string, double> _SetPoints;

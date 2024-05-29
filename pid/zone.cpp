@@ -97,7 +97,13 @@ bool DbusPidZone::getFailSafeMode(void) const
     return !_failSafeSensors.empty();
 }
 
-void DbusPidZone::markSensorMissing(const std::string& name)
+FailSafeSensorsMap DbusPidZone::getFailSafeSensors(void) const
+{
+    return _failSafeSensors;
+}
+
+void DbusPidZone::markSensorMissing(const std::string& name,
+                                    const std::string& failReason)
 {
     if (_missingAcceptable.find(name) != _missingAcceptable.end())
     {
@@ -109,11 +115,12 @@ void DbusPidZone::markSensorMissing(const std::string& name)
 
     if (_sensorFailSafePercent[name] == 0)
     {
-        _failSafeSensors[name] = _zoneFailSafePercent;
+        _failSafeSensors[name] = std::pair(failReason, _zoneFailSafePercent);
     }
     else
     {
-        _failSafeSensors[name] = _sensorFailSafePercent[name];
+        _failSafeSensors[name] =
+            std::pair(failReason, _sensorFailSafePercent[name]);
     }
 
     if (debugEnabled)
@@ -183,24 +190,24 @@ void DbusPidZone::clearSetPoints(void)
 
 double DbusPidZone::getFailSafePercent(void)
 {
-    std::map<std::string, double>::iterator maxData = std::max_element(
+    FailSafeSensorsMap::iterator maxData = std::max_element(
         _failSafeSensors.begin(), _failSafeSensors.end(),
-        [](const std::pair<std::string, double> firstData,
-           const std::pair<std::string, double> secondData) {
-            return firstData.second < secondData.second;
+        [](const FailSafeSensorPair firstData,
+           const FailSafeSensorPair secondData) {
+            return firstData.second.second < secondData.second.second;
         });
 
     // In dbus/dbusconfiguration.cpp, the default sensor failsafepercent is 0 if
     // there is no setting in json.
     // Therfore, if the max failsafe duty in _failSafeSensors is 0, set final
     // failsafe duty to _zoneFailSafePercent.
-    if ((*maxData).second == 0)
+    if ((*maxData).second.second == 0)
     {
         return _zoneFailSafePercent;
     }
     else
     {
-        return (*maxData).second;
+        return (*maxData).second.second;
     }
 }
 
@@ -505,7 +512,7 @@ void DbusPidZone::initializeCache(void)
         _cachedFanOutputs[f] = {nan, nan};
 
         // Start all fans in fail-safe mode.
-        markSensorMissing(f);
+        markSensorMissing(f, "");
     }
 
     for (const auto& t : _thermalInputs)
@@ -513,7 +520,7 @@ void DbusPidZone::initializeCache(void)
         _cachedValuesByName[t] = {nan, nan};
 
         // Start all sensors in fail-safe mode.
-        markSensorMissing(t);
+        markSensorMissing(t, "");
     }
 }
 
