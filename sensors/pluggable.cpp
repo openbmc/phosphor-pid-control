@@ -39,4 +39,9 @@ bool PluggableSensor::getFailed(void)
     return _reader->getFailed();
 }
 
+std::string PluggableSensor::getFailReason(void)
+{
+    return _reader->getFailReason();
+}
+
 } // namespace pid_control
