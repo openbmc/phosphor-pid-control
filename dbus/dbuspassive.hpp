@@ -55,6 +55,7 @@ class DbusPassive : public ReadInterface
 
     ReadReturn read(void) override;
     bool getFailed(void) const override;
+    std::string getFailReason(void) const override;
 
     void updateValue(double value, bool force);
     void setValue(double value, double unscaled);
