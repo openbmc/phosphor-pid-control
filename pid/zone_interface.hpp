@@ -2,6 +2,7 @@
 
 #include "sensors/sensor.hpp"
 
+#include <map>
 #include <string>
 
 namespace pid_control
@@ -89,6 +90,10 @@ class ZoneInterface
      * fail safe.
      */
     virtual double getFailSafePercent() = 0;
+
+    /** Return failsafe sensor list */
+    virtual std::map<std::string, std::pair<std::string, double>>
+        getFailSafeSensors() const = 0;
 
     /** Return the zone's cycle time settings */
     virtual uint64_t getCycleIntervalTime(void) const = 0;
