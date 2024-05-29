@@ -44,6 +44,11 @@ class ReadInterface
     {
         return false;
     }
+
+    virtual std::string getFailReason(void) const
+    {
+        return "Unimplemented";
+    }
 };
 
 /*
