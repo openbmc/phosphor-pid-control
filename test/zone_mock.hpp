@@ -42,6 +42,9 @@ class ZoneMock : public ZoneInterface
     MOCK_CONST_METHOD0(getManualMode, bool());
     MOCK_CONST_METHOD0(getFailSafeMode, bool());
     MOCK_METHOD0(getFailSafePercent, double());
+    MOCK_CONST_METHOD0(
+        getFailSafeSensors,
+        std::map<std::string, std::pair<std::string, double>>(void));
     MOCK_CONST_METHOD0(getZoneID, int64_t());
 
     MOCK_CONST_METHOD0(getCycleIntervalTime, uint64_t());
