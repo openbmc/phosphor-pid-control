@@ -183,6 +183,31 @@ bool DbusPassive::getFailed(void) const
     return _failed || !_available || !_functional;
 }
 
+std::string DbusPassive::getFailReason(void) const
+{
+    if (_badReading)
+    {
+        return "Sensor reading bad";
+    }
+    if (_marginHot)
+    {
+        return "Margin hot";
+    }
+    if (_failed)
+    {
+        return "Sensor threshold asserted";
+    }
+    if (!_available)
+    {
+        return "Sensor unavailable";
+    }
+    if (!_functional)
+    {
+        return "Sensor not functional";
+    }
+    return "Unknown";
+}
+
 void DbusPassive::setFailed(bool value)
 {
     _failed = value;

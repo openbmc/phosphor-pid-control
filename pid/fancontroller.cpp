@@ -176,6 +176,14 @@ void FanController::outputProc(double value)
                           << (failsafeCurrState ? "entering failsafe"
                                                 : "returning to normal")
                           << " mode, output pwm: " << percent << "\n";
+
+                std::map<std::string, std::pair<std::string, double>>
+                    failSensorList = _owner->getFailSafeSensors();
+                for (const auto& it : failSensorList)
+                {
+                    std::cerr << "Fail sensor: " << it.first
+                              << ", reason: " << it.second.first << "\n";
+                }
             }
         }
     }
