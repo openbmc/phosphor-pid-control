@@ -8,13 +8,13 @@ namespace pid_control
 
 struct SensorProperties
 {
-    int64_t scale;
-    double value;
-    double min;
-    double max;
+    int64_t scale = 0;
+    double value = 0.0;
+    double min = 0.0;
+    double max = 0.0;
     std::string unit;
-    bool available;
-    bool unavailableAsFailed;
+    bool available = false;
+    bool unavailableAsFailed = false;
 };
 
 class DbusHelperInterface
