@@ -55,8 +55,8 @@ bool isThermalType(const std::string& typeString)
 
 std::unique_ptr<PIDController> ThermalController::createThermalPid(
     ZoneInterface* owner, const std::string& id,
-    const std::vector<pid_control::conf::SensorInput>& inputs, double setpoint,
-    const ec::pidinfo& initial, const ThermalType& type)
+    const std::vector<pid_control::conf::SensorInput>& inputs,
+    double setpoint = 0, const ec::pidinfo& initial, const ThermalType& type)
 {
     // ThermalController requires at least 1 input
     if (inputs.empty())
