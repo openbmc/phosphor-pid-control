@@ -61,6 +61,8 @@ std::unique_ptr<PIDController> ThermalController::createThermalPid(
     // ThermalController requires at least 1 input
     if (inputs.empty())
     {
+        owner = nullptr;
+        delete owner;
         throw ControllerBuildException("Thermal controller missing inputs");
     }
 
