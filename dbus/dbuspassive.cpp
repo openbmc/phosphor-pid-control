@@ -217,7 +217,7 @@ double DbusPassive::getMin(void)
     return _min;
 }
 
-void DbusPassive::updateValue(double value, bool force)
+void DbusPassive::updateValue(double value = 0, bool force = false)
 {
     _badReading = false;
 
