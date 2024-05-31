@@ -42,12 +42,13 @@ class HostSensor : public Sensor, public ValueObject
     static std::unique_ptr<Sensor> createTemp(const std::string& name,
                                               int64_t timeout,
                                               sdbusplus::bus_t& bus,
-                                              const char* objPath, bool defer);
+                                              const std::string& objPath,
+                                              bool defer);
 
     HostSensor(const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
-               const char* objPath, bool defer) :
+               const std::string& objPath, bool defer) :
         Sensor(name, timeout),
-        ValueObject(bus, objPath,
+        ValueObject(bus, objPath.c_str(),
                     defer ? ValueObject::action::defer_emit
                           : ValueObject::action::emit_object_added)
     {}
@@ -65,7 +66,7 @@ class HostSensor : public Sensor, public ValueObject
      */
     std::mutex _lock;
     std::chrono::high_resolution_clock::time_point _updated;
-    double _value = 0;
+    double _value = 0.0;
 };
 
 } // namespace pid_control

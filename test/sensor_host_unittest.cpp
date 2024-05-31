@@ -35,7 +35,7 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
-    const char* objPath = "/asdf/asdf0";
+    std::string objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
@@ -64,7 +64,7 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
-    const char* objPath = "/asdf/asdf0";
+    std::string objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
