@@ -3,6 +3,7 @@ project(
     version : '1.0.0',
     meson_version: '>=1.1.1',
     default_options: [
+        'b_ndebug=if-release',
         'warning_level=3',
         'werror=true',
         'cpp_std=c++23',
