@@ -54,7 +54,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
 
     bool defer = true;
     bool accSetPoint = false;
-    const char* objPath = "/path/";
+    std::string objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
     double failSafePercent = 0;
@@ -76,10 +76,10 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                     enableInterface, propertiesenable, &de);
 
-    EXPECT_CALL(sdbus_mock_enable,
-                sd_bus_add_object_vtable(
-                    IsNull(), NotNull(), StrEq(pidsensorpath.c_str()),
-                    StrEq(debugThermalPowerInterface), NotNull(), NotNull()))
+    EXPECT_CALL(
+        sdbus_mock_enable,
+        sd_bus_add_object_vtable(IsNull(), _, StrEq(pidsensorpath.c_str()),
+                                 StrEq(debugThermalPowerInterface), _, _))
         .Times(::testing::AnyNumber())
         .WillOnce(Return(0));
 
@@ -119,11 +119,10 @@ class PidZoneTest : public ::testing::Test
         SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                         enableInterface, propertiesenable,
                         &propertyenable_index);
-        EXPECT_CALL(sdbus_mock_enable,
-                    sd_bus_add_object_vtable(IsNull(), NotNull(),
-                                             StrEq(pidsensorpath.c_str()),
-                                             StrEq(debugThermalPowerInterface),
-                                             NotNull(), NotNull()))
+        EXPECT_CALL(
+            sdbus_mock_enable,
+            sd_bus_add_object_vtable(IsNull(), _, StrEq(pidsensorpath.c_str()),
+                                     StrEq(debugThermalPowerInterface), _, _))
             .Times(::testing::AnyNumber())
             .WillOnce(Return(0));
 
@@ -148,7 +147,7 @@ class PidZoneTest : public ::testing::Test
     double setpoint = 50.0;
     bool defer = true;
     bool accSetPoint = false;
-    const char* objPath = "/path/";
+    std::string objPath = "/path/";
     SensorManager mgr;
     conf::CycleTime cycleTime;
 
@@ -185,7 +184,7 @@ TEST_F(PidZoneTest, AddPidControlProcessGetAndSetEnableTest_BehavesAsExpected)
 
     EXPECT_CALL(sdbus_mock_mode, sd_bus_emit_properties_changed_strv(
                                      IsNull(), StrEq(pidsensorpath.c_str()),
-                                     StrEq(enableInterface), NotNull()))
+                                     StrEq(enableInterface), _))
         .Times(::testing::AnyNumber())
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
@@ -211,7 +210,7 @@ TEST_F(PidZoneTest, SetManualMode_RedundantWritesEnabledOnceAfterManualMode)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addFanPID(std::move(tpid));
 
@@ -243,7 +242,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
 
     EXPECT_CALL(sdbus_mock_mode, sd_bus_emit_properties_changed_strv(
                                      IsNull(), StrEq(pidsensorpath.c_str()),
-                                     StrEq(enableInterface), NotNull()))
+                                     StrEq(enableInterface), _))
         .Times(::testing::AnyNumber())
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
@@ -287,7 +286,7 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
 
     EXPECT_CALL(sdbus_mock_mode, sd_bus_emit_properties_changed_strv(
                                      IsNull(), StrEq(pidsensorpath.c_str()),
-                                     StrEq(enableInterface), NotNull()))
+                                     StrEq(enableInterface), _))
         .Times(::testing::AnyNumber())
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
@@ -758,7 +757,7 @@ TEST_F(PidZoneTest, AddThermalPIDTest_VerifiesThermalPIDsProcessed)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addThermalPID(std::move(tpid));
 
@@ -783,7 +782,7 @@ TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addFanPID(std::move(tpid));
 
@@ -802,8 +801,8 @@ TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)
     // Verifies that someone doesn't remove the internal call to the dbus
     // object from which we're inheriting.
     EXPECT_CALL(sdbus_mock_mode,
-                sd_bus_emit_properties_changed_strv(
-                    IsNull(), StrEq(objPath), StrEq(modeInterface), NotNull()))
+                sd_bus_emit_properties_changed_strv(IsNull(), StrEq(objPath),
+                                                    StrEq(modeInterface), _))
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
                 [[maybe_unused]] const char* interface, const char** names) {

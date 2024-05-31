@@ -42,9 +42,8 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
                      const std::string& path, const std::string& intf,
                      const std::vector<std::string>& properties, double* index)
 {
-    EXPECT_CALL(*sdbus_mock,
-                sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),
-                                         StrEq(intf), NotNull(), NotNull()))
+    EXPECT_CALL(*sdbus_mock, sd_bus_add_object_vtable(IsNull(), _, StrEq(path),
+                                                      StrEq(intf), _, _))
         .Times(::testing::AnyNumber())
         .WillOnce(Return(0));
 
@@ -58,9 +57,8 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
     if (!properties.empty())
     {
         (*index) = 0;
-        EXPECT_CALL(*sdbus_mock,
-                    sd_bus_emit_properties_changed_strv(IsNull(), StrEq(path),
-                                                        StrEq(intf), NotNull()))
+        EXPECT_CALL(*sdbus_mock, sd_bus_emit_properties_changed_strv(
+                                     IsNull(), StrEq(path), StrEq(intf), _))
             .Times(properties.size())
             .WillRepeatedly(Invoke([=]([[maybe_unused]] sd_bus* bus,
                                        [[maybe_unused]] const char* path,

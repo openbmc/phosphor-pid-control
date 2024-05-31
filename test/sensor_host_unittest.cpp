@@ -35,12 +35,12 @@ TEST(HostSensorTest, CreateHostTempSensorTest)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
-    const char* objPath = "/asdf/asdf0";
+    std::string objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
     std::vector<std::string> properties = {};
-    double d;
+    double d = 0.0;
 
     // The createTemp updates all the properties, however, only Scale is set
     // to non-default.
@@ -64,12 +64,12 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
     auto bus_mock = sdbusplus::get_mocked_new(&sdbus_mock);
     std::string name = "fleeting0";
     int64_t timeout = 1;
-    const char* objPath = "/asdf/asdf0";
+    std::string objPath = "/asdf/asdf0";
     bool defer = false;
     std::string interface = "xyz.openbmc_project.Sensor.Value";
 
     std::vector<std::string> properties = {};
-    double d;
+    double d = 0.0;
 
     SetupDbusObject(&sdbus_mock, defer, objPath, interface, properties, &d);
 
@@ -82,14 +82,13 @@ TEST(HostSensorTest, VerifyWriteThenReadMatches)
 
     // Value is updated from dbus calls only (normally).
     HostSensor* hs = static_cast<HostSensor*>(s.get());
-    double new_value = 2;
+    double new_value = 2.0;
 
     ReadReturn r = hs->read();
     EXPECT_EQ(r.value, 0);
 
-    EXPECT_CALL(sdbus_mock,
-                sd_bus_emit_properties_changed_strv(
-                    IsNull(), StrEq(objPath), StrEq(interface), NotNull()))
+    EXPECT_CALL(sdbus_mock, sd_bus_emit_properties_changed_strv(
+                                IsNull(), StrEq(objPath), StrEq(interface), _))
         .WillOnce(Invoke(
             [=]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
                 [[maybe_unused]] const char* interface, const char** names) {
