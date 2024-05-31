@@ -136,12 +136,14 @@ bool validType(const std::string& type)
 
 void scaleSensorReading(const double min, const double max, double& value)
 {
-    if (max <= 0 || max <= min)
+    double minValue = min;
+    double maxValue = max;
+    if (maxValue <= 0 || maxValue <= minValue)
     {
         return;
     }
-    value -= min;
-    value /= (max - min);
+    value -= minValue;
+    value /= (maxValue - minValue);
 }
 
 } // namespace pid_control
