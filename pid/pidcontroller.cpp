@@ -30,8 +30,8 @@
 namespace pid_control
 {
 
-double PIDController::calPIDOutput(double setpt, double input,
-                                   ec::pid_info_t* info)
+double PIDController::calPIDOutput(ec::pid_info_t* info, double setpt = 0,
+                                   double input = 0)
 {
     double output;
     auto name = getID();
@@ -120,7 +120,7 @@ void PIDController::process(void)
     auto info = getPIDInfo();
 
     // Calculate output value
-    output = calPIDOutput(setpt, input, info);
+    output = calPIDOutput(info, setpt, input);
 
     info->lastOutput = output;
 
