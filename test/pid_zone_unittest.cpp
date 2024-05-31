@@ -54,7 +54,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
 
     bool defer = true;
     bool accSetPoint = false;
-    const char* objPath = "/path/";
+    std::string objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
     double failSafePercent = 0;
@@ -148,7 +148,7 @@ class PidZoneTest : public ::testing::Test
     double setpoint = 50.0;
     bool defer = true;
     bool accSetPoint = false;
-    const char* objPath = "/path/";
+    std::string objPath = "/path/";
     SensorManager mgr;
     conf::CycleTime cycleTime;
 
@@ -211,7 +211,7 @@ TEST_F(PidZoneTest, SetManualMode_RedundantWritesEnabledOnceAfterManualMode)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addFanPID(std::move(tpid));
 
@@ -758,7 +758,7 @@ TEST_F(PidZoneTest, AddThermalPIDTest_VerifiesThermalPIDsProcessed)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addThermalPID(std::move(tpid));
 
@@ -783,7 +783,7 @@ TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addFanPID(std::move(tpid));
 
@@ -798,6 +798,10 @@ TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
 TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)
 {
     // The manual(bool) method is inherited from the dbus mode interface.
+
+    EXPECT_CALL(sdbus_mock_mode, sd_bus_slot_unref(_))
+        .WillOnce(Return(
+            nullptr)); // Example of setting an expectation with a return value
 
     // Verifies that someone doesn't remove the internal call to the dbus
     // object from which we're inheriting.
