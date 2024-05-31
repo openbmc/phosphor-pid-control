@@ -178,9 +178,9 @@ SensorManager
                  * The reason we handle this as a HostSensor is because it's
                  * not quite pluggable; but maybe it could be.
                  */
-                auto sensor = HostSensor::createTemp(
-                    name, info->timeout, hostSensorBus, info->readPath.c_str(),
-                    deferSignals);
+                auto sensor =
+                    HostSensor::createTemp(name, info->timeout, hostSensorBus,
+                                           info->readPath, deferSignals);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
             else
