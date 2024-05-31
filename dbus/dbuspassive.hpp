@@ -71,9 +71,10 @@ class DbusPassive : public ReadInterface
 
   private:
     sdbusplus::bus::match_t _signal;
-    int64_t _scale;
+    int64_t _scale = 0;
     std::string _id; // for debug identification
-    std::unique_ptr<DbusHelperInterface> _helper;
+    std::unique_ptr<DbusHelperInterface> _helper =
+        std::make_unique<DbusHelperInterface>();
 
     std::mutex _lock;
     double _value = 0;
