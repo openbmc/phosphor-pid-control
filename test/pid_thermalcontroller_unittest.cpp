@@ -31,7 +31,7 @@ TEST(ThermalControllerTest, BoringFactoryTest)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     // Success
     EXPECT_FALSE(p == nullptr);
 }
@@ -49,7 +49,7 @@ TEST(ThermalControllerTest, VerifyFactoryFailsWithZeroInputs)
     EXPECT_THROW(
         {
             p = ThermalController::createThermalPid(
-                &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+                &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
         },
         std::exception);
     EXPECT_TRUE(p == nullptr);
@@ -66,7 +66,7 @@ TEST(ThermalControllerTest, InputProc_BehavesAsExpected)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
@@ -85,7 +85,7 @@ TEST(ThermalControllerTest, SetPtProc_BehavesAsExpected)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_EQ(setpoint, p->setptProc());
@@ -102,7 +102,7 @@ TEST(ThermalControllerTest, OutputProc_BehavesAsExpected)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     double value = 90.0;
@@ -124,7 +124,7 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsAbsolute)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::absolute);
+        &z, "therm1", inputs, initial, ThermalType::absolute, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
@@ -146,7 +146,7 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
@@ -168,7 +168,7 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsSummation)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::summation);
+        &z, "therm1", inputs, initial, ThermalType::summation, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0"))).WillOnce(Return(5.0));
@@ -190,7 +190,7 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsTempToMargin)
     ec::pidinfo initial;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("absolute0"))).WillOnce(Return(82.0));
@@ -215,7 +215,7 @@ TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
     initial.negativeHysteresis = 4.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
@@ -249,7 +249,7 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
     initial.positiveHysteresis = 5.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
-        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+        &z, "therm1", inputs, initial, ThermalType::margin, setpoint);
     EXPECT_FALSE(p == nullptr);
 
     EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))

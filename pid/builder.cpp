@@ -113,8 +113,8 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>>
                 }
 
                 auto pid = ThermalController::createThermalPid(
-                    zone.get(), name, inputs, info.setpoint, info.pidInfo,
-                    getThermalType(info.type));
+                    zone.get(), name, inputs, info.pidInfo,
+                    getThermalType(info.type), info.setpoint);
 
                 zone->addThermalPID(std::move(pid));
                 zone->addPidControlProcess(
