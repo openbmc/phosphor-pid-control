@@ -21,10 +21,10 @@ struct ReadReturn
 struct ValueCacheEntry
 {
     // This is normalized to (0.0, 1.0) range, using configured min and max
-    double scaled;
+    double scaled = 0.0;
 
     // This is the raw value, as recieved from the input/output sensors
-    double unscaled;
+    double unscaled = 0.0;
 };
 
 /*
