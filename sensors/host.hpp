@@ -65,7 +65,7 @@ class HostSensor : public Sensor, public ValueObject
      */
     std::mutex _lock;
     std::chrono::high_resolution_clock::time_point _updated;
-    double _value = 0;
+    double _value = 0.0;
 };
 
 } // namespace pid_control
