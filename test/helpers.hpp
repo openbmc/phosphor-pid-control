@@ -43,7 +43,7 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
                      const std::vector<std::string>& properties, double* index)
 {
     EXPECT_CALL(*sdbus_mock,
-                sd_bus_add_object_vtable(IsNull(), NotNull(), StrEq(path),
+                sd_bus_add_object_vtable(IsNull(), IsNull(), StrEq(path),
                                          StrEq(intf), NotNull(), NotNull()))
         .Times(::testing::AnyNumber())
         .WillOnce(Return(0));
