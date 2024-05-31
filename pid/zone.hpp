@@ -49,7 +49,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
   public:
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
                 conf::CycleTime cycleTime, const SensorManager& mgr,
-                sdbusplus::bus_t& bus, const char* objPath, bool defer,
+                sdbusplus::bus_t& bus, const std::string& objPath, bool defer,
                 bool accumulateSetPoint) :
         ModeObject(bus, objPath,
                    defer ? ModeObject::action::defer_emit

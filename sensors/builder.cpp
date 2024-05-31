@@ -179,7 +179,7 @@ SensorManager
                  * not quite pluggable; but maybe it could be.
                  */
                 auto sensor = HostSensor::createTemp(
-                    name, info->timeout, hostSensorBus, info->readPath.c_str(),
+                    name, info->timeout, hostSensorBus, info->readPath,
                     deferSignals);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
