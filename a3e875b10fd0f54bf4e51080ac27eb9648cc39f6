@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc1d59ef_17253ad5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 17
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-05-31T07:24:52Z",
+      "side": 1,
+      "message": "Hi Harvey,\nWould like to ask will you also support this feature when using dbus configuration?",
+      "revId": "a3e875b10fd0f54bf4e51080ac27eb9648cc39f6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
