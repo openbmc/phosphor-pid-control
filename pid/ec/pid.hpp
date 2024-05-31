@@ -10,8 +10,8 @@ namespace ec
 
 typedef struct
 {
-    double min;
-    double max;
+    double min = 0.0;
+    double max = 0.0;
 } limits_t;
 
 /* Note: If you update these structs you need to update the copy code in
@@ -19,27 +19,27 @@ typedef struct
  */
 typedef struct
 {
-    bool initialized;          // has pid been initialized
-    bool checkHysterWithSetpt; // compare current input and setpoint to check
-                               // hysteresis
+    bool initialized = false;          // has pid been initialized
+    bool checkHysterWithSetpt = false; // compare current input and setpoint to
+                                       // check hysteresis
 
-    double ts;                 // sample time in seconds
-    double integral;           // integral of error
-    double lastOutput;         // value of last output
-    double lastError;          // value of last error
+    double ts = 0.0;                   // sample time in seconds
+    double integral = 0.0;             // integral of error
+    double lastOutput = 0.0;           // value of last output
+    double lastError = 0.0;            // value of last error
 
-    double proportionalCoeff;  // coeff for P
-    double integralCoeff;      // coeff for I
-    double derivativeCoeff;    // coeff for D
-    double feedFwdOffset;      // offset coeff for feed-forward term
-    double feedFwdGain;        // gain for feed-forward term
+    double proportionalCoeff = 0.0;    // coeff for P
+    double integralCoeff = 0.0;        // coeff for I
+    double derivativeCoeff = 0.0;      // coeff for D
+    double feedFwdOffset = 0.0;        // offset coeff for feed-forward term
+    double feedFwdGain = 0.0;          // gain for feed-forward term
 
-    limits_t integralLimit;    // clamp of integral
-    limits_t outLim;           // clamp of output
-    double slewNeg;
-    double slewPos;
-    double positiveHysteresis;
-    double negativeHysteresis;
+    limits_t integralLimit;            // clamp of integral
+    limits_t outLim;                   // clamp of output
+    double slewNeg = 0.0;
+    double slewPos = 0.0;
+    double positiveHysteresis = 0.0;
+    double negativeHysteresis = 0.0;
 } pid_info_t;
 
 double pid(pid_info_t* pidinfoptr, double input, double setpoint,
@@ -48,21 +48,21 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
 /* Condensed version for use by the configuration. */
 struct pidinfo
 {
-    bool checkHysterWithSetpt;  // compare current input and setpoint to check
-                                // hysteresis
+    bool checkHysterWithSetpt = false; // compare current input and setpoint to
+                                       // check hysteresis
 
-    double ts;                  // sample time in seconds
-    double proportionalCoeff;   // coeff for P
-    double integralCoeff;       // coeff for I
-    double derivativeCoeff;     // coeff for D
-    double feedFwdOffset;       // offset coeff for feed-forward term
-    double feedFwdGain;         // gain for feed-forward term
-    ec::limits_t integralLimit; // clamp of integral
-    ec::limits_t outLim;        // clamp of output
-    double slewNeg;
-    double slewPos;
-    double positiveHysteresis;
-    double negativeHysteresis;
+    double ts = 0.0;                // sample time in seconds
+    double proportionalCoeff = 0.0; // coeff for P
+    double integralCoeff = 0.0;     // coeff for I
+    double derivativeCoeff = 0.0;   // coeff for D
+    double feedFwdOffset = 0.0;     // offset coeff for feed-forward term
+    double feedFwdGain = 0.0;       // gain for feed-forward term
+    ec::limits_t integralLimit;     // clamp of integral
+    ec::limits_t outLim;            // clamp of output
+    double slewNeg = 0.0;
+    double slewPos = 0.0;
+    double positiveHysteresis = 0.0;
+    double negativeHysteresis = 0.0;
 };
 
 } // namespace ec
