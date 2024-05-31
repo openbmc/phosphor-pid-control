@@ -54,13 +54,13 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
 
     bool defer = true;
     bool accSetPoint = false;
-    const char* objPath = "/path/";
+    std::string objPath = "/path/";
     int64_t zone = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0;
+    double failSafePercent = 0.0;
     conf::CycleTime cycleTime;
 
-    double d;
+    double d = 0.0;
     std::vector<std::string> properties;
     SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
                     &d);
@@ -71,7 +71,7 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     std::string pidsensorpath =
         "/xyz/openbmc_project/settings/fanctrl/zone1/" + sensorname;
 
-    double de;
+    double de = 0.0;
     std::vector<std::string> propertiesenable;
     SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                     enableInterface, propertiesenable, &de);
@@ -133,7 +133,7 @@ class PidZoneTest : public ::testing::Test
     }
 
     // unused
-    double property_index;
+    double property_index = 0.0;
     std::vector<std::string> properties;
     double propertyenable_index;
     std::vector<std::string> propertiesenable;
@@ -144,11 +144,11 @@ class PidZoneTest : public ::testing::Test
     sdbusplus::SdBusMock sdbus_mock_enable;
     int64_t zoneId = 1;
     double minThermalOutput = 1000.0;
-    double failSafePercent = 0;
+    double failSafePercent = 0.0;
     double setpoint = 50.0;
     bool defer = true;
     bool accSetPoint = false;
-    const char* objPath = "/path/";
+    std::string objPath = "/path/";
     SensorManager mgr;
     conf::CycleTime cycleTime;
 
@@ -211,7 +211,7 @@ TEST_F(PidZoneTest, SetManualMode_RedundantWritesEnabledOnceAfterManualMode)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addFanPID(std::move(tpid));
 
@@ -758,7 +758,7 @@ TEST_F(PidZoneTest, AddThermalPIDTest_VerifiesThermalPIDsProcessed)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addThermalPID(std::move(tpid));
 
@@ -783,7 +783,7 @@ TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
     // Access the internal pid configuration to clear it out (unrelated to the
     // test).
     ec::pid_info_t* info = tpid->getPIDInfo();
-    std::memset(info, 0x00, sizeof(ec::pid_info_t));
+    *info = ec::pid_info_t{};
 
     zone->addFanPID(std::move(tpid));
 
