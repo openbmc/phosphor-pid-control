@@ -134,7 +134,7 @@ bool validType(const std::string& type)
     return (valid.find(type) != valid.end());
 }
 
-void scaleSensorReading(const double min, const double max, double& value)
+void scaleSensorReading(const double min = 0, const double max = 0, double& value)
 {
     if (max <= 0 || max <= min)
     {
