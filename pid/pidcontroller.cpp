@@ -36,7 +36,7 @@ double PIDController::calPIDOutput(double setpt, double input,
     double output;
     auto name = getID();
 
-    if (info->checkHysterWithSetpt)
+    if (info->checkHysteresisWithSetpoint)
     {
         // Over the hysteresis bounds, keep counting pid
         if (input > (setpt + info->positiveHysteresis))
