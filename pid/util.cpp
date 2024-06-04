@@ -26,7 +26,7 @@ namespace pid_control
 
 void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
 {
-    info->checkHysterWithSetpt = initial.checkHysterWithSetpt;
+    info->checkHysteresisWithSetpoint = initial.checkHysteresisWithSetpoint;
     info->ts = initial.ts;
     info->proportionalCoeff = initial.proportionalCoeff;
     info->integralCoeff = initial.integralCoeff;

@@ -20,7 +20,7 @@ typedef struct
 typedef struct
 {
     bool initialized;          // has pid been initialized
-    bool checkHysterWithSetpt; // compare current input and setpoint to check
+    bool checkHysteresisWithSetpoint; // compare current input and setpoint to check
                                // hysteresis
 
     double ts;                 // sample time in seconds
@@ -48,7 +48,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
 /* Condensed version for use by the configuration. */
 struct pidinfo
 {
-    bool checkHysterWithSetpt;  // compare current input and setpoint to check
+    bool checkHysteresisWithSetpoint;  // compare current input and setpoint to check
                                 // hysteresis
 
     double ts;                  // sample time in seconds
