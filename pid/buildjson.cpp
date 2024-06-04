@@ -66,7 +66,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
      */
     auto p = j.at("pid");
 
-    auto checkHysterWithSetpt = p.find("checkHysterWithSetpt");
+    auto checkHysterWithSetpt = p.find("checkHysteresisWithSetpoint");
     auto positiveHysteresis = p.find("positiveHysteresis");
     auto negativeHysteresis = p.find("negativeHysteresis");
     auto derivativeCoeff = p.find("derivativeCoeff");
