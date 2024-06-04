@@ -24,7 +24,7 @@ class PIDController : public Controller
         Controller(), _owner(owner), _id(id)
     {
         _pid_info.initialized = false;
-        _pid_info.checkHysterWithSetpt = false;
+        _pid_info.checkHysteresisWithSetpoint = false;
         _pid_info.ts = static_cast<double>(0.0);
         _pid_info.integral = static_cast<double>(0.0);
         _pid_info.lastOutput = static_cast<double>(0.0);

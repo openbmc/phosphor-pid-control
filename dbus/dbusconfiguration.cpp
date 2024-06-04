@@ -385,19 +385,20 @@ void populatePidInfo(
     info.pidInfo.slewPos = std::visit(VariantToDoubleVisitor(),
                                       getPIDAttribute(base, "SlewPos"));
 
-    bool checkHysterWithSetpt = false;
+    bool checkHysteresisWithSetpoint = false;
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
     double derivativeCoeff = 0;
 
-    auto findCheckHysterFlag = base.find("CheckHysterWithSetpt");
+    auto findCheckHysterFlag = base.find("CheckHysteresisWithSetpoint");
     auto findNeg = base.find("NegativeHysteresis");
     auto findPos = base.find("PositiveHysteresis");
     auto findDerivative = base.find("DCoefficient");
 
     if (findCheckHysterFlag != base.end())
     {
-        checkHysterWithSetpt = std::get<bool>(findCheckHysterFlag->second);
+        checkHysteresisWithSetpoint =
+            std::get<bool>(findCheckHysterFlag->second);
     }
     if (findNeg != base.end())
     {
@@ -415,7 +416,7 @@ void populatePidInfo(
                                      findDerivative->second);
     }
 
-    info.pidInfo.checkHysterWithSetpt = checkHysterWithSetpt;
+    info.pidInfo.checkHysteresisWithSetpoint = checkHysteresisWithSetpoint;
     info.pidInfo.negativeHysteresis = negativeHysteresis;
     info.pidInfo.positiveHysteresis = positiveHysteresis;
     info.pidInfo.derivativeCoeff = derivativeCoeff;
