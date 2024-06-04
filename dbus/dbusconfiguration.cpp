@@ -390,7 +390,7 @@ void populatePidInfo(
     double positiveHysteresis = 0;
     double derivativeCoeff = 0;
 
-    auto findCheckHysterFlag = base.find("CheckHysterWithSetpt");
+    auto findCheckHysterFlag = base.find("CheckHysteresisWithSetpoint");
     auto findNeg = base.find("NegativeHysteresis");
     auto findPos = base.find("PositiveHysteresis");
     auto findDerivative = base.find("DCoefficient");
