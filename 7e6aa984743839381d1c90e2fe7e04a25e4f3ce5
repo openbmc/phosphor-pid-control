@@ -16,6 +16,24 @@
       "message": "Its good to name the left side variable with a meaningful variable name",
       "revId": "7e6aa984743839381d1c90e2fe7e04a25e4f3ce5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "22cf03f4_fc2081ff",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-06-07T12:02:28Z",
+      "side": 1,
+      "message": "It is meaningful, and it follows the existing naming convention of the other variables in this function (which might not be the best, but at least it is consistent with what was already there).",
+      "parentUuid": "3765a5c4_778af809",
+      "revId": "7e6aa984743839381d1c90e2fe7e04a25e4f3ce5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
