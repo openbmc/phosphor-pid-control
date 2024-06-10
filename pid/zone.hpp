@@ -234,7 +234,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     std::vector<std::unique_ptr<Controller>> _fans;
     std::vector<std::unique_ptr<Controller>> _thermals;
 
-    std::map<std::string, std::unique_ptr<ProcessObject>> _pidsControlProcess;
+    std::map<std::string, std::unique_ptr<ProcessObject>> _pidsControlProcess =
+        {};
     /*
      * <key = pidname, value = pid failsafe percent>
      * Pid fail safe Percent setting by each pid controller configuration.
