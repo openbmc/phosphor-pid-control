@@ -34,6 +34,24 @@
       "parentUuid": "3765a5c4_778af809",
       "revId": "7e6aa984743839381d1c90e2fe7e04a25e4f3ce5",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "21f00fea_51aa25ca",
+        "filename": "pid/buildjson.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-06-11T02:18:52Z",
+      "side": 1,
+      "message": "Hi Josh,\nDo you think we need to change the naming of the variables or we could only change the naming for the json and dbus configuration?",
+      "parentUuid": "22cf03f4_fc2081ff",
+      "revId": "7e6aa984743839381d1c90e2fe7e04a25e4f3ce5",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
