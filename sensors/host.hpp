@@ -51,6 +51,7 @@ class HostSensor : public Sensor, public ValueObject
                     defer ? ValueObject::action::defer_emit
                           : ValueObject::action::emit_object_added)
     {}
+    ~HostSensor() = default;
 
     ValueType value(ValueType value) override;
 

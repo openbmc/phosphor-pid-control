@@ -64,6 +64,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
             _log.open(loggingPath + "/zone_" + std::to_string(zone) + ".log");
         }
     }
+    ~DbusPidZone() = default;
 
     bool getManualMode(void) const override;
     /* Could put lock around this since it's accessed from two threads, but

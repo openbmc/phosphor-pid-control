@@ -56,7 +56,15 @@ TEST(DbusPassiveTest, BoringConstructorTest)
     std::string path = "/xyz/openbmc_project/sensors/unknown/id";
 
     auto helper = std::make_unique<DbusHelperMock>();
-    SensorProperties properties;
+    SensorProperties properties = {
+        0, // scale
+        0, // value
+        0, // min
+        0, // max
+        "", // unit
+        false, // available
+        false, // unavailableAsFailed
+    };
 
     DbusPassive(bus_mock, type, id, std::move(helper), properties, false, path,
                 nullptr);

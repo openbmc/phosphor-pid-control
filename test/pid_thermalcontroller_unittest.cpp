@@ -212,6 +212,7 @@ TEST(ThermalControllerTest, NegHysteresis_BehavesAsExpected)
     double setpoint = 10.0;
     ec::pidinfo initial;
     initial.checkHysterWithSetpt = false;
+    initial.positiveHysteresis = 0.0;
     initial.negativeHysteresis = 4.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
@@ -247,6 +248,7 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
     ec::pidinfo initial;
     initial.checkHysterWithSetpt = false;
     initial.positiveHysteresis = 5.0;
+    initial.negativeHysteresis = 0.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
