@@ -33,6 +33,23 @@
       "message": "Override CI.",
       "revId": "12f71930be04fd6561441052e918692f3b478f08",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e853ddc4_b0b4d32c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-06-14T01:03:12Z",
+      "side": 1,
+      "message": "Giving +2 because somebody else gave +1",
+      "revId": "12f71930be04fd6561441052e918692f3b478f08",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
