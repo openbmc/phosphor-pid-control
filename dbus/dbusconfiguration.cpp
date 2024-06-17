@@ -510,8 +510,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
         ManagedObjectType configuration;
         try
         {
-            auto responce = bus.call(endpoint);
-            responce.read(configuration);
+            auto response = bus.call(endpoint);
+            response.read(configuration);
         }
         catch (const sdbusplus::exception_t&)
         {
