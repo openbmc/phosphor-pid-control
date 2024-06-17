@@ -134,7 +134,8 @@ void DbusPassiveRedundancy::populateFailures(void)
      *     }
      * }
      *
-     * This loops through this structure to pre-poulate the already failed items
+     * This loops through this structure to pre-populate the already failed
+     * items
      */
 
     for (const auto& [path, interfaceDict] : respData)

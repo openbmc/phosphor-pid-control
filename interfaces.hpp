@@ -23,7 +23,7 @@ struct ValueCacheEntry
     // This is normalized to (0.0, 1.0) range, using configured min and max
     double scaled;
 
-    // This is the raw value, as recieved from the input/output sensors
+    // This is the raw value, as received from the input/output sensors
     double unscaled;
 };
 

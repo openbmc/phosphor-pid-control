@@ -24,7 +24,7 @@ namespace pid_control
 {
 
 /*
- * Replace "**" in the provided path string with an appopriate concrete path
+ * Replace "**" in the provided path string with an appropriate concrete path
  * component (the first directory entry found, on the assumption that there
  * will only be a single candidate).
  */
