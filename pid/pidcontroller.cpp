@@ -45,7 +45,7 @@ double PIDController::calPIDOutput(double setpt, double input,
             output = ec::pid(info, input, setpt, &name);
 
             // this variable isn't actually used in this context, but we're
-            // setting it here incase somebody uses it later it's the correct
+            // setting it here in case somebody uses it later it's the correct
             // value
             lastInput = input;
         }
@@ -74,7 +74,7 @@ double PIDController::calPIDOutput(double setpt, double input,
             output = ec::pid(info, input, setpt, &name);
 
             // this variable isn't actually used in this context, but we're
-            // setting it here incase somebody uses it later it's the correct
+            // setting it here in case somebody uses it later it's the correct
             // value
             lastInput = input;
         }
