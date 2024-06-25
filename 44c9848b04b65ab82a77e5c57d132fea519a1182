@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9967a7ef_1a839876",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 18
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001618
+      },
+      "writtenOn": "2024-06-25T08:28:25Z",
+      "side": 1,
+      "message": "We have tested this patch and confirmed that when one fan is removed, the speed is set to 90%.",
+      "revId": "44c9848b04b65ab82a77e5c57d132fea519a1182",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
