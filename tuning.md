@@ -21,7 +21,7 @@ as `4000` or `5000`, and is in RPM.
 `/usr/share/swampd/config.json`, one can modify the PID parameters in the config
 file and restart the daemon to make the new values effective.
 
-```
+```sh
 systemctl restart phosphor-pid-control.service
 ```
 
@@ -30,7 +30,7 @@ systemctl restart phosphor-pid-control.service
 Flag `"-l \<path\>"` can be specified to enable the daemon to log fan control
 data into `path`. The log output is in CSV format with the following header:
 
-```
+```sh
 epoch_ms,setpt,fan1,fan2,...fanN,fleeting,failsafe
 ```
 

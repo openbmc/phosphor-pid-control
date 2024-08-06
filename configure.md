@@ -40,7 +40,7 @@ zones.
 
 ### Sensors
 
-```
+```json
 "sensors" : [
     {
         "name": "fan1",
@@ -109,7 +109,7 @@ If the `writePath` value contains:
 writes over dbus to the `xyz.openbmc_project.Control.FanPwm` interface. The
 `writePath` should be the full object path.
 
-```
+```text
 busctl introspect xyz.openbmc_project.Hwmon-1644477290.Hwmon1 /xyz/openbmc_project/sensors/fan_tach/fan1 --no-pager
 NAME                                TYPE      SIGNATURE RESULT/VALUE                             FLAGS
 org.freedesktop.DBus.Introspectable interface -         -                                        -
@@ -157,7 +157,7 @@ on. For these specific sensors set this property to false.
 
 ### Zones
 
-```
+```json
 "zones" : [
         {
             "id": 1,
@@ -253,13 +253,15 @@ are used for the update periods for the fan and thermal sensors.
 
 #### type == "fan"
 
-```
-"name": "fan1-5",
-"type": "fan",
-"inputs": ["fan1", "fan5"],
-"setpoint": 90.0,
-"pid": {
-...
+```json
+{
+  "name": "fan1-5",
+  "type": "fan",
+  "inputs": ["fan1", "fan5"],
+  "setpoint": 90.0,
+  "pid": {
+  ...
+  }
 }
 ```
 
@@ -275,13 +277,15 @@ The type `fan` builds a `FanController` PID.
 
 #### type == "margin"
 
-```
-"name": "fleetingpid0",
-"type": "margin",
-"inputs": ["fleeting0"],
-"setpoint": 10,
-"pid": {
-...
+```json
+{
+  "name": "fleetingpid0",
+  "type": "margin",
+  "inputs": ["fleeting0"],
+  "setpoint": 10,
+  "pid": {
+  ...
+  }
 }
 ```
 
@@ -314,25 +318,27 @@ temperatures and so the maximal value is used to feed the PID loop.
 
 #### type == "stepwise"
 
-```
-"name": "temp1",
-"type": "stepwise",
-"inputs": ["temp1"],
-"setpoint": 30.0,
-"pid": {
-  "samplePeriod": 0.1,
-  "positiveHysteresis": 1.0,
-  "negativeHysteresis": 1.0,
-  "isCeiling": false,
-  "reading": {
-    "0": 45,
-    "1": 46,
-    "2": 47,
-  },
-  "output": {
-    "0": 5000,
-    "1": 2400,
-    "2": 2600,
+```json
+{
+  "name": "temp1",
+  "type": "stepwise",
+  "inputs": ["temp1"],
+  "setpoint": 30.0,
+  "pid": {
+    "samplePeriod": 0.1,
+    "positiveHysteresis": 1.0,
+    "negativeHysteresis": 1.0,
+    "isCeiling": false,
+    "reading": {
+      "0": 45,
+      "1": 46,
+      "2": 47
+    },
+    "output": {
+      "0": 5000,
+      "1": 2400,
+      "2": 2600
+    }
   }
 }
 ```
