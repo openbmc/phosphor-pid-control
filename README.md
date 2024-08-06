@@ -136,12 +136,12 @@ The code is broken out into modules as follows:
 
 ### Two Margin Sensors Into Three Fans (Non-Step PID)
 
-```
 A single zone system where multiple margin thermal sensors are fed into one PID
 that generates the output RPM for a set of fans controlled by one PID.
 
 margin sensors as input to thermal pid
 
+```text
 fleeting0+---->+-------+    +-------+     Thermal PID sampled
                |  min()+--->+  PID  |     slower rate.
 fleeting1+---->+-------+    +---+---+
