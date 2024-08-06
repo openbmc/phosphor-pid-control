@@ -65,12 +65,12 @@ fan responses.
 
 ## Thermal Tuning Example
 
-1.  Create initial `/usr/share/swampd/config.json` used for PID control
-2.  (Option 1) If using a fixed setpoint, write the value to
-    `/etc/thermal.d/setpoint`, run swampd manually with
-    `swampd -l ${LOG_PATH}&`, and kill the process after desired duration.
-3.  (Option 2) If sweeping fan setpoint, using the tuning helper script
-    `fan_rpm_loop_test.sh` to configure fan setpoint in steps and collect logs
-4.  Parse logs from `${LOG_PATH}/zone_*.log` and analyze response data
-5.  Modify `/usr/share/swampd/config.json` as needed
-6.  Repeat from step 2 or step 3
+1. Create initial `/usr/share/swampd/config.json` used for PID control
+2. (Option 1) If using a fixed setpoint, write the value to
+   `/etc/thermal.d/setpoint`, run swampd manually with `swampd -l ${LOG_PATH}&`,
+   and kill the process after desired duration.
+3. (Option 2) If sweeping fan setpoint, using the tuning helper script
+   `fan_rpm_loop_test.sh` to configure fan setpoint in steps and collect logs
+4. Parse logs from `${LOG_PATH}/zone_*.log` and analyze response data
+5. Modify `/usr/share/swampd/config.json` as needed
+6. Repeat from step 2 or step 3
