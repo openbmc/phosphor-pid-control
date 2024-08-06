@@ -38,7 +38,7 @@ Manual mode is controlled by zone through the following OEM command:
 | `03` | `oem2`       | `0xc2`                                                |
 | `04` | `padding`    | `0x00`                                                |
 | `05` | `SubCommand` | `Get or Set. Get == 0, Set == 1`                      |
-| `06` | `ZoneId`     |
+| `06` | `ZoneId`     |                                                       |
 | `07` | `Mode`       | `If Set, Value 1 == Manual Mode, 0 == Automatic Mode` |
 
 #### Response
@@ -64,7 +64,7 @@ phosphor-pid-control per zone.
 | `03` | `oem2`       | `0xc2`                             |
 | `04` | `padding`    | `0x00`                             |
 | `05` | `SubCommand` | `Get == 2`                         |
-| `06` | `ZoneId`     |
+| `06` | `ZoneId`     |                                    |
 
 #### Response
 
