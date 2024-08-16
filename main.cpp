@@ -143,8 +143,8 @@ void restartControlLoops()
         {
             auto jsonData = parseValidateJson(path);
             sensorConfig = buildSensorsFromJson(jsonData);
-            std::tie(zoneConfig,
-                     zoneDetailsConfig) = buildPIDsFromJson(jsonData);
+            std::tie(zoneConfig, zoneDetailsConfig) =
+                buildPIDsFromJson(jsonData);
         }
         catch (const std::exception& e)
         {
@@ -163,8 +163,8 @@ void restartControlLoops()
     }
 
     state::mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
-    state::zones = buildZones(zoneConfig, zoneDetailsConfig, state::mgmr,
-                              modeControlBus);
+    state::zones =
+        buildZones(zoneConfig, zoneDetailsConfig, state::mgmr, modeControlBus);
 
     if (0 == state::zones.size())
     {

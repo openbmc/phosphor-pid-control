@@ -24,8 +24,7 @@ class StepwiseController : public Controller
     StepwiseController(const std::string& id,
                        const std::vector<std::string>& inputs,
                        ZoneInterface* owner) :
-        Controller(),
-        _owner(owner), _id(id), _inputs(inputs)
+        Controller(), _owner(owner), _id(id), _inputs(inputs)
     {}
 
     double inputProc(void) override;

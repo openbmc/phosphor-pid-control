@@ -84,10 +84,10 @@ inline std::string sensorNameToDbusName(const std::string& sensorName)
 std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
 {
     std::vector<std::string> ret;
-    auto mapper = bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                                      "/xyz/openbmc_project/object_mapper",
-                                      "xyz.openbmc_project.ObjectMapper",
-                                      "GetSubTree");
+    auto mapper =
+        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                            "/xyz/openbmc_project/object_mapper",
+                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
     mapper.append("/", 0, std::array<const char*, 1>{thermalControlIface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
@@ -281,8 +281,8 @@ inline void getCycleTimeSetting(
     auto findAttributeName = zone.find(attributeName);
     if (findAttributeName != zone.end())
     {
-        double tmpAttributeValue = std::visit(VariantToDoubleVisitor(),
-                                              zone.at(attributeName));
+        double tmpAttributeValue =
+            std::visit(VariantToDoubleVisitor(), zone.at(attributeName));
         if (tmpAttributeValue >= 1.0)
         {
             value = static_cast<uint64_t>(tmpAttributeValue);
@@ -380,10 +380,10 @@ void populatePidInfo(
                                          getPIDAttribute(base, "OutLimitMax"));
     info.pidInfo.outLim.min = std::visit(VariantToDoubleVisitor(),
                                          getPIDAttribute(base, "OutLimitMin"));
-    info.pidInfo.slewNeg = std::visit(VariantToDoubleVisitor(),
-                                      getPIDAttribute(base, "SlewNeg"));
-    info.pidInfo.slewPos = std::visit(VariantToDoubleVisitor(),
-                                      getPIDAttribute(base, "SlewPos"));
+    info.pidInfo.slewNeg =
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewNeg"));
+    info.pidInfo.slewPos =
+        std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewPos"));
 
     bool checkHysterWithSetpt = false;
     double negativeHysteresis = 0;
@@ -401,18 +401,18 @@ void populatePidInfo(
     }
     if (findNeg != base.end())
     {
-        negativeHysteresis = std::visit(VariantToDoubleVisitor(),
-                                        findNeg->second);
+        negativeHysteresis =
+            std::visit(VariantToDoubleVisitor(), findNeg->second);
     }
     if (findPos != base.end())
     {
-        positiveHysteresis = std::visit(VariantToDoubleVisitor(),
-                                        findPos->second);
+        positiveHysteresis =
+            std::visit(VariantToDoubleVisitor(), findPos->second);
     }
     if (findDerivative != base.end())
     {
-        derivativeCoeff = std::visit(VariantToDoubleVisitor(),
-                                     findDerivative->second);
+        derivativeCoeff =
+            std::visit(VariantToDoubleVisitor(), findDerivative->second);
     }
 
     info.pidInfo.checkHysterWithSetpt = checkHysterWithSetpt;
@@ -432,16 +432,16 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
 
     createMatches(bus, timer);
 
-    auto mapper = bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                                      "/xyz/openbmc_project/object_mapper",
-                                      "xyz.openbmc_project.ObjectMapper",
-                                      "GetSubTree");
-    mapper.append("/", 0,
-                  std::array<const char*, 6>{
-                      objectManagerInterface, pidConfigurationInterface,
-                      pidZoneConfigurationInterface,
-                      stepwiseConfigurationInterface, sensorInterface,
-                      defaultPwmInterface});
+    auto mapper =
+        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
+                            "/xyz/openbmc_project/object_mapper",
+                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+    mapper.append(
+        "/", 0,
+        std::array<const char*, 6>{
+            objectManagerInterface, pidConfigurationInterface,
+            pidZoneConfigurationInterface, stepwiseConfigurationInterface,
+            sensorInterface, defaultPwmInterface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
         respData;
@@ -516,8 +516,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
         catch (const sdbusplus::exception_t&)
         {
             // this shouldn't happen, probably means daemon crashed
-            throw std::runtime_error("Error getting managed objects from " +
-                                     owner.first);
+            throw std::runtime_error(
+                "Error getting managed objects from " + owner.first);
         }
 
         for (auto& pathPair : configuration)
@@ -562,8 +562,8 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 for (const std::string& profile : profiles)
                 {
                     if (std::find(selectedProfiles.begin(),
-                                  selectedProfiles.end(),
-                                  profile) != selectedProfiles.end())
+                                  selectedProfiles.end(), profile) !=
+                        selectedProfiles.end())
                     {
                         found = true;
                         break;
@@ -908,11 +908,11 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     offsetType =
                         std::get<std::string>(findSetpointOffset->second);
                     if (std::find(thresholds::types.begin(),
-                                  thresholds::types.end(),
-                                  offsetType) == thresholds::types.end())
+                                  thresholds::types.end(), offsetType) ==
+                        thresholds::types.end())
                     {
-                        throw std::runtime_error("Unsupported type: " +
-                                                 offsetType);
+                        throw std::runtime_error(
+                            "Unsupported type: " + offsetType);
                     }
                 }
 

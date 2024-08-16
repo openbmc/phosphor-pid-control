@@ -617,9 +617,8 @@ std::string DbusPidZone::leader() const
     return _maximumSetPointName;
 }
 
-void DbusPidZone::updateThermalPowerDebugInterface(std::string pidName,
-                                                   std::string leader,
-                                                   double input, double output)
+void DbusPidZone::updateThermalPowerDebugInterface(
+    std::string pidName, std::string leader, double input, double output)
 {
     if (leader.empty())
     {

@@ -39,9 +39,8 @@ namespace ipmi
 static constexpr auto manualProperty = "Manual";
 static constexpr auto failsafeProperty = "FailSafe";
 
-ipmi_ret_t ZoneControlIpmiHandler::getFailsafeModeState(const uint8_t* reqBuf,
-                                                        uint8_t* replyBuf,
-                                                        size_t* dataLen)
+ipmi_ret_t ZoneControlIpmiHandler::getFailsafeModeState(
+    const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
 {
     bool current;
 
@@ -53,8 +52,8 @@ ipmi_ret_t ZoneControlIpmiHandler::getFailsafeModeState(const uint8_t* reqBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
-    ipmi_ret_t rc = _control->getFanCtrlProperty(request->zone, &current,
-                                                 failsafeProperty);
+    ipmi_ret_t rc =
+        _control->getFanCtrlProperty(request->zone, &current, failsafeProperty);
     if (rc)
     {
         return rc;
@@ -71,9 +70,8 @@ ipmi_ret_t ZoneControlIpmiHandler::getFailsafeModeState(const uint8_t* reqBuf,
  *   <arg name="properties" direction="out" type="a{sv}"/>
  * </method>
  */
-ipmi_ret_t ZoneControlIpmiHandler::getManualModeState(const uint8_t* reqBuf,
-                                                      uint8_t* replyBuf,
-                                                      size_t* dataLen)
+ipmi_ret_t ZoneControlIpmiHandler::getManualModeState(
+    const uint8_t* reqBuf, uint8_t* replyBuf, size_t* dataLen)
 {
     bool current;
 
@@ -85,8 +83,8 @@ ipmi_ret_t ZoneControlIpmiHandler::getManualModeState(const uint8_t* reqBuf,
     const auto request =
         reinterpret_cast<const struct FanCtrlRequest*>(&reqBuf[0]);
 
-    ipmi_ret_t rc = _control->getFanCtrlProperty(request->zone, &current,
-                                                 manualProperty);
+    ipmi_ret_t rc =
+        _control->getFanCtrlProperty(request->zone, &current, manualProperty);
     if (rc)
     {
         return rc;
@@ -123,10 +121,9 @@ ipmi_ret_t ZoneControlIpmiHandler::setManualModeState(
 }
 
 /* Three command packages: get, set true, set false */
-ipmi_ret_t manualModeControl(ZoneControlIpmiHandler* handler,
-                             [[maybe_unused]] ipmi_cmd_t cmd,
-                             const uint8_t* reqBuf, uint8_t* replyCmdBuf,
-                             size_t* dataLen)
+ipmi_ret_t manualModeControl(
+    ZoneControlIpmiHandler* handler, [[maybe_unused]] ipmi_cmd_t cmd,
+    const uint8_t* reqBuf, uint8_t* replyCmdBuf, size_t* dataLen)
 {
     // FanCtrlRequest is the smaller of the requests, so it's at a minimum.
     if (*dataLen < sizeof(struct FanCtrlRequest))

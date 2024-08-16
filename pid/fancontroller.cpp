@@ -28,10 +28,9 @@
 namespace pid_control
 {
 
-std::unique_ptr<PIDController>
-    FanController::createFanPid(ZoneInterface* owner, const std::string& id,
-                                const std::vector<std::string>& inputs,
-                                const ec::pidinfo& initial)
+std::unique_ptr<PIDController> FanController::createFanPid(
+    ZoneInterface* owner, const std::string& id,
+    const std::vector<std::string>& inputs, const ec::pidinfo& initial)
 {
     if (inputs.size() == 0)
     {

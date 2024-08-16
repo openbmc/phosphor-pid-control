@@ -19,15 +19,14 @@ namespace pid_control
 class FanController : public PIDController
 {
   public:
-    static std::unique_ptr<PIDController>
-        createFanPid(ZoneInterface* owner, const std::string& id,
-                     const std::vector<std::string>& inputs,
-                     const ec::pidinfo& initial);
+    static std::unique_ptr<PIDController> createFanPid(
+        ZoneInterface* owner, const std::string& id,
+        const std::vector<std::string>& inputs, const ec::pidinfo& initial);
 
     FanController(const std::string& id, const std::vector<std::string>& inputs,
                   ZoneInterface* owner) :
-        PIDController(id, owner),
-        _inputs(inputs), _direction(FanSpeedDirection::NEUTRAL)
+        PIDController(id, owner), _inputs(inputs),
+        _direction(FanSpeedDirection::NEUTRAL)
     {}
     ~FanController();
     double inputProc(void) override;

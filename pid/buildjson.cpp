@@ -57,8 +57,8 @@ void from_json(const json& j, conf::ControllerInfo& c)
         findMissingAcceptable->get_to(missingAcceptableNames);
     }
 
-    c.inputs = spliceInputs(inputNames, inputTempToMargin,
-                            missingAcceptableNames);
+    c.inputs =
+        spliceInputs(inputNames, inputTempToMargin, missingAcceptableNames);
 
     /* TODO: We need to handle parsing other PID controller configurations.
      * We can do that by checking for different keys and making the decision

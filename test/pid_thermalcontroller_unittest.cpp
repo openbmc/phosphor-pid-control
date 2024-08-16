@@ -118,8 +118,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsAbsolute)
 
     ZoneMock z;
 
-    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"},
-                                                          {"fleeting1"}};
+    std::vector<pid_control::conf::SensorInput> inputs = {
+        {"fleeting0"}, {"fleeting1"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -140,8 +140,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsMargin)
 
     ZoneMock z;
 
-    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"},
-                                                          {"fleeting1"}};
+    std::vector<pid_control::conf::SensorInput> inputs = {
+        {"fleeting0"}, {"fleeting1"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 
@@ -162,8 +162,8 @@ TEST(ThermalControllerTest, InputProc_MultipleInputsSummation)
 
     ZoneMock z;
 
-    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"},
-                                                          {"fleeting1"}};
+    std::vector<pid_control::conf::SensorInput> inputs = {
+        {"fleeting0"}, {"fleeting1"}};
     double setpoint = 10.0;
     ec::pidinfo initial;
 

@@ -33,13 +33,12 @@ void scaleHelper(T& ptr, int64_t value)
     }
 }
 
-std::unique_ptr<Sensor> HostSensor::createTemp(const std::string& name,
-                                               int64_t timeout,
-                                               sdbusplus::bus_t& bus,
-                                               const char* objPath, bool defer)
+std::unique_ptr<Sensor> HostSensor::createTemp(
+    const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
+    const char* objPath, bool defer)
 {
-    auto sensor = std::make_unique<HostSensor>(name, timeout, bus, objPath,
-                                               defer);
+    auto sensor =
+        std::make_unique<HostSensor>(name, timeout, bus, objPath, defer);
     sensor->value(0);
 
     // DegreesC and value of 0 are the defaults at present, therefore testing

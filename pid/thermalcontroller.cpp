@@ -48,8 +48,8 @@ ThermalType getThermalType(const std::string& typeString)
 
 bool isThermalType(const std::string& typeString)
 {
-    static const std::vector<std::string> thermalTypes = {"temp", "margin",
-                                                          "power", "powersum"};
+    static const std::vector<std::string> thermalTypes = {
+        "temp", "margin", "power", "powersum"};
     return std::count(thermalTypes.begin(), thermalTypes.end(), typeString);
 }
 
@@ -128,10 +128,10 @@ double ThermalController::inputProc(void)
 
                 if (debugEnabled)
                 {
-                    std::cerr << "Converting temp to margin: temp "
-                              << cachedValue << ", Tjmax "
-                              << in.convertMarginZero << ", margin "
-                              << marginValue << "\n";
+                    std::cerr
+                        << "Converting temp to margin: temp " << cachedValue
+                        << ", Tjmax " << in.convertMarginZero << ", margin "
+                        << marginValue << "\n";
                 }
 
                 cachedValue = marginValue;

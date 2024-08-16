@@ -66,9 +66,9 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
                                        [[maybe_unused]] const char* path,
                                        [[maybe_unused]] const char* interface,
                                        const char** names) {
-            EXPECT_STREQ(properties[(*index)++].c_str(), names[0]);
-            return 0;
-        }));
+                EXPECT_STREQ(properties[(*index)++].c_str(), names[0]);
+                return 0;
+            }));
     }
 
     return;

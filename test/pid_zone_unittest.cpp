@@ -68,8 +68,8 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
                     properties, &d);
 
     std::string sensorname = "temp1";
-    std::string pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone1/" +
-                                sensorname;
+    std::string pidsensorpath =
+        "/xyz/openbmc_project/settings/fanctrl/zone1/" + sensorname;
 
     double de;
     std::vector<std::string> propertiesenable;
@@ -154,8 +154,8 @@ class PidZoneTest : public ::testing::Test
 
     std::string sensorname = "temp1";
     std::string sensorType = "temp";
-    std::string pidsensorpath = "/xyz/openbmc_project/settings/fanctrl/zone1/" +
-                                sensorname;
+    std::string pidsensorpath =
+        "/xyz/openbmc_project/settings/fanctrl/zone1/" + sensorname;
 
     std::unique_ptr<DbusPidZone> zone;
 };
@@ -190,9 +190,9 @@ TEST_F(PidZoneTest, AddPidControlProcessGetAndSetEnableTest_BehavesAsExpected)
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
                 [[maybe_unused]] const char* interface, const char** names) {
-        EXPECT_STREQ("Enable", names[0]);
-        return 0;
-    }));
+                EXPECT_STREQ("Enable", names[0]);
+                return 0;
+            }));
 
     zone->addPidControlProcess(sensorname, sensorType, setpoint,
                                bus_mock_enable, pidsensorpath.c_str(), defer);
@@ -248,9 +248,9 @@ TEST_F(PidZoneTest, RpmSetPoints_AddMaxClear_BehaveAsExpected)
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
                 [[maybe_unused]] const char* interface, const char** names) {
-        EXPECT_STREQ("Enable", names[0]);
-        return 0;
-    }));
+                EXPECT_STREQ("Enable", names[0]);
+                return 0;
+            }));
 
     zone->addPidControlProcess(sensorname, sensorType, setpoint,
                                bus_mock_enable, pidsensorpath.c_str(), defer);
@@ -292,9 +292,9 @@ TEST_F(PidZoneTest, RpmSetPoints_AddBelowMinimum_BehavesAsExpected)
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
                 [[maybe_unused]] const char* interface, const char** names) {
-        EXPECT_STREQ("Enable", names[0]);
-        return 0;
-    }));
+                EXPECT_STREQ("Enable", names[0]);
+                return 0;
+            }));
 
     zone->addPidControlProcess(sensorname, sensorType, setpoint,
                                bus_mock_enable, pidsensorpath.c_str(), defer);
@@ -362,13 +362,13 @@ TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
     std::string name1 = "temp1";
     int64_t timeout = 1;
 
-    std::unique_ptr<Sensor> sensor1 = std::make_unique<SensorMock>(name1,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "temp2";
-    std::unique_ptr<Sensor> sensor2 = std::make_unique<SensorMock>(name2,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -414,13 +414,13 @@ TEST_F(PidZoneTest, FanInputTest_VerifiesFanValuesCached)
     std::string name1 = "fan1";
     int64_t timeout = 2;
 
-    std::unique_ptr<Sensor> sensor1 = std::make_unique<SensorMock>(name1,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "fan2";
-    std::unique_ptr<Sensor> sensor2 = std::make_unique<SensorMock>(name2,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -462,13 +462,13 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
     int64_t timeout = 1;
 
     std::string name1 = "temp1";
-    std::unique_ptr<Sensor> sensor1 = std::make_unique<SensorMock>(name1,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "temp2";
-    std::unique_ptr<Sensor> sensor2 = std::make_unique<SensorMock>(name2,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -524,13 +524,13 @@ TEST_F(PidZoneTest, ThermalInput_MissingIsAcceptableNoFailSafe)
     int64_t timeout = 1;
 
     std::string name1 = "temp1";
-    std::unique_ptr<Sensor> sensor1 = std::make_unique<SensorMock>(name1,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "temp2";
-    std::unique_ptr<Sensor> sensor2 = std::make_unique<SensorMock>(name2,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -620,13 +620,13 @@ TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
     std::string name1 = "fan1";
     int64_t timeout = 2;
 
-    std::unique_ptr<Sensor> sensor1 = std::make_unique<SensorMock>(name1,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "fan2";
-    std::unique_ptr<Sensor> sensor2 = std::make_unique<SensorMock>(name2,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -673,13 +673,13 @@ TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
     std::string name1 = "fan1";
     int64_t timeout = 2;
 
-    std::unique_ptr<Sensor> sensor1 = std::make_unique<SensorMock>(name1,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string name2 = "fan2";
-    std::unique_ptr<Sensor> sensor2 = std::make_unique<SensorMock>(name2,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor2 =
+        std::make_unique<SensorMock>(name2, timeout);
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
@@ -732,8 +732,8 @@ TEST_F(PidZoneTest, GetSensorTest_ReturnsExpected)
     int64_t timeout = 1;
 
     std::string name1 = "temp1";
-    std::unique_ptr<Sensor> sensor1 = std::make_unique<SensorMock>(name1,
-                                                                   timeout);
+    std::unique_ptr<Sensor> sensor1 =
+        std::make_unique<SensorMock>(name1, timeout);
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string type = "unchecked";
@@ -807,9 +807,9 @@ TEST_F(PidZoneTest, ManualModeDbusTest_VerifySetManualBehavesAsExpected)
         .WillOnce(Invoke(
             [&]([[maybe_unused]] sd_bus* bus, [[maybe_unused]] const char* path,
                 [[maybe_unused]] const char* interface, const char** names) {
-        EXPECT_STREQ("Manual", names[0]);
-        return 0;
-    }));
+                EXPECT_STREQ("Manual", names[0]);
+                return 0;
+            }));
 
     // Method under test will set the manual mode to true and broadcast this
     // change on dbus.
