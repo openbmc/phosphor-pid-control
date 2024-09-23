@@ -21,6 +21,7 @@
 #include "pid/controller.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/fancontroller.hpp"
+#include "pid/manualmodemanager.hpp"
 #include "pid/stepwisecontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 #include "pid/tuning.hpp"
@@ -88,6 +89,14 @@ void DbusPidZone::setManualMode(bool mode)
     {
         _redundantWrite = true;
     }
+}
+
+void DbusPidZone::saveManualMode(pid_control::ManualModeManager& manager) {
+    manager.saveManualMode(_zoneId, _manualMode);
+}
+
+void DbusPidZone::restoreManualMode(const pid_control::ManualModeManager& manager) {
+    manual(manager.restoreManualMode(_zoneId));
 }
 
 bool DbusPidZone::getFailSafeMode(void) const
