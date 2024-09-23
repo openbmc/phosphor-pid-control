@@ -22,6 +22,7 @@
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
+#include "pid/manualmodemanager.hpp"
 #include "pid/pidloop.hpp"
 #include "pid/tuning.hpp"
 #include "pid/zone.hpp"
@@ -128,6 +129,16 @@ void stopControlLoops()
 
 void restartControlLoops()
 {
+    pid_control::ManualModeManager manualModeManager;
+
+    for (auto& i : state::zones) {
+        auto zone = std::dynamic_pointer_cast<DbusPidZone>(i.second);
+        if (zone) {
+            zone->saveManualMode(manualModeManager);
+            std::cerr << "Manual mode saved for zone: " << zone->getZoneID() << " - " << zone->getManualMode() << std::endl;
+        }
+    }
+
     stopControlLoops();
 
     const std::filesystem::path path =
@@ -174,6 +185,10 @@ void restartControlLoops()
 
     for (const auto& i : state::zones)
     {
+        auto zone = std::dynamic_pointer_cast<DbusPidZone>(i.second);
+        if (zone) {
+            zone->restoreManualMode(manualModeManager);
+        }
         std::shared_ptr<boost::asio::steady_timer> timer =
             state::timers.emplace_back(
                 std::make_shared<boost::asio::steady_timer>(io));
