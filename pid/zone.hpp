@@ -2,6 +2,7 @@
 
 #include "conf.hpp"
 #include "controller.hpp"
+#include "manualmodemanager.hpp"
 #include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
@@ -72,6 +73,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
     bool getRedundantWrite(void) const override;
     void setManualMode(bool mode);
+    void saveManualMode(pid_control::ManualModeManager& manager) override;
+    void restoreManualMode(
+        const pid_control::ManualModeManager& manager) override;
     bool getFailSafeMode(void) const override;
     void markSensorMissing(const std::string& name);
     bool getAccSetPoint(void) const override;
