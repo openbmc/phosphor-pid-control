@@ -1,5 +1,5 @@
 #pragma once
-
+#include "pid/manualmodemanager.hpp"
 #include "sensors/sensor.hpp"
 
 #include <string>
@@ -98,6 +98,9 @@ class ZoneInterface
      * mode (the default).
      */
     virtual bool getManualMode(void) const = 0;
+    virtual void saveManualMode(pid_control::ManualModeManager& manager) = 0;
+    virtual void
+        restoreManualMode(const pid_control::ManualModeManager& manager) = 0;
 
     /** Returns true if a redundant fan PWM write is needed. Redundant write
      * is used when returning the fan to automatic mode from manual mode.
