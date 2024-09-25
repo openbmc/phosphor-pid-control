@@ -16,6 +16,24 @@
       "message": "Currently, the CI has failed with the following summary of failures:\n\n10/14 pid_thermalcontroller_unittest  FAIL             0.89s   exit status 1  \n12/14 dbus_passive_unittest           FAIL             1.39s   exit status 1  \n13/14 sensor_host_unittest            FAIL             1.79s   exit status 1  \n14/14 pid_zone_unittest               FAIL             2.14s   exit status 1  \n\nOk:                 10  \nExpected Fail:      0   \nFail:               4   \nUnexpected Pass:    0   \nSkipped:            0   \nTimeout:            0\n\nThe main issue seems to be:  \n**Conditional jump or move depends on uninitialized value(s)**.  \nHowever, this doesn\u0027t appear to be related to my changes.\nCould the Verify failure be caused by a rebuild of other parts of the code?\n\nThanks!",
       "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d37d7fbe_989f2601",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-09-25T12:22:18Z",
+      "side": 1,
+      "message": "This is true. It commonly happens. Old code, which passed old CI tests, now fails new CI tests, but the underlying code has not changed. Reason is, the CI testing framework itself undergoes continuous improvements. It becomes smarter, and more capable of catching bad coding practices, than it was earlier. So, it can happen that your patch introduces a CI failure, simply because it has been a long time since this code was last tested with CI, since CI only runs when a newly written patch is uploaded.\n\nThe workaround is to first make appropriate changes to the code to fix the CI errors and get the CI to now pass cleanly. It is encouraged to put these fixes in another patch, as they serve separate purposes. Then, rebase this existing patch, so that it is on top of that new patch. Then, the patch stack should all cleanly pass the CI.",
+      "parentUuid": "1c436cc1_4d3c0590",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
