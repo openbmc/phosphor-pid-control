@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1c436cc1_4d3c0590",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-09-25T10:14:56Z",
+      "side": 1,
+      "message": "Currently, the CI has failed with the following summary of failures:\n\n10/14 pid_thermalcontroller_unittest  FAIL             0.89s   exit status 1  \n12/14 dbus_passive_unittest           FAIL             1.39s   exit status 1  \n13/14 sensor_host_unittest            FAIL             1.79s   exit status 1  \n14/14 pid_zone_unittest               FAIL             2.14s   exit status 1  \n\nOk:                 10  \nExpected Fail:      0   \nFail:               4   \nUnexpected Pass:    0   \nSkipped:            0   \nTimeout:            0\n\nThe main issue seems to be:  \n**Conditional jump or move depends on uninitialized value(s)**.  \nHowever, this doesn\u0027t appear to be related to my changes.\nCould the Verify failure be caused by a rebuild of other parts of the code?\n\nThanks!",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
