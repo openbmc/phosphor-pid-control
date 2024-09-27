@@ -52,6 +52,58 @@
       "parentUuid": "d37d7fbe_989f2601",
       "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "49938498_d05e10ce",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-09-27T10:30:23Z",
+      "side": 1,
+      "message": "I looked at it more. It does seem like it is a lot of code to basically perform one task: stretch the lifetime of the `manual` mode flag within each zone\u0027s data structure, so that it can survive when a configuration change happens that causes the structures to get destroyed and then rebuilt. The zone ID number is used as the invariant, to match each zone up afterwards. Do zone ID numbers ever change? What if a zone is added or removed at runtime?\n\nThat said, the code looks good so far, other than a concern about using `dynamic_cast`, as it relies on compiler RTTI, and I\u0027m not sure if we\u0027re using RTTI for this project or not (I would prefer to not use it, if possible, unless we are already using it). When it\u0027s ready, we will also need to add test cases to test this new feature.",
+      "parentUuid": "cd8401d0_46e8f087",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "34ec6763_aa6f5e2e",
+        "filename": "main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-09-27T10:30:23Z",
+      "side": 1,
+      "message": "Could state::zones ever contain something that is not a DbusPidZone object? Using dynamic_cast could invoke RTTI. Is RTTI enabled for phosphor-pid-control? I didn\u0027t think that it was. I wonder if there\u0027s a different way to do this? Generally, dynamic_cast is considered a code smell, and I feel uneasy about it.",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f49eed7e_2353df10",
+        "filename": "main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-09-27T10:30:23Z",
+      "side": 1,
+      "message": "Same comment as above about the usage of dynamic_cast.",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
