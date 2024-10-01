@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b47507b1_e73a5656",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 31,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-10-01T10:53:06Z",
+      "side": 1,
+      "message": "Would it be okay if I attach the manual mode status and the phosphor-pid-control logs before and after the changes, following the server board being unplugged and plugged back in?",
+      "parentUuid": "697b5d8e_02acd4ff",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1c436cc1_4d3c0590",
@@ -140,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1722ce8f_e7b1aa05",
+        "filename": "main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-10-01T10:53:06Z",
+      "side": 1,
+      "message": "Thank you very much for your suggestion.\nWould it be better to access the zone directly using static_pointer_cast instead of using dynamic_pointer_cast?\nI\u0027ll first try to avoid dynamic_pointer_cast and explore other approaches.",
+      "parentUuid": "34ec6763_aa6f5e2e",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "f49eed7e_2353df10",
@@ -157,6 +193,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e55f922a_3105d1cd",
+        "filename": "main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 191,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-10-01T10:53:06Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f49eed7e_2353df10",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3896e2dc_bb768354",
@@ -170,6 +224,24 @@
       "writtenOn": "2024-09-30T17:50:28Z",
       "side": 1,
       "message": "where is it getting used?",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b8965262_0ebe3d75",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-10-01T10:53:06Z",
+      "side": 1,
+      "message": "In line 136 of main.cpp, the beginning of restartControlLoops stores the current manual mode status (true or false) of the zone, and restores it after buildZones is called.",
+      "parentUuid": "3896e2dc_bb768354",
       "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
