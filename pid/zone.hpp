@@ -65,6 +65,14 @@ class DbusPidZone : public ZoneInterface, public ModeObject
         }
     }
 
+    ~DbusPidZone()
+    {
+        if (_log.is_open())
+        {
+            _log.close();
+        }
+    }
+
     bool getManualMode(void) const override;
     /* Could put lock around this since it's accessed from two threads, but
      * only one reader/one writer.
