@@ -56,7 +56,7 @@ class DbusPassive : public ReadInterface
     ReadReturn read(void) override;
     bool getFailed(void) const override;
 
-    void updateValue(double value, bool force);
+    void updateValue(bool force, double value);
     void setValue(double value, double unscaled);
     void setValue(double value);
 
@@ -71,7 +71,7 @@ class DbusPassive : public ReadInterface
 
   private:
     sdbusplus::bus::match_t _signal;
-    int64_t _scale;
+    int64_t _scale = 0;
     std::string _id; // for debug identification
     std::unique_ptr<DbusHelperInterface> _helper;
 

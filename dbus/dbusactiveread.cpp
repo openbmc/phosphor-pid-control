@@ -29,7 +29,7 @@ namespace pid_control
 ReadReturn DbusActiveRead::read(void)
 {
     SensorProperties settings;
-    double value;
+    double value = 0.0;
 
     _helper->getProperties(_service, _path, &settings);
 
