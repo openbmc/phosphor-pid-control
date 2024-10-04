@@ -76,13 +76,6 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                     enableInterface, propertiesenable, &de);
 
-    EXPECT_CALL(sdbus_mock_enable,
-                sd_bus_add_object_vtable(
-                    IsNull(), NotNull(), StrEq(pidsensorpath.c_str()),
-                    StrEq(debugThermalPowerInterface), NotNull(), NotNull()))
-        .Times(::testing::AnyNumber())
-        .WillOnce(Return(0));
-
     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
                   bus_mock_mode, objPath, defer, accSetPoint);
     // Success.
@@ -119,13 +112,6 @@ class PidZoneTest : public ::testing::Test
         SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                         enableInterface, propertiesenable,
                         &propertyenable_index);
-        EXPECT_CALL(sdbus_mock_enable,
-                    sd_bus_add_object_vtable(IsNull(), NotNull(),
-                                             StrEq(pidsensorpath.c_str()),
-                                             StrEq(debugThermalPowerInterface),
-                                             NotNull(), NotNull()))
-            .Times(::testing::AnyNumber())
-            .WillOnce(Return(0));
 
         zone = std::make_unique<DbusPidZone>(
             zoneId, minThermalOutput, failSafePercent, cycleTime, mgr,
