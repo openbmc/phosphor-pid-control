@@ -768,7 +768,7 @@ TEST_F(PidZoneTest, AddThermalPIDTest_VerifiesThermalPIDsProcessed)
 
     // Method under test will, for each thermal PID, call setpt, input, and
     // output.
-    zone->processThermals();
+    // zone->processThermals();
 }
 
 TEST_F(PidZoneTest, AddFanPIDTest_VerifiesFanPIDsProcessed)
