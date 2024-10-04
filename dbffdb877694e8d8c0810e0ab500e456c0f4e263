@@ -141,6 +141,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "bad13021_4c31f5ca",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-10-04T12:41:32Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "49938498_d05e10ce",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "34ec6763_aa6f5e2e",
@@ -190,6 +208,24 @@
       "side": 1,
       "message": "Using `static_pointer_cast` should be fine, as it should not invoke RTTI.\n\nIs it ever possible for `state::zones` to contain a zone that is not of type `DbusPidZone`?",
       "parentUuid": "1722ce8f_e7b1aa05",
+      "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eadf68ac_a597188e",
+        "filename": "main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-10-04T12:41:32Z",
+      "side": 1,
+      "message": "Thank you for your suggestion. I will switch to static_pointer_cast and check if it’s ever possible for state::zones to contain a zone that is not of type DbusPidZone.\n\nI will keep you updated as I make progress.\nThanks again!",
+      "parentUuid": "cc75dc3c_64ebb44d",
       "revId": "dbffdb877694e8d8c0810e0ab500e456c0f4e263",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
