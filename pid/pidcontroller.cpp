@@ -33,7 +33,7 @@ namespace pid_control
 double PIDController::calPIDOutput(double setpt, double input,
                                    ec::pid_info_t* info)
 {
-    double output;
+    double output = 0.0;
     auto name = getID();
 
     if (info->checkHysterWithSetpt)
@@ -107,20 +107,16 @@ double PIDController::calPIDOutput(double setpt, double input,
 
 void PIDController::process(void)
 {
-    double input;
-    double setpt;
-    double output;
-
     // Get setpt value
-    setpt = setptProc();
+    double setpt = setptProc();
 
     // Get input value
-    input = inputProc();
+    double input = inputProc();
 
     auto info = getPIDInfo();
 
     // Calculate output value
-    output = calPIDOutput(setpt, input, info);
+    double output = calPIDOutput(setpt, input, info);
 
     info->lastOutput = output;
 

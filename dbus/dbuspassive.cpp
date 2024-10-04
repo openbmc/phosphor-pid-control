@@ -109,7 +109,7 @@ DbusPassive::DbusPassive(
     _typeFan = (type == "fan");
 
     // Force value to be stored, otherwise member would be uninitialized
-    updateValue(settings.value, true);
+    updateValue(true, settings.value);
 }
 
 ReadReturn DbusPassive::read(void)
@@ -218,7 +218,7 @@ double DbusPassive::getMin(void)
     return _min;
 }
 
-void DbusPassive::updateValue(double value, bool force)
+void DbusPassive::updateValue(bool force, double value = 0.0)
 {
     _badReading = false;
 
@@ -279,7 +279,7 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
             double value =
                 std::visit(VariantToDoubleVisitor(), valPropMap->second);
 
-            owner->updateValue(value, false);
+            owner->updateValue(false, value);
         }
     }
     else if (msgSensor == "xyz.openbmc_project.Sensor.Threshold.Critical")
@@ -338,7 +338,7 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
             // trigger a 'failsafe' when some inputs are unavailable.
             // So, forced to clear the value here to prevent a historical
             // value to participate in a latter PID calculation.
-            owner->updateValue(std::numeric_limits<double>::quiet_NaN(), true);
+            owner->updateValue(true, std::numeric_limits<double>::quiet_NaN());
         }
     }
     else if (msgSensor ==
