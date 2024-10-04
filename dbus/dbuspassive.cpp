@@ -61,7 +61,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     }
 
     SensorProperties settings;
-    bool failed;
+    bool failed = false;
 
     try
     {
