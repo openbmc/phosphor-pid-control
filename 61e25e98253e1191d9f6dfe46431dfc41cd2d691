@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0e96920b_080d0f49",
+        "filename": "main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-28T20:56:51Z",
+      "side": 1,
+      "message": "You still have these ugly dynamic_pointer_casts, which might not even be the real type of the Zone.  The Zone is written as an abstract class but you\u0027re casting to a specialization.  Please don\u0027t do this.\n\nI would suggest we rewrite this such that the Zones are always aware of a \"manual-mode-manager\".  On construction, they should get their manual-mode from the manager.  On set to the manual-mode property, they should update the manager.\n\nThis would get rid of the dynamic cast and the frail state management going on here.",
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b9cffeca_12e12bdf",
+        "filename": "pid/manualmodemanager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-28T20:56:51Z",
+      "side": 1,
+      "message": "My opinion is that this is named too verbose.  `set` and `get` would be sufficient.  The class is already named `ManualModeManager` so you don\u0027t need `ManualMode` on all the function names in it.",
+      "range": {
+        "startLine": 13,
+        "startChar": 9,
+        "endLine": 13,
+        "endChar": 23
+      },
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e74b12b6_cc6bbe72",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-28T20:56:51Z",
+      "side": 1,
+      "message": "This is emitting a signal, but it shouldn\u0027t because we\u0027re just restoring the old value, right?  Ideally this would be done in the constructor anyhow so that the value is set correct from the beginning.",
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c68ae7e3_69944d40",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2024-10-28T20:56:51Z",
+      "side": 1,
+      "message": "Why did you even bother with the dynamic_cast if you also put it as a virtual function on the interface?",
+      "range": {
+        "startLine": 102,
+        "startChar": 1,
+        "endLine": 104,
+        "endChar": 77
+      },
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
