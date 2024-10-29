@@ -79,6 +79,30 @@
       },
       "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "68c7a5dc_8dc9d2d8",
+        "filename": "pid/zone_interface.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 104,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2024-10-29T11:34:33Z",
+      "side": 1,
+      "message": "Understood. I apologize for not having made these modifications and validations yet.",
+      "parentUuid": "c68ae7e3_69944d40",
+      "range": {
+        "startLine": 102,
+        "startChar": 1,
+        "endLine": 104,
+        "endChar": 77
+      },
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
