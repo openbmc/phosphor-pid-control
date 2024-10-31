@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "fdee580d_eb7c5a0a",
+        "filename": "main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-10-31T06:49:33Z",
+      "side": 1,
+      "message": "Good point. I agree with your design.",
+      "parentUuid": "0e96920b_080d0f49",
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "b9cffeca_12e12bdf",
         "filename": "pid/manualmodemanager.hpp",
         "patchSetId": 6
