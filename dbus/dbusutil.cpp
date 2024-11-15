@@ -90,6 +90,29 @@ bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
     return matches.size() > 0;
 }
 
+std::string getSensorUnit(const std::string& type)
+{
+    std::string unit;
+    if (type == "fan")
+    {
+        unit = "xyz.openbmc_project.Sensor.Value.Unit.RPMS";
+    }
+    else if (type == "temp" || type == "margin")
+    {
+        unit = "xyz.openbmc_project.Sensor.Value.Unit.DegreesC";
+    }
+    else if (type == "power" || type == "powersum")
+    {
+        unit = "xyz.openbmc_project.Sensor.Value.Unit.Watts";
+    }
+    else
+    {
+        unit = "unknown"; // TODO(venture): Need to handle.
+    }
+
+    return unit;
+}
+
 std::string getSensorPath(const std::string& type, const std::string& id)
 {
     std::string layer;
