@@ -21,6 +21,10 @@ conf_data.set('SYSTEMD_TARGET', get_option('systemd_target'))
 conf_data.set('STRICT_FAILSAFE_PWM', get_option('strict-failsafe-pwm'))
 conf_data.set('OFFLINE_FAILSAFE_PWM', get_option('offline-failsafe-pwm'))
 conf_data.set('UNC_FAILSAFE', get_option('unc-failsafe'))
+conf_data.set(
+    'HANDLE_MISSING_OBJECT_PATHS',
+    get_option('handle-missing-object-paths'),
+)
 
 configure_file(output: 'config.h', configuration: conf_data)
 

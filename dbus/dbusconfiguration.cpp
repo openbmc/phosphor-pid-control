@@ -13,6 +13,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 */
+#include "config.h"
+
 #include "dbusconfiguration.hpp"
 
 #include "conf.hpp"
@@ -686,6 +688,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     std::get<std::vector<std::string>>(base.at("Inputs")));
                 std::vector<std::string> outputSensorNames;
                 std::vector<std::string> missingAcceptableSensorNames;
+                std::vector<std::string> archivedInputSensorNames;
 
                 auto findMissingAcceptable = base.find("MissingIsAcceptable");
                 if (findMissingAcceptable != base.end())
@@ -726,8 +729,55 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                  */
                 for (const std::string& sensorName : inputSensorNames)
                 {
+#ifndef HANDLE_MISSING_OBJECT_PATHS
                     findSensors(sensors, sensorNameToDbusName(sensorName),
                                 inputSensorInterfaces);
+#else
+                    std::vector<std::pair<std::string, std::string>>
+                        sensorPathIfacePairs;
+                    auto found =
+                        findSensors(sensors, sensorNameToDbusName(sensorName),
+                                    sensorPathIfacePairs);
+                    if (found)
+                    {
+                        inputSensorInterfaces.insert(
+                            inputSensorInterfaces.end(),
+                            sensorPathIfacePairs.begin(),
+                            sensorPathIfacePairs.end());
+                    }
+                    else if (pidClass != "fan")
+                    {
+                        if (std::find(missingAcceptableSensorNames.begin(),
+                                      missingAcceptableSensorNames.end(),
+                                      sensorName) ==
+                            missingAcceptableSensorNames.end())
+                        {
+                            std::cerr
+                                << "Pid controller: Missing a missing-unacceptable sensor from D-Bus "
+                                << sensorName << "\n";
+                            std::string inputSensorName =
+                                sensorNameToDbusName(sensorName);
+                            auto& config = sensorConfig[inputSensorName];
+                            archivedInputSensorNames.push_back(inputSensorName);
+                            config.type = pidClass;
+                            config.readPath =
+                                getSensorPath(config.type, inputSensorName);
+                            config.timeout = 0;
+                            config.ignoreDbusMinMax = true;
+                            config.unavailableAsFailed = unavailableAsFailed;
+                        }
+                        else
+                        {
+                            // When an input sensor is NOT on DBus, and it's in
+                            // the MissingIsAcceptable list. Ignore it and
+                            // continue with the next input sensor.
+                            std::cout
+                                << "Pid controller: Missing a missing-acceptable sensor from D-Bus "
+                                << sensorName << "\n";
+                            continue;
+                        }
+                    }
+#endif
                 }
                 for (const std::string& sensorName : outputSensorNames)
                 {
@@ -741,7 +791,6 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                                 missingAcceptableSensorInterfaces);
                 }
 
-                inputSensorNames.clear();
                 for (const SensorInterfaceType& inputSensorInterface :
                      inputSensorInterfaces)
                 {
@@ -764,7 +813,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         std::string inputSensorName =
                             getSensorNameFromPath(inputSensorPath);
                         auto& config = sensorConfig[inputSensorName];
-                        inputSensorNames.push_back(inputSensorName);
+                        archivedInputSensorNames.push_back(inputSensorName);
                         config.type = pidClass;
                         config.readPath = inputSensorInterface.first;
                         config.timeout = 0;
@@ -879,7 +928,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         fanSensorName = getSensorNameFromPath(fanPath);
                         pwmSensorName = getSensorNameFromPath(pwmPath);
                         std::string fanPwmIndex = fanSensorName + pwmSensorName;
-                        inputSensorNames.push_back(fanPwmIndex);
+                        archivedInputSensorNames.push_back(fanPwmIndex);
                         auto& fanConfig = sensorConfig[fanPwmIndex];
                         fanConfig.type = pidClass;
                         fanConfig.readPath = fanPath;
@@ -892,7 +941,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 }
                 // if the sensors aren't available in the current state, don't
                 // add them to the configuration.
-                if (inputSensorNames.empty())
+                if (archivedInputSensorNames.empty())
                 {
                     continue;
                 }
@@ -926,7 +975,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 }
 
                 std::vector<pid_control::conf::SensorInput> sensorInputs =
-                    spliceInputs(inputSensorNames, inputTempToMargin,
+                    spliceInputs(archivedInputSensorNames, inputTempToMargin,
                                  missingAcceptableSensorNames);
 
                 if (offsetType.empty())
@@ -996,25 +1045,69 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     if (!findSensors(sensors, sensorNameToDbusName(sensorName),
                                      sensorPathIfacePairs))
                     {
+#ifndef HANDLE_MISSING_OBJECT_PATHS
                         break;
+#else
+                        if (std::find(missingAcceptableSensorNames.begin(),
+                                      missingAcceptableSensorNames.end(),
+                                      sensorName) ==
+                            missingAcceptableSensorNames.end())
+                        {
+                            // When an input sensor is NOT on DBus, and it's NOT
+                            // in the MissingIsAcceptable list. Build it as a
+                            // failed sensor with default information (temp
+                            // sensor path, temp type, ...)
+                            std::cerr
+                                << "Stepwise controller: Missing a missing-unacceptable sensor from D-Bus "
+                                << sensorName << "\n";
+                            std::string shortName =
+                                sensorNameToDbusName(sensorName);
+
+                            inputs.push_back(shortName);
+                            auto& config = sensorConfig[shortName];
+                            config.type = "temp";
+                            config.readPath =
+                                getSensorPath(config.type, shortName);
+                            config.ignoreDbusMinMax = true;
+                            config.unavailableAsFailed = unavailableAsFailed;
+                            // todo: maybe un-hardcode this if we run into
+                            // slower timeouts with sensors
+
+                            config.timeout = 0;
+                            sensorFound = true;
+                        }
+                        else
+                        {
+                            // When an input sensor is NOT on DBus, and it's in
+                            // the MissingIsAcceptable list. Ignore it and
+                            // continue with the next input sensor.
+                            std::cout
+                                << "Stepwise controller: Missing a missing-acceptable sensor from D-Bus "
+                                << sensorName << "\n";
+                            continue;
+                        }
+#endif
                     }
-
-                    for (const auto& sensorPathIfacePair : sensorPathIfacePairs)
+                    else
                     {
-                        std::string shortName =
-                            getSensorNameFromPath(sensorPathIfacePair.first);
+                        for (const auto& sensorPathIfacePair :
+                             sensorPathIfacePairs)
+                        {
+                            std::string shortName = getSensorNameFromPath(
+                                sensorPathIfacePair.first);
 
-                        inputs.push_back(shortName);
-                        auto& config = sensorConfig[shortName];
-                        config.readPath = sensorPathIfacePair.first;
-                        config.type = "temp";
-                        config.ignoreDbusMinMax = true;
-                        config.unavailableAsFailed = unavailableAsFailed;
-                        // todo: maybe un-hardcode this if we run into slower
-                        // timeouts with sensors
+                            inputs.push_back(shortName);
+                            auto& config = sensorConfig[shortName];
+                            config.readPath = sensorPathIfacePair.first;
+                            config.type = "temp";
+                            config.ignoreDbusMinMax = true;
+                            config.unavailableAsFailed = unavailableAsFailed;
+                            // todo: maybe un-hardcode this if we run into
+                            // slower timeouts with sensors
 
-                        config.timeout = 0;
-                        sensorFound = true;
+                            config.timeout = 0;
+                            sensorFound = true;
+                        }
                     }
                 }
                 if (!sensorFound)
@@ -1033,7 +1126,15 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                             sensorNameToDbusName(missingAcceptableSensorName),
                             sensorPathIfacePairs))
                     {
+#ifndef HANDLE_MISSING_OBJECT_PATHS
                         break;
+#else
+                        // When a sensor in the MissingIsAcceptable list is NOT
+                        // on DBus and it still reaches here, which contradicts
+                        // to what we did in the Input sensor building step.
+                        // Continue.
+                        continue;
+#endif
                     }
 
                     for (const auto& sensorPathIfacePair : sensorPathIfacePairs)

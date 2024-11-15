@@ -29,3 +29,9 @@ option(
     value: false,
     description: 'Set the fans to failsafe mode when a temp sensor is above upper non-critical threshold',
 )
+option(
+    'handle-missing-object-paths',
+    type: 'boolean',
+    value: false,
+    description: 'Further handlings to sensors missing from D-Bus',
+)
