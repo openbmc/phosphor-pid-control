@@ -34,6 +34,8 @@ const std::string sensorintf = "xyz.openbmc_project.Sensor.Value";
 const std::string criticalThreshInf =
     "xyz.openbmc_project.Sensor.Threshold.Critical";
 const std::string propertiesintf = "org.freedesktop.DBus.Properties";
+const std::string tempSensorPathPrefix =
+    "/xyz/openbmc_project/sensors/temperature/";
 
 /*
  * Given a path that optionally has a glob portion, fill it out.

@@ -996,17 +996,35 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     if (!findSensors(sensors, sensorNameToDbusName(sensorName),
                                      sensorPathIfacePairs))
                     {
-                        break;
+                        if (std::find(missingAcceptableSensorNames.begin(),
+                                      missingAcceptableSensorNames.end(),
+                                      sensorName) !=
+                            missingAcceptableSensorNames.end())
+                        {
+                            // When an input sensor is NOT on DBus, and it's in
+                            // the MissingIsAcceptable list. Ignore it and
+                            // continue with the next input sensor.
+                            std::cout
+                                << "Missing a missing-acceptable sensor from DBUS "
+                                << sensorName << "\n";
+                            continue;
+                        }
                     }
-
-                    for (const auto& sensorPathIfacePair : sensorPathIfacePairs)
+                    if (sensorPathIfacePairs.empty())
                     {
+                        // When an input sensor is NOT on DBus, and it's NOT in
+                        // the MissingIsAcceptable list. Build it as a failed
+                        // sensor with default information (temp sensor path,
+                        // temp type, ...)
+                        std::cerr
+                            << "Missing a missing-UNacceptable sensor from DBUS "
+                            << sensorName << "\n";
                         std::string shortName =
-                            getSensorNameFromPath(sensorPathIfacePair.first);
+                            sensorNameToDbusName(sensorName);
 
                         inputs.push_back(shortName);
                         auto& config = sensorConfig[shortName];
-                        config.readPath = sensorPathIfacePair.first;
+                        config.readPath = tempSensorPathPrefix + shortName;
                         config.type = "temp";
                         config.ignoreDbusMinMax = true;
                         config.unavailableAsFailed = unavailableAsFailed;
@@ -1015,6 +1033,27 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
 
                         config.timeout = 0;
                         sensorFound = true;
+                    }
+                    else
+                    {
+                        for (const auto& sensorPathIfacePair :
+                             sensorPathIfacePairs)
+                        {
+                            std::string shortName = getSensorNameFromPath(
+                                sensorPathIfacePair.first);
+
+                            inputs.push_back(shortName);
+                            auto& config = sensorConfig[shortName];
+                            config.readPath = sensorPathIfacePair.first;
+                            config.type = "temp";
+                            config.ignoreDbusMinMax = true;
+                            config.unavailableAsFailed = unavailableAsFailed;
+                            // todo: maybe un-hardcode this if we run into
+                            // slower timeouts with sensors
+
+                            config.timeout = 0;
+                            sensorFound = true;
+                        }
                     }
                 }
                 if (!sensorFound)
@@ -1033,7 +1072,11 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                             sensorNameToDbusName(missingAcceptableSensorName),
                             sensorPathIfacePairs))
                     {
-                        break;
+                        // When a sensor in the MissingIsAcceptable list is NOT
+                        // on DBus and it still reaches here, which contradicts
+                        // to what we did in the Input sensor building step.
+                        // Continue.
+                        continue;
                     }
 
                     for (const auto& sensorPathIfacePair : sensorPathIfacePairs)
