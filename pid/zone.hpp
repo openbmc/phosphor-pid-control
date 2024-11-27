@@ -2,6 +2,7 @@
 
 #include "conf.hpp"
 #include "controller.hpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
@@ -88,6 +89,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     uint64_t getUpdateThermalsCycle(void) const override;
 
     Sensor* getSensor(const std::string& name) override;
+    std::vector<std::string> getSensorNames(void) override;
     void determineMaxSetPointRequest(void) override;
     void updateFanTelemetry(void) override;
     void updateSensors(void) override;
@@ -184,6 +186,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
                 {
                     std::cerr << sensorInput << " sensor timeout\n";
                 }
+                outputFailsafeLogWithZone(_zoneId, this->getFailSafeMode(),
+                                          sensorInput,
+                                          "The sensor has timed out.");
             }
             else
             {
@@ -198,6 +203,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
                     }
 
                     _failSafeSensors.erase(kt);
+                    outputFailsafeLogWithZone(_zoneId, this->getFailSafeMode(),
+                                              sensorInput,
+                                              "The sensor has recovered.");
                 }
             }
         }
