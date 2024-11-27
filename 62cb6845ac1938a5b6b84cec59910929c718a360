@@ -16,6 +16,74 @@
       "message": "Hi @Josh, added you to the Reviewers list cuz I think you might have some advice on my PS. Sorry if it bothers you.",
       "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a64bc620_0bddc160",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-27T09:17:24Z",
+      "side": 1,
+      "message": "I have minor comments for your commit",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "0184e2c3_1847cf99",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-27T09:17:24Z",
+      "side": 1,
+      "message": "I think it should be std::info instead std::cout",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "498acc28_1039184e",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-27T09:17:24Z",
+      "side": 1,
+      "message": "Why did you move this loop from https://github.com/openbmc/phosphor-pid-control/blob/master/dbus/dbusconfiguration.cpp#L745? It seems that this for loop is repeated so many time and so much sensors are duplicated in the archivedSensorNames",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bff64019_a8e30d7f",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 1001198
+      },
+      "writtenOn": "2024-11-27T09:17:24Z",
+      "side": 1,
+      "message": "replace std::cout with std::info instead",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
