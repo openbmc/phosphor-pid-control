@@ -1,3 +1,6 @@
+#include "failsafeloggers/builder.hpp"
+#include "failsafeloggers/failsafe_logger.hpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "pid/ec/logging.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/zone.hpp"
@@ -10,6 +13,7 @@
 
 #include <chrono>
 #include <cstring>
+#include <unordered_map>
 #include <vector>
 
 #include <gmock/gmock.h>
@@ -343,6 +347,10 @@ TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
 {
     // This test will add a couple thermal inputs, and verify that the zone
     // initializes into failsafe mode, and will read each sensor.
+
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
 
     std::string name1 = "temp1";
     int64_t timeout = 1;
