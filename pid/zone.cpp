@@ -18,6 +18,7 @@
 #include "zone.hpp"
 
 #include "conf.hpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "pid/controller.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/fancontroller.hpp"
@@ -101,7 +102,11 @@ void DbusPidZone::markSensorMissing(const std::string& name)
     if (_missingAcceptable.find(name) != _missingAcceptable.end())
     {
         // Disallow sensors in MissingIsAcceptable list from causing failsafe
-        return;
+        outputFailsafeLogWithZone(_zoneId,
+                                  this->getFailSafeMode(),
+                                  name,
+                                  "The sensor is missing but is acceptable.");
+	return;
     }
 
     _failSafeSensors.emplace(name);
@@ -528,6 +533,11 @@ void DbusPidZone::processThermals(void)
 Sensor* DbusPidZone::getSensor(const std::string& name)
 {
     return _mgr.getSensor(name);
+}
+
+std::vector<std::string> DbusPidZone::getSensorNames(void)
+{
+    return _thermalInputs;
 }
 
 bool DbusPidZone::getRedundantWrite(void) const

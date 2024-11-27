@@ -16,6 +16,8 @@
 
 #include "host.hpp"
 
+#include "failsafeloggers/failsafe_logger_utility.hpp"
+
 #include <cmath>
 #include <iostream>
 #include <memory>
@@ -103,6 +105,8 @@ bool HostSensor::getFailed(void)
         return false;
     }
 
+    outputFailsafeLogWithSensor(getName(), true, getName(),
+                                "The sensor has invalid readings.");
     return true;
 }
 

@@ -18,6 +18,9 @@
 #include "dbushelper_interface.hpp"
 #include "dbuspassiveredundancy.hpp"
 #include "dbusutil.hpp"
+#include "failsafeloggers/builder.hpp"
+#include "failsafeloggers/failsafe_logger.cpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "util.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -31,6 +34,72 @@
 
 namespace pid_control
 {
+
+static std::unordered_map<
+    std::string, std::pair<double, std::chrono::steady_clock::time_point>>
+    temperatureOverrideMap;
+
+// For thermal testing purpose, we are more interested to see the affect caused
+// by single temperature sensor. I cannot imagine the use case which needs to
+// override multiple temperature sensor value at the same time. So let's set the
+// overrideLimit to 1 for now. We can change the limit later if anyone finds
+// the need of overridering multiple temperature sensor.
+constexpr unsigned int overrideLimit = 1;
+
+bool addTemperatureOverride(const std::string objectPath, double overrideValue)
+{
+    if (!objectPath.starts_with("/xyz/openbmc_project/sensors/temperature/"))
+    {
+        std::cerr
+            << "Error: invalid " << objectPath
+            << ", we only support override /xyz/openbmc_project/sensors/temperature/* \n";
+        return false;
+    }
+
+    if (temperatureOverrideMap.size() > overrideLimit)
+    {
+        std::cerr << "Error: exceed overrideLimit: " << overrideLimit << "\n";
+        return false;
+    }
+
+    std::cerr << "Add override: objectPath= " << objectPath
+              << ", value=" << overrideValue << "\n";
+    temperatureOverrideMap[objectPath] =
+        std::make_pair(overrideValue, std::chrono::steady_clock::now() +
+                                          std::chrono::minutes(10));
+    return true;
+}
+
+void removeTemperatureOverride(const std::string& objectPath)
+{
+    std::cerr << "Remove override (ignore non-exist): objectPath= "
+              << objectPath << "\n";
+    temperatureOverrideMap.erase(objectPath);
+}
+
+static double getTemperatureOverrideValue(const std::string& objectPath,
+                                          const double& actualValue)
+{
+    if (!std::isfinite(actualValue) ||
+        (temperatureOverrideMap.count(objectPath) == 0))
+    {
+        return actualValue;
+    }
+
+    const auto& [overrideValue,
+                 expiresTimepoint] = temperatureOverrideMap[objectPath];
+    if (std::chrono::steady_clock::now() > expiresTimepoint)
+    {
+        std::cerr << "Remove expired override: objectPath = " << objectPath
+                  << "\n";
+        temperatureOverrideMap.erase(objectPath);
+        return actualValue;
+    }
+
+    // To be safe, we only allow overriding temperature sensor to a higher
+    // value (make fan working harder)
+    return std::max(overrideValue, actualValue);
+}
 
 std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     sdbusplus::bus_t& bus, const std::string& type, const std::string& id,
@@ -117,6 +186,8 @@ ReadReturn DbusPassive::read(void)
 
     ReadReturn r = {_value, _updated, _unscaled};
 
+    r.value = getTemperatureOverrideValue(path, _value);
+
     return r;
 }
 
@@ -142,6 +213,8 @@ bool DbusPassive::getFailed(void) const
         const std::set<std::string>& failures = redundancy->getFailed();
         if (failures.find(path) != failures.end())
         {
+            outputFailsafeLogWithSensor(_id, true, _id,
+                                        "The sensor path is marked redundant.");
             return true;
         }
     }
@@ -167,6 +240,8 @@ bool DbusPassive::getFailed(void) const
     // which is set and cleared by other causes.
     if (_badReading)
     {
+	outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor has bad readings.");
         return true;
     }
 
@@ -176,10 +251,35 @@ bool DbusPassive::getFailed(void) const
     // they are not cooling the system, enable failsafe mode also.
     if (_marginHot)
     {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor has no thermal margin left.");
         return true;
     }
 
-    return _failed || !_available || !_functional;
+    if (_failed)
+    {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor fails with a critical issue.");
+        return true;
+    }
+
+    if (!_available)
+    {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor is unavailable.");
+        return true;
+    }
+
+    if (!_functional) {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor is not functional.");
+        return true;
+    }
+
+    outputFailsafeLogWithSensor(_id, false, _id,
+                                "The sensor has recovered.");
+
+    return false;
 }
 
 void DbusPassive::setFailed(bool value)

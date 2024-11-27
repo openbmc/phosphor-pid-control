@@ -27,6 +27,9 @@ class ZoneInterface
     /** Return a pointer to the sensor specified by name. */
     virtual Sensor* getSensor(const std::string& name) = 0;
 
+    /** Return the list of sensor names in the zone. */
+    virtual std::vector<std::string> getSensorNames(void) = 0;
+
     /* updateFanTelemetry() and updateSensors() both clear the failsafe state
      * for a sensor if it's no longer in that state.
      */

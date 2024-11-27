@@ -98,4 +98,8 @@ class DbusPassive : public ReadInterface
 
 int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner);
 
+bool addTemperatureOverride(const std::string objectPath, double overrideValue);
+
+void removeTemperatureOverride(const std::string& objectPath);
+
 } // namespace pid_control
