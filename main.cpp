@@ -19,6 +19,7 @@
 #include "buildjson/buildjson.hpp"
 #include "conf.hpp"
 #include "dbus/dbusconfiguration.hpp"
+#include "failsafeloggers/builder.hpp"
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
@@ -165,6 +166,7 @@ void restartControlLoops()
     state::mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
     state::zones =
         buildZones(zoneConfig, zoneDetailsConfig, state::mgmr, modeControlBus);
+    buildFailsafeLoggers(state::zones, 20);
 
     if (0 == state::zones.size())
     {
