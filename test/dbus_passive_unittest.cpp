@@ -1,5 +1,8 @@
 #include "conf.hpp"
 #include "dbus/dbuspassive.hpp"
+#include "failsafeloggers/builder.hpp"
+#include "failsafeloggers/failsafe_logger.hpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "test/dbushelper_mock.hpp"
 
 #include <sdbusplus/test/sdbus_mock.hpp>
