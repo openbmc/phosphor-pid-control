@@ -1,3 +1,6 @@
+#include "failsafeloggers/builder.hpp"
+#include "failsafeloggers/failsafe_logger.hpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "sensors/host.hpp"
 #include "test/helpers.hpp"
 
