@@ -19,6 +19,7 @@
 #include "buildjson/buildjson.hpp"
 #include "conf.hpp"
 #include "dbus/dbusconfiguration.hpp"
+#include "failsafeloggers/builder.hpp"
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
@@ -165,6 +166,11 @@ void restartControlLoops()
     state::mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
     state::zones =
         buildZones(zoneConfig, zoneDetailsConfig, state::mgmr, modeControlBus);
+    // Set `logMaxCountPerSecond` to 20 will limit the number of logs output per second in
+    // each zone. Using 20 here would limit the output rate to be no larger than 100 per sec
+    // for most platforms as the number of zones are usually <=3.
+    // This will effectively avoid resource exhaustion.
+    buildFailsafeLoggers(state::zones, /* logMaxCountPerSecond = */ 20);
 
     if (0 == state::zones.size())
     {
