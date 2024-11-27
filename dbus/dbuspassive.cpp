@@ -20,6 +20,8 @@
 #include "dbushelper_interface.hpp"
 #include "dbuspassiveredundancy.hpp"
 #include "dbusutil.hpp"
+#include "failsafeloggers/builder.hpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "util.hpp"
 
 #include <sdbusplus/bus.hpp>
@@ -30,6 +32,8 @@
 #include <mutex>
 #include <string>
 #include <variant>
+
+#include "failsafeloggers/failsafe_logger.cpp"
 
 namespace pid_control
 {
@@ -143,6 +147,8 @@ bool DbusPassive::getFailed(void) const
         const std::set<std::string>& failures = redundancy->getFailed();
         if (failures.find(path) != failures.end())
         {
+            outputFailsafeLogWithSensor(_id, true, _id,
+                                        "The sensor path is marked redundant.");
             return true;
         }
     }
@@ -168,6 +174,8 @@ bool DbusPassive::getFailed(void) const
     // which is set and cleared by other causes.
     if (_badReading)
     {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor has bad readings.");
         return true;
     }
 
@@ -177,10 +185,35 @@ bool DbusPassive::getFailed(void) const
     // they are not cooling the system, enable failsafe mode also.
     if (_marginHot)
     {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor has no thermal margin left.");
         return true;
     }
 
-    return _failed || !_available || !_functional;
+    if (_failed)
+    {
+        outputFailsafeLogWithSensor(
+            _id, true, _id, "The sensor has failed with a critical issue.");
+        return true;
+    }
+
+    if (!_available)
+    {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor is unavailable.");
+        return true;
+    }
+
+    if (!_functional)
+    {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The sensor is not functional.");
+        return true;
+    }
+
+    outputFailsafeLogWithSensor(_id, false, _id, "The sensor has recovered.");
+
+    return false;
 }
 
 void DbusPassive::setFailed(bool value)
