@@ -1,3 +1,6 @@
+#include "failsafeloggers/builder.hpp"
+#include "failsafeloggers/failsafe_logger.hpp"
+#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "pid/ec/logging.hpp"
 #include "pid/ec/pid.hpp"
 #include "pid/zone.hpp"
@@ -10,6 +13,7 @@
 
 #include <chrono>
 #include <cstring>
+#include <unordered_map>
 #include <vector>
 
 #include <gmock/gmock.h>
@@ -344,6 +348,10 @@ TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
     // This test will add a couple thermal inputs, and verify that the zone
     // initializes into failsafe mode, and will read each sensor.
 
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
+
     std::string name1 = "temp1";
     int64_t timeout = 1;
 
@@ -396,6 +404,10 @@ TEST_F(PidZoneTest, FanInputTest_VerifiesFanValuesCached)
 {
     // This will add a couple fan inputs, and verify the values are cached.
 
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
+
     std::string name1 = "fan1";
     int64_t timeout = 2;
 
@@ -443,6 +455,10 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
 {
     // On the second updateSensors call, the updated timestamp will be beyond
     // the timeout limit.
+
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
 
     int64_t timeout = 1;
 
@@ -505,6 +521,10 @@ TEST_F(PidZoneTest, ThermalInput_MissingIsAcceptableNoFailSafe)
     // is set for sensor1, the zone should not enter failsafe mode when
     // only sensor1 goes missing.
     // However, sensor2 going missing should still trigger failsafe mode.
+
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
 
     int64_t timeout = 1;
 
@@ -602,6 +622,10 @@ TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
 {
     // This will add a couple fan inputs, and verify the values are cached.
 
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
+
     std::string name1 = "fan1";
     int64_t timeout = 2;
 
@@ -654,6 +678,10 @@ TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
 TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
 {
     // This will add a couple fan inputs, and verify the values are cached.
+
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
 
     std::string name1 = "fan1";
     int64_t timeout = 2;
@@ -713,6 +741,10 @@ TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
 TEST_F(PidZoneTest, GetSensorTest_ReturnsExpected)
 {
     // One can grab a sensor from the manager through the zone.
+
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
 
     int64_t timeout = 1;
 
@@ -804,6 +836,11 @@ TEST_F(PidZoneTest, FailsafeDbusTest_VerifiesReturnsExpected)
 {
     // This property is implemented by us as read-only, such that trying to
     // write to it will have no effect.
+
+    // Disable failsafe logger for the unit test.
+    std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> empty_zone_map;
+    buildFailsafeLoggers(empty_zone_map, 0);
+
     EXPECT_EQ(zone->failSafe(), zone->getFailSafeMode());
 }
 
