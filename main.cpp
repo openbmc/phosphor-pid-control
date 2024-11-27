@@ -19,6 +19,7 @@
 #include "buildjson/buildjson.hpp"
 #include "conf.hpp"
 #include "dbus/dbusconfiguration.hpp"
+#include "dbus/dbuspassive.hpp"
 #include "interfaces.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
@@ -35,6 +36,7 @@
 #include <boost/asio/signal_set.hpp>
 #include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/asio/connection.hpp>
+#include <sdbusplus/asio/object_server.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
 
@@ -410,6 +412,33 @@ int main(int argc, char* argv[])
      */
 
     pid_control::tryRestartControlLoops();
+
+    /* Usage:
+        busctl call xyz.openbmc_project.Swampd \
+        /xyz/openbmc_project/swampd  xyz.openbmc_project.swampd.override \
+        AddTemperatureOverride  sd \
+        /xyz/openbmc_project/sensors/temperature/DIMM11 40.1
+       Argument: objectPath overrideValue(double)
+       Notes: the override rule will expire in 10 minutes automatically if we
+       don't call RemoveTemperatureOverride method to remove it.
+    */
+
+    auto conn = std::make_shared<sdbusplus::asio::connection>(
+        io, sdbusplus::bus::new_system().release());
+    conn->request_name("xyz.openbmc_project.Swampd");
+    sdbusplus::asio::object_server objectServer(conn);
+
+    std::shared_ptr<sdbusplus::asio::dbus_interface> overrideInterface =
+        objectServer.add_interface("/xyz/openbmc_project/swampd",
+                                   "xyz.openbmc_project.swampd.override");
+
+    overrideInterface->register_method("AddTemperatureOverride",
+                                       pid_control::addTemperatureOverride);
+
+    overrideInterface->register_method("RemoveTemperatureOverride",
+                                       pid_control::removeTemperatureOverride);
+
+    overrideInterface->initialize();
 
     io.run();
     return 0;
