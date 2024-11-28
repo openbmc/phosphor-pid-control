@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cdc8237b_9d7dbbf6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-11-28T09:57:31Z",
+      "side": 1,
+      "message": "Thank you for your review.\n\n\u003e Have you mentioned it on the Discord yet?\n\nI have asked on Discord #general channel about why in case of a sensor missing from DBus, DBus parsing method continues with the remaining sensors, while JSON parsing method fails and rescans. But I received only one answer that suggests pushing a patch myself to request a change.\n\n\u003e https://github.com/openbmc/phosphor-pid-control/issues/33\n\nI found this issue you raised while trying to figure out what to do. That\u0027s why I involved you in. Because in our system, we have some important sensors that if missing, fans need to react and we want to use D-Bus config instead of JSON. phosphor-fan has phosphor-fan-control service to monitor events and set speed accordingly but it does not sync with phosphor-pid-control.\n\nThis patch of mine tries to align to the expectation in the issue because they make sense to me, too. However, the scope of the issue is big, not to mention that we just moved to phosphor-pid-control from phosphor-fan, and we don\u0027t use PID algorithm but just Stepwise, I don\u0027t have much of the knowledge to come up with something that can cover all the aspects. But I think `MissingIsAcceptable` should be what its name describes, in which `missing` also means when the sensor is not on D-Bus. Therefore, I pushed this patch to first address the problem that I\u0027m facing. I\u0027m OK that we can bring this patch to Discord again to ask for more comments.\n\nOne issue I see is that. When a sensor is purposedly built as failed because it\u0027s missing from D-Bus and it\u0027s not in the `MissingIsAcceptable` list. If the controller is configured with `InputUnavailableAsFailed`\u003dfalse, the failed state will be bypassed. I don\u0027t know why it\u0027s a high priority to return false right here https://github.com/openbmc/phosphor-pid-control/blob/951aff4cd1ba07f6d25400b7ac87621e76267eab/dbus/dbuspassive.cpp#L158. Should it be reconsidered?",
+      "parentUuid": "bcd1d893_0a287677",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0184e2c3_1847cf99",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 7
@@ -83,6 +101,24 @@
       "side": 1,
       "message": "Do you mean `lg2::info`? I haven\u0027t heard of `std::info`.\n\nThe diagnostic logging should be consistent. Let\u0027s follow the model of what has already been used in the program elsewhere. I think using `std::cerr` would be best here, since this is an error message, and it is what is already used elsewhere.",
       "parentUuid": "0184e2c3_1847cf99",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3bf4fdae_a001bcbe",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-11-28T09:57:31Z",
+      "side": 1,
+      "message": "Hi anh @Thang and @Josh, this is a log of the event that a sensor in the MissingIsAcceptable list is missing. So I still think this is not an error, but an informational log. That\u0027s why I use std::cout (for sensor that is not in MissingIsAcceptable list, std::cerr is used). Keep it as std::cout. Please re-open it if you think otherwise.",
+      "parentUuid": "80e8a261_72e4adc5",
       "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -122,6 +158,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "1e783598_2ea6efcd",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-11-28T09:57:31Z",
+      "side": 1,
+      "message": "Moved the loop back to where it was.\n\nTo discuss more, I see that for PID controller parsing, sensor DBus interfaces are collected for all `Inputs` sensors, and then processed after that (https://github.com/openbmc/phosphor-pid-control/blob/951aff4cd1ba07f6d25400b7ac87621e76267eab/dbus/dbusconfiguration.cpp#L745). But for Stepwise controller parsing, the DBus interfaces of each `Inputs` sensor are processed right after retrieved (https://github.com/openbmc/phosphor-pid-control/blob/951aff4cd1ba07f6d25400b7ac87621e76267eab/dbus/dbusconfiguration.cpp#L1002). Idk why there\u0027s a difference here.\n\nMoreover, there should be just one object path with a specific sensor name on D-Bus. If there are more than one, according to the behavior of the current code, the last one will overide the previous ones in `sensorConfig`. Why don\u0027t we simply directly pick the last one and get rid of the loop through `inputSensorInterfaces`.",
+      "parentUuid": "9e25c25f_70032371",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "bff64019_a8e30d7f",
@@ -157,6 +211,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "503970bc_f98a608b",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 1076,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-11-28T09:57:31Z",
+      "side": 1,
+      "message": "Same argument as above.",
+      "parentUuid": "db9ea09a_b9490191",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "cd5e6705_dff943fa",
@@ -174,6 +246,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "78a44cfc_448779ff",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-11-28T09:57:31Z",
+      "side": 1,
+      "message": "Thanks, I was afraid people won\u0027t bother to review it if they need to figure out the logic themselves from the code 😂.",
+      "parentUuid": "cd5e6705_dff943fa",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "5b3676aa_978f8e29",
@@ -187,6 +277,24 @@
       "writtenOn": "2024-11-27T10:52:53Z",
       "side": 1,
       "message": "This refactoring is a good cleanup. It should be a separate changelist, as it serves a different purpose, and it can be more easily accepted that way, as it is a less severe change.",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e5fa2cb8_bdfc4c45",
+        "filename": "dbus/dbusutil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-11-28T09:57:31Z",
+      "side": 1,
+      "message": "I see no where in the code this function would be helpful, except for my newly added line of code. I wonder if it can just stand as an unused function in a different patch?",
+      "parentUuid": "5b3676aa_978f8e29",
       "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
