@@ -141,6 +141,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "0cf02add_4b32065b",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 759,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:11:05Z",
+      "side": 1,
+      "message": "This is reasonable, thanks for the explanation. One note is that `std::cout` will not get collected into the syslog, unlike `std::cerr`, which will, in most cases. So, debug stuff and spammy stuff, useful only when debugging `swampd` itself and running it manually from the command line, can use `std::cout`.",
+      "parentUuid": "3bf4fdae_a001bcbe",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "498acc28_1039184e",
@@ -190,6 +208,24 @@
       "side": 1,
       "message": "Moved the loop back to where it was.\n\nTo discuss more, I see that for PID controller parsing, sensor DBus interfaces are collected for all `Inputs` sensors, and then processed after that (https://github.com/openbmc/phosphor-pid-control/blob/951aff4cd1ba07f6d25400b7ac87621e76267eab/dbus/dbusconfiguration.cpp#L745). But for Stepwise controller parsing, the DBus interfaces of each `Inputs` sensor are processed right after retrieved (https://github.com/openbmc/phosphor-pid-control/blob/951aff4cd1ba07f6d25400b7ac87621e76267eab/dbus/dbusconfiguration.cpp#L1002). Idk why there\u0027s a difference here.\n\nMoreover, there should be just one object path with a specific sensor name on D-Bus. If there are more than one, according to the behavior of the current code, the last one will overide the previous ones in `sensorConfig`. Why don\u0027t we simply directly pick the last one and get rid of the loop through `inputSensorInterfaces`.",
       "parentUuid": "9e25c25f_70032371",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "b7c25145_738b168e",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:11:05Z",
+      "side": 1,
+      "message": "Good point. It is a configuration error to have two sensors with exactly the same object path. This configuration should be rejected, or at least loudly warned about. Having two sensors with exactly the same object path is unsupported and UB. We are free to clean up this parsing behavior as we see fit, when encountering this state, because such a configuration should never exist on a valid system, thus we have no worry about breaking any existing system\u0027s behavior.",
+      "parentUuid": "1e783598_2ea6efcd",
       "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
