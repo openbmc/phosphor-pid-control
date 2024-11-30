@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "29608381_42f0d7b0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:29:57Z",
+      "side": 1,
+      "message": "Looks good. Do you have a \"Tested:\" footer here, which could tell us how this has been tested? Do you have a sample log, so that we can see what the log looks like in action? You can use a GitHub Gist as a pastebin to paste in a large amount of text.",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c98e3628_81e33cc2",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:29:57Z",
+      "side": 1,
+      "message": "Suggested wording: \"The sensor has failed with a critical issue.\"",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "b887d59e_e8942c13",
+        "filename": "main.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:29:57Z",
+      "side": 1,
+      "message": "Can this feature be disabled at compile time, if the failsafe logger feature is not wanted? It looks like it could be CPU intensive in certain situations. Perhaps a Meson compile-time option for this?\n\nAlso, what is the significance of the magic number 20?",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "a32b75ad_551a6552",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:29:57Z",
+      "side": 1,
+      "message": "Suggested wording: \"The sensor timed out.\"",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "4bab30ff_1fe86d94",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:29:57Z",
+      "side": 1,
+      "message": "These headers were added, which is good, but what about actual unit tests for this new feature of failsafe logging? Please add a unit test for it, as this feature appears to be a non-trivial addition, as there\u0027s a decent amount of code contained in this changelist.",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
