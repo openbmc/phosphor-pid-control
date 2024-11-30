@@ -72,6 +72,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c703f18c_f6abf8b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:06:36Z",
+      "side": 1,
+      "message": "I agree that we need to unify the D-Bus behavior and the JSON behavior so that they behave the same. It\u0027s a bug that they are different.\n\nAs for `MissingIsAcceptable`, the purpose of it was to allow PID loops to continue running, without throwing the PID loop into failsafe mode, if a constituent input was missing or malfunctioning. This is to cover the case of input sensors that are nice to have around, perhaps for faster thermal response, but not mandatory for correct thermal control of the system.\n\nAs for `InputUnavailableAsFailed` behaving the way that it does, the comment nearby that line tells the answer. The BMC will often remain powered up at all times, even when the host computer is powered down. However, when the host computer is powered down, about half the sensors will typically disappear, on a typical system. We do not want the fans to panic and enter failsafe mode just because these host-powered sensors are no longer showing up. When the host is powered off, there is little need to cool the system, so the fans can safely remain at their minimum speed. That\u0027s why we have this flag.\n\nAs you noticed, there\u0027s a difference between a sensor being present but malfunctioning, and a sensor that is missing entirely. Creating dummy sensors as placeholders might work well in some situations, but add unwanted clutter (think IPMI and Redfish sensor monitoring) in other situations. Regardless, design discussions are best had on that feature request, not here in a changelist.\n\nPerhaps a global compile-time option, not associated with any particular fan, might give people the chance to pick whatever behavior they prefer? We\u0027ve done this for some other behavioral changes recently. Here is one example: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/68557\n\nIt\u0027s also key to avoid breaking existing behavior, even if the existing behavior is not as clean or logical as it could be. Reason is, people have real hardware running in real-world conditions right now, with this program running the way that it is right now. If we change things, we break a lot of behavior that people have depended on, even if they don\u0027t realize they\u0027re depending on it now. Such is life maintaining a mature program that has wide adoption in the field.",
+      "parentUuid": "cdc8237b_9d7dbbf6",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0184e2c3_1847cf99",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 7
@@ -295,6 +313,24 @@
       "side": 1,
       "message": "I see no where in the code this function would be helpful, except for my newly added line of code. I wonder if it can just stand as an unused function in a different patch?",
       "parentUuid": "5b3676aa_978f8e29",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e305e9f5_dcd7d65f",
+        "filename": "dbus/dbusutil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-11-30T09:06:36Z",
+      "side": 1,
+      "message": "I like the cleanup aspect of it, splitting a large function into smaller distinct units. I also like the symmetry of the `getSensorUnit` function with the existing `getSensorPath` function.",
+      "parentUuid": "e5fa2cb8_bdfc4c45",
       "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
