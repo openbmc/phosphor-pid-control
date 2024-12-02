@@ -18,6 +18,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "56ee4520_454b0bfe",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-02T04:44:02Z",
+      "side": 1,
+      "message": "Test log added.",
+      "parentUuid": "29608381_42f0d7b0",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c98e3628_81e33cc2",
@@ -31,6 +49,24 @@
       "writtenOn": "2024-11-30T09:29:57Z",
       "side": 1,
       "message": "Suggested wording: \"The sensor has failed with a critical issue.\"",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "9e0f7f37_15c774e1",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 195,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-02T04:44:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c98e3628_81e33cc2",
       "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -52,6 +88,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "84e3c70d_579e6c43",
+        "filename": "main.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-02T04:44:02Z",
+      "side": 1,
+      "message": "The number 20 is exactly to limit the resource usage here, which will limit the number of logs output per second in each zone. Using 20 here would limit the output rate to be no larger than 100 for most platforms as the number of zones are usually \u003c\u003d3.\n\nAccording to Nan, this feature should be normally enabled, since checking out the detailed reason regarding failsafe mode (dis-)enabling would be quite troublesome for the otherwise, which is also quite commonly happening.",
+      "parentUuid": "b887d59e_e8942c13",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a32b75ad_551a6552",
@@ -69,6 +123,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "95fd0568_2299b015",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 192,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-02T04:44:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "a32b75ad_551a6552",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "4bab30ff_1fe86d94",
@@ -82,6 +154,24 @@
       "writtenOn": "2024-11-30T09:29:57Z",
       "side": 1,
       "message": "These headers were added, which is good, but what about actual unit tests for this new feature of failsafe logging? Please add a unit test for it, as this feature appears to be a non-trivial addition, as there\u0027s a decent amount of code contained in this changelist.",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "665e535e_7ef9852a",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-02T04:44:02Z",
+      "side": 1,
+      "message": "Discussed with Nan, I\u0027m adding the TODOs in another bug, which will be raised to P0 after I submit this update, so that I\u0027ll get to them immediately when back: The TODOs are not functionally critical, but are mostly (very-)nice-to-have features.\n\nMore specifically, I\u0027m traveling internationally and have no access for testing, so I\u0027d prefer some changes not to be applied at this time, for safety.\n\nNevertheless, both the unit test and integration test are added in the TODOs. I hope the manual test log in the description would suffice for now.",
+      "parentUuid": "4bab30ff_1fe86d94",
       "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
