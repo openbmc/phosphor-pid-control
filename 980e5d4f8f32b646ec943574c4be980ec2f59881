@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "322d8c12_8e8a11c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-02T05:19:57Z",
+      "side": 1,
+      "message": "Additionally, there were other test cases performed (with different log outputs), which, however, were not recorded down, and is not repeatable at the moment, as I\u0027m in China now..",
+      "parentUuid": "56ee4520_454b0bfe",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c98e3628_81e33cc2",
