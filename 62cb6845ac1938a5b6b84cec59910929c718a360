@@ -90,6 +90,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "e9a05abc_59daaef4",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 7
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-12-03T09:43:29Z",
+      "side": 1,
+      "message": "\u003e As for InputUnavailableAsFailed behaving the way that it does, the comment nearby that line tells the answer. The BMC will often remain powered up at all times, even when the host computer is powered down. However, when the host computer is powered down, about half the sensors will typically disappear, on a typical system. We do not want the fans to panic and enter failsafe mode just because these host-powered sensors are no longer showing up. When the host is powered off, there is little need to cool the system, so the fans can safely remain at their minimum speed. That\u0027s why we have this flag.\n\nI would argue that the `_available` variable is retrieved from the `Available` D-Bus property. `if (!_typeFan \u0026\u0026 !_available \u0026\u0026 !_unavailableAsFailed) return false;` \u003d\u003e this line implies that if `Available` is false (usually updated from a propertiesChanged signal) and `InputUnavailableAsFailed`\u003dfalse \u003d\u003e this is NOT considered a failure. This is only valid if the host-power-dependent sensors are STILL on DBus and their `Available` is changed to false during poweroff. If they disappear during poweroff, signals are sent, (1) with the current behavior of D-Bus parsing method, swampd will rescan and ignore them anyhow, (2) with JSON parsing method, swampd is not aware of the disapearance nor any change to the sensor via propertiesChanged signal and it goes on \u003d\u003e `InputUnavailableAsFailed` has no effect here;\n\nWith what I said, I\u0027m confused whether the sensor with `InputUnavailableAsFailed`\u003dfalse is supposed have the allowance to be missing from D-Bus, or to be `unavailable`?\n\nIt looks like `InputUnavailableAsFailed`\u003dfalse is meant to override any failed case, the sensor can be missing anytime, even when swampd starts up with host-on, without affecting the zone.\n\n\u003e Perhaps a global compile-time option, not associated with any particular fan, might give people the chance to pick whatever behavior they prefer? We\u0027ve done this for some other behavioral changes recently. Here is one example: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/68557\n\nAgreed. I will change it into a meson option. Can it be `HANDLE_MISSING_OBJPATHS`?",
+      "parentUuid": "c703f18c_f6abf8b6",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "0184e2c3_1847cf99",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 7
@@ -226,6 +244,24 @@
       "side": 1,
       "message": "Good point. It is a configuration error to have two sensors with exactly the same object path. This configuration should be rejected, or at least loudly warned about. Having two sensors with exactly the same object path is unsupported and UB. We are free to clean up this parsing behavior as we see fit, when encountering this state, because such a configuration should never exist on a valid system, thus we have no worry about breaking any existing system\u0027s behavior.",
       "parentUuid": "1e783598_2ea6efcd",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "31fc7ddf_98c90113",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 767,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2024-12-03T09:43:29Z",
+      "side": 1,
+      "message": "Will try it in another patch to separate things.",
+      "parentUuid": "b7c25145_738b168e",
       "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
