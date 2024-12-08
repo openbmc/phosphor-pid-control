@@ -29,7 +29,9 @@ class DbusActiveRead : public ReadInterface
     ReadReturn read(void) override;
 
   private:
-    sdbusplus::bus_t& _bus;
+    // Inform the compiler that this variable might not be used,
+    // which suppresses the warning "private field '_bus' is not used"
+    [[maybe_unused]] sdbusplus::bus_t& _bus;
     const std::string _path;
     const std::string _service; // the sensor service.
     std::unique_ptr<DbusHelperInterface> _helper;
