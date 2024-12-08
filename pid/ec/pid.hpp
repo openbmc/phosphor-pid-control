@@ -8,7 +8,7 @@ namespace pid_control
 namespace ec
 {
 
-typedef struct
+typedef struct limits_t
 {
     double min = 0.0;
     double max = 0.0;
@@ -17,7 +17,7 @@ typedef struct
 /* Note: If you update these structs you need to update the copy code in
  * pid/util.cpp and the initialization code in pid/buildjson.hpp files.
  */
-typedef struct
+typedef struct pid_info_t
 {
     bool initialized = false;          // has pid been initialized
     bool checkHysterWithSetpt = false; // compare current input and setpoint to
