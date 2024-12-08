@@ -67,8 +67,7 @@ class DbusPassiveTestObj : public ::testing::Test
 {
   protected:
     DbusPassiveTestObj() :
-        sdbus_mock(),
-        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
+        sdbus_mock(), bus_mock(sdbusplus::get_mocked_new(&sdbus_mock)),
         helper(std::make_unique<DbusHelperMock>())
     {
         EXPECT_CALL(*helper, getService(StrEq(SensorIntf), StrEq(path)))
@@ -609,8 +608,7 @@ class DbusPassiveTestUnaSensorNotAsFailedObj : public ::testing::Test
 {
   protected:
     DbusPassiveTestUnaSensorNotAsFailedObj() :
-        sdbus_mock(),
-        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
+        sdbus_mock(), bus_mock(sdbusplus::get_mocked_new(&sdbus_mock)),
         helper(std::make_unique<DbusHelperMock>())
     {
         EXPECT_CALL(*helper, getService(StrEq(SensorIntf), StrEq(path)))
@@ -829,8 +827,7 @@ class DbusPassiveTest3kMaxObj : public ::testing::Test
 {
   protected:
     DbusPassiveTest3kMaxObj() :
-        sdbus_mock(),
-        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
+        sdbus_mock(), bus_mock(sdbusplus::get_mocked_new(&sdbus_mock)),
         helper(std::make_unique<DbusHelperMock>())
     {
         EXPECT_CALL(*helper, getService(StrEq(SensorIntf), StrEq(path)))
@@ -873,8 +870,7 @@ class DbusPassiveTest3kMaxIgnoredObj : public ::testing::Test
 {
   protected:
     DbusPassiveTest3kMaxIgnoredObj() :
-        sdbus_mock(),
-        bus_mock(std::move(sdbusplus::get_mocked_new(&sdbus_mock))),
+        sdbus_mock(), bus_mock(sdbusplus::get_mocked_new(&sdbus_mock)),
         helper(std::make_unique<DbusHelperMock>())
     {
         EXPECT_CALL(*helper, getService(StrEq(SensorIntf), StrEq(path)))
