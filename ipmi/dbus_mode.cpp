@@ -33,8 +33,6 @@ namespace ipmi
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
 static constexpr auto busName = "xyz.openbmc_project.State.FanCtrl";
 static constexpr auto intf = "xyz.openbmc_project.Control.Mode";
-static constexpr auto manualProperty = "Manual";
-static constexpr auto failsafeProperty = "FailSafe";
 static constexpr auto propertiesintf = "org.freedesktop.DBus.Properties";
 
 using Property = std::string;
