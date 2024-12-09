@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "49fddd95_1c876e20",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-09T09:30:10Z",
+      "side": 1,
+      "message": "Can you add these to the other TODO when you get back from China?",
+      "parentUuid": "322d8c12_8e8a11c6",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "c98e3628_81e33cc2",
         "filename": "dbus/dbuspassive.cpp",
         "patchSetId": 7
@@ -126,6 +144,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "edeecc72_b086b059",
+        "filename": "main.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-09T09:30:10Z",
+      "side": 1,
+      "message": "The above is a great comment. Can you put it in the code? That way, other people will also not be surprised about the magic number 20.",
+      "parentUuid": "84e3c70d_579e6c43",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a32b75ad_551a6552",
         "filename": "pid/zone.hpp",
         "patchSetId": 7
@@ -190,6 +226,24 @@
       "side": 1,
       "message": "Discussed with Nan, I\u0027m adding the TODOs in another bug, which will be raised to P0 after I submit this update, so that I\u0027ll get to them immediately when back: The TODOs are not functionally critical, but are mostly (very-)nice-to-have features.\n\nMore specifically, I\u0027m traveling internationally and have no access for testing, so I\u0027d prefer some changes not to be applied at this time, for safety.\n\nNevertheless, both the unit test and integration test are added in the TODOs. I hope the manual test log in the description would suffice for now.",
       "parentUuid": "4bab30ff_1fe86d94",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6f0e175b_38f868eb",
+        "filename": "test/pid_zone_unittest.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-09T09:30:10Z",
+      "side": 1,
+      "message": "OK, makes sense. What\u0027s here is a good checkpoint of the work so far.",
+      "parentUuid": "665e535e_7ef9852a",
       "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
