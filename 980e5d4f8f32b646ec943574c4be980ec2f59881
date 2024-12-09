@@ -72,6 +72,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "731df14c_5b41e670",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 7
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-09T13:04:37Z",
+      "side": 1,
+      "message": "No worries! I also plan to develop an integration test in addition to the unit test, which was added in the TODO list of the bug.",
+      "parentUuid": "49fddd95_1c876e20",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "c98e3628_81e33cc2",
@@ -156,6 +174,24 @@
       "side": 1,
       "message": "The above is a great comment. Can you put it in the code? That way, other people will also not be surprised about the magic number 20.",
       "parentUuid": "84e3c70d_579e6c43",
+      "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3b6b64b9_e2788195",
+        "filename": "main.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 169,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-09T13:04:37Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "edeecc72_b086b059",
       "revId": "980e5d4f8f32b646ec943574c4be980ec2f59881",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
