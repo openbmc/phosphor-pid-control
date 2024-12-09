@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "5b402f17_03793912",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-09T09:35:11Z",
+      "side": 1,
+      "message": "Good cleanup. It was a risky premature optimization, I believe, having all those `std::move()` wrappers in the function parameters.",
+      "revId": "2922eebe4ddc565062eef84082519c094cb99f6e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
