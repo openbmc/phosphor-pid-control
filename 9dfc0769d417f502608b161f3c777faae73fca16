@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "662d1fb1_3ce086a0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-09T09:37:24Z",
+      "side": 1,
+      "message": "Nice! Good to have `clang-tidy` support added to this project.",
+      "revId": "9dfc0769d417f502608b161f3c777faae73fca16",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
