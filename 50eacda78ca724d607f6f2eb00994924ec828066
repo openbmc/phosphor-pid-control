@@ -41,6 +41,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2e9e8d7_925ac052",
+        "filename": "failsafeloggers/failsafe_logger.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-16T19:49:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d383a0_f2c4d1a3",
+      "range": {
+        "startLine": 16,
+        "startChar": 70,
+        "endLine": 16,
+        "endChar": 74
+      },
+      "revId": "50eacda78ca724d607f6f2eb00994924ec828066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "6bfc4d8d_7badfb6f",
@@ -64,6 +88,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b84a0e17_c4323c30",
+        "filename": "failsafeloggers/failsafe_logger_utility.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-16T19:49:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6bfc4d8d_7badfb6f",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 37
+      },
+      "revId": "50eacda78ca724d607f6f2eb00994924ec828066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "1ecbef69_92fc9d5a",
@@ -77,6 +125,30 @@
       "writtenOn": "2024-12-16T01:03:14Z",
       "side": 1,
       "message": "indentation",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 37
+      },
+      "revId": "50eacda78ca724d607f6f2eb00994924ec828066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "01fb0e8f_7376b3a0",
+        "filename": "failsafeloggers/failsafe_logger_utility.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-16T19:49:59Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ecbef69_92fc9d5a",
       "range": {
         "startLine": 41,
         "startChar": 0,
