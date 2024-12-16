@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "a01ee7dd_8eefe7b6",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000086
+      },
+      "writtenOn": "2024-12-16T07:43:42Z",
+      "side": 1,
+      "message": "Restructured config file based on design document inputs.",
+      "revId": "7dc8010d7f5c8fb4fb4d0baba12c4a428feda245",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
