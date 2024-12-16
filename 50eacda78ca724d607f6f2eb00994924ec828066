@@ -16,6 +16,75 @@
       "message": "Comments fixed. PTAL. THX!",
       "revId": "50eacda78ca724d607f6f2eb00994924ec828066",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c6d383a0_f2c4d1a3",
+        "filename": "failsafeloggers/failsafe_logger.cpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1001184
+      },
+      "writtenOn": "2024-12-16T01:03:14Z",
+      "side": 1,
+      "message": "would be good to have a var or def (depending on the convention here) for this const",
+      "range": {
+        "startLine": 16,
+        "startChar": 70,
+        "endLine": 16,
+        "endChar": 74
+      },
+      "revId": "50eacda78ca724d607f6f2eb00994924ec828066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "6bfc4d8d_7badfb6f",
+        "filename": "failsafeloggers/failsafe_logger_utility.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1001184
+      },
+      "writtenOn": "2024-12-16T01:03:14Z",
+      "side": 1,
+      "message": "indentation",
+      "range": {
+        "startLine": 26,
+        "startChar": 0,
+        "endLine": 26,
+        "endChar": 37
+      },
+      "revId": "50eacda78ca724d607f6f2eb00994924ec828066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1ecbef69_92fc9d5a",
+        "filename": "failsafeloggers/failsafe_logger_utility.hpp",
+        "patchSetId": 13
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1001184
+      },
+      "writtenOn": "2024-12-16T01:03:14Z",
+      "side": 1,
+      "message": "indentation",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 37
+      },
+      "revId": "50eacda78ca724d607f6f2eb00994924ec828066",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
