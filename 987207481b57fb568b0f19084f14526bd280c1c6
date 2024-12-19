@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "74d14dd8_b89a4d87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-19T13:22:24Z",
+      "side": 1,
+      "message": "Nice flowchart in the commit message! I like your explanation.\n\nAlso, thanks for isolating your changes behind a Meson compile-time option. This is the safest way to avoid breaking existing behavior (which can be very subtle at times, especially regarding flaky sensors).\n\nI will give +1 but would still like another person to come in and also take a look at it before giving +2, since it is a non-trivial change.",
+      "revId": "987207481b57fb568b0f19084f14526bd280c1c6",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
