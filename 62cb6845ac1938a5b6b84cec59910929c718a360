@@ -441,6 +441,24 @@
       "parentUuid": "e5fa2cb8_bdfc4c45",
       "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c1297c84_a8fc4e26",
+        "filename": "dbus/dbusutil.cpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-19T13:22:45Z",
+      "side": 1,
+      "message": "Ack.",
+      "parentUuid": "e305e9f5_dcd7d65f",
+      "revId": "62cb6845ac1938a5b6b84cec59910929c718a360",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
