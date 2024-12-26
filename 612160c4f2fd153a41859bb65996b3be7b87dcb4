@@ -16,6 +16,23 @@
       "message": "Code format update",
       "revId": "612160c4f2fd153a41859bb65996b3be7b87dcb4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "97c60dbb_4dd9a328",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2024-12-26T21:55:21Z",
+      "side": 1,
+      "message": "Code format update",
+      "revId": "612160c4f2fd153a41859bb65996b3be7b87dcb4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
