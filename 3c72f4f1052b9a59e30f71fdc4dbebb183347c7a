@@ -33,6 +33,23 @@
       "message": "The CI verification is passed. This CL, however, needs another review. Please kindly take a look. Many thanks again!\n\n@krellan@gmail.com",
       "revId": "3c72f4f1052b9a59e30f71fdc4dbebb183347c7a",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "740f39d0_e9de2915",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 33
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-27T13:17:43Z",
+      "side": 1,
+      "message": "Good formatting cleanups.",
+      "revId": "3c72f4f1052b9a59e30f71fdc4dbebb183347c7a",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }

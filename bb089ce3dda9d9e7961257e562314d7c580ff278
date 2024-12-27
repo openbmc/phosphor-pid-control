@@ -3,6 +3,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "09d0e920_1c6767d0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 15,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2024-12-27T13:17:43Z",
+      "side": 1,
+      "message": "I liked having the live example of the test run here. OK to scrub the Google hostnames and the sensor names, though, but it would be nice to leave this section included, so people can get an idea overall of what to expect in their logs.",
+      "revId": "bb089ce3dda9d9e7961257e562314d7c580ff278",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "4d21cf4c_d8c92970",
         "filename": "/COMMIT_MSG",
         "patchSetId": 15
