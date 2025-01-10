@@ -33,6 +33,23 @@
       "message": "Could you please take another look @krellan@gmail.com? Many thanks!",
       "revId": "680af67bbec7fa2e7d7bda5cf7b81951b06425fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "326ce774_ec22ea6a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 35
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-01-10T23:39:20Z",
+      "side": 1,
+      "message": "This LGTM. Would like review by one additional person, who isn\u0027t me or the Owner, before giving +2. Thanks!",
+      "revId": "680af67bbec7fa2e7d7bda5cf7b81951b06425fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
