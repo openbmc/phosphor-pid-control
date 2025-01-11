@@ -50,6 +50,29 @@
       "message": "This LGTM. Would like review by one additional person, who isn\u0027t me or the Owner, before giving +2. Thanks!",
       "revId": "680af67bbec7fa2e7d7bda5cf7b81951b06425fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f9ee9529_d2c0f137",
+        "filename": "failsafeloggers/failsafe_logger.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1000682
+      },
+      "writtenOn": "2025-01-11T00:01:29Z",
+      "side": 1,
+      "message": "this can be `constexpr uint64_t secondInMS \u003d 1000`",
+      "range": {
+        "startLine": 19,
+        "startChar": 13,
+        "endLine": 19,
+        "endChar": 23
+      },
+      "revId": "680af67bbec7fa2e7d7bda5cf7b81951b06425fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
