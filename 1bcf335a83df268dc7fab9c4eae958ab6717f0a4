@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "44662237_4df3f89b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 36
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2025-01-13T21:23:01Z",
+      "side": 1,
+      "message": "Comments fixed. The CL needs to be approved again for the submission. Please kindly take a look. Thanks in advance!\n\nPS:\n@krellan@gmail.com Nan has approved earlier (with a minor update of adding a constexpr header), so I believe it is fine now. :D",
+      "revId": "1bcf335a83df268dc7fab9c4eae958ab6717f0a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}

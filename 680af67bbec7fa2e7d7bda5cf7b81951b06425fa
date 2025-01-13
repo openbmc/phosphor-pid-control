@@ -73,6 +73,30 @@
       },
       "revId": "680af67bbec7fa2e7d7bda5cf7b81951b06425fa",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "04545aa4_4bcb5f7e",
+        "filename": "failsafeloggers/failsafe_logger.cpp",
+        "patchSetId": 35
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2025-01-13T21:23:01Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f9ee9529_d2c0f137",
+      "range": {
+        "startLine": 19,
+        "startChar": 13,
+        "endLine": 19,
+        "endChar": 23
+      },
+      "revId": "680af67bbec7fa2e7d7bda5cf7b81951b06425fa",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
