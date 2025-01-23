@@ -16,6 +16,23 @@
       "message": "@krellan@gmail.com Hi Josh! Nan has previously approved the CL with a +1, while there was an error caused by other CL, which has been addressed now. Could you please provide a +2 for the submission? (The CL is verified and there is no new change from the last review)\n\nMany thanks in advance!",
       "revId": "28d3aef596cbd8d34c8553074c12294c5f0b2218",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "8d7ac177_a6c27bbc",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 40
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-01-23T04:55:03Z",
+      "side": 1,
+      "message": "Yep! It looks good now, thanks.",
+      "revId": "28d3aef596cbd8d34c8553074c12294c5f0b2218",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
