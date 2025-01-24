@@ -35,13 +35,13 @@ owners:
 - krellan@google.com
 
 reviewers:
-- edtanous@google.com
+- ed@tanous.net
 
 matchers:
 
 openbmc:
 - name: Ed Tanous
-  email: edtanous@google.com
+  email: ed@tanous.net
   discord: edtanous
 - name: Josh Lehan
   email: krellan@gmail.com
