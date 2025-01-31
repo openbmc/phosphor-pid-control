@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pid/controller.hpp"
+#include "pid/pidcontroller.hpp"
 #include "pid/zone_interface.hpp"
 
 #include <gmock/gmock.h>
