@@ -1,11 +1,11 @@
 #pragma once
 
+#include "dbus/dbushelper_interface.hpp"
 #include "util.hpp"
 
 #include <string>
 
 #include <gmock/gmock.h>
-
 namespace pid_control
 {
 
