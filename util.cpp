@@ -101,10 +101,10 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
     std::cout << "}\n\n";
 }
 
-std::vector<conf::SensorInput>
-    spliceInputs(const std::vector<std::string>& inputNames,
-                 const std::vector<double>& inputTempToMargin,
-                 const std::vector<std::string>& missingAcceptableNames)
+std::vector<conf::SensorInput> spliceInputs(
+    const std::vector<std::string>& inputNames,
+    const std::vector<double>& inputTempToMargin,
+    const std::vector<std::string>& missingAcceptableNames)
 {
     std::vector<conf::SensorInput> results;
 
@@ -153,8 +153,8 @@ std::vector<conf::SensorInput>
     return results;
 }
 
-std::vector<std::string>
-    splitNames(const std::vector<conf::SensorInput>& sensorInputs)
+std::vector<std::string> splitNames(
+    const std::vector<conf::SensorInput>& sensorInputs)
 {
     std::vector<std::string> results;
 

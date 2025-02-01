@@ -20,7 +20,7 @@ namespace pid_control
  * @param[in] data - the json data
  * @return a map of sensors.
  */
-std::map<std::string, conf::SensorConfig>
-    buildSensorsFromJson(const json& data);
+std::map<std::string, conf::SensorConfig> buildSensorsFromJson(
+    const json& data);
 
 } // namespace pid_control
