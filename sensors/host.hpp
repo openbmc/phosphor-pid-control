@@ -39,9 +39,9 @@ using ValueType = std::conditional_t<usingDouble, double, int64_t>;
 class HostSensor : public Sensor, public ValueObject
 {
   public:
-    static std::unique_ptr<Sensor>
-        createTemp(const std::string& name, int64_t timeout,
-                   sdbusplus::bus_t& bus, const char* objPath, bool defer);
+    static std::unique_ptr<Sensor> createTemp(
+        const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
+        const char* objPath, bool defer);
 
     HostSensor(const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
                const char* objPath, bool defer) :

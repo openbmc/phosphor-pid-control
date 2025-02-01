@@ -16,10 +16,10 @@ class ZoneInterface;
 class StepwiseController : public Controller
 {
   public:
-    static std::unique_ptr<Controller>
-        createStepwiseController(ZoneInterface* owner, const std::string& id,
-                                 const std::vector<std::string>& inputs,
-                                 const ec::StepwiseInfo& initial);
+    static std::unique_ptr<Controller> createStepwiseController(
+        ZoneInterface* owner, const std::string& id,
+        const std::vector<std::string>& inputs,
+        const ec::StepwiseInfo& initial);
 
     StepwiseController(const std::string& id,
                        const std::vector<std::string>& inputs,
