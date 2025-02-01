@@ -1,13 +1,14 @@
 project(
-    'phosphor-pid-control', 'cpp',
-    version : '1.0.0',
+    'phosphor-pid-control',
+    'cpp',
+    version: '1.0.0',
     meson_version: '>=1.1.1',
     default_options: [
         'warning_level=3',
         'werror=true',
         'cpp_std=c++23',
         'b_lto=true',
-    ]
+    ],
 )
 
 cxx = meson.get_compiler('cpp')
@@ -21,18 +22,26 @@ conf_data.set('STRICT_FAILSAFE_PWM', get_option('strict-failsafe-pwm'))
 conf_data.set('OFFLINE_FAILSAFE_PWM', get_option('offline-failsafe-pwm'))
 conf_data.set('UNC_FAILSAFE', get_option('unc-failsafe'))
 
-configure_file(output: 'config.h',
-    configuration: conf_data
-)
+configure_file(output: 'config.h', configuration: conf_data)
 
 if get_option('oe-sdk').allowed()
-    OECORE_TARGET_SYSROOT = run_command('sh', '-c', 'echo $OECORE_TARGET_SYSROOT').stdout().strip()
+    OECORE_TARGET_SYSROOT = run_command(
+        'sh',
+        '-c',
+        'echo $OECORE_TARGET_SYSROOT',
+    ).stdout().strip()
     if OECORE_TARGET_SYSROOT == ''
         error('OECORE_TARGET_SYSROOT must be set with enable oe-sdk')
     endif
     message('Enabling OE-SDK at OECORE_TARGET_SYSROOT: ' + OECORE_TARGET_SYSROOT)
-    rpath = ':'.join([OECORE_TARGET_SYSROOT + '/lib', OECORE_TARGET_SYSROOT + '/usr/lib'])
-    ld_so = run_command('sh', '-c', 'find ' + OECORE_TARGET_SYSROOT + '/lib/ld-*.so | sort -r -n | head -n1').stdout().strip()
+    rpath = ':'.join(
+        [OECORE_TARGET_SYSROOT + '/lib', OECORE_TARGET_SYSROOT + '/usr/lib'],
+    )
+    ld_so = run_command(
+        'sh',
+        '-c',
+        'find ' + OECORE_TARGET_SYSROOT + '/lib/ld-*.so | sort -r -n | head -n1',
+    ).stdout().strip()
     dynamic_linker = ['-Wl,-dynamic-linker,' + ld_so]
 else
     dynamic_linker = []
@@ -40,14 +49,17 @@ endif
 
 systemd = dependency('systemd')
 systemd_system_unit_dir = systemd.get_variable(
-        'systemdsystemunitdir',
-        pkgconfig_define: ['prefix', get_option('prefix')])
+    'systemdsystemunitdir',
+    pkgconfig_define: ['prefix', get_option('prefix')],
+)
 
-configure_file(input: 'phosphor-pid-control.service.in',
-               output: 'phosphor-pid-control.service',
-               configuration: conf_data,
-               install: true,
-               install_dir: systemd_system_unit_dir)
+configure_file(
+    input: 'phosphor-pid-control.service.in',
+    output: 'phosphor-pid-control.service',
+    configuration: conf_data,
+    install: true,
+    install_dir: systemd_system_unit_dir,
+)
 
 nlohmann_json_dep = dependency('nlohmann_json', include_type: 'system')
 phosphor_dbus_interfaces_dep = dependency('phosphor-dbus-interfaces')
@@ -86,9 +98,7 @@ root_inc = include_directories(
     'sysfs',
 )
 
-setsensor_sources = [
-    'setsensor.cpp'
-]
+setsensor_sources = ['setsensor.cpp']
 
 libswampd_sources = [
     'main.cpp',
@@ -144,7 +154,8 @@ libmanualcmds = library(
     version: meson.project_version(),
     override_options: ['b_lundef=false'],
     install: true,
-    install_dir: get_option('libdir') / 'ipmid-providers')
+    install_dir: get_option('libdir') / 'ipmid-providers',
+)
 
 executable(
     'swampd',
@@ -153,7 +164,7 @@ executable(
     include_directories: root_inc,
     dependencies: deps,
     install: true,
-    install_dir: get_option('bindir')
+    install_dir: get_option('bindir'),
 )
 
 executable(
@@ -162,7 +173,7 @@ executable(
     implicit_include_directories: true,
     dependencies: deps,
     install: true,
-    install_dir: get_option('bindir')
+    install_dir: get_option('bindir'),
 )
 
 if not get_option('tests').disabled()
