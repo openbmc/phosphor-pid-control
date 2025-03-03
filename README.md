@@ -5,6 +5,13 @@ configuration file to control the temperature of the tray components to keep
 them within operating conditions. It may require coordination with host-side
 tooling and OpenBMC.
 
+## Maintanership
+This repository, while relatively stable, has been without an active maintainer
+for some time and should be considered unmaintained.  If you have an expertise
+in this code, meet the requirements to be a maintainers, and an incentive to
+keep it functional, please reach out to the TOF and/or the currently listed
+maintainer(s).
+
 ## Overview
 
 The BMC will run a daemon that controls the fans by pre-defined zones. The

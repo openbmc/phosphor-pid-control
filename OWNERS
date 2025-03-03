@@ -31,10 +31,12 @@
 # It is expected that these 4 sections will be listed in the order above and
 # data within them will be kept sorted.
 
-owners:
-- krellan@google.com
 
-reviewers:
+
+# Note, this repository is known to the TOF to not have an active maintainer.
+# If you are interested in maintaining this repository, please let the TOF or
+# the listed maintainer(s) below know.
+owners:
 - ed@tanous.net
 
 matchers:
@@ -43,6 +45,3 @@ openbmc:
 - name: Ed Tanous
   email: ed@tanous.net
   discord: edtanous
-- name: Josh Lehan
-  email: krellan@gmail.com
-  discord: Krellan
