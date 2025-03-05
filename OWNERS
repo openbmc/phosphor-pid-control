@@ -32,10 +32,10 @@
 # data within them will be kept sorted.
 
 owners:
-- krellan@google.com
+- ed@tanous.net
+- patrick@stwcx.xyz
 
 reviewers:
-- ed@tanous.net
 
 matchers:
 
@@ -43,6 +43,6 @@ openbmc:
 - name: Ed Tanous
   email: ed@tanous.net
   discord: edtanous
-- name: Josh Lehan
-  email: krellan@gmail.com
-  discord: Krellan
+- name: Patrick Williams
+  email: patrick@stwcx.xyz
+  discord: stwcx
