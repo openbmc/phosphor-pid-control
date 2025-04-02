@@ -1,6 +1,7 @@
 {
   "comments": [
     {
+      "unresolved": true,
       "key": {
         "uuid": "530eaa56_b18b063b",
         "filename": "test/integration/swampd_test.hpp",
@@ -20,8 +21,8 @@
         "endChar": 19
       },
       "revId": "d0b250eee12c4bd49493506743acdc2d8a070519",
-      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4",
-      "unresolved": true
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
-  ]
+  ],
+  "submitRequirementResults": []
 }
