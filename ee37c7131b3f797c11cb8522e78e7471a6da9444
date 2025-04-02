@@ -16,6 +16,23 @@
       "message": "Cool, good cleanup. Good to start with the wildcards, then opt out the unwanted individual checks from there.",
       "revId": "ee37c7131b3f797c11cb8522e78e7471a6da9444",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e05fa350_17888f65",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-02T21:23:49Z",
+      "side": 1,
+      "message": "Please resubmit with initial accepted docs version.",
+      "revId": "ee37c7131b3f797c11cb8522e78e7471a6da9444",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
