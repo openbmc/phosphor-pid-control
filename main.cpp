@@ -45,6 +45,7 @@
 #include <list>
 #include <map>
 #include <memory>
+#include <optional>
 #include <unordered_map>
 #include <utility>
 #include <vector>
@@ -68,7 +69,7 @@ static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
 /* The timers used by the PID loop */
 static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
 /* The sensors build from configuration */
-static SensorManager mgmr;
+static std::optional<SensorManager> mgmr;
 } // namespace state
 
 } // namespace pid_control
@@ -162,7 +163,7 @@ void restartControlLoops()
 
     state::mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
     state::zones =
-        buildZones(zoneConfig, zoneDetailsConfig, state::mgmr, modeControlBus);
+        buildZones(zoneConfig, zoneDetailsConfig, *state::mgmr, modeControlBus);
     // Set `logMaxCountPerSecond` to 20 will limit the number of logs output per
     // second in each zone. Using 20 here would limit the output rate to be no
     // larger than 100 per sec for most platforms as the number of zones are

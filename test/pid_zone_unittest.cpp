@@ -13,6 +13,7 @@
 
 #include <chrono>
 #include <cstring>
+#include <optional>
 #include <unordered_map>
 #include <vector>
 
@@ -104,9 +105,7 @@ class PidZoneTest : public ::testing::Test
         auto bus_mock_mode = sdbusplus::get_mocked_new(&sdbus_mock_mode);
         auto bus_mock_enable = sdbusplus::get_mocked_new(&sdbus_mock_enable);
 
-        // Compiler weirdly not happy about just instantiating mgr(...);
-        SensorManager m(bus_mock_passive, bus_mock_host);
-        mgr = std::move(m);
+        mgr = SensorManager(bus_mock_passive, bus_mock_host);
 
         SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface,
                         properties, &property_index);
@@ -118,7 +117,7 @@ class PidZoneTest : public ::testing::Test
                         &propertyenable_index);
 
         zone = std::make_unique<DbusPidZone>(
-            zoneId, minThermalOutput, failSafePercent, cycleTime, mgr,
+            zoneId, minThermalOutput, failSafePercent, cycleTime, *mgr,
             bus_mock_mode, objPath, defer, accSetPoint);
     }
 
@@ -139,7 +138,7 @@ class PidZoneTest : public ::testing::Test
     bool defer = true;
     bool accSetPoint = false;
     const char* objPath = "/path/";
-    SensorManager mgr;
+    std::optional<SensorManager> mgr;
     conf::CycleTime cycleTime;
 
     std::string sensorname = "temp1";
@@ -381,10 +380,10 @@ TEST_F(PidZoneTest, ThermalInputs_FailsafeToValid_ReadsSensors)
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
-    mgr.addSensor(type, name1, std::move(sensor1));
-    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
-    mgr.addSensor(type, name2, std::move(sensor2));
-    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+    mgr->addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr->getSensor(name1), sensor_ptr1);
+    mgr->addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr->getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
     zone->addThermalInput(name1, false);
@@ -437,10 +436,10 @@ TEST_F(PidZoneTest, FanInputTest_VerifiesFanValuesCached)
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
-    mgr.addSensor(type, name1, std::move(sensor1));
-    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
-    mgr.addSensor(type, name2, std::move(sensor2));
-    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+    mgr->addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr->getSensor(name1), sensor_ptr1);
+    mgr->addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr->getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
     zone->addFanInput(name1, false);
@@ -489,10 +488,10 @@ TEST_F(PidZoneTest, ThermalInput_ValueTimeoutEntersFailSafeMode)
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
-    mgr.addSensor(type, name1, std::move(sensor1));
-    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
-    mgr.addSensor(type, name2, std::move(sensor2));
-    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+    mgr->addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr->getSensor(name1), sensor_ptr1);
+    mgr->addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr->getSensor(name2), sensor_ptr2);
 
     zone->addThermalInput(name1, false);
     zone->addThermalInput(name2, false);
@@ -555,10 +554,10 @@ TEST_F(PidZoneTest, ThermalInput_MissingIsAcceptableNoFailSafe)
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
-    mgr.addSensor(type, name1, std::move(sensor1));
-    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
-    mgr.addSensor(type, name2, std::move(sensor2));
-    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+    mgr->addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr->getSensor(name1), sensor_ptr1);
+    mgr->addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr->getSensor(name2), sensor_ptr2);
 
     // Only sensor1 has MissingIsAcceptable enabled for it
     zone->addThermalInput(name1, true);
@@ -655,10 +654,10 @@ TEST_F(PidZoneTest, FanInputTest_FailsafeToValid_ReadsSensors)
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
-    mgr.addSensor(type, name1, std::move(sensor1));
-    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
-    mgr.addSensor(type, name2, std::move(sensor2));
-    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+    mgr->addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr->getSensor(name1), sensor_ptr1);
+    mgr->addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr->getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
     zone->addFanInput(name1, false);
@@ -712,10 +711,10 @@ TEST_F(PidZoneTest, FanInputTest_ValueTimeoutEntersFailSafeMode)
     SensorMock* sensor_ptr2 = reinterpret_cast<SensorMock*>(sensor2.get());
 
     std::string type = "unchecked";
-    mgr.addSensor(type, name1, std::move(sensor1));
-    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
-    mgr.addSensor(type, name2, std::move(sensor2));
-    EXPECT_EQ(mgr.getSensor(name2), sensor_ptr2);
+    mgr->addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr->getSensor(name1), sensor_ptr1);
+    mgr->addSensor(type, name2, std::move(sensor2));
+    EXPECT_EQ(mgr->getSensor(name2), sensor_ptr2);
 
     // Now that the sensors exist, add them to the zone.
     zone->addFanInput(name1, false);
@@ -770,13 +769,13 @@ TEST_F(PidZoneTest, GetSensorTest_ReturnsExpected)
     SensorMock* sensor_ptr1 = reinterpret_cast<SensorMock*>(sensor1.get());
 
     std::string type = "unchecked";
-    mgr.addSensor(type, name1, std::move(sensor1));
-    EXPECT_EQ(mgr.getSensor(name1), sensor_ptr1);
+    mgr->addSensor(type, name1, std::move(sensor1));
+    EXPECT_EQ(mgr->getSensor(name1), sensor_ptr1);
 
     zone->addThermalInput(name1, false);
 
     // Verify method under test returns the pointer we expect.
-    EXPECT_EQ(mgr.getSensor(name1), zone->getSensor(name1));
+    EXPECT_EQ(mgr->getSensor(name1), zone->getSensor(name1));
 }
 
 TEST_F(PidZoneTest, AddThermalPIDTest_VerifiesThermalPIDsProcessed)
