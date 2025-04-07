@@ -20,7 +20,6 @@ endif
 swampd_sources = include_directories('../')
 
 unit_tests = [
-    'dbus_active_unittest',
     'dbus_passive_unittest',
     'dbus_util_unittest',
     'json_parse_unittest',
@@ -37,7 +36,6 @@ unit_tests = [
 ]
 
 unittest_source = {
-    'dbus_active_unittest': ['../dbus/dbusactiveread.cpp'],
     'dbus_passive_unittest': [
         '../dbus/dbuspassive.cpp',
         '../dbus/dbuspassiveredundancy.cpp',
