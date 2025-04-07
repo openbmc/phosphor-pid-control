@@ -27,7 +27,6 @@
 #include <map>
 #include <memory>
 #include <sstream>
-#include <thread>
 #include <vector>
 
 namespace pid_control
