@@ -82,10 +82,8 @@ boost::asio::signal_set signals(io, SIGHUP, SIGTERM);
 
 /* buses for system control */
 static sdbusplus::asio::connection modeControlBus(io);
-static sdbusplus::asio::connection hostBus(
-    io, sdbusplus::bus::new_system().release());
-static sdbusplus::asio::connection passiveBus(
-    io, sdbusplus::bus::new_system().release());
+static sdbusplus::asio::connection hostBus(io, sdbusplus::bus::new_bus());
+static sdbusplus::asio::connection passiveBus(io, sdbusplus::bus::new_bus());
 
 namespace pid_control
 {
