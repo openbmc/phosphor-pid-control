@@ -82,17 +82,15 @@ SensorManager buildSensors(
                 {
                     ri = DbusPassive::createDbusPassive(
                         passiveListeningBus, info->type, name,
-                        std::make_unique<DbusHelper>(
-                            sdbusplus::bus::new_system()),
-                        info, redundancy);
+                        std::make_unique<DbusHelper>(passiveListeningBus), info,
+                        redundancy);
                 }
                 else
                 {
                     ri = DbusPassive::createDbusPassive(
                         passiveListeningBus, info->type, name,
-                        std::make_unique<DbusHelper>(
-                            sdbusplus::bus::new_system()),
-                        info, nullptr);
+                        std::make_unique<DbusHelper>(passiveListeningBus), info,
+                        nullptr);
                 }
                 if (ri == nullptr)
                 {
@@ -134,15 +132,13 @@ SensorManager buildSensors(
                     {
                         wi = DbusWritePercent::createDbusWrite(
                             info->writePath, info->min, info->max,
-                            std::make_unique<DbusHelper>(
-                                sdbusplus::bus::new_system()));
+                            std::make_unique<DbusHelper>(passiveListeningBus));
                     }
                     else
                     {
                         wi = DbusWrite::createDbusWrite(
                             info->writePath, info->min, info->max,
-                            std::make_unique<DbusHelper>(
-                                sdbusplus::bus::new_system()));
+                            std::make_unique<DbusHelper>(passiveListeningBus));
                     }
 
                     if (wi == nullptr)

@@ -23,7 +23,7 @@ class DbusHelper : public DbusHelperInterface
     static constexpr char availabilityIntf[] =
         "xyz.openbmc_project.State.Decorator.Availability";
 
-    explicit DbusHelper(sdbusplus::bus_t bus) : _bus(std::move(bus)) {}
+    explicit DbusHelper(sdbusplus::bus_t& bus) : _bus(bus) {}
     ~DbusHelper() = default;
 
     DbusHelper(const DbusHelper&) = delete;
@@ -70,7 +70,7 @@ class DbusHelper : public DbusHelperInterface
     }
 
   private:
-    sdbusplus::bus_t _bus;
+    sdbusplus::bus_t& _bus;
 };
 
 } // namespace pid_control

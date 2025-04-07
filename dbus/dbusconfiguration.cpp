@@ -303,7 +303,7 @@ inline void getCycleTimeSetting(
 }
 
 void populatePidInfo(
-    [[maybe_unused]] sdbusplus::bus_t& bus,
+    sdbusplus::bus_t& bus,
     const std::unordered_map<std::string, DbusVariantType>& base,
     conf::ControllerInfo& info, const std::string* thresholdProperty,
     const std::map<std::string, conf::SensorConfig>& sensorConfig)
@@ -348,7 +348,7 @@ void populatePidInfo(
         const std::string& path =
             sensorConfig.at(info.inputs.front().name).readPath;
 
-        DbusHelper helper(sdbusplus::bus::new_system());
+        DbusHelper helper(bus);
         std::string service = helper.getService(interface, path);
         double reading = 0;
         try
