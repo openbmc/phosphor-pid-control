@@ -33,6 +33,24 @@
       "message": "This would be a good fix for https://github.com/openbmc/phosphor-pid-control/issues/44 if it were standalone, and not part of the patch sequence, then we could get it in sooner, without waiting for the entire patch sequence to be ready.",
       "revId": "454f1ef014c4d3ae8ddc399ed78e3eb5590c6f2b",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1df5f758_6c1ac59e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-04-10T15:02:15Z",
+      "side": 1,
+      "message": "I had looked back through the history and it did seem like it was this way \"since the beginning\".  But, there was also comments earlier on about how originally the daemon had a number of threads instead of using boost asio.  I suspect there was concern about safety of sharing the bus across threads.\n\nThere is still some issues lingering in here in that we have a mixture of async and sync bus calls.  I was going to reduce us down to one bus (for one thread) but I know that we have some potential dead-lock conditions when the async bus is used by non-async calls.  At least as is, they are fairly partitioned.\n\nI\u0027ll probably queue up a transition to sdbusplus::async at some point anyhow.",
+      "parentUuid": "c96eaf10_b70b10a6",
+      "revId": "454f1ef014c4d3ae8ddc399ed78e3eb5590c6f2b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
