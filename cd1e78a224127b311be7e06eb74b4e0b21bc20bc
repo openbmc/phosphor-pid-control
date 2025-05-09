@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ce3a66ee_bef9356d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-05-09T22:08:25Z",
+      "side": 1,
+      "message": "LGTM even though there are Jenkins errors, because only the Git commit message was changed, there was no code change, thus nothing here could be causing the Jenkins errors.",
+      "revId": "cd1e78a224127b311be7e06eb74b4e0b21bc20bc",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
