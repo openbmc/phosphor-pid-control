@@ -66,13 +66,11 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 
     SensorProperties settings;
     bool failed;
+    std::string service;
 
     try
     {
-        std::string service = helper->getService(sensorintf, path);
-
-        helper->getProperties(service, path, &settings);
-        failed = helper->thresholdsAsserted(service, path);
+        service = helper->getService(sensorintf, path);
     }
     catch (const std::exception& e)
     {
@@ -106,9 +104,27 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         settings.value = std::numeric_limits<double>::quiet_NaN();
         settings.unit = getSensorUnit(type);
         settings.available = false;
+        settings.unavailableAsFailed = true;
+        if (info->ignoreDbusMinMax)
+        {
+            settings.min = 0;
+            settings.max = 0;
+        }
         std::cerr << "DbusPassive: Sensor " << path
                   << " is missing from D-Bus, build this sensor as failed\n";
+        return std::make_unique<DbusPassive>(bus, type, id, std::move(helper),
+                                            settings, failed, path, redundancy);
 #endif
+    }
+
+    try
+    {
+        helper->getProperties(service, path, &settings);
+        failed = helper->thresholdsAsserted(service, path);
+    }
+    catch (const std::exception& e)
+    {
+        return nullptr;
     }
 
     /* if these values are zero, they're ignored. */
