@@ -66,13 +66,11 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 
     SensorProperties settings;
     bool failed;
+    std::string service;
 
     try
     {
-        std::string service = helper->getService(sensorintf, path);
-
-        helper->getProperties(service, path, &settings);
-        failed = helper->thresholdsAsserted(service, path);
+        service = helper->getService(sensorintf, path);
     }
     catch (const std::exception& e)
     {
@@ -85,30 +83,42 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         // all important sensors are back to DBus. swampd will be informed
         // through InterfacesAdded signals and the sensors will be built again.
 
-        // CASE2: The sensor is in the MissingIsAcceptable list and it EXISTS on
-        // DBus (which sends it all the way here). However, swampd fails to
-        // initialize its setting here because of some DBus error???
-        // (getService/getProperties/getThresholdAssertion). Build it as a
-        // failed sensor too. A DBus signal will inform if there's s new
-        // property value to the sensor and will recover its state when the new
-        // value is valid.
+        // CASE2: The sensor is on D-Bus (getService succeeds) but getProperties
+        // fails (e.g., D-Bus error or property fetch failure). In this case,
+        // handle-missing-object-paths does not apply. The sensor build fails,
+        // and the control loop will keep restarting until getProperties
+        // succeeds. This case is not affected by unavailableAsFailed
 
-        // In both cases, the Sensor::getFailed() and
-        // DbusPidZone::markSensorMissing() APIs will decide whether to add a
-        // failed sensor to the _failSafeSensors list. As _failed=true,
-        // _available=false and _badReading=false (due to updateValue(nan,
-        // true)), both cases will have getFailed()=true at the beginning as
-        // long as _unavailableAsFailed=true; However as CASE2 has the sensor in
-        // MissingIsAcceptable list, only CASE1 will send the zone to failSafe
-        // mode.
+        // Only CASE1 may send the zone to failsafe mode if the sensor is not
+        // in MissingIsAcceptable. CASE2 results in continuous restart until
+        // recovery.
 
         failed = true;
         settings.value = std::numeric_limits<double>::quiet_NaN();
         settings.unit = getSensorUnit(type);
         settings.available = false;
+        settings.unavailableAsFailed = true;
+        if (info->ignoreDbusMinMax)
+        {
+            settings.min = 0;
+            settings.max = 0;
+        }
         std::cerr << "DbusPassive: Sensor " << path
                   << " is missing from D-Bus, build this sensor as failed\n";
+        return std::make_unique<DbusPassive>(
+            bus, type, id, std::move(helper), settings, failed, path,
+            redundancy);
 #endif
+    }
+
+    try
+    {
+        helper->getProperties(service, path, &settings);
+        failed = helper->thresholdsAsserted(service, path);
+    }
+    catch (const std::exception& e)
+    {
+        return nullptr;
     }
 
     /* if these values are zero, they're ignored. */
