@@ -31,7 +31,7 @@ class DbusHelper : public DbusHelperInterface
     DbusHelper& operator=(const DbusHelper&) = delete;
 
     DbusHelper(DbusHelper&&) = default;
-    DbusHelper& operator=(DbusHelper&&) = default;
+    DbusHelper& operator=(DbusHelper&&) = delete;
 
     std::string getService(const std::string& intf,
                            const std::string& path) override;
