@@ -16,6 +16,23 @@
       "message": "The CI verification failure is due to reasons unrelated to this patch.\nThe issue is currently being addressed in https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/80413",
       "revId": "a2670c237218aebf1e87c86d75fec333a6dd9bdb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e2937873_1e092623",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-05-19T05:32:50Z",
+      "side": 1,
+      "message": "Good catch. There\u0027s a lot of various failure flags a sensor can have, and it\u0027s hard to know which flags were intended for which situations.",
+      "revId": "a2670c237218aebf1e87c86d75fec333a6dd9bdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
