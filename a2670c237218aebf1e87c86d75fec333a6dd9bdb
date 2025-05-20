@@ -50,6 +50,42 @@
       "message": "I gave +2 to https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/80413 so once that is submitted, rebase this on top of it, then the CI will compile it again and it should compile then.",
       "revId": "a2670c237218aebf1e87c86d75fec333a6dd9bdb",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ef5f421b_4de69592",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-20T02:57:48Z",
+      "side": 1,
+      "message": "I have noticed that even if dbus missing operates normally, the sensor fail reason currently categorizes it as a bad reading, which should be incorrect.\nI am considering submitting another patch to add a flag similar to bad reading to address this issue.\nDo you think this approach is appropriate?",
+      "parentUuid": "e2937873_1e092623",
+      "revId": "a2670c237218aebf1e87c86d75fec333a6dd9bdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2a7ae4a0_2fa008ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-05-20T02:57:48Z",
+      "side": 1,
+      "message": "I have rebased and the CI verification has passed.\nAre there any further suggestions for modifications to this patch?",
+      "parentUuid": "992d1c43_873f8ce5",
+      "revId": "a2670c237218aebf1e87c86d75fec333a6dd9bdb",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
