@@ -1,23 +1,11 @@
-Checks: '
--*,
+Checks: '-*,
+    #,
+    Categories,
+    modernize-use-nullptr
+    '
 
-# Categories
--bugprone-*,
--cert-*,
--clang-analyzer-*,
--cppcoreguidelines-*,
--misc-*,
--modernize-*,
-modernize-use-nullptr,
--performance-*,
--readability-*,
-'
-
-# Treat all warnings as errors
-WarningsAsErrors: '*'
-
-# Apply checks to all files
-HeaderFilterRegex: '.*'
-
-# Disable automatic formatting
 FormatStyle: none
+
+HeaderFilterRegex: .*
+
+WarningsAsErrors: '*'
