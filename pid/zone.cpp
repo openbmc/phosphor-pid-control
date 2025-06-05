@@ -190,6 +190,11 @@ void DbusPidZone::clearSetPoints(void)
 
 double DbusPidZone::getFailSafePercent(void)
 {
+    if (_failSafeSensors.empty())
+    {
+        return _zoneFailSafePercent;
+    }
+
     FailSafeSensorsMap::iterator maxData = std::max_element(
         _failSafeSensors.begin(), _failSafeSensors.end(),
         [](const FailSafeSensorPair firstData,
