@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "384f4112_59713597",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-06-05T22:27:38Z",
+      "side": 1,
+      "message": "This is a really good cleanup! Breaking `getService()` and `getProperties()` into two separate try blocks is important for stability and avoiding UB here, as you discovered.",
+      "revId": "9801528b4a50e95a80cc62b685f4df9f530e2948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
