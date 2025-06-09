@@ -16,6 +16,40 @@
       "message": "This is a really good cleanup! Breaking `getService()` and `getProperties()` into two separate try blocks is important for stability and avoiding UB here, as you discovered.",
       "revId": "9801528b4a50e95a80cc62b685f4df9f530e2948",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2e8b2e38_dda39794",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-06-09T03:56:49Z",
+      "side": 1,
+      "message": "Hi, thanks for pointing out the flaws in my previous patch. I was also concerned about the `unavailableAsFailed` flag\u0027s role in the whole context.\n\nCan you also help to refactor this comment section a bit to suit the new behaviors? Especially the sentence mentioning `unavailableAsFailed` so it won\u0027t cause any confusion in the future for whoever reading the code.",
+      "revId": "9801528b4a50e95a80cc62b685f4df9f530e2948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "7679e9c6_bc180233",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-06-09T03:56:49Z",
+      "side": 1,
+      "message": "I just want to clarify how you plan to treat the failure here. Is it that if getProperties fails, the control loop will be continuously restarted until it passes the condition because of this [catch](https://github.com/openbmc/phosphor-pid-control/blob/52e3c8e36ed9410ad506a0fa3560b3fa62c6d660/main.cpp#L209), regardless of the setting of info-\u003eunavailableAsFailed, right?",
+      "revId": "9801528b4a50e95a80cc62b685f4df9f530e2948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
