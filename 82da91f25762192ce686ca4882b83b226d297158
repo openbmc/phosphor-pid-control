@@ -33,6 +33,24 @@
       "message": "Look good to me, too.",
       "revId": "82da91f25762192ce686ca4882b83b226d297158",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bd1691d7_38e83822",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 10
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-06-11T09:13:32Z",
+      "side": 1,
+      "message": "Thank you very much for your positive feedback. I have updated the comment lines accordingly",
+      "parentUuid": "786718fa_ae533167",
+      "revId": "82da91f25762192ce686ca4882b83b226d297158",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
