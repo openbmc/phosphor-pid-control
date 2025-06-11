@@ -71,6 +71,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ebdb310d_2bbe79df",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-06-11T08:20:37Z",
+      "side": 1,
+      "message": "Thank you a lot for addressing my comment carefully. My intent was to update the comment lines at lines 98-99, where it mentions that\n\n\u003e both cases will have getFailed()\u003dtrue at the beginning as long as _unavailableAsFailed\u003dtrue...\n\nIt contradicts with your change, and is the most visible thing exposed to readers, which can easily cause confusion. However, the commit message is great now.",
+      "parentUuid": "5dfdbf9c_fd425847",
+      "revId": "9801528b4a50e95a80cc62b685f4df9f530e2948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "7679e9c6_bc180233",
@@ -102,6 +120,24 @@
       "side": 1,
       "message": "Yes, if `getService` succeeds but `getProperties` fails, the control loop will continuously restart, just like the behavior when `handle-missing-object-paths` is not enabled.\nThis is because I believe `handle-missing-object-paths` should only manage scenarios where the sensor\u0027s object does not exist on D-Bus, and not consider cases where the sensor\u0027s object exists but `getProperties` fails.\nThis approach keeps the option focused on a single, simpler function.",
       "parentUuid": "7679e9c6_bc180233",
+      "revId": "9801528b4a50e95a80cc62b685f4df9f530e2948",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "fc60d27d_40a9f6c5",
+        "filename": "dbus/dbuspassive.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1001526
+      },
+      "writtenOn": "2025-06-11T08:20:37Z",
+      "side": 1,
+      "message": "Got it. I agree with your opinion. Thanks.",
+      "parentUuid": "e9ed9bc6_7bcc03df",
       "revId": "9801528b4a50e95a80cc62b685f4df9f530e2948",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
