@@ -53,24 +53,24 @@ struct PidCoreLog
     std::ofstream fileCoeffs;
     std::chrono::milliseconds lastLog;
     PidCoreContext lastContext;
-    bool moved;
+    bool moved = false;
 
     PidCoreLog() :
         nameOriginal(), nameClean(), fileContext(), fileCoeffs(), lastLog(),
-        lastContext(), moved(false)
+        lastContext()
     {}
 
     PidCoreLog(const PidCoreLog& copy) = delete;
 
     PidCoreLog& operator=(const PidCoreLog& copy) = delete;
 
-    PidCoreLog(PidCoreLog&& move)
+    PidCoreLog(PidCoreLog&& move) noexcept
     {
         // Reuse assignment operator below
         *this = std::move(move);
     }
 
-    PidCoreLog& operator=(PidCoreLog&& move)
+    PidCoreLog& operator=(PidCoreLog&& move) noexcept
     {
         if (this != &move)
         {
@@ -79,8 +79,8 @@ struct PidCoreLog
             nameClean = std::move(move.nameClean);
             fileContext = std::move(move.fileContext);
             fileCoeffs = std::move(move.fileCoeffs);
-            lastLog = std::move(move.lastLog);
-            lastContext = std::move(move.lastContext);
+            lastLog = move.lastLog;
+            lastContext = move.lastContext;
 
             // Mark the moved object, so destructor knows it was moved
             move.moved = true;

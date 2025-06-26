@@ -56,7 +56,7 @@ static std::string GetControlPath(int8_t zone)
 
 static void SetManualMode(int8_t zone)
 {
-    bool setValue = (bool)0x01;
+    bool setValue = true;
 
     Value v{setValue};
 

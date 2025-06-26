@@ -13,7 +13,7 @@ namespace pid_control
 class ZoneMock : public ZoneInterface
 {
   public:
-    virtual ~ZoneMock() = default;
+    ~ZoneMock() override = default;
 
     MOCK_METHOD0(updateFanTelemetry, void());
     MOCK_METHOD0(updateSensors, void());
@@ -21,7 +21,7 @@ class ZoneMock : public ZoneInterface
     MOCK_METHOD1(getCachedValue, double(const std::string&));
 
     // Compatibility interface for getCachedValues
-    ValueCacheEntry getCachedValues(const std::string& s)
+    ValueCacheEntry getCachedValues(const std::string& s) override
     {
         auto v = getCachedValue(s);
         return {v, v};

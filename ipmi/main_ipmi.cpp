@@ -47,9 +47,13 @@ void setupGlobalOemFanControl()
         "Registering OEM:[%#08X], Cmd:[%#04X] for Manual Zone Control\n",
         oem::obmcOemNumber, oem::Cmd::fanManualCmd);
 
-    using namespace std::placeholders;
-    router->registerHandler(
-        oem::obmcOemNumber, oem::Cmd::fanManualCmd,
-        std::bind(pid_control::ipmi::manualModeControl,
-                  &pid_control::ipmi::handler, _1, _2, _3, _4));
+    router->registerHandler(oem::obmcOemNumber, oem::Cmd::fanManualCmd,
+                            [](ipmi_cmd_t cmd, const uint8_t* reqBuf,
+                               uint8_t* replyCmdBuf, size_t* dataLeni)
+
+                            {
+                                return pid_control::ipmi::manualModeControl(
+                                    &pid_control::ipmi::handler, cmd, reqBuf,
+                                    replyCmdBuf, dataLeni);
+                            });
 }

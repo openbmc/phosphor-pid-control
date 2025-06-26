@@ -32,7 +32,7 @@
 namespace pid_control
 {
 
-static void processThermals(std::shared_ptr<ZoneInterface> zone)
+static void processThermals(const std::shared_ptr<ZoneInterface>& zone)
 {
     // Get the latest margins.
     zone->updateSensors();
@@ -45,12 +45,14 @@ static void processThermals(std::shared_ptr<ZoneInterface> zone)
     zone->determineMaxSetPointRequest();
 }
 
-void pidControlLoop(std::shared_ptr<ZoneInterface> zone,
-                    std::shared_ptr<boost::asio::steady_timer> timer,
+void pidControlLoop(const std::shared_ptr<ZoneInterface>& zone,
+                    const std::shared_ptr<boost::asio::steady_timer>& timer,
                     const bool* isCanceling, bool first, uint64_t cycleCnt)
 {
     if (*isCanceling)
+    {
         return;
+    }
 
     std::chrono::steady_clock::time_point nextTime;
 

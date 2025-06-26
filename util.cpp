@@ -158,6 +158,7 @@ std::vector<std::string> splitNames(
 {
     std::vector<std::string> results;
 
+    results.reserve(sensorInputs.size());
     for (const auto& sensorInput : sensorInputs)
     {
         results.emplace_back(sensorInput.name);

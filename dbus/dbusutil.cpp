@@ -84,7 +84,7 @@ bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
     {
         if (std::regex_search(sensor.first, match, reg))
         {
-            matches.push_back(sensor);
+            matches.emplace_back(sensor);
         }
     }
     return matches.size() > 0;

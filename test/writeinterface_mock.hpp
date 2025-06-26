@@ -10,7 +10,7 @@ namespace pid_control
 class WriteInterfaceMock : public WriteInterface
 {
   public:
-    virtual ~WriteInterfaceMock() = default;
+    ~WriteInterfaceMock() override = default;
 
     WriteInterfaceMock(int64_t min, int64_t max) : WriteInterface(min, max) {}
 
