@@ -1,0 +1,204 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "bf68ace1_6f7b59f2",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "I don\u0027t really have a problem with most of these changes, but it is a little hard to gauge the appropriateness when there isn\u0027t any visibility into what we\u0027re enforcing against.  Hopefully you\u0027re planning to update the docs .clang-tidy with your proposed items we should be enforcing?",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "32ae77d2_f8ea511f",
+        "filename": "failsafeloggers/failsafe_logger_utility.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "Why is this const\u0026\u0026 ?  That is an unexpected combination to me.",
+      "range": {
+        "startLine": 28,
+        "startChar": 33,
+        "endLine": 28,
+        "endChar": 52
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e775a86a_55520759",
+        "filename": "ipmi/main_ipmi.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "We don\u0027t need placeholders anymore, right?",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e3cfa437_53d73b88",
+        "filename": "ipmi/main_ipmi.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "This is a little annoying, but whatever.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 70
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "762e098e_ae0fe316",
+        "filename": "main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "😜",
+      "range": {
+        "startLine": 404,
+        "startChar": 33,
+        "endLine": 404,
+        "endChar": 47
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "feeccd4a_9639f5e2",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "Is this the preferred syntax over `bool moved \u003d false`?",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "78f65bcd_ebc9b630",
+        "filename": "pid/ec/pid.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "Uhhh...  Let\u0027s just get rid of the C-style.",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "28466283_5fe83a83",
+        "filename": "pid/ec/pid.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "Same here.",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "51882a31_7664a67d",
+        "filename": "pid/fancontroller.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "Probably prefer `\u003d NEUTRAL`.",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "86837e5f_eab06393",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-26T19:31:34Z",
+      "side": 1,
+      "message": "It\u0027s not clear why this rename happened.  I don\u0027t have much problem with it, but usually we would use `setPoints`, right?",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 36
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
