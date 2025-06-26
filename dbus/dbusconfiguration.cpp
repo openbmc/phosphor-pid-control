@@ -73,7 +73,7 @@ using SensorInterfaceType = std::pair<std::string, std::string>;
 
 inline std::string getSensorNameFromPath(const std::string& dbusPath)
 {
-    return dbusPath.substr(dbusPath.find_last_of("/") + 1);
+    return dbusPath.substr(dbusPath.find_last_of('/') + 1);
 }
 
 inline std::string sensorNameToDbusName(const std::string& sensorName)

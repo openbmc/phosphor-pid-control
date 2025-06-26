@@ -8,7 +8,7 @@ namespace pid_control
 
 void FailsafeLogger::outputFailsafeLog(
     const int64_t zoneId, const bool newFailsafeState,
-    const std::string location, const std::string reason)
+    const std::string& location, const std::string& reason)
 {
     // Remove outdated log entries.
     const auto now = std::chrono::high_resolution_clock::now();

@@ -48,8 +48,13 @@ void setupGlobalOemFanControl()
         oem::obmcOemNumber, oem::Cmd::fanManualCmd);
 
     using namespace std::placeholders;
-    router->registerHandler(
-        oem::obmcOemNumber, oem::Cmd::fanManualCmd,
-        std::bind(pid_control::ipmi::manualModeControl,
-                  &pid_control::ipmi::handler, _1, _2, _3, _4));
+    router->registerHandler(oem::obmcOemNumber, oem::Cmd::fanManualCmd,
+                            [](auto&& PH1, auto&& PH2, auto&& PH3, auto&& PH4) {
+                                return pid_control::ipmi::manualModeControl(
+                                    &pid_control::ipmi::handler,
+                                    std::forward<decltype(PH1)>(PH1),
+                                    std::forward<decltype(PH2)>(PH2),
+                                    std::forward<decltype(PH3)>(PH3),
+                                    std::forward<decltype(PH4)>(PH4));
+                            });
 }

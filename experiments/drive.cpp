@@ -35,8 +35,8 @@ using tstamp = std::chrono::high_resolution_clock::time_point;
 #define DRIVE DRIVE_TIME
 #define MAX_PWM 255
 
-static std::unique_ptr<Sensor> Create(std::string readpath,
-                                      std::string writepath)
+static std::unique_ptr<Sensor> Create(const std::string& readpath,
+                                      const std::string& writepath)
 {
     return std::make_unique<PluggableSensor>(
         readpath, 0, /* default the timeout to disabled */
@@ -91,7 +91,7 @@ static void driveGoal(int64_t& seriesCnt, int64_t setPwm, int64_t goal,
 
         tstamp t1 = std::chrono::high_resolution_clock::now();
 
-        series.push_back(std::make_tuple(t1, n0, n1));
+        series.emplace_back(t1, n0, n1);
         seriesCnt += 1;
 
         int64_t avgn = (n0 + n1) / 2;
@@ -156,7 +156,7 @@ static void driveTime([[maybe_unused]] int64_t& seriesCnt, int64_t setPwm,
         int64_t n1 = static_cast<int64_t>(r1.value);
         tstamp t1 = std::chrono::high_resolution_clock::now();
 
-        series.push_back(std::make_tuple(t1, n0, n1));
+        series.emplace_back(t1, n0, n1);
 
         auto duration =
             std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0)
@@ -222,7 +222,7 @@ int driveMain(void)
      * improvement is less.
      */
 
-    series.push_back(std::make_tuple(t1, fan0_start, fan1_start));
+    series.emplace_back(t1, fan0_start, fan1_start);
     seriesCnt += 1;
 
     int64_t average = (fan0_start + fan1_start) / 2;

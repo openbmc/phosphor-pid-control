@@ -20,8 +20,6 @@ namespace pid_control
 namespace
 {
 
-using ::testing::_;
-using ::testing::InSequence;
 using ::testing::Invoke;
 using ::testing::IsNull;
 using ::testing::NotNull;

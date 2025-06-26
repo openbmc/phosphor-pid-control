@@ -59,11 +59,9 @@ std::string FixupPath(std::string original)
 
         return fldr + f;
     }
-    else
-    {
-        /* It'll throw an exception when we use it if it's still bad. */
-        return original;
-    }
+
+    /* It'll throw an exception when we use it if it's still bad. */
+    return original;
 }
 
 } // namespace pid_control

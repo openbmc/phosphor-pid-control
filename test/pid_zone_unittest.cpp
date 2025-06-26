@@ -92,7 +92,7 @@ class PidZoneTest : public ::testing::Test
 {
   protected:
     PidZoneTest() :
-        property_index(), properties(), sdbus_mock_passive(), sdbus_mock_host(),
+        properties(), sdbus_mock_passive(), sdbus_mock_host(),
         sdbus_mock_mode(), sdbus_mock_enable()
     {
         EXPECT_CALL(sdbus_mock_host,
@@ -122,7 +122,7 @@ class PidZoneTest : public ::testing::Test
     }
 
     // unused
-    double property_index;
+    double property_index{};
     std::vector<std::string> properties;
     double propertyenable_index;
     std::vector<std::string> propertiesenable;
@@ -322,7 +322,7 @@ TEST_F(PidZoneTest, GetFailSafePercent_SingleFailedReturnsExpected)
 
     std::map<std::string, std::pair<std::string, double>> failSensorList =
         zone->getFailSafeSensors();
-    EXPECT_EQ(1, failSensorList.size());
+    EXPECT_EQ(1U, failSensorList.size());
     EXPECT_EQ("Sensor threshold asserted", failSensorList["temp1"].first);
     EXPECT_EQ(failSafePercent, failSensorList["temp1"].second);
 }
@@ -349,7 +349,7 @@ TEST_F(PidZoneTest, GetFailSafePercent_MultiFailedReturnsExpected)
 
     std::map<std::string, std::pair<std::string, double>> failSensorList =
         zone->getFailSafeSensors();
-    EXPECT_EQ(3, failSensorList.size());
+    EXPECT_EQ(3U, failSensorList.size());
     EXPECT_EQ("Sensor threshold asserted", failSensorList["temp1"].first);
     EXPECT_EQ(60, failSensorList["temp1"].second);
     EXPECT_EQ("Sensor reading bad", failSensorList["temp2"].first);

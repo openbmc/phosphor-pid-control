@@ -45,7 +45,7 @@ static std::string getControlPath(int64_t zone)
     return std::string(objectPath) + std::to_string(zone);
 }
 
-static std::string getPidControlPath(int64_t zone, std::string pidname)
+static std::string getPidControlPath(int64_t zone, const std::string& pidname)
 {
     return std::string(objectPath) + std::to_string(zone) + "/" + pidname;
 }

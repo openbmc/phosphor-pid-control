@@ -149,14 +149,14 @@ void DbusPidZone::addSetPoint(double setPoint, const std::string& name)
          * If the name of controller is Linear_Temp_CPU0.
          * The profile name will be Temp_CPU0.
          */
-        profileName = name.substr(name.find("_") + 1);
-        _SetPoints[profileName] += setPoint;
+        profileName = name.substr(name.find('_') + 1);
+        SetPoints[profileName] += setPoint;
     }
     else
     {
-        if (_SetPoints[profileName] < setPoint)
+        if (SetPoints[profileName] < setPoint)
         {
-            _SetPoints[profileName] = setPoint;
+            SetPoints[profileName] = setPoint;
         }
     }
 
@@ -164,26 +164,26 @@ void DbusPidZone::addSetPoint(double setPoint, const std::string& name)
      * if there are multiple thermal controllers with the same
      * value, pick the first one in the iterator
      */
-    if (_maximumSetPoint < _SetPoints[profileName])
+    if (_maximumSetPoint < SetPoints[profileName])
     {
-        _maximumSetPoint = _SetPoints[profileName];
+        _maximumSetPoint = SetPoints[profileName];
         _maximumSetPointName = profileName;
     }
 }
 
 void DbusPidZone::addRPMCeiling(double ceiling)
 {
-    _RPMCeilings.push_back(ceiling);
+    RPMCeilings.push_back(ceiling);
 }
 
 void DbusPidZone::clearRPMCeilings(void)
 {
-    _RPMCeilings.clear();
+    RPMCeilings.clear();
 }
 
 void DbusPidZone::clearSetPoints(void)
 {
-    _SetPoints.clear();
+    SetPoints.clear();
     _maximumSetPoint = 0;
     _maximumSetPointName.clear();
 }
@@ -197,8 +197,8 @@ double DbusPidZone::getFailSafePercent(void)
 
     FailSafeSensorsMap::iterator maxData = std::max_element(
         _failSafeSensors.begin(), _failSafeSensors.end(),
-        [](const FailSafeSensorPair firstData,
-           const FailSafeSensorPair secondData) {
+        [](const FailSafeSensorPair& firstData,
+           const FailSafeSensorPair& secondData) {
             return firstData.second.second < secondData.second.second;
         });
 
@@ -210,10 +210,8 @@ double DbusPidZone::getFailSafePercent(void)
     {
         return _zoneFailSafePercent;
     }
-    else
-    {
-        return (*maxData).second.second;
-    }
+
+    return (*maxData).second.second;
 }
 
 double DbusPidZone::getMinThermalSetPoint(void) const
@@ -344,9 +342,9 @@ void DbusPidZone::determineMaxSetPointRequest(void)
     std::vector<double>::iterator result;
     double minThermalThreshold = getMinThermalSetPoint();
 
-    if (_RPMCeilings.size() > 0)
+    if (RPMCeilings.size() > 0)
     {
-        result = std::min_element(_RPMCeilings.begin(), _RPMCeilings.end());
+        result = std::min_element(RPMCeilings.begin(), RPMCeilings.end());
         // if Max set point is larger than the lowest ceiling, reset to lowest
         // ceiling.
         if (*result < _maximumSetPoint)
@@ -595,9 +593,9 @@ bool DbusPidZone::failSafe() const
     return getFailSafeMode();
 }
 
-void DbusPidZone::addPidControlProcess(std::string name, std::string type,
-                                       double setpoint, sdbusplus::bus_t& bus,
-                                       std::string objPath, bool defer)
+void DbusPidZone::addPidControlProcess(
+    const std::string& name, const std::string& type, double setpoint,
+    sdbusplus::bus_t& bus, const std::string& objPath, bool defer)
 {
     _pidsControlProcess[name] = std::make_unique<ProcessObject>(
         bus, objPath.c_str(),
@@ -625,12 +623,12 @@ void DbusPidZone::addPidControlProcess(std::string name, std::string type,
     }
 }
 
-bool DbusPidZone::isPidProcessEnabled(std::string name)
+bool DbusPidZone::isPidProcessEnabled(const std::string& name)
 {
     return _pidsControlProcess[name]->enabled();
 }
 
-void DbusPidZone::addPidFailSafePercent(std::vector<std::string> inputs,
+void DbusPidZone::addPidFailSafePercent(const std::vector<std::string>& inputs,
                                         double percent)
 {
     for (const auto& sensorName : inputs)

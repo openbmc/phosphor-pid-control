@@ -34,7 +34,7 @@ static double clamp(double x, double min, double max)
     {
         return min;
     }
-    else if (x > max)
+    if (x > max)
     {
         return max;
     }

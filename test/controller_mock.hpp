@@ -12,7 +12,7 @@ namespace pid_control
 class ControllerMock : public PIDController
 {
   public:
-    virtual ~ControllerMock() = default;
+    ~ControllerMock() override = default;
 
     ControllerMock(const std::string& id, ZoneInterface* owner) :
         PIDController(id, owner)

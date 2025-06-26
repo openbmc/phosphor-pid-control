@@ -12,7 +12,7 @@ namespace pid_control
 class DbusHelperMock : public DbusHelperInterface
 {
   public:
-    virtual ~DbusHelperMock() = default;
+    ~DbusHelperMock() override = default;
 
     MOCK_METHOD2(getService,
                  std::string(const std::string&, const std::string&));
