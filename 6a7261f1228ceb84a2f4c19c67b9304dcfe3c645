@@ -34,6 +34,24 @@
       "parentUuid": "b7ab29be_614abb8b",
       "revId": "6a7261f1228ceb84a2f4c19c67b9304dcfe3c645",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c7224958_50044aab",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-26T19:03:43Z",
+      "side": 1,
+      "message": "Removed the .clang-tidy entirely and rebased.",
+      "parentUuid": "744d7d09_01517633",
+      "revId": "6a7261f1228ceb84a2f4c19c67b9304dcfe3c645",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
