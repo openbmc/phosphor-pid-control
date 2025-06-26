@@ -21,8 +21,6 @@ namespace
 {
 
 using ::testing::_;
-using ::testing::DoubleEq;
-using ::testing::Invoke;
 using ::testing::Return;
 using ::testing::StrEq;
 

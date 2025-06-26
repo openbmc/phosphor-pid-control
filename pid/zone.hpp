@@ -59,8 +59,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
         ModeObject(bus, objPath,
                    defer ? ModeObject::action::defer_emit
                          : ModeObject::action::emit_object_added),
-        _zoneId(zone), _maximumSetPoint(),
-        _accumulateSetPoint(accumulateSetPoint),
+        _zoneId(zone), _accumulateSetPoint(accumulateSetPoint),
         _minThermalOutputSetPt(minThermalOutput),
         _zoneFailSafePercent(failSafePercent), _cycleTime(cycleTime), _mgr(mgr)
     {
@@ -124,12 +123,13 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     /* Method for recording the maximum SetPoint PID config name */
     std::string leader() const override;
     /* Method for control process for each loop at runtime */
-    void addPidControlProcess(std::string name, std::string type,
+    void addPidControlProcess(const std::string& name, const std::string& type,
                               double setpoint, sdbusplus::bus_t& bus,
-                              std::string objPath, bool defer);
-    bool isPidProcessEnabled(std::string name);
+                              const std::string& objPath, bool defer);
+    bool isPidProcessEnabled(const std::string& name);
 
-    void addPidFailSafePercent(std::vector<std::string> inputs, double percent);
+    void addPidFailSafePercent(const std::vector<std::string>& inputs,
+                               double percent);
 
     void updateThermalPowerDebugInterface(std::string pidName,
                                           std::string leader, double input,
@@ -237,8 +237,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     FailSafeSensorsMap _failSafeSensors;
     std::set<std::string> _missingAcceptable;
 
-    std::map<std::string, double> _SetPoints;
-    std::vector<double> _RPMCeilings;
+    std::map<std::string, double> setPoints;
+    std::vector<double> rpmCeilings;
     std::vector<std::string> _fanInputs;
     std::vector<std::string> _thermalInputs;
     std::map<std::string, ValueCacheEntry> _cachedValuesByName;

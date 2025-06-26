@@ -93,9 +93,9 @@ std::filesystem::path searchConfigurationPath()
 {
     static constexpr auto name = "config.json";
 
-    for (auto pathSeg : {std::filesystem::current_path(),
-                         std::filesystem::path{"/var/lib/swampd"},
-                         std::filesystem::path{"/usr/share/swampd"}})
+    for (const auto& pathSeg : {std::filesystem::current_path(),
+                                std::filesystem::path{"/var/lib/swampd"},
+                                std::filesystem::path{"/usr/share/swampd"}})
     {
         auto file = pathSeg / name;
         if (std::filesystem::exists(file))
@@ -213,8 +213,9 @@ void tryRestartControlLoops(bool first)
     // first time of trying to restart the control loop without a delay
     if (first)
     {
-        boost::asio::post(io,
-                          std::bind(restartLbd, boost::system::error_code()));
+        boost::asio::post(io, [restartLbd] {
+            restartLbd(boost::system::error_code());
+        });
     }
     // re-try control loop, set up a delay.
     else
@@ -255,7 +256,8 @@ void tryTerminateControlLoops(bool first)
     // first time of trying to stop the control loop without a delay
     if (first)
     {
-        boost::asio::post(io, std::bind(stopLbd, boost::system::error_code()));
+        boost::asio::post(io,
+                          [stopLbd] { stopLbd(boost::system::error_code()); });
     }
     // re-try control loop, set up a delay.
     else
@@ -399,8 +401,8 @@ int main(int argc, char* argv[])
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
     // Create a manager for the ModeBus because we own it.
-    sdbusplus::server::manager_t(static_cast<sdbusplus::bus_t&>(modeControlBus),
-                                 modeRoot);
+    sdbusplus::server::manager_t manager(
+        static_cast<sdbusplus::bus_t&>(modeControlBus), modeRoot);
     hostBus.request_name("xyz.openbmc_project.Hwmon.external");
     modeControlBus.request_name("xyz.openbmc_project.State.FanCtrl");
     sdbusplus::server::manager_t objManager(modeControlBus, modeRoot);

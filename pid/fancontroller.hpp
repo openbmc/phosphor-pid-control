@@ -25,10 +25,10 @@ class FanController : public PIDController
 
     FanController(const std::string& id, const std::vector<std::string>& inputs,
                   ZoneInterface* owner) :
-        PIDController(id, owner), _inputs(inputs),
-        _direction(FanSpeedDirection::NEUTRAL)
+        PIDController(id, owner), _inputs(inputs)
     {}
-    ~FanController();
+
+    ~FanController() override;
     double inputProc(void) override;
     double setptProc(void) override;
     void outputProc(double value) override;
@@ -45,7 +45,7 @@ class FanController : public PIDController
 
   private:
     std::vector<std::string> _inputs;
-    FanSpeedDirection _direction;
+    FanSpeedDirection _direction = FanSpeedDirection::NEUTRAL;
 
     // Cosmetic only, to reduce frequency of repetitive messages
     bool failsafeTransition = true;

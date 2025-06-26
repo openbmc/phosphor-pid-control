@@ -24,8 +24,8 @@ namespace pid_control
  * logs for its corresponding zones.
  */
 inline void outputFailsafeLogWithSensor(
-    const std::string sensorName, const bool newFailsafeState,
-    const std::string location, const std::string reason)
+    const std::string& sensorName, const bool newFailsafeState,
+    const std::string& location, const std::string& reason)
 {
     for (const int64_t zoneId : sensorNameToZoneId[sensorName])
     {
@@ -42,7 +42,7 @@ inline void outputFailsafeLogWithSensor(
  */
 inline void outputFailsafeLogWithZone(
     const int64_t zoneId, const bool newFailsafeState,
-    const std::string location, const std::string reason)
+    const std::string& location, const std::string& reason)
 {
     if (zoneIdToFailsafeLogger.count(zoneId))
     {

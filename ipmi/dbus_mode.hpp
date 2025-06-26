@@ -14,7 +14,7 @@ class DbusZoneControl : public ZoneControlInterface
 {
   public:
     DbusZoneControl() = default;
-    ~DbusZoneControl() = default;
+    ~DbusZoneControl() override = default;
 
     /*
      * busctl call xyz.openbmc_project.State.FanCtrl \

@@ -39,8 +39,8 @@ class FailsafeLogger
     /** Attempt to output an entering/leaving-failsafe-mode log.
      */
     void outputFailsafeLog(int64_t zoneId, bool newFailsafeState,
-                           const std::string location,
-                           const std::string reason);
+                           const std::string& location,
+                           const std::string& reason);
 
   private:
     // The maximum number of log entries to be output within 1 second.
