@@ -81,18 +81,11 @@ double PIDController::calPIDOutput(double setpt, double input,
         {
             // initialize if the value is not set (NAN) or abnormal (+INF or
             // -INF)
-            if (!(std::isfinite(lastInput)))
-            {
-                lastInput = input;
-            }
-
             // if reading is outside of hysteresis bounds, use it for reading,
             // otherwise use last reading without updating it first
-            else if ((input - lastInput) > info->positiveHysteresis)
-            {
-                lastInput = input;
-            }
-            else if ((lastInput - input) > info->negativeHysteresis)
+            bool posHysteresis = (input - lastInput) > info->positiveHysteresis;
+            bool negHysteresis = (lastInput - input) > info->negativeHysteresis;
+            if (!(std::isfinite(lastInput)) || posHysteresis || negHysteresis)
             {
                 lastInput = input;
             }
