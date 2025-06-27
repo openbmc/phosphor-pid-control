@@ -826,11 +826,9 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         /* all expected inputs in the configuration are expected
                          * to be sensor interfaces
                          */
-                        throw std::runtime_error(
-                            "sensor at dbus path [" + inputSensorPath +
-                            "] has an interface [" + dbusInterface +
-                            "] that does not match the expected interface of " +
-                            sensorInterface);
+                        throw std::runtime_error(std::format(
+                            "sensor at dbus path [{}] has an interface [{}] that does not match the expected interface of {}",
+                            inputSensorPath, dbusInterface, sensorInterface));
                     }
                 }
 
@@ -854,12 +852,10 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     {
                         /* MissingIsAcceptable same error checking as Inputs
                          */
-                        throw std::runtime_error(
-                            "sensor at dbus path [" +
-                            missingAcceptableSensorPath +
-                            "] has an interface [" + dbusInterface +
-                            "] that does not match the expected interface of " +
-                            sensorInterface);
+                        throw std::runtime_error(std::format(
+                            "sensor at dbus path [{}] has an interface [{}] that does not match the expected interface of {}",
+                            missingAcceptableSensorPath, dbusInterface,
+                            sensorInterface));
                     }
                 }
 
@@ -916,12 +912,9 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         }
                         if (defaultPwmInterface != pwmInterface)
                         {
-                            throw std::runtime_error(
-                                "fan pwm control at dbus path [" + pwmPath +
-                                "] has an interface [" + pwmInterface +
-                                "] that does not match the expected interface "
-                                "of " +
-                                defaultPwmInterface);
+                            throw std::runtime_error(std::format(
+                                "fan pwm control at dbus path [{}] has an interface [{}] that does not match the expected interface of {}",
+                                pwmPath, pwmInterface, defaultPwmInterface));
                         }
                         const std::string& fanPath =
                             inputSensorInterfaces.at(idx).first;
