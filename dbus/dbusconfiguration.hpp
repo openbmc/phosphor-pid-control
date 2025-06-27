@@ -19,6 +19,7 @@
 
 #include <boost/asio/steady_timer.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/message/native_types.hpp>
 
 #include <cstdint>
 #include <map>

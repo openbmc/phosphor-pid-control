@@ -1,8 +1,13 @@
+#include "interfaces.hpp"
 #include "sensors/pluggable.hpp"
 #include "test/readinterface_mock.hpp"
 #include "test/writeinterface_mock.hpp"
 
 #include <chrono>
+#include <cstdint>
+#include <memory>
+#include <string>
+#include <utility>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

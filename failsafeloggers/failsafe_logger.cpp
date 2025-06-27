@@ -1,7 +1,9 @@
 #include "failsafe_logger.hpp"
 
 #include <chrono>
+#include <cstdint>
 #include <iostream>
+#include <string>
 
 namespace pid_control
 {

@@ -3,6 +3,9 @@
 #include "interfaces.hpp"
 #include "sensors/sensor.hpp"
 
+#include <cstdint>
+#include <string>
+
 #include <gmock/gmock.h>
 
 namespace pid_control

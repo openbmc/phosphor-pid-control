@@ -1,9 +1,9 @@
 #pragma once
 
+#include <cstddef>
+#include <cstdint>
 #include <deque>
-#include <memory>
 #include <string>
-#include <unordered_map>
 #include <unordered_set>
 
 namespace pid_control

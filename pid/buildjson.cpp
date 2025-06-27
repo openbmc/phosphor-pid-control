@@ -17,14 +17,19 @@
 #include "pid/buildjson.hpp"
 
 #include "conf.hpp"
+#include "ec/stepwise.hpp"
 #include "util.hpp"
 
 #include <nlohmann/json.hpp>
 
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <limits>
 #include <map>
-#include <tuple>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace pid_control
 {

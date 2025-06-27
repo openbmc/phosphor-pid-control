@@ -4,8 +4,9 @@
 
 #include <nlohmann/json.hpp>
 
+#include <cstdint>
 #include <map>
-#include <tuple>
+#include <utility>
 
 namespace pid_control
 {

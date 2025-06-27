@@ -18,12 +18,14 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <utility>
 
 /* Configuration. */
 #include "conf.hpp"
 #include "dbus/dbushelper.hpp"
 #include "dbus/dbuspassive.hpp"
 #include "dbus/dbuswrite.hpp"
+#include "dbuspassiveredundancy.hpp"
 #include "errors/exception.hpp"
 #include "interfaces.hpp"
 #include "notimpl/readonly.hpp"
@@ -35,7 +37,8 @@
 #include "sensors/pluggable.hpp"
 #include "sysfs/sysfsread.hpp"
 #include "sysfs/sysfswrite.hpp"
-#include "util.hpp"
+
+#include <sdbusplus/bus.hpp>
 
 namespace pid_control
 {

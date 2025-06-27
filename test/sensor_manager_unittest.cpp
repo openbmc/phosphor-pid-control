@@ -1,7 +1,13 @@
 #include "sensors/manager.hpp"
+#include "sensors/sensor.hpp"
 #include "test/sensor_mock.hpp"
 
 #include <sdbusplus/test/sdbus_mock.hpp>
+
+#include <cstdint>
+#include <memory>
+#include <string>
+#include <utility>
 
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>

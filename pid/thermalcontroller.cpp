@@ -16,14 +16,21 @@
 
 #include "thermalcontroller.hpp"
 
+#include "conf.hpp"
+#include "ec/pid.hpp"
 #include "errors/exception.hpp"
+#include "pidcontroller.hpp"
 #include "tuning.hpp"
 #include "util.hpp"
-#include "zone.hpp"
+#include "zone_interface.hpp"
 
 #include <algorithm>
 #include <cmath>
 #include <iostream>
+#include <limits>
+#include <memory>
+#include <string>
+#include <vector>
 
 namespace pid_control
 {

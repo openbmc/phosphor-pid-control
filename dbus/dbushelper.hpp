@@ -4,6 +4,7 @@
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/exception.hpp>
 
 #include <string>
 #include <variant>

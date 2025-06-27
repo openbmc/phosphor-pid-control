@@ -17,19 +17,14 @@
 #include "manualcmds.hpp"
 
 #include "control.hpp"
-#include "dbus_mode.hpp"
 #include "manual_messages.hpp"
 
 #include <ipmid/api.h>
 
-#include <sdbusplus/bus.hpp>
-#include <sdbusplus/message.hpp>
-
-#include <map>
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
-#include <tuple>
-#include <variant>
 
 namespace pid_control
 {

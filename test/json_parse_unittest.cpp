@@ -1,7 +1,6 @@
 #include "buildjson/buildjson.hpp"
 #include "errors/exception.hpp"
 
-#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 namespace pid_control

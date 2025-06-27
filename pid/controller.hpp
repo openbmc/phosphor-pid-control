@@ -1,8 +1,5 @@
 #pragma once
 
-#include "ec/pid.hpp"
-#include "fan.hpp"
-
 #include <string>
 
 namespace pid_control

@@ -1,12 +1,14 @@
-#include "failsafeloggers/builder.hpp"
-#include "failsafeloggers/failsafe_logger.hpp"
-#include "failsafeloggers/failsafe_logger_utility.hpp"
+#include "interfaces.hpp"
 #include "sensors/host.hpp"
+#include "sensors/sensor.hpp"
 #include "test/helpers.hpp"
+
+#include <systemd/sd-bus.h>
 
 #include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <chrono>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>

@@ -3,6 +3,8 @@
 #include "pid/stepwisecontroller.hpp"
 #include "test/zone_mock.hpp"
 
+#include <limits>
+#include <memory>
 #include <string>
 #include <vector>
 

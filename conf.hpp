@@ -3,6 +3,7 @@
 #include "pid/ec/pid.hpp"
 #include "pid/ec/stepwise.hpp"
 
+#include <cstdint>
 #include <limits>
 #include <map>
 #include <string>

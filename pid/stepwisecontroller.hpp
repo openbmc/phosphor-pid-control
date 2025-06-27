@@ -2,10 +2,10 @@
 
 #include "controller.hpp"
 #include "ec/stepwise.hpp"
-#include "fan.hpp"
 
 #include <limits>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace pid_control

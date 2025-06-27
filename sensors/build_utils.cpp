@@ -16,6 +16,8 @@
 
 #include "build_utils.hpp"
 
+#include <string>
+
 namespace pid_control
 {
 

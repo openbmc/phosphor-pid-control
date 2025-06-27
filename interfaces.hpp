@@ -1,6 +1,9 @@
 #pragma once
 
 #include <chrono>
+#include <cstdint>
+#include <limits>
+#include <string>
 
 namespace pid_control
 {

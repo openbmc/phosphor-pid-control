@@ -4,6 +4,9 @@
 
 #include <boost/asio/steady_timer.hpp>
 
+#include <cstdint>
+#include <memory>
+
 namespace pid_control
 {
 

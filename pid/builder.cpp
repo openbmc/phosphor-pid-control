@@ -17,6 +17,7 @@
 #include "pid/builder.hpp"
 
 #include "conf.hpp"
+#include "manager.hpp"
 #include "pid/controller.hpp"
 #include "pid/fancontroller.hpp"
 #include "pid/stepwisecontroller.hpp"
@@ -29,9 +30,12 @@
 
 #include <cstdint>
 #include <iostream>
+#include <map>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 namespace pid_control

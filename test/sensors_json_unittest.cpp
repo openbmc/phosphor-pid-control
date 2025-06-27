@@ -1,7 +1,8 @@
 #include "sensors/buildjson.hpp"
 #include "sensors/sensor.hpp"
 
-#include <gmock/gmock.h>
+#include <sys/types.h>
+
 #include <gtest/gtest.h>
 
 namespace pid_control

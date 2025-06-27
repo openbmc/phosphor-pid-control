@@ -18,13 +18,7 @@
 
 #include "ec/pid.hpp"
 
-#include <algorithm>
-#include <chrono>
 #include <cmath>
-#include <iostream>
-#include <map>
-#include <memory>
-#include <vector>
 
 namespace pid_control
 {
