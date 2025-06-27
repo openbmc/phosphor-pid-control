@@ -117,19 +117,11 @@ std::string getSensorPath(const std::string& type, const std::string& id)
     {
         layer = "fan_tach";
     }
-    else if (type == "temp")
+    else if (type == "temp" || type == "margin")
     {
         layer = "temperature";
     }
-    else if (type == "margin")
-    {
-        layer = "temperature";
-    }
-    else if (type == "power")
-    {
-        layer = "power";
-    }
-    else if (type == "powersum")
+    else if (type == "power" || type == "powersum")
     {
         layer = "power";
     }
