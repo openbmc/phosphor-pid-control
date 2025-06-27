@@ -1,9 +1,14 @@
 #pragma once
 
+#include "interfaces.hpp"
 #include "sensors/sensor.hpp"
 
+#include <cstdint>
 #include <map>
 #include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
 
 namespace pid_control
 {

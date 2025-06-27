@@ -1,9 +1,11 @@
 #include "conf.hpp"
-#include "pid/ec/logging.hpp"
 #include "pid/ec/pid.hpp"
+#include "pid/pidcontroller.hpp"
 #include "pid/thermalcontroller.hpp"
 #include "test/zone_mock.hpp"
 
+#include <exception>
+#include <memory>
 #include <string>
 #include <vector>
 

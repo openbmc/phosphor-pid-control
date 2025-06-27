@@ -1,5 +1,7 @@
 #include "dbus/dbusutil.hpp"
 
+#include <cstdint>
+#include <map>
 #include <string>
 #include <tuple>
 #include <unordered_map>

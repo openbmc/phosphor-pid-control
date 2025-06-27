@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include "control.hpp"
 #include "dbus_mode.hpp"
 #include "manualcmds.hpp"
 

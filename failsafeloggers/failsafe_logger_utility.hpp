@@ -1,8 +1,8 @@
 #pragma once
 
-#include "conf.hpp"
 #include "failsafeloggers/failsafe_logger.hpp"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <unordered_map>

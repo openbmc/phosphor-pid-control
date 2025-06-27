@@ -2,11 +2,9 @@
 
 #include "controller.hpp"
 #include "ec/pid.hpp"
-#include "fan.hpp"
 
 #include <limits>
-#include <memory>
-#include <vector>
+#include <string>
 
 namespace pid_control
 {

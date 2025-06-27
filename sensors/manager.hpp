@@ -5,6 +5,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server.hpp>
 
+#include <functional>
 #include <map>
 #include <memory>
 #include <string>

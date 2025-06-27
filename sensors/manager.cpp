@@ -17,10 +17,11 @@
 /* Configuration. */
 #include "sensors/manager.hpp"
 
-#include "conf.hpp"
+#include "sensor.hpp"
 
 #include <memory>
 #include <string>
+#include <utility>
 
 namespace pid_control
 {

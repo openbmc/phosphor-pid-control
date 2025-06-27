@@ -19,15 +19,15 @@
 #include "pid/pidcontroller.hpp"
 #include "pid/tuning.hpp"
 #include "pid/zone_interface.hpp"
-#include "sensors/sensor.hpp"
 
+#include <boost/asio/error.hpp>
 #include <boost/asio/steady_timer.hpp>
 
 #include <chrono>
-#include <map>
+#include <cstdint>
 #include <memory>
+#include <ostream>
 #include <sstream>
-#include <vector>
 
 namespace pid_control
 {

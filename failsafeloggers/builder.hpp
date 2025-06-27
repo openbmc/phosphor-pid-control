@@ -1,10 +1,9 @@
 #pragma once
 
-#include "conf.hpp"
-#include "failsafeloggers/failsafe_logger.hpp"
 #include "pid/zone_interface.hpp"
-#include "sensors/manager.hpp"
 
+#include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <unordered_map>
 

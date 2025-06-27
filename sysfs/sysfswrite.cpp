@@ -16,6 +16,7 @@
 
 #include "sysfswrite.hpp"
 
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 

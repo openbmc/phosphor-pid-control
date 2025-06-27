@@ -6,6 +6,8 @@
 
 #include <sdbusplus/bus.hpp>
 
+#include <cstdint>
+#include <map>
 #include <memory>
 #include <unordered_map>
 

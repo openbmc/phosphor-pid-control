@@ -18,10 +18,8 @@
 
 #include "dbushelper_interface.hpp"
 #include "interfaces.hpp"
-#include "util.hpp"
 
-#include <sdbusplus/bus.hpp>
-
+#include <cstdint>
 #include <memory>
 #include <string>
 

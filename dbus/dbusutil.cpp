@@ -1,10 +1,8 @@
-#include "util.hpp"
 
 #include <sdbusplus/bus/match.hpp>
 
 #include <cmath>
 #include <cstdint>
-#include <iostream>
 #include <map>
 #include <regex>
 #include <set>

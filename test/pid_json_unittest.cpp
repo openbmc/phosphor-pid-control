@@ -1,6 +1,12 @@
+#include "conf.hpp"
 #include "pid/buildjson.hpp"
 
-#include <gmock/gmock.h>
+#include <sys/types.h>
+
+#include <cstdint>
+#include <map>
+#include <tuple>
+
 #include <gtest/gtest.h>
 
 namespace pid_control

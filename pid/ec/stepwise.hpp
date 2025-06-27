@@ -18,7 +18,6 @@
 #pragma once
 
 #include <cstddef>
-#include <vector>
 
 namespace pid_control
 {

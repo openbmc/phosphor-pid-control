@@ -3,8 +3,10 @@
 #include "interfaces.hpp"
 #include "sensor.hpp"
 
+#include <cstdint>
 #include <memory>
 #include <string>
+#include <utility>
 
 namespace pid_control
 {

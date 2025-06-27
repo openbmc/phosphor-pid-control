@@ -3,13 +3,11 @@
 #include "conf.hpp"
 #include "pid/ec/pid.hpp"
 
-#include <phosphor-logging/log.hpp>
-#include <sdbusplus/bus.hpp>
-
 #include <cstdint>
 #include <limits>
 #include <map>
 #include <string>
+#include <vector>
 
 namespace pid_control
 {

@@ -18,11 +18,16 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
+#include <sdbusplus/exception.hpp>
+#include <sdbusplus/message.hpp>
 
+#include <array>
 #include <iostream>
 #include <set>
+#include <string>
 #include <unordered_map>
 #include <variant>
+#include <vector>
 
 namespace pid_control
 {
