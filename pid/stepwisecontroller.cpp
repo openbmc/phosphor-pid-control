@@ -44,17 +44,9 @@ void StepwiseController::process(void)
     double output = lastOutput;
 
     // Calculate new output if hysteresis allows
-    if (std::isnan(output))
-    {
-        output = ec::stepwise(info, input);
-        lastInput = input;
-    }
-    else if ((input - lastInput) > info.positiveHysteresis)
-    {
-        output = ec::stepwise(info, input);
-        lastInput = input;
-    }
-    else if ((lastInput - input) > info.negativeHysteresis)
+    bool posHysteresis = (input - lastInput) > info.positiveHysteresis;
+    bool negHysteresis = (lastInput - input) > info.negativeHysteresis;
+    if (std::isnan(output) || posHysteresis || negHysteresis)
     {
         output = ec::stepwise(info, input);
         lastInput = input;
