@@ -15,9 +15,6 @@ cxx = meson.get_compiler('cpp')
 
 conf_data = configuration_data()
 
-bindir = get_option('prefix') / get_option('bindir')
-conf_data.set('BINDIR', bindir)
-conf_data.set('SYSTEMD_TARGET', get_option('systemd_target'))
 conf_data.set('STRICT_FAILSAFE_PWM', get_option('strict-failsafe-pwm'))
 conf_data.set('OFFLINE_FAILSAFE_PWM', get_option('offline-failsafe-pwm'))
 conf_data.set('UNC_FAILSAFE', get_option('unc-failsafe'))
@@ -57,10 +54,15 @@ systemd_system_unit_dir = systemd.get_variable(
     pkgconfig_define: ['prefix', get_option('prefix')],
 )
 
+systemd_conf_data = configuration_data()
+bindir = get_option('prefix') / get_option('bindir')
+systemd_conf_data.set('BINDIR', bindir)
+systemd_conf_data.set('SYSTEMD_TARGET', get_option('systemd_target'))
+
 configure_file(
     input: 'phosphor-pid-control.service.in',
     output: 'phosphor-pid-control.service',
-    configuration: conf_data,
+    configuration: systemd_conf_data,
     install: true,
     install_dir: systemd_system_unit_dir,
 )
