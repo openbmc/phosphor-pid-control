@@ -1,8 +1,14 @@
 #pragma once
 
+#include "interfaces.hpp"
 #include "pid/zone_interface.hpp"
+#include "sensors/sensor.hpp"
 
+#include <cstdint>
+#include <map>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 #include <gmock/gmock.h>

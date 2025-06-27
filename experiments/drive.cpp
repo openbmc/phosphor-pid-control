@@ -17,13 +17,20 @@
 #include "drive.hpp"
 
 #include "interfaces.hpp"
+#include "sensor.hpp"
 #include "sensors/pluggable.hpp"
 #include "sysfs/sysfsread.hpp"
 #include "sysfs/sysfswrite.hpp"
 
+#include <cerrno>
+#include <chrono>
+#include <cstdint>
 #include <iostream>
 #include <memory>
+#include <string>
 #include <tuple>
+#include <utility>
+#include <vector>
 
 namespace pid_control
 {

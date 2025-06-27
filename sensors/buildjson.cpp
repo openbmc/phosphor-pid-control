@@ -22,6 +22,7 @@
 #include <nlohmann/json.hpp>
 
 #include <cstdio>
+#include <map>
 
 using json = nlohmann::json;
 

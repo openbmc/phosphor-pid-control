@@ -20,6 +20,7 @@
 #include <sdbusplus/bus/match.hpp>
 
 #include <set>
+#include <string>
 
 namespace pid_control
 {

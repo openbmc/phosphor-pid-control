@@ -2,6 +2,7 @@
 
 #include "interfaces.hpp"
 
+#include <cstdint>
 #include <string>
 
 namespace pid_control

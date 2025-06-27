@@ -1,13 +1,17 @@
 #pragma once
 
+#include "interfaces.hpp"
 #include "sensor.hpp"
 
 #include <sdbusplus/bus.hpp>
-#include <sdbusplus/server.hpp>
+#include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Sensor/Value/server.hpp>
 
+#include <chrono>
+#include <cstdint>
 #include <memory>
 #include <mutex>
+#include <string>
 #include <type_traits>
 
 template <typename... T>

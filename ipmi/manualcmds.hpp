@@ -4,8 +4,10 @@
 
 #include <ipmid/api.h>
 
+#include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <utility>
 
 namespace pid_control
 {

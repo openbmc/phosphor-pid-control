@@ -2,7 +2,6 @@
 
 #include "conf.hpp"
 #include "sensors/manager.hpp"
-#include "sensors/sensor.hpp"
 
 #include <sdbusplus/bus.hpp>
 

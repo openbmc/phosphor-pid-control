@@ -4,6 +4,8 @@
 #include "pid/pidcontroller.hpp"
 #include "pid/zone_interface.hpp"
 
+#include <string>
+
 #include <gmock/gmock.h>
 
 namespace pid_control

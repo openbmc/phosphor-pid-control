@@ -19,9 +19,11 @@
 #include <ipmid/api.h>
 
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/exception.hpp>
 #include <sdbusplus/message.hpp>
 
 #include <cstdint>
+#include <map>
 #include <string>
 #include <variant>
 

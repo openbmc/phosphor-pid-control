@@ -3,6 +3,7 @@
 #include "conf.hpp"
 #include "controller.hpp"
 #include "failsafeloggers/failsafe_logger_utility.hpp"
+#include "interfaces.hpp"
 #include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
@@ -10,18 +11,22 @@
 #include "zone_interface.hpp"
 
 #include <sdbusplus/bus.hpp>
-#include <sdbusplus/server.hpp>
+#include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
 #include <xyz/openbmc_project/Debug/Pid/ThermalPower/server.hpp>
 #include <xyz/openbmc_project/Debug/Pid/Zone/server.hpp>
 #include <xyz/openbmc_project/Object/Enable/server.hpp>
 
+#include <chrono>
+#include <cstdint>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <memory>
 #include <set>
 #include <string>
+#include <string_view>
+#include <utility>
 #include <vector>
 
 template <typename... T>

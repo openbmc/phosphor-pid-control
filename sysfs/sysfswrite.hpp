@@ -3,6 +3,7 @@
 #include "interfaces.hpp"
 #include "util.hpp"
 
+#include <cstdint>
 #include <string>
 
 namespace pid_control

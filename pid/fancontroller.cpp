@@ -13,17 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "config.h"
 
 #include "fancontroller.hpp"
 
+#include "ec/pid.hpp"
+#include "fan.hpp"
+#include "pidcontroller.hpp"
 #include "tuning.hpp"
 #include "util.hpp"
-#include "zone.hpp"
+#include "zone_interface.hpp"
 
 #include <algorithm>
 #include <cmath>
+#include <cstdint>
+#include <exception>
 #include <iostream>
+#include <map>
+#include <memory>
+#include <string>
+#include <utility>
+#include <vector>
 
 namespace pid_control
 {

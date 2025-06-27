@@ -16,6 +16,8 @@
 
 #include "writeonly.hpp"
 
+#include "interfaces.hpp"
+
 #include <stdexcept>
 
 namespace pid_control

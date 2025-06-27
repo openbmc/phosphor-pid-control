@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "config.h"
 
 #include "dbushelper.hpp"
 
@@ -22,8 +21,11 @@
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/exception.hpp>
 
+#include <cstdint>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <variant>
 #include <vector>

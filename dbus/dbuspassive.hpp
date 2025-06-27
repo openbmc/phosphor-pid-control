@@ -4,7 +4,8 @@
 #include "dbushelper_interface.hpp"
 #include "dbuspassiveredundancy.hpp"
 #include "interfaces.hpp"
-#include "util.hpp"
+
+#include <systemd/sd-bus.h>
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
@@ -12,14 +13,10 @@
 
 #include <chrono>
 #include <cmath>
-#include <iostream>
-#include <map>
+#include <cstdint>
 #include <memory>
 #include <mutex>
-#include <set>
 #include <string>
-#include <tuple>
-#include <vector>
 
 namespace pid_control
 {

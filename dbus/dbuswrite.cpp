@@ -17,12 +17,14 @@
 #include "dbuswrite.hpp"
 
 #include "dbushelper_interface.hpp"
+#include "interfaces.hpp"
 
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
+#include <sdbusplus/exception.hpp>
 
+#include <cstdint>
 #include <exception>
-#include <iostream>
 #include <memory>
 #include <string>
 #include <variant>

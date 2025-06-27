@@ -1,20 +1,29 @@
+#include "conf.hpp"
 #include "failsafeloggers/builder.hpp"
-#include "failsafeloggers/failsafe_logger.hpp"
-#include "failsafeloggers/failsafe_logger_utility.hpp"
-#include "pid/ec/logging.hpp"
+#include "interfaces.hpp"
 #include "pid/ec/pid.hpp"
+#include "pid/pidcontroller.hpp"
 #include "pid/zone.hpp"
+#include "pid/zone_interface.hpp"
 #include "sensors/manager.hpp"
+#include "sensors/sensor.hpp"
 #include "test/controller_mock.hpp"
 #include "test/helpers.hpp"
 #include "test/sensor_mock.hpp"
 
+#include <systemd/sd-bus.h>
+
 #include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <chrono>
+#include <cstdint>
 #include <cstring>
+#include <map>
+#include <memory>
 #include <optional>
+#include <string>
 #include <unordered_map>
+#include <utility>
 #include <vector>
 
 #include <gmock/gmock.h>

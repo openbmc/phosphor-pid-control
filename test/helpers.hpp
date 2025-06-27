@@ -1,6 +1,8 @@
 // THIS EXISTS AS A COPY OF SDBUSPLUS/TEST/HELPERS.HPP until that is merged.
 #pragma once
 
+#include <systemd/sd-bus.h>
+
 #include <sdbusplus/test/sdbus_mock.hpp>
 
 #include <string>

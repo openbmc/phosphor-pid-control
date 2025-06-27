@@ -17,7 +17,6 @@
 #include "util.hpp"
 
 #include <filesystem>
-#include <iostream>
 #include <string>
 
 namespace pid_control

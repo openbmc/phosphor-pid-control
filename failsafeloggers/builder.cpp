@@ -16,11 +16,12 @@
 
 #include "failsafeloggers/builder.hpp"
 
-#include "conf.hpp"
 #include "failsafeloggers/failsafe_logger.hpp"
 #include "failsafeloggers/failsafe_logger_utility.hpp"
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
 #include <iostream>
 #include <memory>
 #include <string>

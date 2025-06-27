@@ -2,6 +2,8 @@
 
 #include "interfaces.hpp"
 
+#include <cstdint>
+
 #include <gmock/gmock.h>
 
 namespace pid_control
