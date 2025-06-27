@@ -48,17 +48,17 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
 /* Condensed version for use by the configuration. */
 struct pidinfo
 {
-    bool checkHysterWithSetpt = 0.0; // compare current input and setpoint to
-                                     // check hysteresis
+    bool checkHysterWithSetpt = false; // compare current input and setpoint to
+                                       // check hysteresis
 
-    double ts = 0.0;                 // sample time in seconds
-    double proportionalCoeff = 0.0;  // coeff for P
-    double integralCoeff = 0.0;      // coeff for I
-    double derivativeCoeff = 0.0;    // coeff for D
-    double feedFwdOffset = 0.0;      // offset coeff for feed-forward term
-    double feedFwdGain = 0.0;        // gain for feed-forward term
-    ec::limits_t integralLimit;      // clamp of integral
-    ec::limits_t outLim;             // clamp of output
+    double ts = 0.0;                   // sample time in seconds
+    double proportionalCoeff = 0.0;    // coeff for P
+    double integralCoeff = 0.0;        // coeff for I
+    double derivativeCoeff = 0.0;      // coeff for D
+    double feedFwdOffset = 0.0;        // offset coeff for feed-forward term
+    double feedFwdGain = 0.0;          // gain for feed-forward term
+    ec::limits_t integralLimit;        // clamp of integral
+    ec::limits_t outLim;               // clamp of output
     double slewNeg = 0.0;
     double slewPos = 0.0;
     double positiveHysteresis = 0.0;
