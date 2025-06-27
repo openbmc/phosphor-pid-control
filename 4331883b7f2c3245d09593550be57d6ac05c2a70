@@ -26,6 +26,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "4497daf2_c1b2563f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "The tidy file I enforced against was in patchset 1..... that I broke out because you asked me to 😊\n\nI\u0027m happy to do whatever.  Right now the tidy file I used is in the second patchset in the series.  Yes, I fully support a common tidy file, and can make proposals at some point.",
+      "parentUuid": "bf68ace1_6f7b59f2",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32ae77d2_f8ea511f",
         "filename": "failsafeloggers/failsafe_logger_utility.hpp",
         "patchSetId": 5
@@ -37,6 +61,30 @@
       "writtenOn": "2025-06-26T19:31:34Z",
       "side": 1,
       "message": "Why is this const\u0026\u0026 ?  That is an unexpected combination to me.",
+      "range": {
+        "startLine": 28,
+        "startChar": 33,
+        "endLine": 28,
+        "endChar": 52
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "810a7489_e6b18d6f",
+        "filename": "failsafeloggers/failsafe_logger_utility.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 28,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "Yea, I actually had this fixed locally.  Not sure why clang decided to do that.",
+      "parentUuid": "32ae77d2_f8ea511f",
       "range": {
         "startLine": 28,
         "startChar": 33,
@@ -66,6 +114,24 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "e0a5a790_a7f541b9",
+        "filename": "ipmi/main_ipmi.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "e775a86a_55520759",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "e3cfa437_53d73b88",
         "filename": "ipmi/main_ipmi.cpp",
         "patchSetId": 5
@@ -77,6 +143,30 @@
       "writtenOn": "2025-06-26T19:31:34Z",
       "side": 1,
       "message": "This is a little annoying, but whatever.",
+      "range": {
+        "startLine": 55,
+        "startChar": 0,
+        "endLine": 58,
+        "endChar": 70
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "30bd2489_dffca8da",
+        "filename": "ipmi/main_ipmi.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "I\u0027m also not in love with what it did here....  The old versions of clang didn\u0027t do this transform back in 2021.\n\nOh well, I\u0027ve fixed it to give things types and make things sane.",
+      "parentUuid": "e3cfa437_53d73b88",
       "range": {
         "startLine": 55,
         "startChar": 0,
@@ -110,6 +200,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "5d2bc4b5_6fd13881",
+        "filename": "main.cpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 404,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "Robots can do the craziest things some times.\n\nThat serves me right for updating the tidy version without re-reviewing the fixes 😊",
+      "parentUuid": "762e098e_ae0fe316",
+      "range": {
+        "startLine": 404,
+        "startChar": 33,
+        "endLine": 404,
+        "endChar": 47
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "feeccd4a_9639f5e2",
@@ -123,6 +237,24 @@
       "writtenOn": "2025-06-26T19:31:34Z",
       "side": 1,
       "message": "Is this the preferred syntax over `bool moved \u003d false`?",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "725bdac6_99735d97",
+        "filename": "pid/ec/logging.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 56,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "Because it\u0027s the transform tidy can do automatically.  I personally prefer the later, so I changed this one.",
+      "parentUuid": "feeccd4a_9639f5e2",
       "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -144,6 +276,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "7b5a08b8_f29105c7",
+        "filename": "pid/ec/pid.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "78f65bcd_ebc9b630",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "28466283_5fe83a83",
@@ -157,6 +307,24 @@
       "writtenOn": "2025-06-26T19:31:34Z",
       "side": 1,
       "message": "Same here.",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40f170f4_73232fb3",
+        "filename": "pid/ec/pid.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 20,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "Fixed.",
+      "parentUuid": "28466283_5fe83a83",
       "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
@@ -178,6 +346,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "b5e12bc7_f459d292",
+        "filename": "pid/fancontroller.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "51882a31_7664a67d",
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "86837e5f_eab06393",
@@ -191,6 +377,30 @@
       "writtenOn": "2025-06-26T19:31:34Z",
       "side": 1,
       "message": "It\u0027s not clear why this rename happened.  I don\u0027t have much problem with it, but usually we would use `setPoints`, right?",
+      "range": {
+        "startLine": 240,
+        "startChar": 0,
+        "endLine": 241,
+        "endChar": 36
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e1ad608_60947444",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 5
+      },
+      "lineNbr": 241,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-27T15:40:36Z",
+      "side": 1,
+      "message": "https://clang.llvm.org/extra/clang-tidy/checks/bugprone/reserved-identifier.html\n\nBut yes, I\u0027ve changed to setPoints and rpmCeilings",
+      "parentUuid": "86837e5f_eab06393",
       "range": {
         "startLine": 240,
         "startChar": 0,
