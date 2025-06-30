@@ -1,6 +1,23 @@
 {
   "comments": [
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "139f1702_0b592052",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-30T17:44:50Z",
+      "side": 1,
+      "message": "patrick is right, this isn\u0027t the best refactor.",
+      "revId": "2b969073b4a44676ebd200d066ef456019410312",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "93853cbc_89593229",
@@ -14,6 +31,30 @@
       "writtenOn": "2025-06-30T17:42:26Z",
       "side": 1,
       "message": "Aren\u0027t we doing math on a NaN now?  That doesn\u0027t seem safe?",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 78
+      },
+      "revId": "2b969073b4a44676ebd200d066ef456019410312",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2432b331_e44af176",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-30T17:44:50Z",
+      "side": 1,
+      "message": "yes we are, and that\u0027s a good catch.  Let me restructure a bit more.",
+      "parentUuid": "93853cbc_89593229",
       "range": {
         "startLine": 86,
         "startChar": 0,
