@@ -74,6 +74,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "46de8b6e_5dd036a9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 5
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-06-30T17:43:45Z",
+      "side": 1,
+      "message": "Yep, I was going off \"but many of these fixes can be applied without clang-tidy enablement.\" but you\u0027re right, that didnt\u0027 explicitly ask for splitting out.",
+      "parentUuid": "4dbca38b_638d3579",
+      "range": {
+        "startLine": 11,
+        "startChar": 0,
+        "endLine": 13,
+        "endChar": 5
+      },
+      "revId": "4331883b7f2c3245d09593550be57d6ac05c2a70",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "32ae77d2_f8ea511f",
         "filename": "failsafeloggers/failsafe_logger_utility.hpp",
         "patchSetId": 5
