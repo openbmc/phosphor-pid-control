@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "93853cbc_89593229",
+        "filename": "pid/pidcontroller.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-06-30T17:42:26Z",
+      "side": 1,
+      "message": "Aren\u0027t we doing math on a NaN now?  That doesn\u0027t seem safe?",
+      "range": {
+        "startLine": 86,
+        "startChar": 0,
+        "endLine": 88,
+        "endChar": 78
+      },
+      "revId": "2b969073b4a44676ebd200d066ef456019410312",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
