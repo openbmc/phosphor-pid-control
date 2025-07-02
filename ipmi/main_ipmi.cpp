@@ -25,15 +25,12 @@
 #include <functional>
 #include <memory>
 
-namespace pid_control
-{
-namespace ipmi
+namespace pid_control::ipmi
 {
 
 ZoneControlIpmiHandler handler(std::make_unique<DbusZoneControl>());
 
-}
-} // namespace pid_control
+} // namespace pid_control::ipmi
 
 void setupGlobalOemFanControl() __attribute__((constructor));
 

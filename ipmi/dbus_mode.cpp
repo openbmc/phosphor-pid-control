@@ -16,8 +16,7 @@
 
 #include "dbus_mode.hpp"
 
-#include <ipmid/api.h>
-
+#include <ipmid/api-types.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/message.hpp>
@@ -27,9 +26,7 @@
 #include <string>
 #include <variant>
 
-namespace pid_control
-{
-namespace ipmi
+namespace pid_control::ipmi
 {
 
 static constexpr auto objectPath = "/xyz/openbmc_project/settings/fanctrl/zone";
@@ -70,10 +67,10 @@ uint8_t DbusZoneControl::getFanCtrlProperty(uint8_t zoneId, bool* value,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        return IPMI_CC_INVALID;
+        return ::ipmi::ccInvalidCommand;
     }
 
-    return IPMI_CC_OK;
+    return ::ipmi::ccSuccess;
 }
 
 uint8_t DbusZoneControl::setFanCtrlProperty(uint8_t zoneId, bool value,
@@ -97,12 +94,11 @@ uint8_t DbusZoneControl::setFanCtrlProperty(uint8_t zoneId, bool value,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        return IPMI_CC_INVALID;
+        return ::ipmi::ccInvalidCommand;
     }
 
     /* TODO(venture): Should sanity check the result. */
-    return IPMI_CC_OK;
+    return ::ipmi::ccSuccess;
 }
 
-} // namespace ipmi
-} // namespace pid_control
+} // namespace pid_control::ipmi
