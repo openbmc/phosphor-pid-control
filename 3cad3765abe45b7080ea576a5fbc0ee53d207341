@@ -16,6 +16,24 @@
       "message": "Why was this change made?",
       "revId": "3cad3765abe45b7080ea576a5fbc0ee53d207341",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2f94ec3b_97e5e4bd",
+        "filename": "ipmi/control.hpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-07-02T13:36:41Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ae2ca6ae_5e2c4909",
+      "revId": "3cad3765abe45b7080ea576a5fbc0ee53d207341",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
