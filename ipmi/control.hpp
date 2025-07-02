@@ -3,9 +3,7 @@
 #include <cstdint>
 #include <string>
 
-namespace pid_control
-{
-namespace ipmi
+namespace pid_control_ipmi
 {
 
 // Implement this interface to control a zone's mode or read back its status.
@@ -25,5 +23,4 @@ class ZoneControlInterface
                                        const std::string& property) = 0;
 };
 
-} // namespace ipmi
-} // namespace pid_control
+} // namespace pid_control_ipmi

@@ -25,15 +25,12 @@
 #include <functional>
 #include <memory>
 
-namespace pid_control
-{
-namespace ipmi
+namespace pid_control_ipmi
 {
 
 ZoneControlIpmiHandler handler(std::make_unique<DbusZoneControl>());
 
-}
-} // namespace pid_control
+} // namespace pid_control_ipmi
 
 void setupGlobalOemFanControl() __attribute__((constructor));
 
@@ -46,8 +43,7 @@ void setupGlobalOemFanControl()
         "Registering OEM:[%#08X], Cmd:[%#04X] for Manual Zone Control\n",
         oem::obmcOemNumber, oem::Cmd::fanManualCmd);
 
-    router->registerHandler(
-        oem::obmcOemNumber, oem::Cmd::fanManualCmd,
-        std::bind_front(pid_control::ipmi::manualModeControl,
-                        &pid_control::ipmi::handler));
+    router->registerHandler(oem::obmcOemNumber, oem::Cmd::fanManualCmd,
+                            std::bind_front(pid_control_ipmi::manualModeControl,
+                                            &pid_control_ipmi::handler));
 }

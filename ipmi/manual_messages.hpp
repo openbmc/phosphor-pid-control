@@ -2,9 +2,7 @@
 
 #include <cstdint>
 
-namespace pid_control
-{
-namespace ipmi
+namespace pid_control_ipmi
 {
 
 enum ManualSubCmd
@@ -27,5 +25,4 @@ struct FanCtrlRequestSet
     uint8_t value;
 } __attribute__((packed));
 
-} // namespace ipmi
-} // namespace pid_control
+} // namespace pid_control_ipmi

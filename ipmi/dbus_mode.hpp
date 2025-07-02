@@ -5,9 +5,7 @@
 #include <cstdint>
 #include <string>
 
-namespace pid_control
-{
-namespace ipmi
+namespace pid_control_ipmi
 {
 
 class DbusZoneControl : public ZoneControlInterface
@@ -36,5 +34,4 @@ class DbusZoneControl : public ZoneControlInterface
                                const std::string& property) override;
 };
 
-} // namespace ipmi
-} // namespace pid_control
+} // namespace pid_control_ipmi

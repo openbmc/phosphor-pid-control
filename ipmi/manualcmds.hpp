@@ -2,16 +2,14 @@
 
 #include "control.hpp"
 
-#include <ipmid/api.h>
+#include <ipmid/api-types.hpp>
 
 #include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <utility>
 
-namespace pid_control
-{
-namespace ipmi
+namespace pid_control_ipmi
 {
 
 // Implements validation of IPMI commands and handles sending back the
@@ -24,22 +22,21 @@ class ZoneControlIpmiHandler
         _control(std::move(control))
     {}
 
-    ipmi_ret_t getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
-                                    size_t* dataLen);
-
-    ipmi_ret_t getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+    ipmi::Cc getFailsafeModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
                                   size_t* dataLen);
 
-    ipmi_ret_t setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
-                                  const size_t* dataLen);
+    ipmi::Cc getManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+                                size_t* dataLen);
+
+    ipmi::Cc setManualModeState(const uint8_t* reqBuf, uint8_t* replyBuf,
+                                const size_t* dataLen);
 
   private:
     std::unique_ptr<ZoneControlInterface> _control;
 };
 
-ipmi_ret_t manualModeControl(ZoneControlIpmiHandler* handler, ipmi_cmd_t cmd,
-                             const uint8_t* reqBuf, uint8_t* replyCmdBuf,
-                             size_t* dataLen);
+ipmi::Cc manualModeControl(ZoneControlIpmiHandler* handler, uint8_t cmd,
+                           const uint8_t* reqBuf, uint8_t* replyCmdBuf,
+                           size_t* dataLen);
 
-} // namespace ipmi
-} // namespace pid_control
+} // namespace pid_control_ipmi
