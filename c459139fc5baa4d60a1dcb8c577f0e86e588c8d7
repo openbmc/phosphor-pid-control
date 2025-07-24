@@ -16,6 +16,24 @@
       "message": "French spellings aren’t acceptable to compilers.",
       "revId": "c459139fc5baa4d60a1dcb8c577f0e86e588c8d7",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "40432a28_7de1a566",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-07-24T14:07:46Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1fca7aa6_d02d2ec7",
+      "revId": "c459139fc5baa4d60a1dcb8c577f0e86e588c8d7",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
