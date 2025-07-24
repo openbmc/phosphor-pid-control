@@ -16,6 +16,7 @@
 
 #include "buildjson/buildjson.hpp"
 #include "conf.hpp"
+#include "config.h"
 #include "dbus/dbusconfiguration.hpp"
 #include "failsafeloggers/builder.hpp"
 #include "pid/builder.hpp"
