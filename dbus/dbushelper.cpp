@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include "config.h"
+
 #include "dbushelper.hpp"
 
 #include "dbushelper_interface.hpp"
