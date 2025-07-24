@@ -1,3 +1,4 @@
+#include "config.h"
 
 #include "pid/ec/pid.hpp"
 #include "pid/fan.hpp"
