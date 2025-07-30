@@ -115,6 +115,9 @@ void DbusPidZone::markSensorMissing(const std::string& name,
             std::pair(failReason, _sensorFailSafePercent[name]);
     }
 
+    outputFailsafeLogWithZone(_zoneId, this->getFailSafeMode(), name,
+                              "The sensor is missing.");
+
     if (debugEnabled)
     {
         std::cerr << "Sensor " << name << " marked missing\n";
