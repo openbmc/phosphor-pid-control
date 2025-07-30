@@ -36,7 +36,7 @@ void FailsafeLogger::outputFailsafeLog(
     // already encountered in the current state.
     std::string locationReason = location + " @ " + reason;
     if (_logTimestamps.size() >= _logMaxCountPerSecond ||
-        !_logsInCurrentState.contains(locationReason))
+        _logsInCurrentState.contains(locationReason))
     {
         return;
     }
