@@ -329,6 +329,28 @@ static bool fileParseRpm(const std::string& fileName, double& rpmValue)
     return false;
 }
 
+static DebugZoneInterface::FailureReason toEnumReason(const std::string& s)
+{
+    if (s == "Sensor D-Bus object missing")
+        return DebugZoneInterface::FailureReason::MissingSensor;
+    if (s == "Sensor reading bad")
+        return DebugZoneInterface::FailureReason::BadReading;
+    if (s == "Margin hot")
+        return DebugZoneInterface::FailureReason::MarginHot;
+    if (s == "Sensor threshold asserted")
+        return DebugZoneInterface::FailureReason::ThresholdAsserted;
+    if (s == "Sensor unavailable")
+        return DebugZoneInterface::FailureReason::Unavailable;
+    if (s == "Sensor not functional")
+        return DebugZoneInterface::FailureReason::NotFunctional;
+    if (s == "Sensor timeout")
+        return DebugZoneInterface::FailureReason::Timeout;
+    if (s == "Unknown")
+        return DebugZoneInterface::FailureReason::Unknown;
+
+    return DebugZoneInterface::FailureReason::Unknown;
+}
+
 void DbusPidZone::determineMaxSetPointRequest(void)
 {
     std::vector<double>::iterator result;
@@ -652,6 +674,24 @@ void DbusPidZone::addPidFailSafePercent(const std::vector<std::string>& inputs,
 std::string DbusPidZone::leader() const
 {
     return _maximumSetPointName;
+}
+
+/**
+ * @brief Implementation of FailSafeSensors D-Bus property getter.
+ *
+ * Returns a map of sensor names to their corresponding fail-safe reasons,
+ * extracted from the internal _failSafeSensors structure.
+ */
+std::map<std::string, DebugZoneInterface::FailureReason>
+    DbusPidZone::failSafeSensors() const
+{
+    std::map<std::string, DebugZoneInterface::FailureReason> failSafeMap;
+    for (const auto& [sensorName, failInfo] : _failSafeSensors)
+    {
+        const auto& [reasonStr, percent] = failInfo;
+        failSafeMap.emplace(sensorName, toEnumReason(reasonStr));
+    }
+    return failSafeMap;
 }
 
 void DbusPidZone::updateThermalPowerDebugInterface(
