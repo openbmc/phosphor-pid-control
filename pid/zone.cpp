@@ -667,6 +667,23 @@ std::string DbusPidZone::leader() const
     return _maximumSetPointName;
 }
 
+/**
+ * @brief Implementation of FailSafeSensors D-Bus property getter.
+ *
+ * Returns a map of sensor names to their corresponding fail-safe reasons,
+ * extracted from the internal _failSafeSensors structure.
+ */
+std::map<std::string, std::string> DbusPidZone::failSafeSensors() const
+{
+    std::map<std::string, std::string> failSafeMap;
+    for (const auto& [sensorName, failInfo] : _failSafeSensors)
+    {
+        const auto& [reason, percent] = failInfo;
+        failSafeMap[sensorName] = reason;
+    }
+    return failSafeMap;
+}
+
 void DbusPidZone::updateThermalPowerDebugInterface(
     std::string pidName, std::string leader, double input, double output)
 {
