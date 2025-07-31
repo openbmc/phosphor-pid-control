@@ -329,6 +329,29 @@ static bool fileParseRpm(const std::string& fileName, double& rpmValue)
     return false;
 }
 
+// Convert human-readable fail-safe reason strings to the canonical enum.
+static DebugZoneInterface::FailureReason toEnumReason(const std::string& s)
+{
+    if (s == "Sensor D-Bus object missing")
+        return DebugZoneInterface::FailureReason::MissingSensor;
+    if (s == "Sensor reading bad")
+        return DebugZoneInterface::FailureReason::BadReading;
+    if (s == "Margin hot")
+        return DebugZoneInterface::FailureReason::MarginHot;
+    if (s == "Sensor threshold asserted")
+        return DebugZoneInterface::FailureReason::ThresholdAsserted;
+    if (s == "Sensor unavailable")
+        return DebugZoneInterface::FailureReason::Unavailable;
+    if (s == "Sensor not functional")
+        return DebugZoneInterface::FailureReason::NotFunctional;
+    if (s == "Sensor timeout")
+        return DebugZoneInterface::FailureReason::Timeout;
+    if (s == "Unknown")
+        return DebugZoneInterface::FailureReason::Unknown;
+
+    return DebugZoneInterface::FailureReason::Unknown;
+}
+
 void DbusPidZone::determineMaxSetPointRequest(void)
 {
     std::vector<double>::iterator result;
@@ -652,6 +675,24 @@ void DbusPidZone::addPidFailSafePercent(const std::vector<std::string>& inputs,
 std::string DbusPidZone::leader() const
 {
     return _maximumSetPointName;
+}
+
+/**
+ * @brief Getter for the FailSafeSensors D-Bus property.
+ *
+ * Returns a map from sensor name to the canonical FailureReason enum,
+ * constructed from the internal _failSafeSensors state.
+ */
+std::map<std::string, DebugZoneInterface::FailureReason>
+    DbusPidZone::failSafeSensors() const
+{
+    std::map<std::string, DebugZoneInterface::FailureReason> failSafeMap;
+    for (const auto& [sensorName, failInfo] : _failSafeSensors)
+    {
+        const auto& [reason, percent] = failInfo;
+        failSafeMap.emplace(sensorName, reason);
+    }
+    return failSafeMap;
 }
 
 void DbusPidZone::updateThermalPowerDebugInterface(
