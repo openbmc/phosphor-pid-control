@@ -127,6 +127,15 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool failSafe() const override;
     /* Method for recording the maximum SetPoint PID config name */
     std::string leader() const override;
+    /**
+     * @brief Get a simplified map of sensors currently in fail-safe state, for
+     * DBus exposure.
+     *
+     * Returns a map from sensor name to reason string, for use in the
+     * xyz.openbmc_project.Debug.Pid.Zone.FailSafeSensors property.
+     */
+    std::map<std::string, DebugZoneInterface::FailureReason> failSafeSensors()
+        const override;
     /* Method for control process for each loop at runtime */
     void addPidControlProcess(const std::string& name, const std::string& type,
                               double setpoint, sdbusplus::bus_t& bus,
