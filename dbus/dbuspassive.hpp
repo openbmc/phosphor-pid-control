@@ -45,9 +45,8 @@ class DbusPassive : public ReadInterface
 
     DbusPassive(sdbusplus::bus_t& bus, const std::string& type,
                 const std::string& id,
-                std::unique_ptr<DbusHelperInterface> helper,
-                const SensorProperties& settings, bool failed,
-                bool objectMissing, const std::string& path,
+                std::unique_ptr<DbusHelperInterface> helper, bool objectMissing,
+                const std::string& path,
                 const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
 
     ReadReturn read(void) override;
@@ -66,6 +65,8 @@ class DbusPassive : public ReadInterface
     std::string getID(void);
     double getMax(void);
     double getMin(void);
+    void setAvailableFromProperty(bool value);
+    void initFromSettings(const SensorProperties& settings, bool failed);
 
   private:
     sdbusplus::bus::match_t _signal;
@@ -81,6 +82,7 @@ class DbusPassive : public ReadInterface
     bool _failed = false;
     bool _functional = true;
     bool _available = true;
+    bool _availableOverridden = false;
     bool _unavailableAsFailed = true;
 
     bool _typeMargin = false;
