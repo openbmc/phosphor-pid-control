@@ -103,6 +103,8 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         // in MissingIsAcceptable. CASE2 results in continuous restart until
         // recovery.
 
+        auto sensor = std::make_unique<DbusPassive>(
+            bus, type, id, std::move(helper), path, redundancy);
         failed = true;
         settings.value = std::numeric_limits<double>::quiet_NaN();
         settings.unit = getSensorUnit(type);
@@ -113,18 +115,20 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
             settings.min = 0;
             settings.max = 0;
         }
+        sensor->initFromSettings(settings, true);
         std::cerr << "DbusPassive: Sensor " << path
                   << " is missing from D-Bus, build this sensor as failed\n";
-        return std::make_unique<DbusPassive>(
-            bus, type, id, std::move(helper), settings, failed, path,
-            redundancy);
+        return sensor;
 #endif
     }
 
+    auto sensor = std::make_unique<DbusPassive>(
+        bus, type, id, std::move(helper), path, redundancy);
+
     try
     {
-        helper->getProperties(service, path, &settings);
-        failed = helper->thresholdsAsserted(service, path);
+        sensor->_helper->getProperties(service, path, &settings);
+        failed = sensor->_helper->thresholdsAsserted(service, path);
     }
     catch (const std::exception& e)
     {
@@ -139,33 +143,22 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     }
 
     settings.unavailableAsFailed = info->unavailableAsFailed;
+    sensor->initFromSettings(settings, failed);
 
-    return std::make_unique<DbusPassive>(bus, type, id, std::move(helper),
-                                         settings, failed, path, redundancy);
+    return sensor;
 }
 
 DbusPassive::DbusPassive(
     sdbusplus::bus_t& bus, const std::string& type, const std::string& id,
-    std::unique_ptr<DbusHelperInterface> helper,
-    const SensorProperties& settings, bool failed, const std::string& path,
+    std::unique_ptr<DbusHelperInterface> helper, const std::string& path,
     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
     ReadInterface(), _signal(bus, getMatch(path), dbusHandleSignal, this),
-    _id(id), _helper(std::move(helper)), _failed(failed), path(path),
-    redundancy(redundancy)
+    _id(id), _helper(std::move(helper)), path(path), redundancy(redundancy)
 
 {
-    _scale = settings.scale;
-    _min = settings.min * std::pow(10.0, _scale);
-    _max = settings.max * std::pow(10.0, _scale);
-    _available = settings.available;
-    _unavailableAsFailed = settings.unavailableAsFailed;
-
     // Cache this type knowledge, to avoid repeated string comparison
     _typeMargin = (type == "margin");
     _typeFan = (type == "fan");
-
-    // Force value to be stored, otherwise member would be uninitialized
-    updateValue(settings.value, true);
 }
 
 ReadReturn DbusPassive::read(void)
@@ -306,6 +299,29 @@ void DbusPassive::setFunctional(bool value)
 void DbusPassive::setAvailable(bool value)
 {
     _available = value;
+    _availableOverridden = true;
+}
+
+void DbusPassive::initFromSettings(const SensorProperties& settings,
+                                   bool failed)
+{
+    _failed = failed;
+    _scale = settings.scale;
+    _min = settings.min * std::pow(10.0, _scale);
+    _max = settings.max * std::pow(10.0, _scale);
+    _unavailableAsFailed = settings.unavailableAsFailed;
+    setAvailableFromProperty(settings.available);
+
+    // Force value to be stored, otherwise member would be uninitialized
+    updateValue(settings.value, true);
+}
+
+void DbusPassive::setAvailableFromProperty(bool value)
+{
+    if (!_availableOverridden)
+    {
+        _available = value;
+    }
 }
 
 int64_t DbusPassive::getScale(void)
