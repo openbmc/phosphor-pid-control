@@ -64,8 +64,7 @@ TEST(DbusPassiveTest, BoringConstructorTest)
     auto helper = std::make_unique<DbusHelperMock>();
     SensorProperties properties;
 
-    DbusPassive(bus_mock, type, id, std::move(helper), properties, false, path,
-                nullptr);
+    DbusPassive passive(bus_mock, type, id, std::move(helper), path, nullptr);
     // Success
 }
 
