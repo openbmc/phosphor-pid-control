@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "4547d76a_d240d7ef",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-08-16T03:23:24Z",
+      "side": 1,
+      "message": "Good catch! Also, it\u0027s a good cleanup to split up that very large constructor into a few helper functions like that.",
+      "revId": "996854e45f11b049b5c583ab28af0302713a012b",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
