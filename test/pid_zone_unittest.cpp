@@ -2,6 +2,7 @@
 #include "failsafeloggers/builder.hpp"
 #include "interfaces.hpp"
 #include "pid/ec/pid.hpp"
+#include "pid/manual_mode_manager.hpp"
 #include "pid/pidcontroller.hpp"
 #include "pid/zone.hpp"
 #include "pid/zone_interface.hpp"
@@ -90,8 +91,9 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
     SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
                     enableInterface, propertiesenable, &de);
 
+    pid_control::ManualModeManager mgrManual;
     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
-                  bus_mock_mode, objPath, defer, accSetPoint);
+                  bus_mock_mode, objPath, defer, accSetPoint, mgrManual);
     // Success.
 }
 
@@ -127,7 +129,7 @@ class PidZoneTest : public ::testing::Test
 
         zone = std::make_unique<DbusPidZone>(
             zoneId, minThermalOutput, failSafePercent, cycleTime, *mgr,
-            bus_mock_mode, objPath, defer, accSetPoint);
+            bus_mock_mode, objPath, defer, accSetPoint, mgrManual);
     }
 
     // unused
@@ -156,6 +158,7 @@ class PidZoneTest : public ::testing::Test
         "/xyz/openbmc_project/settings/fanctrl/zone1/" + sensorname;
 
     std::unique_ptr<DbusPidZone> zone;
+    pid_control::ManualModeManager mgrManual;
 };
 
 TEST_F(PidZoneTest, GetZoneId_ReturnsExpected)
@@ -866,6 +869,29 @@ TEST_F(PidZoneTest, FailsafeDbusTest_VerifiesReturnsExpected)
     buildFailsafeLoggers(empty_zone_map, 0);
 
     EXPECT_EQ(zone->failSafe(), zone->getFailSafeMode());
+}
+
+TEST_F(PidZoneTest, ManualModePersistsAcrossRebuildUsingManager)
+{
+    EXPECT_FALSE(zone->getManualMode());
+    zone->manual(true);
+    EXPECT_TRUE(zone->getManualMode());
+
+    zone.reset();
+
+    auto bus_mock_mode = sdbusplus::get_mocked_new(&sdbus_mock_mode);
+    double d = 0.0;
+    std::vector<std::string> properties;
+    SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
+                    &d);
+    SetupDbusObject(&sdbus_mock_mode, defer, objPath, debugZoneInterface,
+                    properties, &d);
+
+    zone = std::make_unique<DbusPidZone>(
+        zoneId, minThermalOutput, failSafePercent, cycleTime, *mgr,
+        bus_mock_mode, objPath, defer, accSetPoint, mgrManual);
+
+    EXPECT_TRUE(zone->getManualMode());
 }
 
 } // namespace

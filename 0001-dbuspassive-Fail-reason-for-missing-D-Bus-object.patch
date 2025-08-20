@@ -1,0 +1,147 @@
+From 6487c1669dcb87b8e57ecd6a26437cc8eec86e27 Mon Sep 17 00:00:00 2001
+From: Eric Yang <eric.yang.wiwynn@gmail.com>
+Date: Wed, 20 Aug 2025 09:52:55 +0000
+Subject: [PATCH] dbuspassive: Fail reason for missing D-Bus object
+
+When handle-missing-object-paths is enabled and the expected D-Bus
+object path is not exported, the sensor is marked as object-missing and
+getFailReason() reports "Sensor D-Bus object missing".
+
+Motivation:
+Provide clearer diagnostics by distinguishing a missing D-Bus object
+from bad readings.
+
+Change-Id: I49d98b27a49c5c6d4f523e7af9fd7c5b80198b73
+Signed-off-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+---
+ dbus/dbuspassive.cpp           | 34 +++++++++++++++++++++++++++-------
+ dbus/dbuspassive.hpp           |  3 ++-
+ test/dbus_passive_unittest.cpp |  4 ++--
+ 3 files changed, 31 insertions(+), 10 deletions(-)
+
+diff --git a/dbus/dbuspassive.cpp b/dbus/dbuspassive.cpp
+index 6ca6249..6878d18 100644
+--- a/dbus/dbuspassive.cpp
++++ b/dbus/dbuspassive.cpp
+@@ -76,6 +76,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
+ 
+     SensorProperties settings;
+     bool failed;
++    bool objectMissing = false;
+     std::string service;
+ 
+     try
+@@ -104,6 +105,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
+         // recovery.
+ 
+         failed = true;
++        objectMissing = true;
+         settings.value = std::numeric_limits<double>::quiet_NaN();
+         settings.unit = getSensorUnit(type);
+         settings.available = false;
+@@ -116,8 +118,8 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
+         std::cerr << "DbusPassive: Sensor " << path
+                   << " is missing from D-Bus, build this sensor as failed\n";
+         return std::make_unique<DbusPassive>(
+-            bus, type, id, std::move(helper), settings, failed, path,
+-            redundancy);
++            bus, type, id, std::move(helper), settings, failed, objectMissing,
++            path, redundancy);
+ #endif
+     }
+ 
+@@ -140,18 +142,20 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
+ 
+     settings.unavailableAsFailed = info->unavailableAsFailed;
+ 
+-    return std::make_unique<DbusPassive>(bus, type, id, std::move(helper),
+-                                         settings, failed, path, redundancy);
++    return std::make_unique<DbusPassive>(
++        bus, type, id, std::move(helper), settings, failed, objectMissing, path,
++        redundancy);
+ }
+ 
+ DbusPassive::DbusPassive(
+     sdbusplus::bus_t& bus, const std::string& type, const std::string& id,
+     std::unique_ptr<DbusHelperInterface> helper,
+-    const SensorProperties& settings, bool failed, const std::string& path,
++    const SensorProperties& settings, bool failed, bool objectMissing,
++    const std::string& path,
+     const std::shared_ptr<DbusPassiveRedundancy>& redundancy) :
+     ReadInterface(), _signal(bus, getMatch(path), dbusHandleSignal, this),
+-    _id(id), _helper(std::move(helper)), _failed(failed), path(path),
+-    redundancy(redundancy)
++    _id(id), _helper(std::move(helper)), _failed(failed),
++    _objectMissing(objectMissing), path(path), redundancy(redundancy)
+ 
+ {
+     _scale = settings.scale;
+@@ -205,6 +209,18 @@ bool DbusPassive::getFailed(void) const
+         }
+     }
+ 
++    /*
++     * If handle-missing-object-paths is enabled, and the expected D-Bus object
++     * path is not exported, this sensor is created to represent that condition.
++     * Indicate this sensor has failed so the zone enters failSafe mode.
++     */
++    if (_objectMissing)
++    {
++        outputFailsafeLogWithSensor(_id, true, _id,
++                                    "The sensor D-Bus object is missing.");
++        return true;
++    }
++
+     /*
+      * Unavailable thermal sensors, who are not present or
+      * power-state-not-matching, should not trigger the failSafe mode. For
+@@ -270,6 +286,10 @@ bool DbusPassive::getFailed(void) const
+ 
+ std::string DbusPassive::getFailReason(void) const
+ {
++    if (_objectMissing)
++    {
++        return "Sensor D-Bus object missing";
++    }
+     if (_badReading)
+     {
+         return "Sensor reading bad";
+diff --git a/dbus/dbuspassive.hpp b/dbus/dbuspassive.hpp
+index 86b5c5a..9167e33 100644
+--- a/dbus/dbuspassive.hpp
++++ b/dbus/dbuspassive.hpp
+@@ -47,7 +47,7 @@ class DbusPassive : public ReadInterface
+                 const std::string& id,
+                 std::unique_ptr<DbusHelperInterface> helper,
+                 const SensorProperties& settings, bool failed,
+-                const std::string& path,
++                bool objectMissing, const std::string& path,
+                 const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
+ 
+     ReadReturn read(void) override;
+@@ -87,6 +87,7 @@ class DbusPassive : public ReadInterface
+     bool _typeFan = false;
+     bool _badReading = false;
+     bool _marginHot = false;
++    bool _objectMissing = false;
+ 
+     std::string path;
+     std::shared_ptr<DbusPassiveRedundancy> redundancy;
+diff --git a/test/dbus_passive_unittest.cpp b/test/dbus_passive_unittest.cpp
+index c7e1346..b1f3d3d 100644
+--- a/test/dbus_passive_unittest.cpp
++++ b/test/dbus_passive_unittest.cpp
+@@ -64,8 +64,8 @@ TEST(DbusPassiveTest, BoringConstructorTest)
+     auto helper = std::make_unique<DbusHelperMock>();
+     SensorProperties properties;
+ 
+-    DbusPassive(bus_mock, type, id, std::move(helper), properties, false, path,
+-                nullptr);
++    DbusPassive(bus_mock, type, id, std::move(helper), properties, false, false,
++                path, nullptr);
+     // Success
+ }
+ 
+-- 
+2.43.0
+
