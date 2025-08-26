@@ -57,7 +57,7 @@ static std::string getPidControlPath(int64_t zone, const std::string& pidname)
 std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
     const std::map<int64_t, conf::PIDConf>& zonePids,
     std::map<int64_t, conf::ZoneConfig>& zoneConfigs, SensorManager& mgr,
-    sdbusplus::bus_t& modeControlBus)
+    sdbusplus::bus_t& modeControlBus, pid_control::ManualModeManager& manualMgr)
 {
     std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
 
@@ -81,7 +81,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
             zoneId, zoneConf->second.minThermalOutput,
             zoneConf->second.failsafePercent, zoneConf->second.cycleTime, mgr,
             modeControlBus, getControlPath(zoneId).c_str(), deferSignals,
-            zoneConf->second.accumulateSetPoint);
+            zoneConf->second.accumulateSetPoint, manualMgr);
 
         std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
 

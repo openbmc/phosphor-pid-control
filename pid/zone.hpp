@@ -4,6 +4,7 @@
 #include "controller.hpp"
 #include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "interfaces.hpp"
+#include "manual_mode_manager.hpp"
 #include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
@@ -60,17 +61,26 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
                 conf::CycleTime cycleTime, const SensorManager& mgr,
                 sdbusplus::bus_t& bus, const char* objPath, bool defer,
-                bool accumulateSetPoint) :
+                bool accumulateSetPoint, ManualModeManager& manualMgr) :
         ModeObject(bus, objPath,
                    defer ? ModeObject::action::defer_emit
                          : ModeObject::action::emit_object_added),
         _zoneId(zone), _accumulateSetPoint(accumulateSetPoint),
         _minThermalOutputSetPt(minThermalOutput),
-        _zoneFailSafePercent(failSafePercent), _cycleTime(cycleTime), _mgr(mgr)
+        _zoneFailSafePercent(failSafePercent), _cycleTime(cycleTime), _mgr(mgr),
+        _manualMgr(manualMgr)
     {
         if (loggingEnabled)
         {
             _log.open(loggingPath + "/zone_" + std::to_string(zone) + ".log");
+        }
+
+        _manualMode = _manualMgr.get(_zoneId);
+        ModeObject::manual(_manualMode);
+
+        if (!_manualMode)
+        {
+            _redundantWrite = true;
         }
     }
 
@@ -249,6 +259,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     std::map<std::string, ValueCacheEntry> _cachedValuesByName;
     std::map<std::string, ValueCacheEntry> _cachedFanOutputs;
     const SensorManager& _mgr;
+    ManualModeManager& _manualMgr;
 
     std::vector<std::unique_ptr<Controller>> _fans;
     std::vector<std::unique_ptr<Controller>> _thermals;
