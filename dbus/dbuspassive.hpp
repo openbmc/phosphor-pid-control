@@ -47,7 +47,7 @@ class DbusPassive : public ReadInterface
                 const std::string& id,
                 std::unique_ptr<DbusHelperInterface> helper,
                 const SensorProperties& settings, bool failed,
-                const std::string& path,
+                bool objectMissing, const std::string& path,
                 const std::shared_ptr<DbusPassiveRedundancy>& redundancy);
 
     ReadReturn read(void) override;
@@ -87,6 +87,7 @@ class DbusPassive : public ReadInterface
     bool _typeFan = false;
     bool _badReading = false;
     bool _marginHot = false;
+    bool _objectMissing = false;
 
     std::string path;
     std::shared_ptr<DbusPassiveRedundancy> redundancy;
