@@ -21,6 +21,7 @@
 #include "failsafeloggers/builder.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
+#include "pid/manual_mode_manager.hpp"
 #include "pid/pidloop.hpp"
 #include "pid/tuning.hpp"
 #include "sensors/builder.hpp"
@@ -79,6 +80,8 @@ static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
 static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
 /* The sensors build from configuration */
 static std::optional<SensorManager> mgmr;
+static pid_control::ManualModeManager manualMgr;
+
 } // namespace state
 
 } // namespace pid_control
@@ -171,8 +174,8 @@ void restartControlLoops()
     }
 
     state::mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
-    state::zones =
-        buildZones(zoneConfig, zoneDetailsConfig, *state::mgmr, modeControlBus);
+    state::zones = buildZones(zoneConfig, zoneDetailsConfig, *state::mgmr,
+                              modeControlBus, state::manualMgr);
     // Set `logMaxCountPerSecond` to 20 will limit the number of logs output per
     // second in each zone. Using 20 here would limit the output rate to be no
     // larger than 100 per sec for most platforms as the number of zones are
