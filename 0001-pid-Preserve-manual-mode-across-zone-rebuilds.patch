@@ -1,0 +1,326 @@
+From cb785fb982970a1b0101dc5e3898750b17aadeb3 Mon Sep 17 00:00:00 2001
+From: Eric Yang <eric.yang.wiwynn@gmail.com>
+Date: Tue, 26 Aug 2025 10:08:09 +0000
+Subject: [PATCH] pid: Preserve manual mode across zone rebuilds
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- Add a ManualModeManager that lives across restarts and is passed into
+each zone when it’s created. The zone restores its manual flag from the
+manager and immediately sets the D-Bus Manual property to match.
+- When manual is toggled over D-Bus, the zone updates its own flag and
+the manager, then updates DBus; if the new value is the same as the
+current one, it returns without touching DBus (no redundant updates).
+- With offline-failsafe-pwm enabled, shutdown/rebuild no longer forces
+failsafe PWM while in manual.
+
+Motivation:
+When zones are rebuilt, everything gets torn down and brought back up.
+Previously that reset control to auto and DBus showed Manual=false, so
+a user in manual would lose control during a rebuild.
+
+Change-Id: Ie98b7cc52dfa4e8879ce9a953c8453f3a25047d3
+Signed-off-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+---
+ main.cpp                    |  7 +++++--
+ pid/builder.cpp             |  4 ++--
+ pid/builder.hpp             |  5 +++--
+ pid/fancontroller.cpp       |  7 +++++++
+ pid/manual_mode_manager.hpp | 32 ++++++++++++++++++++++++++++++++
+ pid/zone.cpp                |  6 ++++++
+ pid/zone.hpp                | 14 ++++++++++++--
+ test/pid_zone_unittest.cpp  | 36 +++++++++++++++++++++++++++++++-----
+ 8 files changed, 98 insertions(+), 13 deletions(-)
+ create mode 100644 pid/manual_mode_manager.hpp
+
+diff --git a/main.cpp b/main.cpp
+index d4bfaae..8b45148 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -21,6 +21,7 @@
+ #include "failsafeloggers/builder.hpp"
+ #include "pid/builder.hpp"
+ #include "pid/buildjson.hpp"
++#include "pid/manual_mode_manager.hpp"
+ #include "pid/pidloop.hpp"
+ #include "pid/tuning.hpp"
+ #include "sensors/builder.hpp"
+@@ -79,6 +80,8 @@ static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
+ static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
+ /* The sensors build from configuration */
+ static std::optional<SensorManager> mgmr;
++static pid_control::ManualModeManager manualMgr;
++
+ } // namespace state
+ 
+ } // namespace pid_control
+@@ -171,8 +174,8 @@ void restartControlLoops()
+     }
+ 
+     state::mgmr = buildSensors(sensorConfig, passiveBus, hostBus);
+-    state::zones =
+-        buildZones(zoneConfig, zoneDetailsConfig, *state::mgmr, modeControlBus);
++    state::zones = buildZones(zoneConfig, zoneDetailsConfig, *state::mgmr,
++                              modeControlBus, state::manualMgr);
+     // Set `logMaxCountPerSecond` to 20 will limit the number of logs output per
+     // second in each zone. Using 20 here would limit the output rate to be no
+     // larger than 100 per sec for most platforms as the number of zones are
+diff --git a/pid/builder.cpp b/pid/builder.cpp
+index 7331705..34e2772 100644
+--- a/pid/builder.cpp
++++ b/pid/builder.cpp
+@@ -57,7 +57,7 @@ static std::string getPidControlPath(int64_t zone, const std::string& pidname)
+ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
+     const std::map<int64_t, conf::PIDConf>& zonePids,
+     std::map<int64_t, conf::ZoneConfig>& zoneConfigs, SensorManager& mgr,
+-    sdbusplus::bus_t& modeControlBus)
++    sdbusplus::bus_t& modeControlBus, pid_control::ManualModeManager& manualMgr)
+ {
+     std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
+ 
+@@ -81,7 +81,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
+             zoneId, zoneConf->second.minThermalOutput,
+             zoneConf->second.failsafePercent, zoneConf->second.cycleTime, mgr,
+             modeControlBus, getControlPath(zoneId).c_str(), deferSignals,
+-            zoneConf->second.accumulateSetPoint);
++            zoneConf->second.accumulateSetPoint, manualMgr);
+ 
+         std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
+ 
+diff --git a/pid/builder.hpp b/pid/builder.hpp
+index 9afb000..f82536f 100644
+--- a/pid/builder.hpp
++++ b/pid/builder.hpp
+@@ -1,6 +1,7 @@
+ #pragma once
+ 
+ #include "conf.hpp"
++#include "pid/manual_mode_manager.hpp"
+ #include "pid/zone_interface.hpp"
+ #include "sensors/manager.hpp"
+ 
+@@ -17,6 +18,6 @@ namespace pid_control
+ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
+     const std::map<int64_t, conf::PIDConf>& zonePids,
+     std::map<int64_t, conf::ZoneConfig>& zoneConfigs, SensorManager& mgr,
+-    sdbusplus::bus_t& modeControlBus);
+-
++    sdbusplus::bus_t& modeControlBus,
++    pid_control::ManualModeManager& manualMgr);
+ }
+diff --git a/pid/fancontroller.cpp b/pid/fancontroller.cpp
+index 5598c4f..b12f4ba 100644
+--- a/pid/fancontroller.cpp
++++ b/pid/fancontroller.cpp
+@@ -231,6 +231,13 @@ void FanController::outputProc(double value)
+ FanController::~FanController()
+ {
+ #ifdef OFFLINE_FAILSAFE_PWM
++    if (_owner->getManualMode())
++    {
++        std::cerr << "Zone " << _owner->getZoneID()
++                  << " manual mode active; skip set offline failsafe pwm\n";
++        return;
++    }
++
+     double percent = _owner->getFailSafePercent();
+     if (debugEnabled)
+     {
+diff --git a/pid/manual_mode_manager.hpp b/pid/manual_mode_manager.hpp
+new file mode 100644
+index 0000000..2d2cc60
+--- /dev/null
++++ b/pid/manual_mode_manager.hpp
+@@ -0,0 +1,32 @@
++#pragma once
++
++#include <cstdint>
++#include <unordered_map>
++
++namespace pid_control
++{
++
++class ManualModeManager
++{
++  public:
++    bool get(int64_t zoneId) const
++    {
++        auto it = modes.find(zoneId);
++        return it != modes.end() ? it->second : false;
++    }
++
++    void set(int64_t zoneId, bool manual)
++    {
++        modes[zoneId] = manual;
++    }
++
++    void clear()
++    {
++        modes.clear();
++    }
++
++  private:
++    std::unordered_map<int64_t, bool> modes;
++};
++
++} // namespace pid_control
+diff --git a/pid/zone.cpp b/pid/zone.cpp
+index 835b79e..4b50d78 100644
+--- a/pid/zone.cpp
++++ b/pid/zone.cpp
+@@ -589,7 +589,13 @@ bool DbusPidZone::getRedundantWrite(void) const
+ bool DbusPidZone::manual(bool value)
+ {
+     std::cerr << "manual: " << value << std::endl;
++    if (_manualMode == value)
++    {
++        return _manualMode;
++    }
+     setManualMode(value);
++    _manualMgr.set(_zoneId, value);
++
+     return ModeObject::manual(value);
+ }
+ 
+diff --git a/pid/zone.hpp b/pid/zone.hpp
+index d81cd53..bbe5a88 100644
+--- a/pid/zone.hpp
++++ b/pid/zone.hpp
+@@ -4,6 +4,7 @@
+ #include "controller.hpp"
+ #include "failsafeloggers/failsafe_logger_utility.hpp"
+ #include "interfaces.hpp"
++#include "manual_mode_manager.hpp"
+ #include "pidcontroller.hpp"
+ #include "sensors/manager.hpp"
+ #include "sensors/sensor.hpp"
+@@ -60,18 +61,26 @@ class DbusPidZone : public ZoneInterface, public ModeObject
+     DbusPidZone(int64_t zone, double minThermalOutput, double failSafePercent,
+                 conf::CycleTime cycleTime, const SensorManager& mgr,
+                 sdbusplus::bus_t& bus, const char* objPath, bool defer,
+-                bool accumulateSetPoint) :
++                bool accumulateSetPoint, ManualModeManager& manualMgr) :
+         ModeObject(bus, objPath,
+                    defer ? ModeObject::action::defer_emit
+                          : ModeObject::action::emit_object_added),
+         _zoneId(zone), _accumulateSetPoint(accumulateSetPoint),
+         _minThermalOutputSetPt(minThermalOutput),
+-        _zoneFailSafePercent(failSafePercent), _cycleTime(cycleTime), _mgr(mgr)
++        _zoneFailSafePercent(failSafePercent), _cycleTime(cycleTime), _mgr(mgr),
++        _manualMgr(manualMgr)
+     {
+         if (loggingEnabled)
+         {
+             _log.open(loggingPath + "/zone_" + std::to_string(zone) + ".log");
+         }
++
++        _manualMode = _manualMgr.get(_zoneId);
++
++        if (_manualMode)
++        {
++            ModeObject::manual(true);
++        }
+     }
+ 
+     bool getManualMode(void) const override;
+@@ -249,6 +258,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
+     std::map<std::string, ValueCacheEntry> _cachedValuesByName;
+     std::map<std::string, ValueCacheEntry> _cachedFanOutputs;
+     const SensorManager& _mgr;
++    ManualModeManager& _manualMgr;
+ 
+     std::vector<std::unique_ptr<Controller>> _fans;
+     std::vector<std::unique_ptr<Controller>> _thermals;
+diff --git a/test/pid_zone_unittest.cpp b/test/pid_zone_unittest.cpp
+index fee388c..376354d 100644
+--- a/test/pid_zone_unittest.cpp
++++ b/test/pid_zone_unittest.cpp
+@@ -2,6 +2,7 @@
+ #include "failsafeloggers/builder.hpp"
+ #include "interfaces.hpp"
+ #include "pid/ec/pid.hpp"
++#include "pid/manual_mode_manager.hpp"
+ #include "pid/pidcontroller.hpp"
+ #include "pid/zone.hpp"
+ #include "pid/zone_interface.hpp"
+@@ -90,8 +91,9 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
+     SetupDbusObject(&sdbus_mock_enable, defer, pidsensorpath.c_str(),
+                     enableInterface, propertiesenable, &de);
+ 
++    pid_control::ManualModeManager mgrManual;
+     DbusPidZone p(zone, minThermalOutput, failSafePercent, cycleTime, m,
+-                  bus_mock_mode, objPath, defer, accSetPoint);
++                  bus_mock_mode, objPath, defer, accSetPoint, mgrManual);
+     // Success.
+ }
+ 
+@@ -127,7 +129,7 @@ class PidZoneTest : public ::testing::Test
+ 
+         zone = std::make_unique<DbusPidZone>(
+             zoneId, minThermalOutput, failSafePercent, cycleTime, *mgr,
+-            bus_mock_mode, objPath, defer, accSetPoint);
++            bus_mock_mode, objPath, defer, accSetPoint, mgrManual);
+     }
+ 
+     // unused
+@@ -156,6 +158,7 @@ class PidZoneTest : public ::testing::Test
+         "/xyz/openbmc_project/settings/fanctrl/zone1/" + sensorname;
+ 
+     std::unique_ptr<DbusPidZone> zone;
++    pid_control::ManualModeManager mgrManual;
+ };
+ 
+ TEST_F(PidZoneTest, GetZoneId_ReturnsExpected)
+@@ -171,7 +174,7 @@ TEST_F(PidZoneTest, GetAndSetManualModeTest_BehavesAsExpected)
+     // the mode.
+     EXPECT_FALSE(zone->getManualMode());
+ 
+-    zone->setManualMode(true);
++    zone->manual(true);
+     EXPECT_TRUE(zone->getManualMode());
+ }
+ 
+@@ -220,8 +223,8 @@ TEST_F(PidZoneTest, SetManualMode_RedundantWritesEnabledOnceAfterManualMode)
+     EXPECT_FALSE(zone->getRedundantWrite());
+ 
+     // but switching from manual to auto enables a single redundant write
+-    zone->setManualMode(true);
+-    zone->setManualMode(false);
++    zone->manual(true);
++    zone->manual(false);
+     EXPECT_TRUE(zone->getRedundantWrite());
+ 
+     // after one iteration of a pid loop redundant write should be cleared
+@@ -868,5 +871,28 @@ TEST_F(PidZoneTest, FailsafeDbusTest_VerifiesReturnsExpected)
+     EXPECT_EQ(zone->failSafe(), zone->getFailSafeMode());
+ }
+ 
++TEST_F(PidZoneTest, ManualModePersistsAcrossRebuildUsingManager)
++{
++    EXPECT_FALSE(zone->getManualMode());
++    zone->manual(true);
++    EXPECT_TRUE(zone->getManualMode());
++
++    zone.reset(); // destroy old zone
++
++    auto bus_mock_mode = sdbusplus::get_mocked_new(&sdbus_mock_mode);
++    double d = 0.0;
++    std::vector<std::string> properties;
++    SetupDbusObject(&sdbus_mock_mode, defer, objPath, modeInterface, properties,
++                    &d);
++    SetupDbusObject(&sdbus_mock_mode, defer, objPath, debugZoneInterface,
++                    properties, &d);
++
++    zone = std::make_unique<DbusPidZone>(
++        zoneId, minThermalOutput, failSafePercent, cycleTime, *mgr,
++        bus_mock_mode, objPath, defer, accSetPoint, mgrManual);
++
++    EXPECT_TRUE(zone->getManualMode());
++}
++
+ } // namespace
+ } // namespace pid_control
+-- 
+2.43.0
+
