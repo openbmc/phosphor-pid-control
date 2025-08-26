@@ -68,6 +68,7 @@ static std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> zones;
 static std::vector<std::shared_ptr<boost::asio::steady_timer>> timers;
 /* The sensors build from configuration */
 static std::optional<SensorManager> mgmr;
+
 } // namespace state
 
 } // namespace pid_control
