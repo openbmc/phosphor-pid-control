@@ -4,6 +4,7 @@
 #include "controller.hpp"
 #include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "interfaces.hpp"
+#include "manual_mode_manager.hpp"
 #include "pidcontroller.hpp"
 #include "sensors/manager.hpp"
 #include "sensors/sensor.hpp"
@@ -72,6 +73,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
         {
             _log.open(loggingPath + "/zone_" + std::to_string(zone) + ".log");
         }
+
+        _manualMode = ManualModeManager::getInstance().get(_zoneId);
+        ModeObject::manual(_manualMode, true);
     }
 
     bool getManualMode(void) const override;

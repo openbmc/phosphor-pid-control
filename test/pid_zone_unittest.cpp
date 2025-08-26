@@ -2,6 +2,7 @@
 #include "failsafeloggers/builder.hpp"
 #include "interfaces.hpp"
 #include "pid/ec/pid.hpp"
+#include "pid/manual_mode_manager.hpp"
 #include "pid/pidcontroller.hpp"
 #include "pid/zone.hpp"
 #include "pid/zone_interface.hpp"
@@ -56,6 +57,8 @@ TEST(PidZoneConstructorTest, BoringConstructorTest)
 {
     // Build a PID Zone.
 
+    pid_control::ManualModeManager::getInstance().clear();
+
     sdbusplus::SdBusMock sdbus_mock_passive, sdbus_mock_host, sdbus_mock_mode,
         sdbus_mock_enable;
     auto bus_mock_passive = sdbusplus::get_mocked_new(&sdbus_mock_passive);
@@ -108,6 +111,8 @@ class PidZoneTest : public ::testing::Test
         properties(), sdbus_mock_passive(), sdbus_mock_host(),
         sdbus_mock_mode(), sdbus_mock_enable()
     {
+        pid_control::ManualModeManager::getInstance().clear();
+
         EXPECT_CALL(sdbus_mock_host,
                     sd_bus_add_object_manager(
                         IsNull(), _, StrEq("/xyz/openbmc_project/extsensors")))
@@ -175,7 +180,7 @@ TEST_F(PidZoneTest, GetAndSetManualModeTest_BehavesAsExpected)
     // the mode.
     EXPECT_FALSE(zone->getManualMode());
 
-    zone->setManualMode(true);
+    zone->manual(true);
     EXPECT_TRUE(zone->getManualMode());
 }
 
@@ -224,8 +229,8 @@ TEST_F(PidZoneTest, SetManualMode_RedundantWritesEnabledOnceAfterManualMode)
     EXPECT_FALSE(zone->getRedundantWrite());
 
     // but switching from manual to auto enables a single redundant write
-    zone->setManualMode(true);
-    zone->setManualMode(false);
+    zone->manual(true);
+    zone->manual(false);
     EXPECT_TRUE(zone->getRedundantWrite());
 
     // after one iteration of a pid loop redundant write should be cleared
@@ -870,6 +875,29 @@ TEST_F(PidZoneTest, FailsafeDbusTest_VerifiesReturnsExpected)
     buildFailsafeLoggers(empty_zone_map, 0);
 
     EXPECT_EQ(zone->failSafe(), zone->getFailSafeMode());
+}
+
+TEST_F(PidZoneTest, ManualModePersistsAcrossRebuildUsingManager)
+{
+    EXPECT_FALSE(zone->getManualMode());
+    zone->manual(true);
+    EXPECT_TRUE(zone->getManualMode());
+
+    zone.reset(); // destroy old zone
+
+    auto bus_mock_mode = sdbusplus::get_mocked_new(&sdbus_mock_mode);
+    double d = 0.0;
+    std::vector<std::string> properties;
+    SetupDbusObject(&sdbus_mock_mode, defer, objPath, ControlMode::interface,
+                    properties, &d);
+    SetupDbusObject(&sdbus_mock_mode, defer, objPath, DebugPidZone::interface,
+                    properties, &d);
+
+    zone = std::make_unique<DbusPidZone>(
+        zoneId, minThermalOutput, failSafePercent, cycleTime, *mgr,
+        bus_mock_mode, objPath, defer, accSetPoint);
+
+    EXPECT_TRUE(zone->getManualMode());
 }
 
 } // namespace
