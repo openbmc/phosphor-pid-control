@@ -231,6 +231,16 @@ void FanController::outputProc(double value)
 FanController::~FanController()
 {
 #ifdef OFFLINE_FAILSAFE_PWM
+    if (_owner->getManualMode())
+    {
+        if (debugEnabled)
+        {
+            std::cerr << "Zone " << _owner->getZoneID()
+                      << " manual mode active; skip set offline failsafe pwm\n";
+        }
+        return;
+    }
+
     double percent = _owner->getFailSafePercent();
     if (debugEnabled)
     {

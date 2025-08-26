@@ -589,7 +589,13 @@ bool DbusPidZone::getRedundantWrite(void) const
 bool DbusPidZone::manual(bool value)
 {
     std::cerr << "manual: " << value << std::endl;
+    if (_manualMode == value)
+    {
+        return _manualMode;
+    }
     setManualMode(value);
+    _manualMgr.set(_zoneId, value);
+
     return ModeObject::manual(value);
 }
 
