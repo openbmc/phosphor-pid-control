@@ -36,6 +36,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "76598fc7_aae64e64",
+        "filename": "main.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-08-28T11:33:24Z",
+      "side": 1,
+      "message": "Apologies for the delay. I’ve updated the design per your suggestion: Zones receive a ManualModeManager, restore from it at construction, and update it on Manual changes (no more dynamic_pointer_cast).",
+      "parentUuid": "fdee580d_eb7c5a0a",
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "b9cffeca_12e12bdf",
@@ -59,6 +77,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "ec5adad9_a9523859",
+        "filename": "pid/manualmodemanager.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-08-28T11:33:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b9cffeca_12e12bdf",
+      "range": {
+        "startLine": 13,
+        "startChar": 9,
+        "endLine": 13,
+        "endChar": 23
+      },
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e74b12b6_cc6bbe72",
@@ -72,6 +114,24 @@
       "writtenOn": "2024-10-28T20:56:51Z",
       "side": 1,
       "message": "This is emitting a signal, but it shouldn\u0027t because we\u0027re just restoring the old value, right?  Ideally this would be done in the constructor anyhow so that the value is set correct from the beginning.",
+      "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "80a3f018_70f6774d",
+        "filename": "pid/zone.cpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-08-28T11:33:24Z",
+      "side": 1,
+      "message": "I now restore the Manual property in the constructor using ModeObject::manual(_manualMode, /skipSignal\u003d/true) to avoid emitting a signal.",
+      "parentUuid": "e74b12b6_cc6bbe72",
       "revId": "61e25e98253e1191d9f6dfe46431dfc41cd2d691",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
