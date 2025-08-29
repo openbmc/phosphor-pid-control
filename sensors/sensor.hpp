@@ -28,8 +28,10 @@ class Sensor
         return (type == "fan") ? 0 : 2;
     }
 
-    Sensor(const std::string& name, int64_t timeout) :
-        _name(name), _timeout(timeout)
+    Sensor(const std::string& name, int64_t timeout,
+           bool ignoreFailIfHostOff = false) :
+        _name(name), _timeout(timeout),
+        _ignoreFailIfHostOff(ignoreFailIfHostOff)
     {}
 
     virtual ~Sensor() = default;
@@ -67,9 +69,15 @@ class Sensor
         return _timeout;
     }
 
+    bool getIgnoreFailIfHostOff(void) const
+    {
+        return _ignoreFailIfHostOff;
+    }
+
   private:
     std::string _name;
     int64_t _timeout;
+    bool _ignoreFailIfHostOff;
 };
 
 } // namespace pid_control
