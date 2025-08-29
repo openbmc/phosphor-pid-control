@@ -31,6 +31,7 @@ struct SensorConfig
     int64_t timeout;
     bool ignoreDbusMinMax;
     bool unavailableAsFailed;
+    bool ignoreFailIfHostOff;
 };
 
 /*

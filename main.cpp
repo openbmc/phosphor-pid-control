@@ -19,6 +19,7 @@
 #include "conf.hpp"
 #include "dbus/dbusconfiguration.hpp"
 #include "failsafeloggers/builder.hpp"
+#include "hoststatemonitor.hpp"
 #include "pid/builder.hpp"
 #include "pid/buildjson.hpp"
 #include "pid/pidloop.hpp"
@@ -94,6 +95,7 @@ boost::asio::signal_set signals(io, SIGHUP, SIGTERM);
 static sdbusplus::asio::connection modeControlBus(io);
 static sdbusplus::asio::connection hostBus(io, sdbusplus::bus::new_bus());
 static sdbusplus::asio::connection passiveBus(io, sdbusplus::bus::new_bus());
+static sdbusplus::asio::connection hostMatchBus(io, sdbusplus::bus::new_bus());
 
 namespace pid_control
 {
@@ -425,6 +427,10 @@ int main(int argc, char* argv[])
      */
 
     pid_control::tryRestartControlLoops();
+
+    /* setup host state monitor */
+    auto& monitor = HostStateMonitor::getInstance(hostMatchBus);
+    monitor.startMonitoring();
 
     io.run();
     return 0;

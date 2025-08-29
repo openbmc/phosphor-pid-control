@@ -16,6 +16,7 @@
 
 #include "pluggable.hpp"
 
+#include "hoststatemonitor.hpp"
 #include "interfaces.hpp"
 
 #include <cstdint>
@@ -41,7 +42,18 @@ void PluggableSensor::write(double value, bool force, int64_t* written)
 
 bool PluggableSensor::getFailed(void)
 {
-    return _reader->getFailed();
+    bool isFailed = _reader->getFailed();
+
+    if (isFailed && getIgnoreFailIfHostOff())
+    {
+        auto& hostState = HostStateMonitor::getInstance();
+        if (!hostState.isPowerOn())
+        {
+            return false;
+        }
+    }
+
+    return isFailed;
 }
 
 std::string PluggableSensor::getFailReason(void)
