@@ -17,6 +17,7 @@
 #include "host.hpp"
 
 #include "failsafeloggers/failsafe_logger_utility.hpp"
+#include "hoststatemonitor.hpp"
 #include "interfaces.hpp"
 #include "sensor.hpp"
 
@@ -45,10 +46,10 @@ void scaleHelper(T& ptr, int64_t value)
 
 std::unique_ptr<Sensor> HostSensor::createTemp(
     const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
-    const char* objPath, bool defer)
+    const char* objPath, bool defer, bool ignoreFailIfHostOff)
 {
-    auto sensor =
-        std::make_unique<HostSensor>(name, timeout, bus, objPath, defer);
+    auto sensor = std::make_unique<HostSensor>(name, timeout, bus, objPath,
+                                               defer, ignoreFailIfHostOff);
     sensor->value(0);
 
     // DegreesC and value of 0 are the defaults at present, therefore testing
@@ -110,6 +111,15 @@ bool HostSensor::getFailed(void)
     if (std::isfinite(_value))
     {
         return false;
+    }
+
+    if (getIgnoreFailIfHostOff())
+    {
+        auto& hostState = HostStateMonitor::getInstance();
+        if (!hostState.isPowerOn())
+        {
+            return false;
+        }
     }
 
     outputFailsafeLogWithSensor(getName(), true, getName(),

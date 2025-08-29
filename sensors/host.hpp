@@ -45,11 +45,12 @@ class HostSensor : public Sensor, public ValueObject
   public:
     static std::unique_ptr<Sensor> createTemp(
         const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
-        const char* objPath, bool defer);
+        const char* objPath, bool defer, bool ignoreFailIfHostOff = false);
 
     HostSensor(const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
-               const char* objPath, bool defer) :
-        Sensor(name, timeout),
+               const char* objPath, bool defer,
+               bool ignoreFailIfHostOff = false) :
+        Sensor(name, timeout, ignoreFailIfHostOff),
         ValueObject(bus, objPath,
                     defer ? ValueObject::action::defer_emit
                           : ValueObject::action::emit_object_added)

@@ -158,7 +158,8 @@ SensorManager buildSensors(
             }
 
             auto sensor = std::make_unique<PluggableSensor>(
-                name, info->timeout, std::move(ri), std::move(wi));
+                name, info->timeout, std::move(ri), std::move(wi),
+                info->ignoreFailIfHostOff);
             mgmr.addSensor(info->type, name, std::move(sensor));
         }
         else if (info->type == "temp" || info->type == "margin" ||
@@ -186,7 +187,8 @@ SensorManager buildSensors(
             {
                 wi = std::make_unique<ReadOnlyNoExcept>();
                 auto sensor = std::make_unique<PluggableSensor>(
-                    name, info->timeout, std::move(ri), std::move(wi));
+                    name, info->timeout, std::move(ri), std::move(wi),
+                    info->ignoreFailIfHostOff);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
         }
