@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71b846da_300c42b5",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 8
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-09-06T06:47:21Z",
+      "side": 1,
+      "message": "Neat. I like the idea of creating a placeholder, and marking it as such, to represent the case in which the underlying D-Bus sensor object is missing. This has been a tricky situation to handle in `phosphor-pid-control` for a long time now: https://github.com/openbmc/phosphor-pid-control/issues/33",
+      "revId": "7762c8ece91af53148e1ab4f8e6dedf70a4d9568",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
