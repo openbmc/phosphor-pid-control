@@ -67,7 +67,23 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
     {
         msNow = LogTimestamp();
     }
+    // Effective setpoint for error/FF; clamp to hysteresis edges when enabled.
+    double effSetpoint = setpoint;
+    if (pidinfoptr->checkDynamicSetpt)
+    {
+        const double hi = setpoint + pidinfoptr->positiveHysteresis;
+        const double lo = setpoint - pidinfoptr->negativeHysteresis;
 
+        if (input > hi)
+        {
+            effSetpoint = hi;
+        }
+        else if (input < lo)
+        {
+            effSetpoint = lo;
+        }
+        // Inside the band -> effSetpoint stays as setpoint
+    }
     coreContext.input = input;
     coreContext.setpoint = setpoint;
 
@@ -83,7 +99,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
     // calculate P, I, D, FF
 
     // Pid
-    error = setpoint - input;
+    error = effSetpoint - input;
     proportionalTerm = pidinfoptr->proportionalCoeff * error;
 
     coreContext.error = error;
@@ -111,7 +127,7 @@ double pid(pid_info_t* pidinfoptr, double input, double setpoint,
     coreContext.derivativeTerm = derivativeTerm;
 
     // FF
-    feedFwdTerm = (setpoint + pidinfoptr->feedFwdOffset) *
+    feedFwdTerm = (effSetpoint + pidinfoptr->feedFwdOffset) *
                   pidinfoptr->feedFwdGain;
 
     coreContext.feedFwdTerm = feedFwdTerm;
