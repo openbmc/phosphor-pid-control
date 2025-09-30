@@ -23,6 +23,7 @@ class PIDController : public Controller
     {
         _pid_info.initialized = false;
         _pid_info.checkHysterWithSetpt = false;
+        _pid_info.checkDynamicSetpt = false;
         _pid_info.ts = static_cast<double>(0.0);
         _pid_info.integral = static_cast<double>(0.0);
         _pid_info.lastOutput = static_cast<double>(0.0);
