@@ -20,6 +20,25 @@
 
 #include <cmath>
 
+namespace
+{
+inline double effectiveSetpoint(double setpt, double input,
+                                const pid_control::ec::pid_info_t& info)
+{
+    // Dynamic setpoint off (legacy behavior)
+    if (!info.checkDynamicSetpt)
+        return setpt;
+
+    const double hi = setpt + info.positiveHysteresis;
+    const double lo = setpt - info.negativeHysteresis;
+    if (input > hi)
+        return hi;
+    if (input < lo)
+        return lo;
+    return setpt; // inside band
+}
+} // namespace
+
 namespace pid_control
 {
 
@@ -35,7 +54,8 @@ double PIDController::calPIDOutput(double setpt, double input,
         if (input > (setpt + info->positiveHysteresis))
         {
             // Calculate new output
-            output = ec::pid(info, input, setpt, &name);
+            const double effSet = effectiveSetpoint(setpt, input, *info);
+            output = ec::pid(info, input, effSet, &name);
 
             // this variable isn't actually used in this context, but we're
             // setting it here in case somebody uses it later it's the correct
@@ -45,9 +65,14 @@ double PIDController::calPIDOutput(double setpt, double input,
         // Under the hysteresis bounds, initialize pid
         else if (input < (setpt - info->negativeHysteresis))
         {
-            lastInput = setpt;
-            info->integral = 0;
-            output = 0;
+            // Calculate new output
+            const double effSet = effectiveSetpoint(setpt, input, *info);
+            output = ec::pid(info, input, effSet, &name);
+
+            // this variable isn't actually used in this context, but we're
+            // setting it here in case somebody uses it later it's the correct
+            // value
+            lastInput = input;
         }
         // inside the hysteresis bounds, keep last output
         else
@@ -64,7 +89,8 @@ double PIDController::calPIDOutput(double setpt, double input,
         if (info->positiveHysteresis == 0 && info->negativeHysteresis == 0)
         {
             // Calculate new output
-            output = ec::pid(info, input, setpt, &name);
+            const double effSet = effectiveSetpoint(setpt, input, *info);
+            output = ec::pid(info, input, effSet, &name);
 
             // this variable isn't actually used in this context, but we're
             // setting it here in case somebody uses it later it's the correct
@@ -91,7 +117,8 @@ double PIDController::calPIDOutput(double setpt, double input,
                 lastInput = input;
             }
 
-            output = ec::pid(info, lastInput, setpt, &name);
+            const double effSet = effectiveSetpoint(setpt, lastInput, *info);
+            output = ec::pid(info, lastInput, effSet, &name);
         }
     }
 
