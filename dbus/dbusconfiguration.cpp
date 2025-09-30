@@ -402,11 +402,14 @@ void populatePidInfo(
         std::visit(VariantToDoubleVisitor(), getPIDAttribute(base, "SlewPos"));
 
     bool checkHysterWithSetpt = false;
+    bool checkDynamicSetpt =
+        false; // When true, use dynamic-setpoint error semantics
     double negativeHysteresis = 0;
     double positiveHysteresis = 0;
     double derivativeCoeff = 0;
 
     auto findCheckHysterFlag = base.find("CheckHysteresisWithSetpoint");
+    auto findCheckDynamicSetptFlag = base.find("CheckDynamicSetpoint");
     auto findNeg = base.find("NegativeHysteresis");
     auto findPos = base.find("PositiveHysteresis");
     auto findDerivative = base.find("DCoefficient");
@@ -414,6 +417,10 @@ void populatePidInfo(
     if (findCheckHysterFlag != base.end())
     {
         checkHysterWithSetpt = std::get<bool>(findCheckHysterFlag->second);
+    }
+    if (findCheckDynamicSetptFlag != base.end())
+    {
+        checkDynamicSetpt = std::get<bool>(findCheckDynamicSetptFlag->second);
     }
     if (findNeg != base.end())
     {
@@ -432,6 +439,7 @@ void populatePidInfo(
     }
 
     info.pidInfo.checkHysterWithSetpt = checkHysterWithSetpt;
+    info.pidInfo.checkDynamicSetpt = checkDynamicSetpt;
     info.pidInfo.negativeHysteresis = negativeHysteresis;
     info.pidInfo.positiveHysteresis = positiveHysteresis;
     info.pidInfo.derivativeCoeff = derivativeCoeff;

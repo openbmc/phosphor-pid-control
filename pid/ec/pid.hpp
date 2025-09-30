@@ -21,6 +21,12 @@ struct pid_info_t
     bool initialized = false;          // has pid been initialized
     bool checkHysterWithSetpt = false; // compare current input and setpoint to
                                        // check hysteresis
+    bool checkDynamicSetpt =
+        false; // Enable dynamic-setpoint error semantics:
+               // input > (setpoint + posHys) -> error = (setpoint + posHys) -
+               // input input < (setpoint - negHys) -> error = (setpoint -
+               // negHys) - input otherwise (within the band) -> error =
+               // setpoint - input (legacy)
 
     double ts = 0.0;                   // sample time in seconds
     double integral = 0.0;             // integral of error
@@ -49,6 +55,12 @@ struct pidinfo
 {
     bool checkHysterWithSetpt = false; // compare current input and setpoint to
                                        // check hysteresis
+    bool checkDynamicSetpt =
+        false; // Enable dynamic-setpoint error semantics:
+               // input > (setpoint + posHys) -> error = (setpoint + posHys) -
+               // input input < (setpoint - negHys) -> error = (setpoint -
+               // negHys) - input otherwise (within the band) -> error =
+               // setpoint - input (legacy)
 
     double ts = 0.0;                   // sample time in seconds
     double proportionalCoeff = 0.0;    // coeff for P
