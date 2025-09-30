@@ -72,16 +72,22 @@ void from_json(const json& j, conf::ControllerInfo& c)
     auto p = j.at("pid");
 
     auto checkHysterWithSetpt = p.find("checkHysteresisWithSetpoint");
+    auto checkDynamicSetpt = p.find("checkDynamicSetpoint");
     auto positiveHysteresis = p.find("positiveHysteresis");
     auto negativeHysteresis = p.find("negativeHysteresis");
     auto derivativeCoeff = p.find("derivativeCoeff");
     auto checkHysterWithSetptValue = false;
+    auto checkDynamicSetptValue = false;
     auto positiveHysteresisValue = 0.0;
     auto negativeHysteresisValue = 0.0;
     auto derivativeCoeffValue = 0.0;
     if (checkHysterWithSetpt != p.end())
     {
         checkHysterWithSetpt->get_to(checkHysterWithSetptValue);
+    }
+    if (checkDynamicSetpt != p.end())
+    {
+        checkDynamicSetpt->get_to(checkDynamicSetptValue);
     }
     if (positiveHysteresis != p.end())
     {
@@ -125,6 +131,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
         c.pidInfo.negativeHysteresis = negativeHysteresisValue;
         c.pidInfo.derivativeCoeff = derivativeCoeffValue;
         c.pidInfo.checkHysterWithSetpt = checkHysterWithSetptValue;
+        c.pidInfo.checkDynamicSetpt = checkDynamicSetptValue;
     }
     else
     {
