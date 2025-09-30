@@ -21,20 +21,25 @@ struct pid_info_t
     bool initialized = false;          // has pid been initialized
     bool checkHysterWithSetpt = false; // compare current input and setpoint to
                                        // check hysteresis
+    bool checkDynamicSetpt =
+        false; // Enable dynamic-setpoint error semantics:
+               // input > (setpoint + posHys) -> error = (setpoint + posHys) -
+               // input input < (setpoint - negHys) -> error = (setpoint -
+               // negHys) - input otherwise (within the band) -> error =
+               // setpoint - input (legacy)
+    double ts = 0.0;                // sample time in seconds
+    double integral = 0.0;          // integral of error
+    double lastOutput = 0.0;        // value of last output
+    double lastError = 0.0;         // value of last error
 
-    double ts = 0.0;                   // sample time in seconds
-    double integral = 0.0;             // integral of error
-    double lastOutput = 0.0;           // value of last output
-    double lastError = 0.0;            // value of last error
+    double proportionalCoeff = 0.0; // coeff for P
+    double integralCoeff = 0.0;     // coeff for I
+    double derivativeCoeff = 0.0;   // coeff for D
+    double feedFwdOffset = 0.0;     // offset coeff for feed-forward term
+    double feedFwdGain = 0.0;       // gain for feed-forward term
 
-    double proportionalCoeff = 0.0;    // coeff for P
-    double integralCoeff = 0.0;        // coeff for I
-    double derivativeCoeff = 0.0;      // coeff for D
-    double feedFwdOffset = 0.0;        // offset coeff for feed-forward term
-    double feedFwdGain = 0.0;          // gain for feed-forward term
-
-    limits_t integralLimit;            // clamp of integral
-    limits_t outLim;                   // clamp of output
+    limits_t integralLimit;         // clamp of integral
+    limits_t outLim;                // clamp of output
     double slewNeg = 0.0;
     double slewPos = 0.0;
     double positiveHysteresis = 0.0;
@@ -49,15 +54,20 @@ struct pidinfo
 {
     bool checkHysterWithSetpt = false; // compare current input and setpoint to
                                        // check hysteresis
-
-    double ts = 0.0;                   // sample time in seconds
-    double proportionalCoeff = 0.0;    // coeff for P
-    double integralCoeff = 0.0;        // coeff for I
-    double derivativeCoeff = 0.0;      // coeff for D
-    double feedFwdOffset = 0.0;        // offset coeff for feed-forward term
-    double feedFwdGain = 0.0;          // gain for feed-forward term
-    ec::limits_t integralLimit;        // clamp of integral
-    ec::limits_t outLim;               // clamp of output
+    bool checkDynamicSetpt =
+        false; // Enable dynamic-setpoint error semantics:
+               // input > (setpoint + posHys) -> error = (setpoint + posHys) -
+               // input input < (setpoint - negHys) -> error = (setpoint -
+               // negHys) - input otherwise (within the band) -> error =
+               // setpoint - input (legacy)
+    double ts = 0.0;                // sample time in seconds
+    double proportionalCoeff = 0.0; // coeff for P
+    double integralCoeff = 0.0;     // coeff for I
+    double derivativeCoeff = 0.0;   // coeff for D
+    double feedFwdOffset = 0.0;     // offset coeff for feed-forward term
+    double feedFwdGain = 0.0;       // gain for feed-forward term
+    ec::limits_t integralLimit;     // clamp of integral
+    ec::limits_t outLim;            // clamp of output
     double slewNeg = 0.0;
     double slewPos = 0.0;
     double positiveHysteresis = 0.0;
