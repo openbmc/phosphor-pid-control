@@ -51,6 +51,24 @@
       "parentUuid": "685ca962_0735a0c6",
       "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e11dda46_5c78c109",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000936
+      },
+      "writtenOn": "2025-10-01T12:25:25Z",
+      "side": 1,
+      "message": "\u003e Let’s assume:\n\u003e \n\u003e Kp \u003d 3, Ki \u003d 0, Kd \u003d 0\n...\n\u003e Compared with the traditional method, the difference is reduced by 2Kp, which effectively alleviates the problem of large fan duty changes when leaving the hysteresis band.\n\nIt\u0027s not at all the tradition to use just the P part of a PID controller. Sorry but this example seems to be too artificial to illustrate any point.\n\nSince you seem to be advocating your own invention please consider showing how it\u0027s better than what one gets using industry-standard PID tuning methods.",
+      "parentUuid": "6e0ae745_6ba47a2b",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
