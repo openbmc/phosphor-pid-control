@@ -16,6 +16,41 @@
       "message": "Hello and thank you for the patch.\n\nI wonder if this is your own invention or if this additional hack to traditional PID is known and used succesfully elsewhere.\n\nThe patch is missing documentation changes so clearly it\u0027s either RFC for the idea or incomplete.\n\nI would guess since you increase complexity here it would be nice to have more hard data for justification, e.g. the graphs of inputs and output of how it behaves without the patch and with the patch along with the settings used, so that one could see it\u0027s really useful and solves a real life issue which can not be solved without this additional setting.",
       "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "3e4d9dac_c48c0cf0",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-01T12:11:14Z",
+      "side": 1,
+      "message": "Hi Paul Fertser,\n\nI’d like to use the thermal controller (input \u003d Temperature, output \u003d Duty) as an example.\nLet’s assume:\n\nKp \u003d 3, Ki \u003d 0, Kd \u003d 0\n\nSet point \u003d 80\n\nSampling time (Ts) \u003d 1\n\nNegativeHysteresis \u003d 1, PositiveHysteresis \u003d 1\n\nInitial temperature \u003d 75°C\n\nCurrent temperature \u003d T0, next time step temperature \u003d T1, and so on\n\nCurrent duty \u003d Duty(0), next duty \u003d Duty(1), and so on\n\nThe general form is:\n\nDuty(0) \u003d kp(sp- T0) + sigma ki (sp- Tn) +kd*(T0-T1)/Delta T\n\nFor simplicity, let’s set Ki and Kd to zero to derive the formula more clearly:\n\nDuty(0) \u003d kp*(sp- T0)\n\nNow, let’s look at a heating process example :\n\nAt the 1st second, the temperature is 77°C (PID calculation is required).\n\nAt the 2nd second, the temperature is 80°C, which falls into the hysteresis band (no PID calculation needed).\n\nAt the 3rd second, the temperature reaches 83°C, leaving the hysteresis band (PID calculation required again).\n\n1st second: Duty(0) \u003d Kp * (80 – 77) \u003d 3Kp\n\n2nd second: in hysteresis zone, duty stays the same → Duty(2) \u003d 3Kp\n\n3rd second: leaving hysteresis zone → Duty(3) \u003d Kp * (80 – 83) \u003d –3Kp\n\nHere, duty jumps from 3Kp to –3Kp, a difference of 6Kp.\n\nUsing the dynamic setpoint method:\n\n1st second: Duty(0) \u003d Kp * ((80 – 1) – 77) \u003d 2Kp\n\n2nd second: in hysteresis zone, duty stays the same → Duty(2) \u003d 2Kp\n\n3rd second: leaving hysteresis zone → Duty(3) \u003d Kp * ((80 + 1) – 83) \u003d –2Kp\n\nHere, duty changes from 2Kp to –2Kp, a difference of 4Kp.\n\nCompared with the traditional method, the difference is reduced by 2Kp, which effectively alleviates the problem of large fan duty changes when leaving the hysteresis band.\n\nBest regards,\nYouPeng Wu",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6e0ae745_6ba47a2b",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-01T12:11:14Z",
+      "side": 1,
+      "message": "Hi Paul Fertser,\n\nI’d like to use the thermal controller (input \u003d Temperature, output \u003d Duty) as an example.\nLet’s assume:\n\nKp \u003d 3, Ki \u003d 0, Kd \u003d 0\n\nSet point \u003d 80\n\nSampling time (Ts) \u003d 1\n\nNegativeHysteresis \u003d 1, PositiveHysteresis \u003d 1\n\nInitial temperature \u003d 75°C\n\nCurrent temperature \u003d T0, next time step temperature \u003d T1, and so on\n\nCurrent duty \u003d Duty(0), next duty \u003d Duty(1), and so on\n\nThe general form is:\n\nDuty(0) \u003d kp*(sp- T0) + sigma ki * (sp- Tn) +kd*(T0-T1)/Delta T\n\nFor simplicity, let’s set Ki and Kd to zero to derive the formula more clearly:\n\nDuty(0) \u003d kp*(sp- T0) \n\nNow, let’s look at a heating process example :\n\nAt the 1st second, the temperature is 77°C (PID calculation is required).\n\nAt the 2nd second, the temperature is 80°C, which falls into the hysteresis band (no PID calculation needed).\n\nAt the 3rd second, the temperature reaches 83°C, leaving the hysteresis band (PID calculation required again).\n\n1st second: Duty(0) \u003d Kp * (80 – 77) \u003d 3Kp\n\n2nd second: in hysteresis zone, duty stays the same → Duty(2) \u003d 3Kp\n\n3rd second: leaving hysteresis zone → Duty(3) \u003d Kp * (80 – 83) \u003d –3Kp\n\nHere, duty jumps from 3Kp to –3Kp, a difference of 6Kp.\n\nUsing the dynamic setpoint method:\n\n1st second: Duty(0) \u003d Kp * ((80 – 1) – 77) \u003d 2Kp\n\n2nd second: in hysteresis zone, duty stays the same → Duty(2) \u003d 2Kp\n\n3rd second: leaving hysteresis zone → Duty(3) \u003d Kp * ((80 + 1) – 83) \u003d –2Kp\n\nHere, duty changes from 2Kp to –2Kp, a difference of 4Kp.\n\nCompared with the traditional method, the difference is reduced by 2Kp, which effectively alleviates the problem of large fan duty changes when leaving the hysteresis band.\n\nBest regards,\nYouPeng Wu",
+      "parentUuid": "685ca962_0735a0c6",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
