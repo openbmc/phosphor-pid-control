@@ -69,6 +69,41 @@
       "parentUuid": "6e0ae745_6ba47a2b",
       "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "39aec248_a8c3da7f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-01T12:34:08Z",
+      "side": 1,
+      "message": "即使你把 Ki, Kd 設值",
+      "parentUuid": "e11dda46_5c78c109",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "e93c8061_effebd7e",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-01T12:34:08Z",
+      "side": 1,
+      "message": "Even with non-zero Ki and Kd values, the same phenomenon can be verified.\nIn the example I presented, the difference still comes out to 2 times the P gain.\n\nIf we instead assume a cooling process (temperature dropping from 83°C to 77°C), we can also observe that when leaving the hysteresis band, the Kp variation is reduced by 2 times the P gain.",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
