@@ -104,6 +104,41 @@
       "message": "Even with non-zero Ki and Kd values, the same phenomenon can be verified.\nIn the example I presented, the difference still comes out to 2 times the P gain.\n\nIf we instead assume a cooling process (temperature dropping from 83°C to 77°C), we can also observe that when leaving the hysteresis band, the Kp variation is reduced by 2 times the P gain.",
       "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5a268a2d_dd60e283",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-01T12:45:33Z",
+      "side": 1,
+      "message": "In the PID examples I’ve encountered, Ki and Kd are often set to values relatively smaller than Kp.\n\nThe integral term (Ki) keeps accumulating with each iteration. For example, if the temperature remains at 83°C while the setpoint is 80°C, then for every iteration the update adds Ki * (SP – input) \u003d –3Ki. This accumulation continues at each step, while the P term remains fixed in this situation.\n\nUnder both the traditional method and the dynamic setpoint method, Ki will continue to accumulate. If the accumulation seems insufficient, one simply waits for more iterations (equivalent to a few more seconds) until the system reaches equilibrium. This is why the Ki coefficient is usually chosen to be smaller than Kp.",
+      "parentUuid": "39aec248_a8c3da7f",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "63c5cbc0_0f245f87",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-01T12:45:33Z",
+      "side": 1,
+      "message": "In the PID examples I’ve encountered, Ki and Kd are often set to values relatively smaller than Kp.\n\nThe integral term (Ki) keeps accumulating with each iteration. For example, if the temperature remains at 83°C while the setpoint is 80°C, then for every iteration the update adds Ki * (SP – input) \u003d –3Ki. This accumulation continues at each step, while the P term remains fixed in this situation.\n\nUnder both the traditional method and the dynamic setpoint method, Ki will continue to accumulate. If the accumulation seems insufficient, one simply waits for more iterations (equivalent to a few more seconds) until the system reaches equilibrium. This is why the Ki coefficient is usually chosen to be smaller than Kp.",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
