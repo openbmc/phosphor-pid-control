@@ -1,0 +1,9 @@
+Code-Review+2: Ed Tanous <ed@tanous.net>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Code-Review+1: Josh Lehan <krellan@gmail.com>
+Submitted-by: Ed Tanous <ed@tanous.net>
+Submitted-at: Wed, 01 Oct 2025 23:08:41 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/82966
+Comments-Total: 1
+Project: openbmc/phosphor-pid-control
+Branch: refs/heads/master
