@@ -157,6 +157,23 @@
       "parentUuid": "e93c8061_effebd7e",
       "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c8e8f4c6_f0d66616",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-01T12:57:03Z",
+      "side": 1,
+      "message": "I understand what you’re trying to express. Since I don’t currently have the hardware available for real testing, I can only illustrate this through simulated temperature changes.\n\nThe main purpose of my commit is to show that this method can effectively reduce the fan speed variation when leaving the hysteresis band, primarily in the P term.\n\nThank you for your feedback.\n\nYouPeng, Wu",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
