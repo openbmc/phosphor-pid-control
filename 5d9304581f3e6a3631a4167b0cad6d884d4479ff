@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "703f6760_2ed0f556",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-08T08:23:18Z",
+      "side": 1,
+      "message": "Just a friendly reminder to help review.\nAfter [commit 3bfece8] (dbuspassive: Fail reason for missing D-Bus object\n) was merged, I’ve rebased this patch and resolved the merge conflict.\nThanks!\n\n[commit 3bfece8]: https://github.com/openbmc/phosphor-pid-control/commit/3bfece8b562b2b52109a4dbe3c37a1d390a2997e",
+      "revId": "5d9304581f3e6a3631a4167b0cad6d884d4479ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
