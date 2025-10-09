@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "71def4e6_dc8a2345",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 3
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-10-09T05:07:47Z",
+      "side": 1,
+      "message": "Just a friendly reminder to help review.",
+      "revId": "b8712c132dceaf02a9a8aaf735c833c1aca8ed1d",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
