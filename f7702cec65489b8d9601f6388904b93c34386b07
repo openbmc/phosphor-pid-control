@@ -22,6 +22,30 @@
       },
       "revId": "f7702cec65489b8d9601f6388904b93c34386b07",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "c94605d2_653212c0",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1001758
+      },
+      "writtenOn": "2025-10-14T17:41:49Z",
+      "side": 1,
+      "message": "Sure, will start reviewing some of the pending commits first.",
+      "parentUuid": "31246cd3_502e5edb",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 69
+      },
+      "revId": "f7702cec65489b8d9601f6388904b93c34386b07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
