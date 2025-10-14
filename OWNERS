@@ -33,6 +33,7 @@
 
 owners:
 - ed@tanous.net
+- paligill@gmail.com
 - patrick@stwcx.xyz
 
 reviewers:
@@ -43,6 +44,9 @@ openbmc:
 - name: Ed Tanous
   email: ed@tanous.net
   discord: edtanous
+- name: Jagpal Singh Gill
+  email: paligill@gmail.com
+  discord: jagpalgill
 - name: Patrick Williams
   email: patrick@stwcx.xyz
   discord: stwcx
