@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "31246cd3_502e5edb",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-14T17:00:54Z",
+      "side": 1,
+      "message": "I\u0027m all for help here, but I don\u0027t think jumping to maintainer follows the prescription in guidance expectations for maintainers?\n\nThis shows no previous interaction here:\n\nhttps://gerrit.openbmc.org/q/project:openbmc/phosphor-pid-control+(reviewedby:paligill@gmail.com+OR+author:paligill@gmail.com)\n\nCan you at least take on some review of pending commits?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 69
+      },
+      "revId": "f7702cec65489b8d9601f6388904b93c34386b07",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
