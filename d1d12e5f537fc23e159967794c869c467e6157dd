@@ -103,6 +103,24 @@
       "message": "Same concern as above, about changing things that are unnecessary to change, such as whitespace indentation levels in these comments below.",
       "revId": "d1d12e5f537fc23e159967794c869c467e6157dd",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "7223f9d8_a01a71d0",
+        "filename": "pid/ec/pid.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-10-27T19:31:19Z",
+      "side": 1,
+      "message": "I take back my concern, because it\u0027s unavoidable by .clang-format drift over time.",
+      "parentUuid": "a1fb0d34_005f1192",
+      "revId": "d1d12e5f537fc23e159967794c869c467e6157dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
