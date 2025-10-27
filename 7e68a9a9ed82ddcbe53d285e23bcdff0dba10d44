@@ -108,6 +108,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "48680d44_39ad021f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:37:57Z",
+      "side": 1,
+      "message": "I\u0027m late to the party here, but:\n1. Design docs that cross multiple daemons should go to the main docs folder.\n2. This seems like something that\u0027s already handled by the \"profiles\" system in bmcweb/phosphor-pid-control/entity-manager.  If it\u0027s different, we should enumerate the differences.\n3. This has been in WIP for a long time.",
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "3fb56b68_c5410f36",
         "filename": "fan-versioning.md",
         "patchSetId": 4
@@ -142,6 +159,29 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "7a469d5c_fd377819",
+        "filename": "fan-versioning.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:37:57Z",
+      "side": 1,
+      "message": "This would be the first time PPC actually \"owned\" the configuration for itself.  Would this be updatable as well?",
+      "range": {
+        "startLine": 57,
+        "startChar": 32,
+        "endLine": 57,
+        "endChar": 79
+      },
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "d4b9d74b_bdc20645",
         "filename": "fan-versioning.md",
         "patchSetId": 4
@@ -158,6 +198,52 @@
         "startChar": 42,
         "endLine": 59,
         "endChar": 36
+      },
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "df103104_af9bd307",
+        "filename": "fan-versioning.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 62,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:37:57Z",
+      "side": 1,
+      "message": "I\u0027m not really understanding for the EM config version how this information would differ.  Could we just have it in the json itself?",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 62,
+        "endChar": 55
+      },
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5bbd43e1_fe10bfb6",
+        "filename": "fan-versioning.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:37:57Z",
+      "side": 1,
+      "message": "nit, typo.",
+      "range": {
+        "startLine": 68,
+        "startChar": 17,
+        "endLine": 68,
+        "endChar": 28
       },
       "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
