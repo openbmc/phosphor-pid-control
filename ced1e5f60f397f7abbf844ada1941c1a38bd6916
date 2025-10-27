@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2991e5b2_a5915168",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:27:46Z",
+      "side": 1,
+      "message": "From a control theory perspective, hysteresis isn\u0027t really a plant input, so it isn\u0027t clear why this would make a look more stable.  This WOULD make the loop more stable by reducing the integral coefficient when things are in the hysteresis band, but the hysteresis band is arbitrary?  Couldn\u0027t you get the same result by just decreasing the negative I coefficient by negHys and increase the positive I coefficient by posHys?\n\nIf we\u0027re going to add something non-standard, I\u0027m in support, but we really need to document why we\u0027re doing it if we\u0027re going outside what\u0027s generally documented in normal \"PID\" control theory textbooks.\n\nFWIW, we\u0027ve needed better docs on the control loop anyway, so probably best to do it now.",
+      "revId": "ced1e5f60f397f7abbf844ada1941c1a38bd6916",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "657726ea_8fc97ace",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:27:46Z",
+      "side": 1,
+      "message": "I\u0027m very open to changes here, but lets make sure that:\n1. The benefits are documented well.\n2. If we\u0027re doing any control theory that\u0027s PPC specific, EXACTLY the expected behavior is documented and unit tested.  PID previously relied heavily on PID being a fairly routine algorithm, and our changes to it were rather routine/well documented.  I don\u0027t believe that\u0027s the case for this change, or if it is, please link the docs.",
+      "revId": "ced1e5f60f397f7abbf844ada1941c1a38bd6916",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "dc7ce16d_4c61bae6",
+        "filename": "pid/ec/pid.cpp",
+        "patchSetId": 4
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:27:46Z",
+      "side": 1,
+      "message": "SHould we do this outside the actual \"pid\" call, because this isn\u0027t part of \"PID\".  This is arguably input filtering.",
+      "revId": "ced1e5f60f397f7abbf844ada1941c1a38bd6916",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
