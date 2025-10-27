@@ -52,6 +52,24 @@
       "parentUuid": "2cdf64b3_c4ceca77",
       "revId": "b84f9676f660567602ea82d5f762222039e75c51",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "252eafa4_13f5f59d",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:34:26Z",
+      "side": 1,
+      "message": "\u003e In general, use of cancel() is a code smell.\n\nThis isn\u0027t and hasn\u0027t been the case.  General pattern is start timer, then when the operation succeeds, cancel the timer, which invokes the callback with operation_aborted.\n\n\u003e sometimes it won\u0027t be called at all.\n\nIf you\u0027ve seen this behavior, please document it, because that\u0027s never been the case as far as I\u0027ve known.\n\n\u003e It\u0027s often just better and safer to have a global flag isCancelling or something like that, then your timer handler can know to simply do nothing when it is called.\n\nThat\u0027s effectively what\u0027s happening when calling cancel() on a timer instance, it\u0027s just then the callback is queued immediately.",
+      "parentUuid": "5d5a5950_d4b0a730",
+      "revId": "b84f9676f660567602ea82d5f762222039e75c51",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
