@@ -24,6 +24,7 @@
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/ObjectMapper/common.hpp>
 
 #include <cstdint>
 #include <map>
@@ -31,6 +32,8 @@
 #include <string>
 #include <variant>
 #include <vector>
+
+using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
 
 namespace pid_control
 {
@@ -47,10 +50,9 @@ using namespace phosphor::logging;
 std::string DbusHelper::getService(const std::string& intf,
                                    const std::string& path)
 {
-    auto mapper =
-        _bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                             "/xyz/openbmc_project/object_mapper",
-                             "xyz.openbmc_project.ObjectMapper", "GetObject");
+    auto mapper = _bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_object);
 
     mapper.append(path);
     mapper.append(std::vector<std::string>({intf}));

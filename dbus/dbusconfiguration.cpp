@@ -32,6 +32,7 @@
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/message.hpp>
 #include <sdbusplus/message/native_types.hpp>
+#include <xyz/openbmc_project/ObjectMapper/common.hpp>
 
 #include <algorithm>
 #include <array>
@@ -49,6 +50,8 @@
 #include <utility>
 #include <variant>
 #include <vector>
+
+using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
 
 namespace pid_control
 {
@@ -100,10 +103,9 @@ inline std::string sensorNameToDbusName(const std::string& sensorName)
 std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
 {
     std::vector<std::string> ret;
-    auto mapper =
-        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                            "/xyz/openbmc_project/object_mapper",
-                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+    auto mapper = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
     mapper.append("/", 0, std::array<const char*, 1>{thermalControlIface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
@@ -448,10 +450,9 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
 
     createMatches(bus, timer);
 
-    auto mapper =
-        bus.new_method_call("xyz.openbmc_project.ObjectMapper",
-                            "/xyz/openbmc_project/object_mapper",
-                            "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+    auto mapper = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
     mapper.append(
         "/", 0,
         std::array<const char*, 6>{
