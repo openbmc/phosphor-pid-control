@@ -50,6 +50,24 @@
       "message": "This looks ok to me.  Is this still needed (if so, please rebase).",
       "revId": "95ba9116625417c6b19a1a848fed1b6f8fa926a4",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "bea4e6ce_c9c26271",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001864
+      },
+      "writtenOn": "2025-10-27T20:45:28Z",
+      "side": 1,
+      "message": "Yes. Rebased. Thanks!",
+      "parentUuid": "2f84c500_cdbc3b10",
+      "revId": "95ba9116625417c6b19a1a848fed1b6f8fa926a4",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
