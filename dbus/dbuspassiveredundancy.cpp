@@ -20,6 +20,7 @@
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/ObjectMapper/common.hpp>
 
 #include <array>
 #include <iostream>
@@ -28,6 +29,8 @@
 #include <unordered_map>
 #include <variant>
 #include <vector>
+
+using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
 
 namespace pid_control
 {
@@ -115,9 +118,8 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
 void DbusPassiveRedundancy::populateFailures(void)
 {
     auto mapper = passiveBus.new_method_call(
-        "xyz.openbmc_project.ObjectMapper",
-        "/xyz/openbmc_project/object_mapper",
-        "xyz.openbmc_project.ObjectMapper", "GetSubTree");
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
     mapper.append("/", 0, std::array<const char*, 1>{redundancy::interface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
