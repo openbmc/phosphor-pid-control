@@ -20,6 +20,23 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "c03f5b3f_7d155d36",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 317,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:39:33Z",
+      "side": 1,
+      "message": "This is a blocking IO call from an async reactor.  Please dont, as it causes deadlocks.",
+      "revId": "5a80b4ed6cdd8bd392efed19796d0ef88bd63920",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "932dae7f_bf281d44",
         "filename": "dbus/dbusconfiguration.cpp",
         "patchSetId": 2
@@ -36,6 +53,53 @@
         "startChar": 0,
         "endLine": 324,
         "endChar": 5
+      },
+      "revId": "5a80b4ed6cdd8bd392efed19796d0ef88bd63920",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "09d9f86c_802821ce",
+        "filename": "dbus/dbusconfiguration.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 324,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:39:33Z",
+      "side": 1,
+      "message": "+1",
+      "parentUuid": "932dae7f_bf281d44",
+      "range": {
+        "startLine": 303,
+        "startChar": 0,
+        "endLine": 324,
+        "endChar": 5
+      },
+      "revId": "5a80b4ed6cdd8bd392efed19796d0ef88bd63920",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab60b51_61cf6e84",
+        "filename": "main.cpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 137,
+      "author": {
+        "id": 1000153
+      },
+      "writtenOn": "2025-10-27T20:39:33Z",
+      "side": 1,
+      "message": "Please don\u0027t use count then operator[].  Just use find.",
+      "range": {
+        "startLine": 137,
+        "startChar": 25,
+        "endLine": 137,
+        "endChar": 30
       },
       "revId": "5a80b4ed6cdd8bd392efed19796d0ef88bd63920",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
