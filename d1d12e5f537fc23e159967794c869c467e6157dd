@@ -54,6 +54,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f5cda0a2_6f306192",
+        "filename": "pid/ec/pid.hpp",
+        "patchSetId": 2
+      },
+      "lineNbr": 30,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-27T09:47:14Z",
+      "side": 1,
+      "message": "The extra changes in comment alignment were caused by the current .clang-format rules used by the community.\nI previously tried to modify only the necessary parts without adjusting the existing comment alignment, but the CI failed because the file did not comply with the updated .clang-format requirements.",
+      "parentUuid": "a952b558_337f4dee",
+      "revId": "d1d12e5f537fc23e159967794c869c467e6157dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "a1fb0d34_005f1192",
         "filename": "pid/ec/pid.hpp",
         "patchSetId": 2
