@@ -1,5 +1,7 @@
 #include "dbus/dbusutil.hpp"
 
+#include <xyz/openbmc_project/Sensor/Value/common.hpp>
+
 #include <cstdint>
 #include <map>
 #include <string>
@@ -15,6 +17,8 @@ namespace pid_control
 {
 namespace
 {
+
+using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
 
 using ::testing::ContainerEq;
 using ::testing::Eq;
@@ -37,16 +41,29 @@ TEST_P(GetSensorPathTest, ReturnsExpectedValue)
 INSTANTIATE_TEST_SUITE_P(
     GetSensorPathTests, GetSensorPathTest,
     ::testing::Values(
-        std::make_tuple("fan", "0", "/xyz/openbmc_project/sensors/fan_tach/0"),
-        std::make_tuple("as", "we", "/xyz/openbmc_project/sensors/unknown/we"),
+        std::make_tuple("fan", "0",
+                        std::format("{}/{}/0",
+                                    SensorValue::namespace_path::value,
+                                    SensorValue::namespace_path::fan_tach)),
+        std::make_tuple("as", "we",
+                        std::format("{}/unknown/we",
+                                    SensorValue::namespace_path::value)),
         std::make_tuple("margin", "9",
-                        "/xyz/openbmc_project/sensors/temperature/9"),
+                        std::format("{}/{}/9",
+                                    SensorValue::namespace_path::value,
+                                    SensorValue::namespace_path::temperature)),
         std::make_tuple("temp", "123",
-                        "/xyz/openbmc_project/sensors/temperature/123"),
+                        std::format("{}/{}/123",
+                                    SensorValue::namespace_path::value,
+                                    SensorValue::namespace_path::temperature)),
         std::make_tuple("power", "9000",
-                        "/xyz/openbmc_project/sensors/power/9000"),
+                        std::format("{}/{}/9000",
+                                    SensorValue::namespace_path::value,
+                                    SensorValue::namespace_path::power)),
         std::make_tuple("powersum", "total",
-                        "/xyz/openbmc_project/sensors/power/total")));
+                        std::format("{}/{}/total",
+                                    SensorValue::namespace_path::value,
+                                    SensorValue::namespace_path::power))));
 
 class FindSensorsTest : public ::testing::Test
 {
