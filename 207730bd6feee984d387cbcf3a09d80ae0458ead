@@ -34,6 +34,24 @@
       "parentUuid": "a16faef5_30f08f31",
       "revId": "207730bd6feee984d387cbcf3a09d80ae0458ead",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "d40792b1_04715776",
+        "filename": "test/dbus_passive_unittest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1000000
+      },
+      "writtenOn": "2025-10-28T19:23:25Z",
+      "side": 1,
+      "message": "The sdbusplus path object already supports `/` just like the std::fs objects do.  I\u0027d rather use that for building paths.\n\nIt\u0027s awkward that many of the sdbusplus functions take a std::string instead of an sdbusplus::object_path, but ... that\u0027s because they were written first and we never refactored.",
+      "parentUuid": "cf34f3bc_62a68ca7",
+      "revId": "207730bd6feee984d387cbcf3a09d80ae0458ead",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
