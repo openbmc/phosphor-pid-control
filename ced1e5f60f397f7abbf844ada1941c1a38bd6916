@@ -91,6 +91,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "16dad3fe_2c6fc755",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-28T09:54:18Z",
+      "side": 1,
+      "message": "Hi,\n\nI created a new document called PID_Control_Documentation.md, which covers topics such as the PID closed loop, integral windup issues, the concept of hysteresis, and dynamic setpoints.\n\nIn the original community PID controller, when operating under the hysteresis bounds, the controller re-initializes the PID to avoid integral windup. I believe this behavior should be modified, so I’ve updated the code to use a natural decay approach instead of forcing the integrator to reset to zero.\n\nFeel free to check out my markdown document if you’re interested. Thanks!",
+      "parentUuid": "657726ea_8fc97ace",
+      "revId": "ced1e5f60f397f7abbf844ada1941c1a38bd6916",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "dc7ce16d_4c61bae6",
         "filename": "pid/ec/pid.cpp",
         "patchSetId": 4

@@ -191,6 +191,24 @@
       "message": "Hi Paul,\n\nSorry if my earlier explanation caused any misunderstanding.\nThis commit is not intended to replace the traditional fixed setpoint mode, but to introduce an optional feature that can be enabled through configuration (CheckDynamicSetpoint \u003d true).\n\nBy default, existing users are not affected. Only when explicitly enabled does the controller apply the dynamic setpoint with hysteresis. The purpose is to reduce the error jump when leaving the hysteresis band. As in the example, this mainly reduces the proportional term’s step change.\n\nBest regards,\nYouPeng, Wu",
       "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "eccefcce_426aae06",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-28T09:54:18Z",
+      "side": 1,
+      "message": "Hi,\n\nI created a new document called PID_Control_Documentation.md, which covers topics such as the PID closed loop, integral windup issues, the concept of hysteresis, and dynamic setpoints.\n\nIn the original community PID controller, when operating under the hysteresis bounds, the controller re-initializes the PID to avoid integral windup. I believe this behavior should be modified, so I’ve updated the code to use a natural decay approach instead of forcing the integrator to reset to zero.\n\nFeel free to check out my markdown document if you’re interested. Thanks!",
+      "parentUuid": "39c33621_b4b9d11f",
+      "revId": "afab3af06d06661fad56fe89803e0417e888ad0e",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
