@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "d89b5531_d33b0be1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-28T00:20:53Z",
+      "side": 1,
+      "message": "Thanks for the code review.\n\nI just double-checked pidcontroller.cpp, and I noticed that when the input goes below the negative hysteresis band, the community code initializes the PID by resetting both the integral accumulator and the output to zero.\n\nBefore we go further into the discussion of the dynamic setpoint logic, I think we should first revisit whether this “initialize PID” behavior (resetting integral and output) is really necessary — it might be too aggressive.\nIf the input happens to fluctuate around the lower hysteresis boundary, this reset can easily cause large oscillations.\n\nLet me give an example so it’s easier to visualize.\n(Assume: error \u003d setpoint - input)\n\nIf setpoint \u003d 83, Kp \u003d -5, Ki \u003d -2, Kd \u003d 0, and both positiveHysteresis and negativeHysteresis are 1:\n\nCase 1: With initialize PID (reset integral \u0026 output):\n\nT\u003d0, input\u003d85 → output \u003d -5(83-85) - 2*(83-85) \u003d 14\nT\u003d1, input\u003d85 → output \u003d -5(83-85) - 2*(83-85) - 2*(83-85) \u003d 18\nT\u003d2, input\u003d85 → output \u003d -5(83-85) - 2*(83-85) - 2*(83-85) - 2*(83-85) \u003d 22\nT\u003d3, input\u003d85 → output \u003d -5(83-85) - 2*(83-85) - 2*(83-85) - 2*(83-85) - 2*(83-85) \u003d 26\nT\u003d4, input\u003d85 → output \u003d -5(83-85) - 2*(83-85)*6 \u003d 30\nT\u003d5, input\u003d84 → output \u003d 30  (inside band → hold)\nT\u003d6, input\u003d83 → output \u003d 30  (inside band → hold)\nT\u003d7, input\u003d82 → output \u003d 30  (inside band → hold)\nT\u003d8, input\u003d81 → output \u003d 0   (below lower bound → PID reinitialized)\nT\u003d9, input\u003d82 → output \u003d 0   (inside band → hold)\n\n\nCase 2: Without reinitializing (keep integral accumulation):\n\nT\u003d0, input\u003d85 → output \u003d -5(83-85) - 2*(83-85) \u003d 14\nT\u003d1, input\u003d85 → output \u003d -5(83-85) - 2*(83-85) - 2*(83-85) \u003d 18\nT\u003d2, input\u003d85 → output \u003d -5(83-85) - 2*(83-85)*3 \u003d 22\nT\u003d3, input\u003d85 → output \u003d -5(83-85) - 2*(83-85)*4 \u003d 26\nT\u003d4, input\u003d85 → output \u003d -5(83-85) - 2*(83-85)*5 \u003d 30\nT\u003d5, input\u003d84 → output \u003d 30  (inside band → hold)\nT\u003d6, input\u003d83 → output \u003d 30  (inside band → hold)\nT\u003d7, input\u003d82 → output \u003d 30  (inside band → hold)\nT\u003d8, input\u003d81 → output \u003d -5(83-81) - accumulated integral \u003d 6 (below band, but continuous PID)\nT\u003d9, input\u003d82 → output \u003d 6   (inside band → hold)\n\n\nIf the input continues to stay below the setpoint, the output will naturally decay toward zero.\nAs long as ILimitMin and ILimitMax (e.g., 0–100) are properly configured — which are already part of the existing parameters — the integral wind-up problem is avoided.\n\nIn summary:\nForce-resetting the output and integral when the input leaves the lower hysteresis band seems unnecessarily harsh, especially after the integral has already accumulated for a while.\nIf the input oscillates around the hysteresis boundary, this behavior can lead to instability and make convergence difficult.\n\nWhile it’s true that proper PID tuning can mitigate some of these effects, I think algorithmic behavior and coefficient tuning can and should complement each other.\nA well-behaved control algorithm makes PID tuning much more effective and predictable.",
+      "parentUuid": "2991e5b2_a5915168",
+      "revId": "ced1e5f60f397f7abbf844ada1941c1a38bd6916",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "657726ea_8fc97ace",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
