@@ -16,6 +16,24 @@
       "message": "I guess this is just a test case, but any reason to not just use string concatenation?",
       "revId": "207730bd6feee984d387cbcf3a09d80ae0458ead",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "cf34f3bc_62a68ca7",
+        "filename": "test/dbus_passive_unittest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2025-10-28T17:24:19Z",
+      "side": 1,
+      "message": "We would have to wrap in `std::string()` or something, otherwise we get invalid operands between `const char*` and `const char[N]`, right?\n\nThen we have a bunch of wrapping and it does not look nice.\n\nCurrently it will not win an award due to the reversed order of things.\n\nWhat do you think about a generated helper function that knows the namespace path value and simply takes parameters for the segment and leaf of the object path.\n\nThe leaf could have further path segments, the function would not care.\n\nThat would preserve the order of path segments passed into it and avoid having to `std::format` or concatenate things.",
+      "parentUuid": "a16faef5_30f08f31",
+      "revId": "207730bd6feee984d387cbcf3a09d80ae0458ead",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
