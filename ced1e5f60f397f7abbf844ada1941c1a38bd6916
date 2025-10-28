@@ -56,6 +56,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f172f9d0_e281dc6b",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 4
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-10-28T01:28:01Z",
+      "side": 1,
+      "message": "I’m referring to the following section in pidcontroller.cpp:\n\n// Under the hysteresis bounds, initialize pid\nelse if (input \u003c (setpt - info-\u003enegativeHysteresis))\n{\n    lastInput \u003d setpt;\n    info-\u003eintegral \u003d 0;\n    output \u003d 0;\n}\n\n\nIn a traditional PID design, the controller normally continues integrating across the entire operating range — it doesn’t reinitialize or reset the integral term like this.\nThis behavior was probably introduced to prevent integral wind-up when the input stays far below the setpoint.\nHowever, since the current implementation already provides ILimitMin and ILimitMax parameters, proper configuration of these limits should be sufficient to prevent wind-up without needing to reset the PID state.",
+      "parentUuid": "3f182bd5_2d1bf884",
+      "revId": "ced1e5f60f397f7abbf844ada1941c1a38bd6916",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "657726ea_8fc97ace",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 4
