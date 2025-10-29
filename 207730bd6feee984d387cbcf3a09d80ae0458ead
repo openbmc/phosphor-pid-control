@@ -52,6 +52,24 @@
       "parentUuid": "cf34f3bc_62a68ca7",
       "revId": "207730bd6feee984d387cbcf3a09d80ae0458ead",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5be9b30a_f2a425cd",
+        "filename": "test/dbus_passive_unittest.cpp",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2025-10-29T15:56:36Z",
+      "side": 1,
+      "message": "\u003e The sdbusplus path object already supports / just like the std::fs objects do. I\u0027d rather use that for building paths.\n\nThat\u0027s the root of the issue. The path is not a path in the generated header. It\u0027s a `const char*`.\n\n```\n      struct namespace_path\n      {   \n          static constexpr auto value \u003d \"/xyz/openbmc_project/sensors\";\n          static constexpr auto airflow \u003d \"airflow\";\n```\n\nTo do anything with it we must first wrap in a constructor for `sdbusplus::message::object_path`.\n\nBut that one wraps `std::string` which has `constexpr` constructor but has to be destructed at end of constexpr evaluation.\n\nSo we can use it in `constexpr` contexts but we cannot produce any `constexpr` variable with it.\n\nExample:\n\n```\n   // does not compile with C++23\n   constexpr std::string s(\"hello\");\n\n   // compiles!\n   constexpr size_t n \u003d std::string(\"hello\").size();\n```\n\nSo from my perspective `sdbusplus::message::object_path` is not usable for our constexpr object path needs.\n\nWe may need another type for the object path which could be based on `std::array`.\n\nAt the same time we can solve the default-construction issue that `sdbusplus::message::object_path` has (it default-constructs to empty string instead of `/`)",
+      "parentUuid": "d40792b1_04715776",
+      "revId": "207730bd6feee984d387cbcf3a09d80ae0458ead",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ],
   "submitRequirementResults": []
