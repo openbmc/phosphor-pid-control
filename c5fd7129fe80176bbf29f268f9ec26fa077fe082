@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "6ae532e5_6bedf245",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-11-01T04:59:15Z",
+      "side": 1,
+      "message": "Please check the following documents for detailed discussion on the hysteresis\nbehavior and PID control formulation:\n\nHysteresis Reset Discussion:\nhttps://github.com/YouPengWu/MyMD/blob/main/docs/phosphor-pid-control/Discussion_on_PID_Hysteresis_Reset.md\n\nPID Control Documentation:\nhttps://github.com/YouPengWu/MyMD/blob/main/docs/phosphor-pid-control/PID_Control_Documentation.md",
+      "revId": "c5fd7129fe80176bbf29f268f9ec26fa077fe082",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
