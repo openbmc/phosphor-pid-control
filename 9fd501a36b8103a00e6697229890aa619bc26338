@@ -16,6 +16,23 @@
       "message": "I’ve changed the implementation of the fail reason from string to enum. As a result, the output has changed from:\n```\nroot@bmc:~# busctl get-property xyz.openbmc_project.State.FanCtrl \\\n/xyz/openbmc_project/settings/fanctrl/zone0 \\\nxyz.openbmc_project.Debug.Pid.Zone FailSafeSensors\na{ss} 18 \"SENTINEL_DOME_SLOT_5_DIMM_A0_TEMP_C\" \"Sensor reading bad\" \\\n\"SENTINEL_DOME_SLOT_5_DIMM_A10_TEMP_C\" \"Sensor reading bad\"\n...\n```\nto something like:\n```\nroot@bmc:~# busctl get-property xyz.openbmc_project.State.FanCtrl \\\n/xyz/openbmc_project/settings/fanctrl/zone0 \\\nxyz.openbmc_project.Debug.Pid.Zone FailSafeSensors\na{ss} 95 \"MEDUSA_MB8_HSC_12V_TEMP_C\" \\\n\"xyz.openbmc_project.Debug.Pid.Zone.FailureReason.MissingSensor\" \\\n...\n\"SENTINEL_DOME_SLOT_7_MB_X8_RTM_TEMP_C\" \\\n\"xyz.openbmc_project.Debug.Pid.Zone.FailureReason.BadReading\"\n...\n```",
       "revId": "9fd501a36b8103a00e6697229890aa619bc26338",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "e164c842_16b9e636",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1000520
+      },
+      "writtenOn": "2025-11-03T08:53:33Z",
+      "side": 1,
+      "message": "This seems kind of backwards to me. The failure reasons should be stored and processed internally as enums, not strings. Only when it\u0027s time to render them into human-readable form, such as when the D-Bus properties are queried, should they be converted to strings then.",
+      "revId": "9fd501a36b8103a00e6697229890aa619bc26338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
