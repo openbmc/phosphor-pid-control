@@ -123,6 +123,23 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "934c803c_970e6950",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 4
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2025-11-07T16:49:44Z",
+      "side": 1,
+      "message": "Hello, this is a great idea and will definitely help BMC engineers communicate more effectively with the Thermal team.\n\nBy the way, since we’re discussing this, I’d like to ask something:\nThe documentation for phosphor-pid-control has been growing quite a bit recently—\nwould it make sense to organize the documents, for example by creating a dedicated docs/ directory?\nThanks!",
+      "revId": "7e68a9a9ed82ddcbe53d285e23bcdff0dba10d44",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "3fb56b68_c5410f36",
