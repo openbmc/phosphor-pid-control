@@ -15,7 +15,6 @@ namespace pid_control
 class DbusHelper : public DbusHelperInterface
 {
   public:
-    static constexpr char sensorintf[] = "xyz.openbmc_project.Sensor.Value";
     static constexpr char propertiesintf[] = "org.freedesktop.DBus.Properties";
     static constexpr char criticalThreshInf[] =
         "xyz.openbmc_project.Sensor.Threshold.Critical";

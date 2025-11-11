@@ -28,7 +28,6 @@ struct SensorThresholds
     double upperThreshold = std::numeric_limits<double>::quiet_NaN();
 };
 
-const std::string sensorintf = "xyz.openbmc_project.Sensor.Value";
 const std::string criticalThreshInf =
     "xyz.openbmc_project.Sensor.Threshold.Critical";
 const std::string propertiesintf = "org.freedesktop.DBus.Properties";

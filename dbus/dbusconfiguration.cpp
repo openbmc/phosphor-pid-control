@@ -33,6 +33,7 @@
 #include <sdbusplus/message.hpp>
 #include <sdbusplus/message/native_types.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
+#include <xyz/openbmc_project/Sensor/Value/client.hpp>
 
 #include <algorithm>
 #include <array>
@@ -52,6 +53,7 @@
 #include <vector>
 
 using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
+using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
 
 namespace pid_control
 {
@@ -66,7 +68,6 @@ constexpr const char* stepwiseConfigurationInterface =
     "xyz.openbmc_project.Configuration.Stepwise";
 constexpr const char* thermalControlIface =
     "xyz.openbmc_project.Control.ThermalMode";
-constexpr const char* sensorInterface = "xyz.openbmc_project.Sensor.Value";
 constexpr const char* defaultPwmInterface =
     "xyz.openbmc_project.Control.FanPwm";
 
@@ -458,7 +459,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
         std::array<const char*, 6>{
             objectManagerInterface, pidConfigurationInterface,
             pidZoneConfigurationInterface, stepwiseConfigurationInterface,
-            sensorInterface, defaultPwmInterface});
+            SensorValue::interface, defaultPwmInterface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
         respData;
@@ -499,11 +500,11 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                 {
                     owner.first = true;
                 }
-                if (interface == sensorInterface ||
+                if (interface == SensorValue::interface ||
                     interface == defaultPwmInterface)
                 {
                     // we're not interested in pwm sensors, just pwm control
-                    if (interface == sensorInterface &&
+                    if (interface == SensorValue::interface &&
                         objectPair.first.find("pwm") != std::string::npos)
                     {
                         continue;
@@ -836,14 +837,15 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         config.unavailableAsFailed = unavailableAsFailed;
                     }
 
-                    if (dbusInterface != sensorInterface)
+                    if (dbusInterface != SensorValue::interface)
                     {
                         /* all expected inputs in the configuration are expected
                          * to be sensor interfaces
                          */
                         throw std::runtime_error(std::format(
                             "sensor at dbus path [{}] has an interface [{}] that does not match the expected interface of {}",
-                            inputSensorPath, dbusInterface, sensorInterface));
+                            inputSensorPath, dbusInterface,
+                            SensorValue::interface));
                     }
                 }
 
@@ -863,14 +865,14 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     missingAcceptableSensorNames.push_back(
                         missingAcceptableSensorName);
 
-                    if (dbusInterface != sensorInterface)
+                    if (dbusInterface != SensorValue::interface)
                     {
                         /* MissingIsAcceptable same error checking as Inputs
                          */
                         throw std::runtime_error(std::format(
                             "sensor at dbus path [{}] has an interface [{}] that does not match the expected interface of {}",
                             missingAcceptableSensorPath, dbusInterface,
-                            sensorInterface));
+                            SensorValue::interface));
                     }
                 }
 

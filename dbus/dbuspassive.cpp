@@ -17,6 +17,7 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/Sensor/Value/client.hpp>
 
 #include <chrono>
 #include <cmath>
@@ -32,6 +33,8 @@
 #include <variant>
 
 #include "failsafeloggers/failsafe_logger.cpp"
+
+using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
 
 namespace pid_control
 {
@@ -69,7 +72,7 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
 
     try
     {
-        service = helper->getService(sensorintf, path);
+        service = helper->getService(SensorValue::interface, path);
     }
     catch (const std::exception& e)
     {
@@ -389,9 +392,9 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
 
     msg.read(msgSensor, msgData);
 
-    if (msgSensor == "xyz.openbmc_project.Sensor.Value")
+    if (msgSensor == SensorValue::interface)
     {
-        auto valPropMap = msgData.find("Value");
+        auto valPropMap = msgData.find(SensorValue::property_names::value);
         if (valPropMap != msgData.end())
         {
             double value =

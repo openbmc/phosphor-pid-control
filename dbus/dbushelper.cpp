@@ -12,6 +12,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
+#include <xyz/openbmc_project/Sensor/Value/client.hpp>
 
 #include <cstdint>
 #include <map>
@@ -21,6 +22,7 @@
 #include <vector>
 
 using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
+using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
 
 namespace pid_control
 {
@@ -73,7 +75,7 @@ void DbusHelper::getProperties(const std::string& service,
     auto pimMsg = _bus.new_method_call(service.c_str(), path.c_str(),
                                        propertiesintf, "GetAll");
 
-    pimMsg.append(sensorintf);
+    pimMsg.append(SensorValue::interface);
 
     PropertyMap propMap;
 
@@ -97,14 +99,16 @@ void DbusHelper::getProperties(const std::string& service,
     // "Scale" x -3
 
     // If no error was set, the values should all be there.
-    auto findUnit = propMap.find("Unit");
+    auto findUnit = propMap.find(SensorValue::property_names::unit);
     if (findUnit != propMap.end())
     {
         prop->unit = std::get<std::string>(findUnit->second);
     }
+    // TODO: in PDI there is no such 'Scale' property on the Sensor.Value
+    // interface
     auto findScale = propMap.find("Scale");
-    auto findMax = propMap.find("MaxValue");
-    auto findMin = propMap.find("MinValue");
+    auto findMax = propMap.find(SensorValue::property_names::max_value);
+    auto findMin = propMap.find(SensorValue::property_names::min_value);
 
     prop->min = 0;
     prop->max = 0;
@@ -122,7 +126,8 @@ void DbusHelper::getProperties(const std::string& service,
         prop->min = std::visit(VariantToDoubleVisitor(), findMin->second);
     }
 
-    prop->value = std::visit(VariantToDoubleVisitor(), propMap["Value"]);
+    prop->value = std::visit(VariantToDoubleVisitor(),
+                             propMap[SensorValue::property_names::value]);
 
     bool available = true;
     try
