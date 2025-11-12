@@ -33,6 +33,7 @@
 #include <sdbusplus/message.hpp>
 #include <sdbusplus/message/native_types.hpp>
 #include <xyz/openbmc_project/Control/FanPwm/client.hpp>
+#include <xyz/openbmc_project/Control/ThermalMode/common.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
 #include <xyz/openbmc_project/Sensor/Value/client.hpp>
 
@@ -56,6 +57,8 @@
 using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
 using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
 using ControlFanPwm = sdbusplus::common::xyz::openbmc_project::control::FanPwm;
+using ControlThermalMode =
+    sdbusplus::common::xyz::openbmc_project::control::ThermalMode;
 
 namespace pid_control
 {
@@ -68,8 +71,6 @@ constexpr const char* pidZoneConfigurationInterface =
     "xyz.openbmc_project.Configuration.Pid.Zone";
 constexpr const char* stepwiseConfigurationInterface =
     "xyz.openbmc_project.Configuration.Stepwise";
-constexpr const char* thermalControlIface =
-    "xyz.openbmc_project.Control.ThermalMode";
 
 using Association = std::tuple<std::string, std::string, std::string>;
 using Associations = std::vector<Association>;
@@ -107,7 +108,8 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
     auto mapper = bus.new_method_call(
         ObjectMapper::default_service, ObjectMapper::instance_path,
         ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
-    mapper.append("/", 0, std::array<const char*, 1>{thermalControlIface});
+    mapper.append("/", 0,
+                  std::array<const char*, 1>{ControlThermalMode::interface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
         respData;
@@ -141,7 +143,8 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
             auto getProfile =
                 bus.new_method_call(busName.c_str(), path.c_str(),
                                     "org.freedesktop.DBus.Properties", "Get");
-            getProfile.append(thermalControlIface, "Current");
+            getProfile.append(ControlThermalMode::interface,
+                              ControlThermalMode::property_names::current);
             std::variant<std::string> variantResp;
             try
             {
@@ -244,7 +247,7 @@ void createMatches(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer)
     static std::list<sdbusplus::bus::match_t> matches;
 
     const std::array<std::string, 4> interfaces = {
-        thermalControlIface, pidConfigurationInterface,
+        ControlThermalMode::interface, pidConfigurationInterface,
         pidZoneConfigurationInterface, stepwiseConfigurationInterface};
 
     // this list only needs to be created once
