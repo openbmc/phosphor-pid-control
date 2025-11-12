@@ -17,6 +17,8 @@
 
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/Critical/common.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/Warning/common.hpp>
 #include <xyz/openbmc_project/Sensor/Value/client.hpp>
 
 #include <chrono>
@@ -35,6 +37,10 @@
 #include "failsafeloggers/failsafe_logger.cpp"
 
 using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
+using SensorThresholdWarning =
+    sdbusplus::common::xyz::openbmc_project::sensor::threshold::Warning;
+using SensorThresholdCritical =
+    sdbusplus::common::xyz::openbmc_project::sensor::threshold::Critical;
 
 namespace pid_control
 {
@@ -403,10 +409,12 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
             owner->updateValue(value, false);
         }
     }
-    else if (msgSensor == "xyz.openbmc_project.Sensor.Threshold.Critical")
+    else if (msgSensor == SensorThresholdCritical::interface)
     {
-        auto criticalAlarmLow = msgData.find("CriticalAlarmLow");
-        auto criticalAlarmHigh = msgData.find("CriticalAlarmHigh");
+        auto criticalAlarmLow = msgData.find(
+            SensorThresholdCritical::property_names::critical_alarm_low);
+        auto criticalAlarmHigh = msgData.find(
+            SensorThresholdCritical::property_names::critical_alarm_high);
         if (criticalAlarmHigh == msgData.end() &&
             criticalAlarmLow == msgData.end())
         {
@@ -428,9 +436,10 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
         owner->setFailed(asserted);
     }
 #ifdef UNC_FAILSAFE
-    else if (msgSensor == "xyz.openbmc_project.Sensor.Threshold.Warning")
+    else if (msgSensor == SensorThresholdWarning::interface)
     {
-        auto warningAlarmHigh = msgData.find("WarningAlarmHigh");
+        auto warningAlarmHigh = msgData.find(
+            SensorThresholdWarning::property_names::warning_alarm_high);
         if (warningAlarmHigh == msgData.end())
         {
             return 0;

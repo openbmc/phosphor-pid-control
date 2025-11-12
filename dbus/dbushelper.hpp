@@ -5,9 +5,16 @@
 #include <phosphor-logging/log.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/Critical/common.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/Warning/common.hpp>
 
 #include <string>
 #include <variant>
+
+using SensorThresholdWarning =
+    sdbusplus::common::xyz::openbmc_project::sensor::threshold::Warning;
+using SensorThresholdCritical =
+    sdbusplus::common::xyz::openbmc_project::sensor::threshold::Critical;
 
 namespace pid_control
 {
@@ -16,10 +23,6 @@ class DbusHelper : public DbusHelperInterface
 {
   public:
     static constexpr char propertiesintf[] = "org.freedesktop.DBus.Properties";
-    static constexpr char criticalThreshInf[] =
-        "xyz.openbmc_project.Sensor.Threshold.Critical";
-    static constexpr char warningThreshInf[] =
-        "xyz.openbmc_project.Sensor.Threshold.Warning";
     static constexpr char availabilityIntf[] =
         "xyz.openbmc_project.State.Decorator.Availability";
 

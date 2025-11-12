@@ -28,10 +28,6 @@ struct SensorThresholds
     double upperThreshold = std::numeric_limits<double>::quiet_NaN();
 };
 
-const std::string criticalThreshInf =
-    "xyz.openbmc_project.Sensor.Threshold.Critical";
-const std::string propertiesintf = "org.freedesktop.DBus.Properties";
-
 /*
  * Given a path that optionally has a glob portion, fill it out.
  */

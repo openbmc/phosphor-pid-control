@@ -148,7 +148,7 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
 {
     auto critical = _bus.new_method_call(service.c_str(), path.c_str(),
                                          propertiesintf, "GetAll");
-    critical.append(criticalThreshInf);
+    critical.append(SensorThresholdCritical::interface);
     PropertyMap criticalMap;
 
     try
@@ -164,8 +164,10 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
 #endif
     }
 
-    auto findCriticalLow = criticalMap.find("CriticalAlarmLow");
-    auto findCriticalHigh = criticalMap.find("CriticalAlarmHigh");
+    auto findCriticalLow = criticalMap.find(
+        SensorThresholdCritical::property_names::critical_alarm_low);
+    auto findCriticalHigh = criticalMap.find(
+        SensorThresholdCritical::property_names::critical_alarm_high);
 
     bool asserted = false;
     if (findCriticalLow != criticalMap.end())
@@ -197,7 +199,8 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
             // sensors don't have to expose non-critical thresholds
             return false;
         }
-        auto findWarningHigh = warningMap.find("WarningAlarmHigh");
+        auto findWarningHigh = warningMap.find(
+            SensorThresholdWarning::property_names::warning_alarm_high);
 
         if (findWarningHigh != warningMap.end())
         {

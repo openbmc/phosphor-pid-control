@@ -35,6 +35,8 @@
 #include <xyz/openbmc_project/Control/FanPwm/client.hpp>
 #include <xyz/openbmc_project/Control/ThermalMode/common.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/Critical/common.hpp>
+#include <xyz/openbmc_project/Sensor/Threshold/Warning/common.hpp>
 #include <xyz/openbmc_project/Sensor/Value/client.hpp>
 
 #include <algorithm>
@@ -59,6 +61,10 @@ using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
 using ControlFanPwm = sdbusplus::common::xyz::openbmc_project::control::FanPwm;
 using ControlThermalMode =
     sdbusplus::common::xyz::openbmc_project::control::ThermalMode;
+using SensorThresholdWarning =
+    sdbusplus::common::xyz::openbmc_project::sensor::threshold::Warning;
+using SensorThresholdCritical =
+    sdbusplus::common::xyz::openbmc_project::sensor::threshold::Critical;
 
 namespace pid_control
 {
@@ -77,10 +83,6 @@ using Associations = std::vector<Association>;
 
 namespace thresholds
 {
-constexpr const char* warningInterface =
-    "xyz.openbmc_project.Sensor.Threshold.Warning";
-constexpr const char* criticalInterface =
-    "xyz.openbmc_project.Sensor.Threshold.Critical";
 const std::array<const char*, 4> types = {"CriticalLow", "CriticalHigh",
                                           "WarningLow", "WarningHigh"};
 
@@ -351,14 +353,16 @@ void populatePidInfo(
     if (thresholdProperty != nullptr)
     {
         std::string interface;
-        if (*thresholdProperty == "WarningHigh" ||
-            *thresholdProperty == "WarningLow")
+        if (*thresholdProperty ==
+                SensorThresholdWarning::property_names::warning_high ||
+            *thresholdProperty ==
+                SensorThresholdWarning::property_names::warning_low)
         {
-            interface = thresholds::warningInterface;
+            interface = SensorThresholdWarning::interface;
         }
         else
         {
-            interface = thresholds::criticalInterface;
+            interface = SensorThresholdCritical::interface;
         }
 
         // Although this checks only the first vector element for the
