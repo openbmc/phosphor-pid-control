@@ -20,6 +20,7 @@
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/Control/FanRedundancy/common.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
 
 #include <array>
@@ -31,6 +32,8 @@
 #include <vector>
 
 using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
+using ControlFanRedundancy =
+    sdbusplus::common::xyz::openbmc_project::control::FanRedundancy;
 
 namespace pid_control
 {
@@ -44,19 +47,10 @@ constexpr const char* getAll = "GetAll";
 
 } // namespace properties
 
-namespace redundancy
-{
-
-constexpr const char* collection = "Collection";
-constexpr const char* status = "Status";
-constexpr const char* interface = "xyz.openbmc_project.Control.FanRedundancy";
-
-} // namespace redundancy
-
 DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
     match(bus,
           "type='signal',member='PropertiesChanged',arg0namespace='" +
-              std::string(redundancy::interface) + "'",
+              std::string(ControlFanRedundancy::interface) + "'",
 
           [this](sdbusplus::message_t& message) {
               std::string objectName;
@@ -73,7 +67,8 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
                   std::cerr << "Error reading match data";
                   return;
               }
-              auto findStatus = result.find("Status");
+              auto findStatus =
+                  result.find(ControlFanRedundancy::property_names::status);
               if (findStatus == result.end())
               {
                   return;
@@ -83,7 +78,9 @@ DbusPassiveRedundancy::DbusPassiveRedundancy(sdbusplus::bus_t& bus) :
               auto methodCall = passiveBus.new_method_call(
                   message.get_sender(), message.get_path(),
                   properties::interface, properties::get);
-              methodCall.append(redundancy::interface, redundancy::collection);
+              methodCall.append(
+                  ControlFanRedundancy::interface,
+                  ControlFanRedundancy::property_names::collection);
               std::variant<std::vector<std::string>> collection;
 
               try
@@ -120,7 +117,8 @@ void DbusPassiveRedundancy::populateFailures(void)
     auto mapper = passiveBus.new_method_call(
         ObjectMapper::default_service, ObjectMapper::instance_path,
         ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
-    mapper.append("/", 0, std::array<const char*, 1>{redundancy::interface});
+    mapper.append("/", 0,
+                  std::array<const char*, 1>{ControlFanRedundancy::interface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
         respData;
@@ -154,7 +152,7 @@ void DbusPassiveRedundancy::populateFailures(void)
             auto call = passiveBus.new_method_call(
                 owner.c_str(), path.c_str(), properties::interface,
                 properties::getAll);
-            call.append(redundancy::interface);
+            call.append(ControlFanRedundancy::interface);
 
             std::unordered_map<
                 std::string,
@@ -170,15 +168,15 @@ void DbusPassiveRedundancy::populateFailures(void)
                 std::cerr << "Populate Failures Mapper Error\n";
                 return;
             }
-            std::string status =
-                std::get<std::string>(getAll[redundancy::status]);
+            std::string status = std::get<std::string>(
+                getAll[ControlFanRedundancy::property_names::status]);
             if (status.rfind("Failed") == std::string::npos)
             {
                 continue;
             }
             std::vector<std::string> collection =
                 std::get<std::vector<std::string>>(
-                    getAll[redundancy::collection]);
+                    getAll[ControlFanRedundancy::property_names::collection]);
             failed.insert(collection.begin(), collection.end());
         }
     }
