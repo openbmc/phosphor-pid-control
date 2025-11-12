@@ -4,6 +4,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/State/Host/common.hpp>
 
 #include <functional>
 #include <iostream>
@@ -11,11 +12,10 @@
 #include <string>
 #include <variant>
 
+using HostState = sdbusplus::common::xyz::openbmc_project::state::Host;
+
 constexpr const char* PROPERTIES_INTERFACE = "org.freedesktop.DBus.Properties";
-constexpr const char* HOST_STATE_BUSNAME = "xyz.openbmc_project.State.Host0";
-constexpr const char* HOST_STATE_INTERFACE = "xyz.openbmc_project.State.Host";
 constexpr const char* HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
-constexpr const char* CURRENT_HOST_STATE_PROPERTY = "CurrentHostState";
 
 class HostStateMonitor
 {
@@ -78,7 +78,7 @@ inline void HostStateMonitor::startMonitoring()
 
         hostStateMatch = std::make_unique<sdbusplus::bus::match_t>(
             bus,
-            propertiesChangedNamespace(HOST_STATE_PATH, HOST_STATE_INTERFACE),
+            propertiesChangedNamespace(HOST_STATE_PATH, HostState::interface),
             [this](sdbusplus::message_t& message) {
                 handleStateChange(message);
             });
@@ -99,7 +99,8 @@ inline void HostStateMonitor::handleStateChange(sdbusplus::message_t& message)
     {
         message.read(objectName, values);
 
-        auto findState = values.find(CURRENT_HOST_STATE_PROPERTY);
+        auto findState =
+            values.find(HostState::property_names::current_host_state);
         if (findState != values.end())
         {
             const std::string& stateValue =
@@ -123,9 +124,11 @@ inline void HostStateMonitor::getInitialState()
 {
     try
     {
-        auto method = bus.new_method_call(HOST_STATE_BUSNAME, HOST_STATE_PATH,
-                                          PROPERTIES_INTERFACE, "Get");
-        method.append(HOST_STATE_INTERFACE, CURRENT_HOST_STATE_PROPERTY);
+        auto method =
+            bus.new_method_call("xyz.openbmc_project.State.Host0",
+                                HOST_STATE_PATH, PROPERTIES_INTERFACE, "Get");
+        method.append(HostState::interface,
+                      HostState::property_names::current_host_state);
 
         auto reply = bus.call(method);
         std::variant<std::string> currentState;
