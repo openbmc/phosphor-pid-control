@@ -132,7 +132,9 @@ void DbusHelper::getProperties(const std::string& service,
     bool available = true;
     try
     {
-        getProperty(service, path, availabilityIntf, "Available", available);
+        getProperty(service, path, StateDecoratorAvailability::interface,
+                    StateDecoratorAvailability::property_names::available,
+                    available);
     }
     catch (const sdbusplus::exception_t& ex)
     {

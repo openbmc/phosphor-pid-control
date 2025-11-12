@@ -7,6 +7,7 @@
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Critical/common.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Warning/common.hpp>
+#include <xyz/openbmc_project/State/Decorator/Availability/common.hpp>
 
 #include <string>
 #include <variant>
@@ -15,6 +16,8 @@ using SensorThresholdWarning =
     sdbusplus::common::xyz::openbmc_project::sensor::threshold::Warning;
 using SensorThresholdCritical =
     sdbusplus::common::xyz::openbmc_project::sensor::threshold::Critical;
+using StateDecoratorAvailability =
+    sdbusplus::common::xyz::openbmc_project::state::decorator::Availability;
 
 namespace pid_control
 {
@@ -23,8 +26,6 @@ class DbusHelper : public DbusHelperInterface
 {
   public:
     static constexpr char propertiesintf[] = "org.freedesktop.DBus.Properties";
-    static constexpr char availabilityIntf[] =
-        "xyz.openbmc_project.State.Decorator.Availability";
 
     explicit DbusHelper(sdbusplus::bus_t& bus) : _bus(bus) {}
     DbusHelper() = delete;

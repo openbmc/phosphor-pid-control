@@ -20,6 +20,8 @@
 #include <xyz/openbmc_project/Sensor/Threshold/Critical/common.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Warning/common.hpp>
 #include <xyz/openbmc_project/Sensor/Value/client.hpp>
+#include <xyz/openbmc_project/State/Decorator/Availability/common.hpp>
+#include <xyz/openbmc_project/State/Decorator/OperationalStatus/common.hpp>
 
 #include <chrono>
 #include <cmath>
@@ -41,6 +43,10 @@ using SensorThresholdWarning =
     sdbusplus::common::xyz::openbmc_project::sensor::threshold::Warning;
 using SensorThresholdCritical =
     sdbusplus::common::xyz::openbmc_project::sensor::threshold::Critical;
+using StateDecoratorAvailability =
+    sdbusplus::common::xyz::openbmc_project::state::decorator::Availability;
+using StateDecoratorOperationalStatus = sdbusplus::common::xyz::
+    openbmc_project::state::decorator::OperationalStatus;
 
 namespace pid_control
 {
@@ -453,9 +459,10 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
         owner->setFailed(asserted);
     }
 #endif
-    else if (msgSensor == "xyz.openbmc_project.State.Decorator.Availability")
+    else if (msgSensor == StateDecoratorAvailability::interface)
     {
-        auto available = msgData.find("Available");
+        auto available =
+            msgData.find(StateDecoratorAvailability::property_names::available);
         if (available == msgData.end())
         {
             return 0;
@@ -471,10 +478,10 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
             owner->updateValue(std::numeric_limits<double>::quiet_NaN(), true);
         }
     }
-    else if (msgSensor ==
-             "xyz.openbmc_project.State.Decorator.OperationalStatus")
+    else if (msgSensor == StateDecoratorOperationalStatus::interface)
     {
-        auto functional = msgData.find("Functional");
+        auto functional = msgData.find(
+            StateDecoratorOperationalStatus::property_names::functional);
         if (functional == msgData.end())
         {
             return 0;
