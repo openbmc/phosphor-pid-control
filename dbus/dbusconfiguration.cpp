@@ -32,6 +32,7 @@
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/message.hpp>
 #include <sdbusplus/message/native_types.hpp>
+#include <xyz/openbmc_project/Control/FanPwm/client.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
 #include <xyz/openbmc_project/Sensor/Value/client.hpp>
 
@@ -54,6 +55,7 @@
 
 using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
 using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
+using ControlFanPwm = sdbusplus::common::xyz::openbmc_project::control::FanPwm;
 
 namespace pid_control
 {
@@ -68,8 +70,6 @@ constexpr const char* stepwiseConfigurationInterface =
     "xyz.openbmc_project.Configuration.Stepwise";
 constexpr const char* thermalControlIface =
     "xyz.openbmc_project.Control.ThermalMode";
-constexpr const char* defaultPwmInterface =
-    "xyz.openbmc_project.Control.FanPwm";
 
 using Association = std::tuple<std::string, std::string, std::string>;
 using Associations = std::vector<Association>;
@@ -459,7 +459,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
         std::array<const char*, 6>{
             objectManagerInterface, pidConfigurationInterface,
             pidZoneConfigurationInterface, stepwiseConfigurationInterface,
-            SensorValue::interface, defaultPwmInterface});
+            SensorValue::interface, ControlFanPwm::interface});
     std::unordered_map<
         std::string, std::unordered_map<std::string, std::vector<std::string>>>
         respData;
@@ -501,7 +501,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     owner.first = true;
                 }
                 if (interface == SensorValue::interface ||
-                    interface == defaultPwmInterface)
+                    interface == ControlFanPwm::interface)
                 {
                     // we're not interested in pwm sensors, just pwm control
                     if (interface == SensorValue::interface &&
@@ -927,11 +927,12 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                             pwmInterface =
                                 outputSensorInterfaces.at(idx).second;
                         }
-                        if (defaultPwmInterface != pwmInterface)
+                        if (ControlFanPwm::interface != pwmInterface)
                         {
                             throw std::runtime_error(std::format(
                                 "fan pwm control at dbus path [{}] has an interface [{}] that does not match the expected interface of {}",
-                                pwmPath, pwmInterface, defaultPwmInterface));
+                                pwmPath, pwmInterface,
+                                ControlFanPwm::interface));
                         }
                         const std::string& fanPath =
                             inputSensorInterfaces.at(idx).first;
