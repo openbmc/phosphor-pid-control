@@ -32,6 +32,8 @@
 #include <sdbusplus/exception.hpp>
 #include <sdbusplus/message.hpp>
 #include <sdbusplus/message/native_types.hpp>
+#include <xyz/openbmc_project/Association/Definitions/common.hpp>
+#include <xyz/openbmc_project/Association/common.hpp>
 #include <xyz/openbmc_project/Control/FanPwm/client.hpp>
 #include <xyz/openbmc_project/Control/ThermalMode/common.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
@@ -182,8 +184,9 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
 
     // we skip associations because the mapper populates these, not the sensors
     const std::array<const char*, 2> skipList = {
-        "xyz.openbmc_project.Association",
-        "xyz.openbmc_project.Association.Definitions"};
+        sdbusplus::common::xyz::openbmc_project::Association::interface,
+        sdbusplus::common::xyz::openbmc_project::association::Definitions::
+            interface};
 
     sdbusplus::message_t message(m);
     if (std::string(message.get_member()) == "InterfacesAdded")
