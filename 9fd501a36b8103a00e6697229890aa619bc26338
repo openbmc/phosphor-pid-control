@@ -33,6 +33,24 @@
       "message": "This seems kind of backwards to me. The failure reasons should be stored and processed internally as enums, not strings. Only when it\u0027s time to render them into human-readable form, such as when the D-Bus properties are queried, should they be converted to strings then.",
       "revId": "9fd501a36b8103a00e6697229890aa619bc26338",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "2f0429f0_7827d91a",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-12-10T10:03:03Z",
+      "side": 1,
+      "message": "So, my understanding is that the next step should be to keep the current changes in [82445], and then add a commit in `phosphor-pid-control` to update all fail sensor reasons to use the defined `FailureReason` enum instead of strings. After that, I would adjust this patch accordingly to align with the new approach.\n\nIf I’ve misunderstood, please let me know. Thank you!\n\n\n[82445]: https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/82445",
+      "parentUuid": "e164c842_16b9e636",
+      "revId": "9fd501a36b8103a00e6697229890aa619bc26338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
