@@ -329,14 +329,14 @@ TEST_F(PidZoneTest, GetFailSafePercent_SingleFailedReturnsExpected)
     zone->addPidFailSafePercent(input2, values[1]);
     zone->addPidFailSafePercent(input3, values[2]);
 
-    zone->markSensorMissing("temp1", "Sensor threshold asserted");
+    zone->markSensorMissing("temp1", FailureReason::ThresholdAsserted);
 
     EXPECT_EQ(failSafePercent, zone->getFailSafePercent());
 
-    std::map<std::string, std::pair<std::string, double>> failSensorList =
+    std::map<std::string, std::pair<FailureReason, double>> failSensorList =
         zone->getFailSafeSensors();
     EXPECT_EQ(1U, failSensorList.size());
-    EXPECT_EQ("Sensor threshold asserted", failSensorList["temp1"].first);
+    EXPECT_EQ(FailureReason::ThresholdAsserted, failSensorList["temp1"].first);
     EXPECT_EQ(failSafePercent, failSensorList["temp1"].second);
 }
 
@@ -354,20 +354,20 @@ TEST_F(PidZoneTest, GetFailSafePercent_MultiFailedReturnsExpected)
     zone->addPidFailSafePercent(input2, values[1]);
     zone->addPidFailSafePercent(input3, values[2]);
 
-    zone->markSensorMissing("temp1", "Sensor threshold asserted");
-    zone->markSensorMissing("temp2", "Sensor reading bad");
-    zone->markSensorMissing("temp3", "Sensor unavailable");
+    zone->markSensorMissing("temp1", FailureReason::ThresholdAsserted);
+    zone->markSensorMissing("temp2", FailureReason::BadReading);
+    zone->markSensorMissing("temp3", FailureReason::Unavailable);
 
     EXPECT_EQ(80, zone->getFailSafePercent());
 
-    std::map<std::string, std::pair<std::string, double>> failSensorList =
+    std::map<std::string, std::pair<FailureReason, double>> failSensorList =
         zone->getFailSafeSensors();
     EXPECT_EQ(3U, failSensorList.size());
-    EXPECT_EQ("Sensor threshold asserted", failSensorList["temp1"].first);
+    EXPECT_EQ(FailureReason::ThresholdAsserted, failSensorList["temp1"].first);
     EXPECT_EQ(60, failSensorList["temp1"].second);
-    EXPECT_EQ("Sensor reading bad", failSensorList["temp2"].first);
+    EXPECT_EQ(FailureReason::BadReading, failSensorList["temp2"].first);
     EXPECT_EQ(80, failSensorList["temp2"].second);
-    EXPECT_EQ("Sensor unavailable", failSensorList["temp3"].first);
+    EXPECT_EQ(FailureReason::Unavailable, failSensorList["temp3"].first);
     EXPECT_EQ(70, failSensorList["temp3"].second);
 }
 

@@ -175,12 +175,15 @@ void FanController::outputProc(double value)
                                                 : "returning to normal")
                           << " mode, output pwm: " << percent << "\n";
 
-                std::map<std::string, std::pair<std::string, double>>
-                    failSensorList = _owner->getFailSafeSensors();
+                auto failSensorList = _owner->getFailSafeSensors();
                 for (const auto& it : failSensorList)
                 {
-                    std::cerr << "Fail sensor: " << it.first
-                              << ", reason: " << it.second.first << "\n";
+                    std::cerr
+                        << "Fail sensor: " << it.first << ", reason: "
+                        << sdbusplus::common::xyz::openbmc_project::debug::pid::
+                               Zone::convertFailureReasonToString(
+                                   it.second.first)
+                        << "\n";
                 }
             }
         }

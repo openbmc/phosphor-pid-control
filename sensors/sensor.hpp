@@ -51,9 +51,9 @@ class Sensor
         return false;
     };
 
-    virtual std::string getFailReason(void)
+    virtual FailureReason getFailReason(void)
     {
-        return "Unimplemented";
+        return FailureReason::Unknown;
     }
 
     std::string getName(void) const

@@ -43,7 +43,7 @@ bool PluggableSensor::getFailed(void)
     return isFailed;
 }
 
-std::string PluggableSensor::getFailReason(void)
+FailureReason PluggableSensor::getFailReason(void)
 {
     return _reader->getFailReason();
 }

@@ -100,7 +100,7 @@ class ZoneInterface
     virtual double getFailSafePercent() = 0;
 
     /** Return failsafe sensor list */
-    virtual std::map<std::string, std::pair<std::string, double>>
+    virtual std::map<std::string, std::pair<FailureReason, double>>
         getFailSafeSensors() const = 0;
 
     /** Return the zone's cycle time settings */

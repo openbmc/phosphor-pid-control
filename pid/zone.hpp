@@ -42,10 +42,9 @@ using DebugThermalPowerInterface =
 using ProcessObject =
     ServerObject<ProcessInterface, DebugThermalPowerInterface>;
 using FailSafeSensorsMap =
-    std::map<std::string, std::pair<std::string, double>>;
+    std::map<std::string, std::pair<pid_control::FailureReason, double>>;
 using FailSafeSensorPair =
-    std::pair<std::string, std::pair<std::string, double>>;
-
+    std::pair<std::string, std::pair<pid_control::FailureReason, double>>;
 namespace pid_control
 {
 
@@ -82,8 +81,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     bool getRedundantWrite(void) const override;
     void setManualMode(bool mode);
     bool getFailSafeMode(void) const override;
-    void markSensorMissing(const std::string& name,
-                           const std::string& failReason);
+    void markSensorMissing(const std::string& name, FailureReason failReason);
     bool getAccSetPoint(void) const override;
 
     int64_t getZoneID(void) const override;
@@ -191,7 +189,7 @@ class DbusPidZone : public ZoneInterface, public ModeObject
             }
             else if (timeout != 0 && duration >= period)
             {
-                markSensorMissing(sensorInput, "Sensor timeout");
+                markSensorMissing(sensorInput, FailureReason::Timeout);
 
                 if (debugEnabled)
                 {
