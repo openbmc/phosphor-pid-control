@@ -1,5 +1,7 @@
 #pragma once
 
+#include <xyz/openbmc_project/Debug/Pid/Zone/common.hpp>
+
 #include <chrono>
 #include <cstdint>
 #include <limits>
@@ -7,6 +9,9 @@
 
 namespace pid_control
 {
+
+using FailureReason =
+    sdbusplus::common::xyz::openbmc_project::debug::pid::Zone::FailureReason;
 
 struct ReadReturn
 {
@@ -48,9 +53,9 @@ class ReadInterface
         return false;
     }
 
-    virtual std::string getFailReason(void) const
+    virtual FailureReason getFailReason(void) const
     {
-        return "Unimplemented";
+        return FailureReason::Unknown;
     }
 };
 
