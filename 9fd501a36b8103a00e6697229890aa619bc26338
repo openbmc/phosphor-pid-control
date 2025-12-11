@@ -51,6 +51,24 @@
       "parentUuid": "e164c842_16b9e636",
       "revId": "9fd501a36b8103a00e6697229890aa619bc26338",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "615a1d14_e836b152",
+        "filename": "pid/zone.hpp",
+        "patchSetId": 7
+      },
+      "lineNbr": 139,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-12-11T11:45:38Z",
+      "side": 1,
+      "message": "In [85920], I first switched the internal fail reason handling to rely on the `FailureReason` enum defined in `phosphor-dbus-interfaces` in [82455], and in this patch I removed `toEnumReason`.\nIf there’s anything else that needs to be corrected, please let me know.\n\n[85920]: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/85920\n[82455]: https://gerrit.openbmc.org/c/openbmc/phosphor-dbus-interfaces/+/82445",
+      "parentUuid": "2f0429f0_7827d91a",
+      "revId": "9fd501a36b8103a00e6697229890aa619bc26338",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
