@@ -287,33 +287,33 @@ bool DbusPassive::getFailed(void) const
     return false;
 }
 
-std::string DbusPassive::getFailReason(void) const
+FailureReason DbusPassive::getFailReason(void) const
 {
     if (_objectMissing)
     {
-        return "Sensor D-Bus object missing";
+        return FailureReason::MissingSensor;
     }
     if (_badReading)
     {
-        return "Sensor reading bad";
+        return FailureReason::BadReading;
     }
     if (_marginHot)
     {
-        return "Margin hot";
+        return FailureReason::MarginHot;
     }
     if (_failed)
     {
-        return "Sensor threshold asserted";
+        return FailureReason::ThresholdAsserted;
     }
     if (!_available)
     {
-        return "Sensor unavailable";
+        return FailureReason::Unavailable;
     }
     if (!_functional)
     {
-        return "Sensor not functional";
+        return FailureReason::NotFunctional;
     }
-    return "Unknown";
+    return FailureReason::Unknown;
 }
 
 void DbusPassive::setFailed(bool value)
