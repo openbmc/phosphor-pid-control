@@ -33,6 +33,23 @@
       "message": "Nice, good catch of this race condition!",
       "revId": "5d9304581f3e6a3631a4167b0cad6d884d4479ff",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "989abc84_a4b54f8a",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-12-12T09:58:11Z",
+      "side": 1,
+      "message": "Just a friendly ping for review — this commit helps prevent the system from incorrectly marking sensors as unavailable, which would otherwise cause the system to remain stuck in fail‑safe mode indefinitely.",
+      "revId": "5d9304581f3e6a3631a4167b0cad6d884d4479ff",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
