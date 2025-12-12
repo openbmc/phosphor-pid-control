@@ -26,6 +26,30 @@
     {
       "unresolved": false,
       "key": {
+        "uuid": "405141ae_7b6903e1",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 17
+      },
+      "lineNbr": 11,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-12-12T09:51:55Z",
+      "side": 1,
+      "message": "Sorry for the late reply—thanks for the feedback.\n\nIn a multi‑host system where a shared zone is composed from multiple EM configuration fragments, and some fragments correspond to hot‑pluggable boards, a brief board removal can trigger a rebuild of the shared zone.\nFrom my perspective, `Manual` should remain in effect until the operator explicitly switches back to `Auto`; otherwise a short‑lived hot‑plug event unexpectedly drops the zone back to `Auto`.\n\nDo you think preserving `Manual` in this hot‑plug case is reasonable? If the preferred behavior is to return to `Auto` in this scenario, I can abandon this commit.\nAlternatively, if you have suggestions for handling transient rebuilds without breaking Redfish semantics, I’d appreciate your input.",
+      "parentUuid": "1da65472_a6338622",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 11,
+        "endChar": 52
+      },
+      "revId": "b16197f4b83d741cc20153d71159c0baae378b99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
         "uuid": "0b1a33bf_f04ee733",
         "filename": "/PATCHSET_LEVEL",
         "patchSetId": 17
@@ -66,6 +90,30 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "f3361c80_e8864ba8",
+        "filename": "main.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-12-12T09:51:55Z",
+      "side": 1,
+      "message": "Sorry about the confusion. Which do you prefer for `ManualModeManager` in this patch:\nkeep it dependency‑injected into buildZones/DbusPidZone, or make it a process‑global singleton and stop passing it around?",
+      "parentUuid": "afdc07ac_381a468b",
+      "range": {
+        "startLine": 178,
+        "startChar": 46,
+        "endLine": 178,
+        "endChar": 62
+      },
+      "revId": "b16197f4b83d741cc20153d71159c0baae378b99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "e771d27a_b41e6da0",
         "filename": "pid/manual_mode_manager.hpp",
         "patchSetId": 17
@@ -77,6 +125,24 @@
       "writtenOn": "2025-10-27T20:47:18Z",
       "side": 1,
       "message": "This type isn\u0027t terribly descriptive.  A comment here about what this represents would be helpful.",
+      "revId": "b16197f4b83d741cc20153d71159c0baae378b99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d6fde824_90720169",
+        "filename": "pid/manual_mode_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2025-12-12T09:51:55Z",
+      "side": 1,
+      "message": "Acknowledged",
+      "parentUuid": "e771d27a_b41e6da0",
       "revId": "b16197f4b83d741cc20153d71159c0baae378b99",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
