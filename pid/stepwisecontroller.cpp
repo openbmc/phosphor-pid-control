@@ -86,9 +86,21 @@ std::unique_ptr<Controller> StepwiseController::createStepwiseController(
 double StepwiseController::inputProc(void)
 {
     double value = std::numeric_limits<double>::lowest();
+    std::string leaderName = _inputs.empty() ? "" : _inputs.front();
     for (const auto& in : _inputs)
     {
-        value = std::max(value, _owner->getCachedValue(in));
+        double cachedValue = _owner->getCachedValue(in);
+        if (cachedValue > value)
+        {
+            value = cachedValue;
+            leaderName = in;
+        }
+    }
+
+    // Update D-Bus debug interface with input value and leader
+    if (!_inputs.empty())
+    {
+        _owner->updateThermalPowerDebugInterface(_id, leaderName, value, 0);
     }
 
     if (debugEnabled)
@@ -114,6 +126,8 @@ void StepwiseController::outputProc(double value)
             std::cerr << getID() << " stepwise output pwm: " << value << "\n";
         }
     }
+    // Update D-Bus debug interface with output value
+    _owner->updateThermalPowerDebugInterface(_id, "", 0, value);
     return;
 }
 
