@@ -44,9 +44,9 @@ using ::testing::Return;
 using ::testing::StrEq;
 
 using ControlMode = sdbusplus::common::xyz::openbmc_project::control::Mode;
-using DebugPidZone = sdbusplus::common::xyz::openbmc_project::debug::pid::Zone;
+using DebugPidZone = sdbusplus::common::xyz::openbmc_project::Debug::Pid::Zone;
 using DebugThermalPower =
-    sdbusplus::common::xyz::openbmc_project::debug::pid::ThermalPower;
+    sdbusplus::common::xyz::openbmc_project::Debug::Pid::ThermalPower;
 using ObjectEnable = sdbusplus::common::xyz::openbmc_project::object::Enable;
 
 namespace
