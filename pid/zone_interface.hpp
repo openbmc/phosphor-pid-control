@@ -131,6 +131,10 @@ class ZoneInterface
     virtual void updateThermalPowerDebugInterface(
         std::string pidName, std::string leader, double input,
         double output) = 0;
+    /** Update stepwise thermal/power debug dbus properties */
+    virtual void updateStepwiseThermalPowerDebugInterface(
+        std::string pidName, std::string leader, double input,
+        double output) = 0;
 };
 
 } // namespace pid_control
