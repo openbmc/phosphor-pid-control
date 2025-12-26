@@ -15,6 +15,7 @@
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
 #include <xyz/openbmc_project/Debug/Pid/ThermalPower/server.hpp>
 #include <xyz/openbmc_project/Debug/Pid/Zone/server.hpp>
+#include <xyz/openbmc_project/Debug/Stepwise/ThermalPower/server.hpp>
 #include <xyz/openbmc_project/Object/Enable/server.hpp>
 
 #include <chrono>
@@ -41,6 +42,10 @@ using DebugThermalPowerInterface =
     sdbusplus::xyz::openbmc_project::Debug::Pid::server::ThermalPower;
 using ProcessObject =
     ServerObject<ProcessInterface, DebugThermalPowerInterface>;
+using DebugStepwiseThermalPowerInterface =
+    sdbusplus::xyz::openbmc_project::Debug::Stepwise::server::ThermalPower;
+using StepwiseProcessObject =
+    ServerObject<ProcessInterface, DebugStepwiseThermalPowerInterface>;
 using FailSafeSensorsMap =
     std::map<std::string, std::pair<std::string, double>>;
 using FailSafeSensorPair =
@@ -139,6 +144,13 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     void updateThermalPowerDebugInterface(std::string pidName,
                                           std::string leader, double input,
                                           double output) override;
+    void updateStepwiseThermalPowerDebugInterface(
+        std::string pidName, std::string leader, double input,
+        double output) override;
+    /* Method for stepwise control process for each loop at runtime */
+    void addStepwiseControlProcess(
+        const std::string& name, const std::string& type, sdbusplus::bus_t& bus,
+        const std::string& objPath, bool defer);
 
   private:
     template <bool fanSensorLogging>
@@ -254,6 +266,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     std::vector<std::unique_ptr<Controller>> _thermals;
 
     std::map<std::string, std::unique_ptr<ProcessObject>> _pidsControlProcess;
+    std::map<std::string, std::unique_ptr<StepwiseProcessObject>>
+        _stepwisesControlProcess;
     /*
      * <key = sensor name, value = sensor failsafe percent>
      * sensor fail safe Percent setting by each pid controller configuration.
