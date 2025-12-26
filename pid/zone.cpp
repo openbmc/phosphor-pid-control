@@ -617,7 +617,17 @@ void DbusPidZone::addPidControlProcess(
 
 bool DbusPidZone::isPidProcessEnabled(const std::string& name)
 {
-    return _pidsControlProcess[name]->enabled();
+    auto it = _pidsControlProcess.find(name);
+    if (it != _pidsControlProcess.end())
+    {
+        return it->second->enabled();
+    }
+    auto stepIt = _stepwisesControlProcess.find(name);
+    if (stepIt != _stepwisesControlProcess.end())
+    {
+        return stepIt->second->enabled();
+    }
+    return false;
 }
 
 void DbusPidZone::addPidFailSafePercent(const std::vector<std::string>& inputs,
@@ -672,5 +682,46 @@ bool DbusPidZone::getAccSetPoint(void) const
 {
     return _accumulateSetPoint;
 }
+void DbusPidZone::addStepwiseControlProcess(
+    const std::string& name, const std::string& type, sdbusplus::bus_t& bus,
+    const std::string& objPath, bool defer)
+{
+    _stepwisesControlProcess[name] = std::make_unique<StepwiseProcessObject>(
+        bus, objPath.c_str(),
+        defer ? StepwiseProcessObject::action::defer_emit
+              : StepwiseProcessObject::action::emit_object_added);
+    // Default enable setting = true
+    _stepwisesControlProcess[name]->enabled(true);
 
+    if (type == "margin")
+    {
+        _stepwisesControlProcess[name]->classType("Margin");
+    }
+    else if (type == "power")
+    {
+        _stepwisesControlProcess[name]->classType("Power");
+    }
+    else if (type == "powersum")
+    {
+        _stepwisesControlProcess[name]->classType("PowerSum");
+    }
+    else
+    {
+        _stepwisesControlProcess[name]->classType("Temperature");
+    }
+}
+
+void DbusPidZone::updateStepwiseThermalPowerDebugInterface(
+    std::string pidName, std::string leader, double input, double output)
+{
+    if (leader.empty())
+    {
+        _stepwisesControlProcess[pidName]->output(output);
+    }
+    else
+    {
+        _stepwisesControlProcess[pidName]->leader(leader);
+        _stepwisesControlProcess[pidName]->input(input);
+    }
+}
 } // namespace pid_control
