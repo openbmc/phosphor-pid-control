@@ -125,8 +125,9 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
                 auto stepwise = StepwiseController::createStepwiseController(
                     zone.get(), name, splitNames(inputs), info.stepwiseInfo);
                 zone->addThermalPID(std::move(stepwise));
+                double setpoint = std::numeric_limits<double>::quiet_NaN();
                 zone->addPidControlProcess(
-                    name, info.type, info.setpoint, modeControlBus,
+                    name, info.type, setpoint, modeControlBus,
                     getPidControlPath(zoneId, name), deferSignals);
                 zone->addPidFailSafePercent(splitNames(inputs),
                                             info.failSafePercent);
