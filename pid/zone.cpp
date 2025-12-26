@@ -596,22 +596,42 @@ void DbusPidZone::addPidControlProcess(
     // Default enable setting = true
     _pidsControlProcess[name]->enabled(true);
     _pidsControlProcess[name]->setpoint(setpoint);
-
+    std::string classType;
+    std::string controllerType;
     if (type == "temp")
     {
-        _pidsControlProcess[name]->classType("Temperature");
+        classType = "Temperature";
+        controllerType = "PID";
     }
     else if (type == "margin")
     {
-        _pidsControlProcess[name]->classType("Margin");
+        classType = "Margin";
+        controllerType = "PID";
     }
     else if (type == "power")
     {
-        _pidsControlProcess[name]->classType("Power");
+        classType = "Power";
+        controllerType = "PID";
     }
     else if (type == "powersum")
     {
-        _pidsControlProcess[name]->classType("PowerSum");
+        classType = "PowerSum";
+        controllerType = "PID";
+    }
+    else if (type == "stepwise")
+    {
+        classType = "Temperature";
+        controllerType = "Stepwise";
+    }
+
+    if (!classType.empty())
+    {
+        _pidsControlProcess[name]->class_(classType);
+    }
+
+    if (!controllerType.empty())
+    {
+        _pidsControlProcess[name]->type(controllerType);
     }
 }
 
