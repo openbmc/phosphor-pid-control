@@ -21,6 +21,7 @@
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <optional>
 #include <sstream>
 #include <string>
 #include <string_view>
@@ -596,22 +597,42 @@ void DbusPidZone::addPidControlProcess(
     // Default enable setting = true
     _pidsControlProcess[name]->enabled(true);
     _pidsControlProcess[name]->setpoint(setpoint);
-
+    std::optional<DebugThermalPowerInterface::ClassType> classType;
+    std::optional<DebugThermalPowerInterface::ControllerType> controllerType;
     if (type == "temp")
     {
-        _pidsControlProcess[name]->classType("Temperature");
+        classType = DebugThermalPowerInterface::ClassType::Temperature;
+        controllerType = DebugThermalPowerInterface::ControllerType::PID;
     }
     else if (type == "margin")
     {
-        _pidsControlProcess[name]->classType("Margin");
+        classType = DebugThermalPowerInterface::ClassType::Margin;
+        controllerType = DebugThermalPowerInterface::ControllerType::PID;
     }
     else if (type == "power")
     {
-        _pidsControlProcess[name]->classType("Power");
+        classType = DebugThermalPowerInterface::ClassType::Power;
+        controllerType = DebugThermalPowerInterface::ControllerType::PID;
     }
     else if (type == "powersum")
     {
-        _pidsControlProcess[name]->classType("PowerSum");
+        classType = DebugThermalPowerInterface::ClassType::PowerSum;
+        controllerType = DebugThermalPowerInterface::ControllerType::PID;
+    }
+    else if (type == "stepwise")
+    {
+        classType = DebugThermalPowerInterface::ClassType::Temperature;
+        controllerType = DebugThermalPowerInterface::ControllerType::Stepwise;
+    }
+
+    if (classType)
+    {
+        _pidsControlProcess[name]->class_(*classType);
+    }
+
+    if (controllerType)
+    {
+        _pidsControlProcess[name]->type(*controllerType);
     }
 }
 
