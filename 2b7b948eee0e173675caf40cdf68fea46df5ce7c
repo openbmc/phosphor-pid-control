@@ -20,6 +20,24 @@
     {
       "unresolved": true,
       "key": {
+        "uuid": "cb29c63c_f21b9671",
+        "filename": "pid/builder.cpp",
+        "patchSetId": 15
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2026-01-06T18:20:26Z",
+      "side": 1,
+      "message": "I have updated the code, commit message, and validation logs.\n\nI’ve implemented xyz.openbmc_project.Debug.Stepwise.ThermalPower to ensure there is no impact on the existing xyz.openbmc_project.Debug.Pid.ThermalPower interface.\n\nPlease note that the Setpoint property is not applicable to Stepwise controllers, but the other properties align with the standard PID controller interface.\n\nPlease review. Thanks.",
+      "parentUuid": "169afaed_445b1101",
+      "revId": "2b7b948eee0e173675caf40cdf68fea46df5ce7c",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": true,
+      "key": {
         "uuid": "5bdee4ef_8860d7e0",
         "filename": "pid/stepwisecontroller.cpp",
         "patchSetId": 15
