@@ -1,3 +1,4 @@
 build*/
+!buildjson/
 subprojects/*
 !subprojects/*.wrap
