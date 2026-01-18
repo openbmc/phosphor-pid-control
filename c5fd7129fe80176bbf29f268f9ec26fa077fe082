@@ -16,6 +16,23 @@
       "message": "Please check the following documents for detailed discussion on the hysteresis\nbehavior and PID control formulation:\n\nHysteresis Reset Discussion:\nhttps://github.com/YouPengWu/MyMD/blob/main/docs/phosphor-pid-control/Discussion_on_PID_Hysteresis_Reset.md\n\nPID Control Documentation:\nhttps://github.com/YouPengWu/MyMD/blob/main/docs/phosphor-pid-control/PID_Control_Documentation.md",
       "revId": "c5fd7129fe80176bbf29f268f9ec26fa077fe082",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "788f7068_95ea0638",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 9
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001843
+      },
+      "writtenOn": "2026-01-18T04:24:53Z",
+      "side": 1,
+      "message": "I found that my algorithm shares the same core concept as the \u0027Dead Zone Dynamic\u0027 block in the Matlab Help Center.\n\nDocumentation: https://www.mathworks.com/help/simulink/slref/deadzonedynamic.html\n\nReference Image: https://github.com/YouPengWu/ToReviewer/blob/main/84144/Dead_Zone_Dynamic.png",
+      "revId": "c5fd7129fe80176bbf29f268f9ec26fa077fe082",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
