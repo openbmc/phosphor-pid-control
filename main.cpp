@@ -416,10 +416,6 @@ int main(int argc, char* argv[])
 
     pid_control::tryRestartControlLoops();
 
-    /* setup host state monitor */
-    auto& monitor = HostStateMonitor::getInstance(hostMatchBus);
-    monitor.startMonitoring();
-
     io.run();
     return 0;
 }
