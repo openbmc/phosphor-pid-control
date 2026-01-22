@@ -146,7 +146,7 @@ SensorManager buildSensors(
 
             auto sensor = std::make_unique<PluggableSensor>(
                 name, info->timeout, std::move(ri), std::move(wi),
-                info->ignoreFailIfHostOff);
+                info->ignoreFailIfHostOff, info->slotId);
             mgmr.addSensor(info->type, name, std::move(sensor));
         }
         else if (info->type == "temp" || info->type == "margin" ||
@@ -167,7 +167,7 @@ SensorManager buildSensors(
                  */
                 auto sensor = HostSensor::createTemp(
                     name, info->timeout, hostSensorBus, info->readPath.c_str(),
-                    deferSignals);
+                    deferSignals, info->ignoreFailIfHostOff);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
             else
@@ -175,7 +175,7 @@ SensorManager buildSensors(
                 wi = std::make_unique<ReadOnlyNoExcept>();
                 auto sensor = std::make_unique<PluggableSensor>(
                     name, info->timeout, std::move(ri), std::move(wi),
-                    info->ignoreFailIfHostOff);
+                    info->ignoreFailIfHostOff, info->slotId);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
         }
