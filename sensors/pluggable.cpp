@@ -33,7 +33,7 @@ bool PluggableSensor::getFailed(void)
 
     if (isFailed && getIgnoreFailIfHostOff())
     {
-        auto& hostState = HostStateMonitor::getInstance();
+        auto& hostState = HostStateMonitor::getInstance(getSlotId());
         if (!hostState.isPowerOn())
         {
             return false;
