@@ -1,0 +1,583 @@
+From 04824aeb152b4b94c650c24e0fc81fef34c2c044 Mon Sep 17 00:00:00 2001
+From: Eric Yang <eric.yang.wiwynn@gmail.com>
+Date: Thu, 22 Jan 2026 12:04:25 +0000
+Subject: [PATCH] Support multi-host IgnoreFailIfHostOff
+
+Extend IgnoreFailIfHostOff to support multi-host platforms by allowing
+each sensor to specify its associated host slot through SlotId
+configuration alongside the IgnoreFailIfHostOff setting.
+
+HostStateMonitor transitions from a singleton pattern to per-slotId
+instances stored in a static map. Sensors gain a slotId member and
+constructor parameter, defaulting to 0 for single-host compatibility.
+
+HostStateMonitor::getInstance now accepts a slotId parameter and
+creates monitor instances on demand when sensors configured with both
+IgnoreFailIfHostOff and SlotId check their failure status.  Each monitor
+independently tracks its assigned host path
+(/xyz/openbmc_project/state/host{slotId}).
+
+- Old flow (single-host):
+--------------------------------------------------------------
+swampd startup
+    |
+    +-- buildSensors creates all sensors (slotId defaults to 0)
+    |
+    +-- main calls HostStateMonitor::getInstance
+    |   |
+    |   +-- Static instance created
+    |   |   monitors /xyz/.../state/host0
+    |   |
+    |   +-- startMonitoring registers D-Bus match
+    |
+    +-- PID loop runs
+        |
+        +-- sensor->getFailed checks IgnoreFailIfHostOff
+            |
+            +-- getInstance returns pre-created singleton
+            |
+            +-- Check isPowerOn for host0
+
+All sensors share a single monitor for host0.
+
+- New flow (single-host platform):
+--------------------------------------------------------------
+swampd startup
+    |
+    +-- buildSensors creates sensors
+    |   (slotId defaults to 0 if not specified)
+    |
+    +-- PID loop runs (no pre-initialization)
+        |
+        +-- sensor->getFailed detects failure
+            |
+            +-- Check IgnoreFailIfHostOff == true
+                |
+                +-- getInstance(slotId=0) called
+                    |
+                    +-- instances.find(0) fails (first call)
+                    |
+                    +-- Create HostStateMonitor(0)
+                    |   |
+                    |   +-- hostPath = /xyz/.../state/host0
+                    |   |
+                    |   +-- getInitialState queries state
+                    |   |
+                    |   +-- startMonitoring registers D-Bus match
+                    |
+                    +-- Store in instances[0]
+                    |
+                    +-- Check isPowerOn for host0
+            |
+            +-- Subsequent calls with slotId=0 reuse the
+                cached instance
+
+- New flow (multi-host platform):
+--------------------------------------------------------------
+swampd startup
+    |
+    +-- buildSensors creates sensors with SlotId from config
+    |   Sensors configured with both IgnoreFailIfHostOff
+    |   and SlotId
+    |
+    +-- PID loop runs (no pre-initialization)
+        |
+        +-- sensor1 (slotId=1) detects failure
+            |
+            +-- Check IgnoreFailIfHostOff == true
+                |
+                +-- getInstance(slotId=1) called
+                    |
+                    +-- instances.find(1) fails (first call)
+                    |
+                    +-- Create HostStateMonitor(1)
+                    |   |
+                    |   +-- hostPath = /xyz/.../state/host1
+                    |   |
+                    |   +-- getInitialState queries host1 state
+                    |   |
+                    |   +-- startMonitoring registers D-Bus match
+                    |       for host1
+                    |
+                    +-- Store in instances[1]
+                    |
+                    +-- Check isPowerOn for host1
+        |
+        +-- Later, sensor4 (slotId=2) fails similarly
+            |
+            +-- getInstance(slotId=2) creates an independent
+            |   monitor for host2
+            |
+            +-- sensor2 (slotId=1) reuses the existing
+                instances[1] monitor
+
+Sensors with the same slotId share one monitor. Different slotIds
+maintain independent monitors and host state tracking.
+
+Architecture comparison:
+
+- Old (singleton):
+    Sensor1 (IgnoreFailIfHostOff) ---+
+    Sensor2 (IgnoreFailIfHostOff) ---+--> [HostStateMonitor]
+    Sensor3 (IgnoreFailIfHostOff) ---+      monitors host0
+    Sensor4 (IgnoreFailIfHostOff) ---+
+
+- New (per-slotId map):
+    Sensor1 (slotId=1, IgnoreFailIfHostOff) ---+
+    Sensor2 (slotId=1, IgnoreFailIfHostOff) ---+--> [Monitor(1)]
+    Sensor3 (slotId=1, IgnoreFailIfHostOff) ---+        host1
+
+    Sensor4 (slotId=2, IgnoreFailIfHostOff) ---+
+    Sensor5 (slotId=2, IgnoreFailIfHostOff) ---+--> [Monitor(2)]
+                                                        host2
+
+    Sensor6 (slotId=3, IgnoreFailIfHostOff) ------> [Monitor(3)]
+                                                        host3
+
+Motivation:
+Multi-host platforms with independent compute sleds require
+independent host state tracking per slot. Each slot has its own host
+state service (xyz.openbmc_project.State.Host{N}) and power cycles
+independently.
+
+Backward compatibility is preserved, as single-host configurations
+continue working with the default slotId of 0.
+
+Change-Id: I07e04b6d973a6342aa33f0a6471399fa7c3a1d03
+Signed-off-by: Eric Yang <eric.yang.wiwynn@gmail.com>
+---
+ conf.hpp                   |  1 +
+ dbus/dbusconfiguration.cpp | 35 ++++++++++++++++++
+ dbus/dbusutil.hpp          | 17 +++++++++
+ hoststatemonitor.hpp       | 73 ++++++++++++++++++++++++--------------
+ main.cpp                   |  4 ---
+ sensors/builder.cpp        |  6 ++--
+ sensors/buildjson.cpp      |  7 ++++
+ sensors/host.cpp           |  2 +-
+ sensors/host.hpp           |  4 +--
+ sensors/pluggable.cpp      |  2 +-
+ sensors/pluggable.hpp      |  6 ++--
+ sensors/sensor.hpp         | 10 ++++--
+ 12 files changed, 125 insertions(+), 42 deletions(-)
+
+diff --git a/conf.hpp b/conf.hpp
+index 9d73cf8..4f0048c 100644
+--- a/conf.hpp
++++ b/conf.hpp
+@@ -32,6 +32,7 @@ struct SensorConfig
+     bool ignoreDbusMinMax;
+     bool unavailableAsFailed;
+     bool ignoreFailIfHostOff;
++    uint64_t slotId;
+ };
+ 
+ /*
+diff --git a/dbus/dbusconfiguration.cpp b/dbus/dbusconfiguration.cpp
+index 9640f9a..acdc8cd 100644
+--- a/dbus/dbusconfiguration.cpp
++++ b/dbus/dbusconfiguration.cpp
+@@ -748,6 +748,22 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
+                         std::get<bool>(findIgnoreFailIfHostOff->second);
+                 }
+ 
++                uint64_t slotId = 0;
++                auto findSlotId = base.find("SlotId");
++                if (findSlotId != base.end())
++                {
++                    try
++                    {
++                        slotId = std::visit(VariantToUint64Visitor(),
++                                            findSlotId->second);
++                    }
++                    catch (const std::invalid_argument&)
++                    {
++                        std::cerr << "Unable to parse SlotId for zone " << zone
++                                  << ", using default 0\n";
++                    }
++                }
++
+                 std::vector<SensorInterfaceType> inputSensorInterfaces;
+                 std::vector<SensorInterfaceType> outputSensorInterfaces;
+                 std::vector<SensorInterfaceType>
+@@ -800,6 +816,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
+                             config.ignoreDbusMinMax = true;
+                             config.unavailableAsFailed = unavailableAsFailed;
+                             config.ignoreFailIfHostOff = ignoreFailIfHostOff;
++                            config.slotId = slotId;
+                         }
+                         else
+                         {
+@@ -855,6 +872,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
+                         config.ignoreDbusMinMax = true;
+                         config.unavailableAsFailed = unavailableAsFailed;
+                         config.ignoreFailIfHostOff = ignoreFailIfHostOff;
++                        config.slotId = slotId;
+                     }
+ 
+                     if (dbusInterface != SensorValue::interface)
+@@ -1076,6 +1094,22 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
+                         std::get<bool>(findIgnoreFailIfHostOff->second);
+                 }
+ 
++                uint64_t slotId = 0;
++                auto findSlotId = base.find("SlotId");
++                if (findSlotId != base.end())
++                {
++                    try
++                    {
++                        slotId = std::visit(VariantToUint64Visitor(),
++                                            findSlotId->second);
++                    }
++                    catch (const std::invalid_argument&)
++                    {
++                        std::cerr << "Unable to parse SlotId for zone " << zone
++                                  << ", using default 0\n";
++                    }
++                }
++
+                 bool sensorFound = false;
+                 for (const std::string& sensorName : sensorNames)
+                 {
+@@ -1143,6 +1177,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
+                             config.ignoreDbusMinMax = true;
+                             config.unavailableAsFailed = unavailableAsFailed;
+                             config.ignoreFailIfHostOff = ignoreFailIfHostOff;
++                            config.slotId = slotId;
+                             // todo: maybe un-hardcode this if we run into
+                             // slower timeouts with sensors
+ 
+diff --git a/dbus/dbusutil.hpp b/dbus/dbusutil.hpp
+index 0132073..2d0a321 100644
+--- a/dbus/dbusutil.hpp
++++ b/dbus/dbusutil.hpp
+@@ -29,6 +29,23 @@ struct VariantToDoubleVisitor
+     }
+ };
+ 
++struct VariantToUint64Visitor
++{
++    template <typename T>
++    std::enable_if_t<std::is_arithmetic<T>::value, uint64_t> operator()(
++        const T& t) const
++    {
++        return static_cast<uint64_t>(t);
++    }
++
++    template <typename T>
++    std::enable_if_t<!std::is_arithmetic<T>::value, uint64_t> operator()(
++        [[maybe_unused]] const T&) const
++    {
++        throw std::invalid_argument("Cannot translate type to uint64_t");
++    }
++};
++
+ std::string getSensorUnit(const std::string& type);
+ std::string getSensorPath(const std::string& type, const std::string& id);
+ std::string getMatch(const std::string& path);
+diff --git a/hoststatemonitor.hpp b/hoststatemonitor.hpp
+index e583238..dcc56e1 100644
+--- a/hoststatemonitor.hpp
++++ b/hoststatemonitor.hpp
+@@ -15,13 +15,13 @@
+ using HostState = sdbusplus::common::xyz::openbmc_project::state::Host;
+ 
+ constexpr const char* PROPERTIES_INTERFACE = "org.freedesktop.DBus.Properties";
+-constexpr const char* HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
+ 
+ class HostStateMonitor
+ {
+   public:
+-    static HostStateMonitor& getInstance();
+-    static HostStateMonitor& getInstance(sdbusplus::bus_t& bus);
++    static HostStateMonitor& getInstance(uint64_t slotId = 0);
++    static HostStateMonitor& getInstance(sdbusplus::bus_t& bus,
++                                         uint64_t slotId = 0);
+ 
+     ~HostStateMonitor() = default;
+ 
+@@ -29,7 +29,7 @@ class HostStateMonitor
+     HostStateMonitor(const HostStateMonitor&) = delete;
+     HostStateMonitor& operator=(const HostStateMonitor&) = delete;
+ 
+-    // Delete move constructor and assignment operator for singleton
++    // Delete move constructor and assignment operator
+     HostStateMonitor(HostStateMonitor&&) = delete;
+     HostStateMonitor& operator=(HostStateMonitor&&) = delete;
+ 
+@@ -40,49 +40,71 @@ class HostStateMonitor
+         return powerStatusOn;
+     }
+ 
++    uint64_t getSlotId() const
++    {
++        return slotId;
++    }
++
+   private:
+-    explicit HostStateMonitor(sdbusplus::bus_t& bus);
++    explicit HostStateMonitor(sdbusplus::bus_t& bus, uint64_t slotId);
+ 
+     void handleStateChange(sdbusplus::message_t& message);
+     void getInitialState();
+ 
+     sdbusplus::bus_t& bus;
++    uint64_t slotId;
++    std::string hostPath;
++    std::string hostService;
+     bool powerStatusOn;
+     std::unique_ptr<sdbusplus::bus::match_t> hostStateMatch;
++    static std::unordered_map<uint64_t, std::unique_ptr<HostStateMonitor>>
++        instances;
+ };
+ 
+ // Implementation
+-inline HostStateMonitor& HostStateMonitor::getInstance()
++inline std::unordered_map<uint64_t, std::unique_ptr<HostStateMonitor>>
++    HostStateMonitor::instances;
++
++inline HostStateMonitor& HostStateMonitor::getInstance(uint64_t slotId)
+ {
+     static sdbusplus::bus_t defaultBus = sdbusplus::bus::new_default();
+-    return getInstance(defaultBus);
++    return getInstance(defaultBus, slotId);
+ }
+ 
+-inline HostStateMonitor& HostStateMonitor::getInstance(sdbusplus::bus_t& bus)
++inline HostStateMonitor& HostStateMonitor::getInstance(sdbusplus::bus_t& bus,
++                                                       uint64_t slotId)
+ {
+-    static HostStateMonitor instance(bus);
+-    return instance;
++    auto it = instances.find(slotId);
++    if (it == instances.end())
++    {
++        auto instance = std::unique_ptr<HostStateMonitor>(
++            new HostStateMonitor(bus, slotId));
++        instance->startMonitoring();
++        it = instances.emplace(slotId, std::move(instance)).first;
++    }
++    return *it->second;
+ }
+ 
+-inline HostStateMonitor::HostStateMonitor(sdbusplus::bus_t& bus) :
+-    bus(bus), powerStatusOn(false), hostStateMatch(nullptr)
++inline HostStateMonitor::HostStateMonitor(sdbusplus::bus_t& bus,
++                                          uint64_t slotId) :
++    bus(bus), slotId(slotId), powerStatusOn(false), hostStateMatch(nullptr)
+ {
++    hostPath = "/xyz/openbmc_project/state/host" + std::to_string(slotId);
++    hostService = "xyz.openbmc_project.State.Host" + std::to_string(slotId);
+     getInitialState();
+ }
+ 
+ inline void HostStateMonitor::startMonitoring()
+ {
+-    if (hostStateMatch == nullptr)
++    if (hostStateMatch)
+     {
+-        using namespace sdbusplus::bus::match::rules;
+-
+-        hostStateMatch = std::make_unique<sdbusplus::bus::match_t>(
+-            bus,
+-            propertiesChangedNamespace(HOST_STATE_PATH, HostState::interface),
+-            [this](sdbusplus::message_t& message) {
+-                handleStateChange(message);
+-            });
++        return;
+     }
++
++    using namespace sdbusplus::bus::match::rules;
++    hostStateMatch = std::make_unique<sdbusplus::bus::match_t>(
++        bus, propertiesChangedNamespace(hostPath, HostState::interface),
++        [this](sdbusplus::message_t& message) { handleStateChange(message); });
+ }
+ 
+ inline void HostStateMonitor::stopMonitoring()
+@@ -115,8 +137,8 @@ inline void HostStateMonitor::handleStateChange(sdbusplus::message_t& message)
+     }
+     catch (const std::exception& e)
+     {
+-        std::cerr << "Failed to handle host state change: " << e.what()
+-                  << std::endl;
++        std::cerr << "Failed to handle host" << slotId
++                  << " state change: " << e.what() << std::endl;
+     }
+ }
+ 
+@@ -124,9 +146,8 @@ inline void HostStateMonitor::getInitialState()
+ {
+     try
+     {
+-        auto method =
+-            bus.new_method_call("xyz.openbmc_project.State.Host0",
+-                                HOST_STATE_PATH, PROPERTIES_INTERFACE, "Get");
++        auto method = bus.new_method_call(hostService.c_str(), hostPath.c_str(),
++                                          PROPERTIES_INTERFACE, "Get");
+         method.append(HostState::interface,
+                       HostState::property_names::current_host_state);
+ 
+diff --git a/main.cpp b/main.cpp
+index c924123..c864293 100644
+--- a/main.cpp
++++ b/main.cpp
+@@ -416,10 +416,6 @@ int main(int argc, char* argv[])
+ 
+     pid_control::tryRestartControlLoops();
+ 
+-    /* setup host state monitor */
+-    auto& monitor = HostStateMonitor::getInstance(hostMatchBus);
+-    monitor.startMonitoring();
+-
+     io.run();
+     return 0;
+ }
+diff --git a/sensors/builder.cpp b/sensors/builder.cpp
+index 640c0ca..f4cb3fe 100644
+--- a/sensors/builder.cpp
++++ b/sensors/builder.cpp
+@@ -146,7 +146,7 @@ SensorManager buildSensors(
+ 
+             auto sensor = std::make_unique<PluggableSensor>(
+                 name, info->timeout, std::move(ri), std::move(wi),
+-                info->ignoreFailIfHostOff);
++                info->ignoreFailIfHostOff, info->slotId);
+             mgmr.addSensor(info->type, name, std::move(sensor));
+         }
+         else if (info->type == "temp" || info->type == "margin" ||
+@@ -167,7 +167,7 @@ SensorManager buildSensors(
+                  */
+                 auto sensor = HostSensor::createTemp(
+                     name, info->timeout, hostSensorBus, info->readPath.c_str(),
+-                    deferSignals);
++                    deferSignals, info->ignoreFailIfHostOff);
+                 mgmr.addSensor(info->type, name, std::move(sensor));
+             }
+             else
+@@ -175,7 +175,7 @@ SensorManager buildSensors(
+                 wi = std::make_unique<ReadOnlyNoExcept>();
+                 auto sensor = std::make_unique<PluggableSensor>(
+                     name, info->timeout, std::move(ri), std::move(wi),
+-                    info->ignoreFailIfHostOff);
++                    info->ignoreFailIfHostOff, info->slotId);
+                 mgmr.addSensor(info->type, name, std::move(sensor));
+             }
+         }
+diff --git a/sensors/buildjson.cpp b/sensors/buildjson.cpp
+index 23bb201..70a528e 100644
+--- a/sensors/buildjson.cpp
++++ b/sensors/buildjson.cpp
+@@ -39,6 +39,7 @@ void from_json(const json& j, conf::SensorConfig& s)
+     s.ignoreDbusMinMax = false;
+     s.unavailableAsFailed = true;
+     s.ignoreFailIfHostOff = false;
++    s.slotId = 0;
+     s.min = 0;
+     s.max = 0;
+ 
+@@ -60,6 +61,12 @@ void from_json(const json& j, conf::SensorConfig& s)
+         j.at("ignoreFailIfHostOff").get_to(s.ignoreFailIfHostOff);
+     }
+ 
++    auto findSlotId = j.find("slotId");
++    if (findSlotId != j.end())
++    {
++        j.at("slotId").get_to(s.slotId);
++    }
++
+     /* The min field is optional in a configuration. */
+     auto min = j.find("min");
+     if (min != j.end())
+diff --git a/sensors/host.cpp b/sensors/host.cpp
+index 68f2834..727c301 100644
+--- a/sensors/host.cpp
++++ b/sensors/host.cpp
+@@ -102,7 +102,7 @@ bool HostSensor::getFailed(void)
+ 
+     if (getIgnoreFailIfHostOff())
+     {
+-        auto& hostState = HostStateMonitor::getInstance();
++        auto& hostState = HostStateMonitor::getInstance(getSlotId());
+         if (!hostState.isPowerOn())
+         {
+             return false;
+diff --git a/sensors/host.hpp b/sensors/host.hpp
+index 0f6eac4..a005833 100644
+--- a/sensors/host.hpp
++++ b/sensors/host.hpp
+@@ -49,8 +49,8 @@ class HostSensor : public Sensor, public ValueObject
+ 
+     HostSensor(const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
+                const char* objPath, bool defer,
+-               bool ignoreFailIfHostOff = false) :
+-        Sensor(name, timeout, ignoreFailIfHostOff),
++               bool ignoreFailIfHostOff = false, uint64_t slotId = 0) :
++        Sensor(name, timeout, ignoreFailIfHostOff, slotId),
+         ValueObject(bus, objPath,
+                     defer ? ValueObject::action::defer_emit
+                           : ValueObject::action::emit_object_added)
+diff --git a/sensors/pluggable.cpp b/sensors/pluggable.cpp
+index bd1e94c..104e9b1 100644
+--- a/sensors/pluggable.cpp
++++ b/sensors/pluggable.cpp
+@@ -33,7 +33,7 @@ bool PluggableSensor::getFailed(void)
+ 
+     if (isFailed && getIgnoreFailIfHostOff())
+     {
+-        auto& hostState = HostStateMonitor::getInstance();
++        auto& hostState = HostStateMonitor::getInstance(getSlotId());
+         if (!hostState.isPowerOn())
+         {
+             return false;
+diff --git a/sensors/pluggable.hpp b/sensors/pluggable.hpp
+index f14aa2c..fb4c230 100644
+--- a/sensors/pluggable.hpp
++++ b/sensors/pluggable.hpp
+@@ -20,9 +20,9 @@ class PluggableSensor : public Sensor
+     PluggableSensor(const std::string& name, int64_t timeout,
+                     std::unique_ptr<ReadInterface> reader,
+                     std::unique_ptr<WriteInterface> writer,
+-                    bool ignoreFailIfHostOff = false) :
+-        Sensor(name, timeout, ignoreFailIfHostOff), _reader(std::move(reader)),
+-        _writer(std::move(writer))
++                    bool ignoreFailIfHostOff = false, uint64_t slotId = 0) :
++        Sensor(name, timeout, ignoreFailIfHostOff, slotId),
++        _reader(std::move(reader)), _writer(std::move(writer))
+     {}
+ 
+     ReadReturn read(void) override;
+diff --git a/sensors/sensor.hpp b/sensors/sensor.hpp
+index 49489db..812bf52 100644
+--- a/sensors/sensor.hpp
++++ b/sensors/sensor.hpp
+@@ -29,9 +29,9 @@ class Sensor
+     }
+ 
+     Sensor(const std::string& name, int64_t timeout,
+-           bool ignoreFailIfHostOff = false) :
++           bool ignoreFailIfHostOff = false, uint64_t slotId = 0) :
+         _name(name), _timeout(timeout),
+-        _ignoreFailIfHostOff(ignoreFailIfHostOff)
++        _ignoreFailIfHostOff(ignoreFailIfHostOff), _slotId(slotId)
+     {}
+ 
+     virtual ~Sensor() = default;
+@@ -74,10 +74,16 @@ class Sensor
+         return _ignoreFailIfHostOff;
+     }
+ 
++    uint64_t getSlotId(void) const
++    {
++        return _slotId;
++    }
++
+   private:
+     std::string _name;
+     int64_t _timeout;
+     bool _ignoreFailIfHostOff;
++    uint64_t _slotId;
+ };
+ 
+ } // namespace pid_control
+-- 
+2.43.0
+
