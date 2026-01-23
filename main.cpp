@@ -416,9 +416,8 @@ int main(int argc, char* argv[])
 
     pid_control::tryRestartControlLoops();
 
-    /* setup host state monitor */
-    auto& monitor = HostStateMonitor::getInstance(hostMatchBus);
-    monitor.startMonitoring();
+    /* setup host state monitors for all hosts */
+    HostStateMonitor::initializeAll(hostMatchBus);
 
     io.run();
     return 0;
