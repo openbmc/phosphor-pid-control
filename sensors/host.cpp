@@ -102,8 +102,8 @@ bool HostSensor::getFailed(void)
 
     if (getIgnoreFailIfHostOff())
     {
-        auto& hostState = HostStateMonitor::getInstance();
-        if (!hostState.isPowerOn())
+        auto* hostState = HostStateMonitor::getInstance(getSlotId());
+        if (hostState && !hostState->isPowerOn())
         {
             return false;
         }
