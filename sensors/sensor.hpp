@@ -29,9 +29,9 @@ class Sensor
     }
 
     Sensor(const std::string& name, int64_t timeout,
-           bool ignoreFailIfHostOff = false) :
+           bool ignoreFailIfHostOff = false, uint64_t hostId = 0) :
         _name(name), _timeout(timeout),
-        _ignoreFailIfHostOff(ignoreFailIfHostOff)
+        _ignoreFailIfHostOff(ignoreFailIfHostOff), _hostId(hostId)
     {}
 
     virtual ~Sensor() = default;
@@ -74,10 +74,16 @@ class Sensor
         return _ignoreFailIfHostOff;
     }
 
+    uint64_t getHostId(void) const
+    {
+        return _hostId;
+    }
+
   private:
     std::string _name;
     int64_t _timeout;
     bool _ignoreFailIfHostOff;
+    uint64_t _hostId;
 };
 
 } // namespace pid_control

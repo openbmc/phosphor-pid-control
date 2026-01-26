@@ -24,10 +24,10 @@ namespace pid_control
 
 std::unique_ptr<Sensor> HostSensor::createTemp(
     const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
-    const char* objPath, bool defer, bool ignoreFailIfHostOff)
+    const char* objPath, bool defer, bool ignoreFailIfHostOff, uint64_t hostId)
 {
-    auto sensor = std::make_unique<HostSensor>(name, timeout, bus, objPath,
-                                               defer, ignoreFailIfHostOff);
+    auto sensor = std::make_unique<HostSensor>(
+        name, timeout, bus, objPath, defer, ignoreFailIfHostOff, hostId);
     sensor->value(0);
 
     // DegreesC and value of 0 are the defaults at present, therefore testing
@@ -82,8 +82,8 @@ bool HostSensor::getFailed(void)
 
     if (getIgnoreFailIfHostOff())
     {
-        auto& hostState = HostStateMonitor::getInstance();
-        if (!hostState.isPowerOn())
+        auto hostState = HostStateMonitor::getInstance(getHostId());
+        if (hostState && !hostState->get().isPowerOn())
         {
             return false;
         }

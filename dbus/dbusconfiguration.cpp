@@ -749,6 +749,14 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         std::get<bool>(findIgnoreFailIfHostOff->second);
                 }
 
+                uint64_t hostId = 0;
+                auto findHostId = base.find("HostId");
+                if (findHostId != base.end())
+                {
+                    hostId = std::visit(VariantToUint64Visitor(),
+                                        findHostId->second);
+                }
+
                 std::vector<SensorInterfaceType> inputSensorInterfaces;
                 std::vector<SensorInterfaceType> outputSensorInterfaces;
                 std::vector<SensorInterfaceType>
@@ -807,6 +815,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                                     unavailableAsFailed;
                                 config.ignoreFailIfHostOff =
                                     ignoreFailIfHostOff;
+                                config.hostId = hostId;
                             }
                             else
                             {
@@ -862,6 +871,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         config.ignoreDbusMinMax = true;
                         config.unavailableAsFailed = unavailableAsFailed;
                         config.ignoreFailIfHostOff = ignoreFailIfHostOff;
+                        config.hostId = hostId;
                     }
 
                     if (dbusInterface != SensorValue::interface)
@@ -1085,6 +1095,14 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                         std::get<bool>(findIgnoreFailIfHostOff->second);
                 }
 
+                uint64_t hostId = 0;
+                auto findHostId = base.find("HostId");
+                if (findHostId != base.end())
+                {
+                    hostId = std::visit(VariantToUint64Visitor(),
+                                        findHostId->second);
+                }
+
                 bool sensorFound = false;
                 for (const std::string& sensorName : sensorNames)
                 {
@@ -1120,6 +1138,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                             config.ignoreDbusMinMax = true;
                             config.unavailableAsFailed = unavailableAsFailed;
                             config.ignoreFailIfHostOff = ignoreFailIfHostOff;
+                            config.hostId = hostId;
                             // todo: maybe un-hardcode this if we run into
                             // slower timeouts with sensors
 
@@ -1152,6 +1171,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                             config.ignoreDbusMinMax = true;
                             config.unavailableAsFailed = unavailableAsFailed;
                             config.ignoreFailIfHostOff = ignoreFailIfHostOff;
+                            config.hostId = hostId;
                             // todo: maybe un-hardcode this if we run into
                             // slower timeouts with sensors
 
