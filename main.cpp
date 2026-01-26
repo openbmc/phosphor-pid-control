@@ -409,16 +409,15 @@ int main(int argc, char* argv[])
     // Enable SIGHUP handling to reload JSON config
     signals.async_wait(signalHandler);
 
+    /* Setup host state monitors before building sensors */
+    HostStateMonitor::initializeAll(hostMatchBus);
+
     /*
      * All sensors are managed by one manager, but each zone has a pointer to
      * it.
      */
 
     pid_control::tryRestartControlLoops();
-
-    /* setup host state monitor */
-    auto& monitor = HostStateMonitor::getInstance(hostMatchBus);
-    monitor.startMonitoring();
 
     io.run();
     return 0;
