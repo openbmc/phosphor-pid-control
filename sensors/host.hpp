@@ -49,8 +49,8 @@ class HostSensor : public Sensor, public ValueObject
 
     HostSensor(const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
                const char* objPath, bool defer,
-               bool ignoreFailIfHostOff = false) :
-        Sensor(name, timeout, ignoreFailIfHostOff),
+               bool ignoreFailIfHostOff = false, uint64_t slotId = 0) :
+        Sensor(name, timeout, ignoreFailIfHostOff, slotId),
         ValueObject(bus, objPath,
                     defer ? ValueObject::action::defer_emit
                           : ValueObject::action::emit_object_added)
