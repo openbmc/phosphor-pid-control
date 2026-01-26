@@ -29,6 +29,23 @@ struct VariantToDoubleVisitor
     }
 };
 
+struct VariantToUint64Visitor
+{
+    template <typename T>
+    std::enable_if_t<std::is_arithmetic<T>::value, uint64_t> operator()(
+        const T& t) const
+    {
+        return static_cast<uint64_t>(t);
+    }
+
+    template <typename T>
+    std::enable_if_t<!std::is_arithmetic<T>::value, uint64_t> operator()(
+        [[maybe_unused]] const T&) const
+    {
+        throw std::invalid_argument("Cannot translate type to uint64_t");
+    }
+};
+
 std::string getSensorUnit(const std::string& type);
 std::string getSensorPath(const std::string& type, const std::string& id);
 std::string getMatch(const std::string& path);
