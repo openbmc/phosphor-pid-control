@@ -32,6 +32,7 @@ struct SensorConfig
     bool ignoreDbusMinMax;
     bool unavailableAsFailed;
     bool ignoreFailIfHostOff;
+    uint64_t slotId;
 };
 
 /*
