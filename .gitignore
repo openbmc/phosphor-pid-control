@@ -1,4 +1,4 @@
 build*/
 !buildjson/
 subprojects/*
-!subprojects/*.wrap
+!subprojects/*.wrap.github
