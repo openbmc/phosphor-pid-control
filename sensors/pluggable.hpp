@@ -20,9 +20,9 @@ class PluggableSensor : public Sensor
     PluggableSensor(const std::string& name, int64_t timeout,
                     std::unique_ptr<ReadInterface> reader,
                     std::unique_ptr<WriteInterface> writer,
-                    bool ignoreFailIfHostOff = false) :
-        Sensor(name, timeout, ignoreFailIfHostOff), _reader(std::move(reader)),
-        _writer(std::move(writer))
+                    bool ignoreFailIfHostOff = false, uint64_t slotId = 0) :
+        Sensor(name, timeout, ignoreFailIfHostOff, slotId),
+        _reader(std::move(reader)), _writer(std::move(writer))
     {}
 
     ReadReturn read(void) override;
