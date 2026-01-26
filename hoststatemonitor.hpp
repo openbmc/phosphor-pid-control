@@ -4,6 +4,7 @@
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/message.hpp>
+#include <xyz/openbmc_project/ObjectMapper/common.hpp>
 #include <xyz/openbmc_project/State/Host/common.hpp>
 
 #include <functional>
@@ -14,75 +15,192 @@
 
 using HostState = sdbusplus::common::xyz::openbmc_project::state::Host;
 
-constexpr const char* PROPERTIES_INTERFACE = "org.freedesktop.DBus.Properties";
-constexpr const char* HOST_STATE_PATH = "/xyz/openbmc_project/state/host0";
+constexpr const char* propertiesInterface = "org.freedesktop.DBus.Properties";
+constexpr const char* hostStatePath = "/xyz/openbmc_project/state/host";
 
 class HostStateMonitor
 {
   public:
-    static HostStateMonitor& getInstance();
-    static HostStateMonitor& getInstance(sdbusplus::bus_t& bus);
+    static void initializeAll(sdbusplus::bus_t& bus);
+    static HostStateMonitor* getInstance(uint64_t slotId = 0);
 
+    explicit HostStateMonitor(sdbusplus::bus_t& bus,
+                              const std::string& hostObjectPath,
+                              uint64_t slotId);
     ~HostStateMonitor() = default;
 
     // Delete copy constructor and assignment operator
     HostStateMonitor(const HostStateMonitor&) = delete;
     HostStateMonitor& operator=(const HostStateMonitor&) = delete;
 
-    // Delete move constructor and assignment operator for singleton
+    // Delete move constructor and assignment operator
     HostStateMonitor(HostStateMonitor&&) = delete;
     HostStateMonitor& operator=(HostStateMonitor&&) = delete;
 
     void startMonitoring();
     void stopMonitoring();
+    void getInitialState();
     bool isPowerOn() const
     {
         return powerStatusOn;
     }
 
-  private:
-    explicit HostStateMonitor(sdbusplus::bus_t& bus);
+    uint64_t getSlotId() const
+    {
+        return slotId;
+    }
 
+    void setPowerStatus(bool status)
+    {
+        powerStatusOn = status;
+    }
+
+  private:
     void handleStateChange(sdbusplus::message_t& message);
-    void getInitialState();
 
     sdbusplus::bus_t& bus;
+    uint64_t slotId;
+    std::string hostPath;
     bool powerStatusOn;
     std::unique_ptr<sdbusplus::bus::match_t> hostStateMatch;
+    inline static std::unordered_map<uint64_t,
+                                     std::unique_ptr<HostStateMonitor>>
+        instances;
+    inline static std::unique_ptr<sdbusplus::bus::match_t> interfacesAddedMatch;
 };
 
-// Implementation
-inline HostStateMonitor& HostStateMonitor::getInstance()
+inline void HostStateMonitor::initializeAll(sdbusplus::bus_t& bus)
 {
-    static sdbusplus::bus_t defaultBus = sdbusplus::bus::new_default();
-    return getInstance(defaultBus);
+    using ObjectMapper = sdbusplus::common::xyz::openbmc_project::ObjectMapper;
+
+    using namespace sdbusplus::bus::match::rules;
+    interfacesAddedMatch = std::make_unique<sdbusplus::bus::match_t>(
+        bus, interfacesAdded("/xyz/openbmc_project/state"),
+        [&bus](sdbusplus::message_t& message) {
+            auto [path, interfaces] = message.unpack<
+                sdbusplus::message::object_path,
+                std::unordered_map<
+                    std::string,
+                    std::unordered_map<std::string,
+                                       std::variant<std::string>>>>();
+
+            auto findIface = interfaces.find(HostState::interface);
+            if (findIface == interfaces.end())
+            {
+                return;
+            }
+
+            std::string pathStr = path.str;
+            if (!pathStr.starts_with(hostStatePath))
+            {
+                return;
+            }
+
+            uint64_t slotId = 0;
+            try
+            {
+                slotId =
+                    std::stoull(pathStr.substr(std::strlen(hostStatePath)));
+            }
+            catch (const std::exception& e)
+            {
+                std::cerr << "Unable to parse slotId from path " << pathStr
+                          << ": " << e.what() << std::endl;
+                return;
+            }
+
+            if (instances.find(slotId) != instances.end())
+            {
+                return;
+            }
+
+            auto monitor =
+                std::make_unique<HostStateMonitor>(bus, pathStr, slotId);
+            const auto& properties = findIface->second;
+            auto findState =
+                properties.find(HostState::property_names::current_host_state);
+            if (findState != properties.end())
+            {
+                const std::string& stateValue =
+                    std::get<std::string>(findState->second);
+                monitor->setPowerStatus(stateValue.ends_with(".Running"));
+            }
+
+            instances.emplace(slotId, std::move(monitor));
+        });
+
+    auto mapper = bus.new_method_call(
+        ObjectMapper::default_service, ObjectMapper::instance_path,
+        ObjectMapper::interface, ObjectMapper::method_names::get_sub_tree);
+    mapper.append("/xyz/openbmc_project/state", 0,
+                  std::array<const char*, 1>{HostState::interface});
+
+    auto resp = bus.call(mapper);
+    auto respData = resp.unpack<std::unordered_map<
+        std::string,
+        std::unordered_map<std::string, std::vector<std::string>>>>();
+
+    for (const auto& [pathStr, _] : respData)
+    {
+        if (!pathStr.starts_with(hostStatePath))
+        {
+            continue;
+        }
+
+        uint64_t slotId = 0;
+        try
+        {
+            slotId = std::stoull(pathStr.substr(std::strlen(hostStatePath)));
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Unable to parse slotId from path " << pathStr << ": "
+                      << e.what() << std::endl;
+            continue;
+        }
+
+        if (instances.find(slotId) != instances.end())
+        {
+            continue;
+        }
+
+        auto monitor = std::make_unique<HostStateMonitor>(bus, pathStr, slotId);
+        monitor->getInitialState();
+        instances.emplace(slotId, std::move(monitor));
+    }
 }
 
-inline HostStateMonitor& HostStateMonitor::getInstance(sdbusplus::bus_t& bus)
+inline HostStateMonitor* HostStateMonitor::getInstance(uint64_t slotId)
 {
-    static HostStateMonitor instance(bus);
-    return instance;
+    auto it = instances.find(slotId);
+    if (it == instances.end())
+    {
+        return nullptr;
+    }
+
+    return it->second.get();
 }
 
-inline HostStateMonitor::HostStateMonitor(sdbusplus::bus_t& bus) :
-    bus(bus), powerStatusOn(false), hostStateMatch(nullptr)
+inline HostStateMonitor::HostStateMonitor(
+    sdbusplus::bus_t& bus, const std::string& hostObjectPath, uint64_t slotId) :
+    bus(bus), slotId(slotId), hostPath(hostObjectPath), powerStatusOn(false),
+    hostStateMatch(nullptr)
 {
-    getInitialState();
+    startMonitoring();
 }
 
 inline void HostStateMonitor::startMonitoring()
 {
-    if (hostStateMatch == nullptr)
+    if (hostStateMatch)
     {
-        using namespace sdbusplus::bus::match::rules;
-
-        hostStateMatch = std::make_unique<sdbusplus::bus::match_t>(
-            bus,
-            propertiesChangedNamespace(HOST_STATE_PATH, HostState::interface),
-            [this](sdbusplus::message_t& message) {
-                handleStateChange(message);
-            });
+        return;
     }
+
+    using namespace sdbusplus::bus::match::rules;
+
+    hostStateMatch = std::make_unique<sdbusplus::bus::match_t>(
+        bus, propertiesChangedNamespace(hostPath, HostState::interface),
+        [this](sdbusplus::message_t& message) { handleStateChange(message); });
 }
 
 inline void HostStateMonitor::stopMonitoring()
@@ -92,12 +210,12 @@ inline void HostStateMonitor::stopMonitoring()
 
 inline void HostStateMonitor::handleStateChange(sdbusplus::message_t& message)
 {
-    std::string objectName;
-    boost::container::flat_map<std::string, std::variant<std::string>> values;
-
     try
     {
-        message.read(objectName, values);
+        auto [objectName, values] =
+            message.unpack<std::string,
+                           boost::container::flat_map<
+                               std::string, std::variant<std::string>>>();
 
         auto findState =
             values.find(HostState::property_names::current_host_state);
@@ -115,24 +233,25 @@ inline void HostStateMonitor::handleStateChange(sdbusplus::message_t& message)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Failed to handle host state change: " << e.what()
-                  << std::endl;
+        std::cerr << "Failed to handle host " << slotId
+                  << " state change: " << e.what() << std::endl;
     }
 }
 
 inline void HostStateMonitor::getInitialState()
 {
+    std::string service =
+        "xyz.openbmc_project.State.Host" + std::to_string(slotId);
+
     try
     {
-        auto method =
-            bus.new_method_call("xyz.openbmc_project.State.Host0",
-                                HOST_STATE_PATH, PROPERTIES_INTERFACE, "Get");
+        auto method = bus.new_method_call(service.c_str(), hostPath.c_str(),
+                                          propertiesInterface, "Get");
         method.append(HostState::interface,
                       HostState::property_names::current_host_state);
 
         auto reply = bus.call(method);
-        std::variant<std::string> currentState;
-        reply.read(currentState);
+        auto currentState = reply.unpack<std::variant<std::string>>();
 
         const std::string& stateValue = std::get<std::string>(currentState);
         powerStatusOn = stateValue.ends_with(".Running");
