@@ -372,14 +372,14 @@ void populatePidInfo(
         // named threshold, it is OK, because the SetPointOffset parser
         // splits up the input into individual vectors, each with only a
         // single element, if it detects that SetPointOffset is in use.
-        const std::string& path =
-            sensorConfig.at(info.inputs.front().name).readPath;
-
-        DbusHelper helper(bus);
-        std::string service = helper.getService(interface, path);
         double reading = 0;
         try
         {
+            const std::string& path =
+                sensorConfig.at(info.inputs.front().name).readPath;
+
+            DbusHelper helper(bus);
+            std::string service = helper.getService(interface, path);
             helper.getProperty(service, path, interface, *thresholdProperty,
                                reading);
         }
