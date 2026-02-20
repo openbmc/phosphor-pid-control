@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "02527db0_d42b965a",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 8,
+      "author": {
+        "id": 1002762
+      },
+      "writtenOn": "2026-02-20T10:57:43Z",
+      "side": 1,
+      "message": "is this change intended to support sensors defined in JSON without threshold sections?\nHave we validated behavior when thresholds are completely absent in the configuration?",
+      "revId": "1a9022cee31d3c5ae804562cf08daeaa16439d46",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
