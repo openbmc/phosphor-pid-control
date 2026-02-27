@@ -94,8 +94,6 @@ struct ZoneConfig
 
 using PIDConf = std::map<std::string, ControllerInfo>;
 
-constexpr bool DEBUG = false; // enable to print found configuration
-
 } // namespace conf
 
 } // namespace pid_control

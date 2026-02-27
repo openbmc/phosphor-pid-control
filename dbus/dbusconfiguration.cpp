@@ -21,6 +21,7 @@
 #include "dbushelper.hpp"
 #include "dbusutil.hpp"
 #include "ec/stepwise.hpp"
+#include "tuning.hpp"
 #include "util.hpp"
 
 #include <systemd/sd-bus.h>
@@ -163,7 +164,7 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
             ret.emplace_back(std::move(mode));
         }
     }
-    if constexpr (pid_control::conf::DEBUG)
+    if (debugEnabled)
     {
         std::cout << "Profiles selected: ";
         for (const auto& profile : ret)
@@ -212,7 +213,7 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
             }
         }
 
-        if constexpr (pid_control::conf::DEBUG)
+        if (debugEnabled)
         {
             std::cout << "New config detected: " << path.str << std::endl;
             for (auto& d : data)
@@ -1255,7 +1256,7 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
             }
         }
     }
-    if constexpr (pid_control::conf::DEBUG)
+    if (debugEnabled)
     {
         debugPrint(sensorConfig, zoneConfig, zoneDetailsConfig);
     }
