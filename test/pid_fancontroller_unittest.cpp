@@ -258,14 +258,17 @@ TEST(FanControllerTest, OutputProc_VerifyFailSafeWhenInputHigher)
 
     EXPECT_CALL(z, getRedundantWrite()).WillOnce(Return(false));
     EXPECT_CALL(z, getSensor(StrEq("fan0"))).WillOnce(Return(s1.get()));
-#ifdef STRICT_FAILSAFE_PWM
-    double failsafeValue = failsafePWM / 100;
-    EXPECT_CALL(*sm1, write(failsafeValue, false, _));
-#else
-    // Converting from double to double for expectation.
-    double value = percent / 100;
-    EXPECT_CALL(*sm1, write(value, false, _));
-#endif
+    if constexpr (STRICT_FAILSAFE_PWM)
+    {
+        double failsafeValue = failsafePWM / 100;
+        EXPECT_CALL(*sm1, write(failsafeValue, false, _));
+    }
+    else
+    {
+        // Converting from double to double for expectation.
+        double value = percent / 100;
+        EXPECT_CALL(*sm1, write(value, false, _));
+    }
 
     // This is a fan PID, so calling outputProc will try to write this value
     // to the sensors.

@@ -15,7 +15,12 @@ cxx = meson.get_compiler('cpp')
 
 conf_data = configuration_data()
 
-conf_data.set('STRICT_FAILSAFE_PWM', get_option('strict-failsafe-pwm'))
+if get_option('strict-failsafe-pwm')
+    conf_data.set('STRICT_FAILSAFE_PWM', 1)
+else
+    conf_data.set('STRICT_FAILSAFE_PWM', 0)
+endif
+
 conf_data.set('OFFLINE_FAILSAFE_PWM', get_option('offline-failsafe-pwm'))
 conf_data.set('UNC_FAILSAFE', get_option('unc-failsafe'))
 
