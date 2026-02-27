@@ -88,9 +88,10 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
     }
     catch (const std::exception& e)
     {
-#ifndef HANDLE_MISSING_OBJECT_PATHS
-        return nullptr;
-#else
+        if constexpr (!HANDLE_MISSING_OBJECT_PATHS)
+        {
+            return nullptr;
+        }
         // CASE1: The sensor is not on DBus, but as it is not in the
         // MissingIsAcceptable list, the sensor should be built with a failed
         // state to send the zone to failsafe mode. Everything will recover if
@@ -123,7 +124,6 @@ std::unique_ptr<ReadInterface> DbusPassive::createDbusPassive(
         std::cerr << "DbusPassive: Sensor " << path
                   << " is missing from D-Bus, build this sensor as failed\n";
         return sensor;
-#endif
     }
 
     auto sensor = std::make_unique<DbusPassive>(
