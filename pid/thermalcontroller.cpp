@@ -173,20 +173,7 @@ double ThermalController::inputProc(void)
 // bmc_get_setpt
 double ThermalController::setptProc(void)
 {
-    double setpoint = getSetpoint();
-
-    /* TODO(venture): Thermal setpoint invalid? */
-#if 0
-    if (-1 == setpoint)
-    {
-        return 0.0f;
-    }
-    else
-    {
-        return setpoint;
-    }
-#endif
-    return setpoint;
+    return getSetpoint();
 }
 
 // bmc_set_pid_output

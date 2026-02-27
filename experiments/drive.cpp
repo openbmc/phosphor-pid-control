@@ -45,22 +45,8 @@ int64_t getAverage(std::tuple<tstamp, int64_t, int64_t>& values)
 
 bool valueClose(int64_t value, int64_t goal)
 {
-#if 0
-    int64_t delta = 100; /* within 100 */
-    if (value < (goal + delta) &&
-        value > (goal - delta))
-    {
-        return true;
-    }
-#endif
-
     /* let's make sure it's below goal. */
-    if (value < goal)
-    {
-        return true;
-    }
-
-    return false;
+    return value < goal;
 }
 
 static void driveGoal(int64_t& seriesCnt, int64_t setPwm, int64_t goal,
