@@ -12,7 +12,6 @@
 #include <memory>
 #include <mutex>
 #include <string>
-#include <type_traits>
 
 template <typename... T>
 using ServerObject = typename sdbusplus::server::object_t<T...>;
@@ -22,19 +21,6 @@ using ValueObject = ServerObject<ValueInterface>;
 
 namespace pid_control
 {
-
-class ValueHelper : public ValueInterface
-{
-  public:
-    auto operator()() const
-    {
-        return value();
-    }
-};
-
-constexpr bool usingDouble =
-    std::is_same_v<std::result_of_t<ValueHelper()>, double>;
-using ValueType = std::conditional_t<usingDouble, double, int64_t>;
 
 /*
  * HostSensor object is a Sensor derivative that also implements a ValueObject,
@@ -56,7 +42,7 @@ class HostSensor : public Sensor, public ValueObject
                           : ValueObject::action::emit_object_added)
     {}
 
-    ValueType value(ValueType value) override;
+    double value(double value) override;
 
     ReadReturn read(void) override;
     void write(double value) override;

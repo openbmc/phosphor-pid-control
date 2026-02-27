@@ -22,15 +22,6 @@
 namespace pid_control
 {
 
-template <typename T>
-void scaleHelper(T& ptr, int64_t value)
-{
-    if constexpr (std::is_same_v<ValueType, int64_t>)
-    {
-        ptr->scale(value);
-    }
-}
-
 std::unique_ptr<Sensor> HostSensor::createTemp(
     const std::string& name, int64_t timeout, sdbusplus::bus_t& bus,
     const char* objPath, bool defer, bool ignoreFailIfHostOff)
@@ -45,7 +36,6 @@ std::unique_ptr<Sensor> HostSensor::createTemp(
     // TODO(venture): Need to not hard-code that this is DegreesC and scale
     // 10x-3 unless it is! :D
     sensor->unit(ValueInterface::Unit::DegreesC);
-    scaleHelper(sensor, -3);
     sensor->emit_object_added();
     // emit_object_added() can be called twice, harmlessly, the second time it
     // doesn't actually happen, but we don't want to call it before we set up
@@ -58,22 +48,12 @@ std::unique_ptr<Sensor> HostSensor::createTemp(
     return sensor;
 }
 
-template <typename T>
-int64_t getScale(T* sensor)
-{
-    if constexpr (std::is_same_v<ValueType, int64_t>)
-    {
-        return sensor->scale();
-    }
-    return 0;
-}
-
-ValueType HostSensor::value(ValueType value)
+double HostSensor::value(double value)
 {
     std::lock_guard<std::mutex> guard(_lock);
 
     _updated = std::chrono::high_resolution_clock::now();
-    _value = value * pow(10, getScale(this)); /* scale value */
+    _value = value * pow(10, 0); /* scale value */
 
     return ValueObject::value(value);
 }
