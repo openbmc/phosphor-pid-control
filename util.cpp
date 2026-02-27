@@ -33,10 +33,6 @@ void debugPrint(const std::map<std::string, conf::SensorConfig>& sensorConfig,
                 const std::map<int64_t, conf::PIDConf>& zoneConfig,
                 const std::map<int64_t, conf::ZoneConfig>& zoneDetailsConfig)
 {
-    if constexpr (!conf::DEBUG)
-    {
-        return;
-    }
     // print sensor config
     std::cout << "sensor config:\n";
     std::cout << "{\n";
