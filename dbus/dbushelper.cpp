@@ -161,9 +161,10 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
     catch (const sdbusplus::exception_t&)
     {
         // do nothing, sensors don't have to expose critical thresholds
-#ifndef UNC_FAILSAFE
-        return false;
-#endif
+        if constexpr (!UNC_FAILSAFE)
+        {
+            return false;
+        }
     }
 
     auto findCriticalLow = criticalMap.find(
@@ -183,12 +184,11 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
     {
         asserted = std::get<bool>(findCriticalHigh->second);
     }
-#ifdef UNC_FAILSAFE
-    if (!asserted)
+    if (UNC_FAILSAFE && !asserted)
     {
         auto warning = _bus.new_method_call(service.c_str(), path.c_str(),
                                             propertiesintf, "GetAll");
-        warning.append(warningThreshInf);
+        warning.append(SensorThresholdWarning::interface);
         PropertyMap warningMap;
 
         try
@@ -209,7 +209,6 @@ bool DbusHelper::thresholdsAsserted(const std::string& service,
             asserted = std::get<bool>(findWarningHigh->second);
         }
     }
-#endif
     return asserted;
 }
 
