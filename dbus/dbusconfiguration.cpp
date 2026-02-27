@@ -929,8 +929,10 @@ bool init(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer,
                     }
                     else
                     {
-                        throw std::runtime_error(
-                            "fan PID has invalid number of Outputs");
+                        throw std::runtime_error(std::format(
+                            "fan PID '{}' has invalid number of Outputs: {} != number of Inputs: {}",
+                            pidName, outputSensorInterfaces.size(),
+                            inputSensorInterfaces.size()));
                     }
                     std::string fanSensorName;
                     std::string pwmPath;
