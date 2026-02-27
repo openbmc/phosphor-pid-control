@@ -221,7 +221,10 @@ void FanController::outputProc(double value)
 
 FanController::~FanController()
 {
-#ifdef OFFLINE_FAILSAFE_PWM
+    if constexpr (!OFFLINE_FAILSAFE_PWM)
+    {
+        return;
+    }
     double percent = _owner->getFailSafePercent();
     if (debugEnabled)
     {
@@ -246,7 +249,6 @@ FanController::~FanController()
         auto unscaledWritten = static_cast<double>(rawWritten);
         _owner->setOutputCache(sensor->getName(), {percent, unscaledWritten});
     }
-#endif
 }
 
 } // namespace pid_control
