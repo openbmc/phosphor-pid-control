@@ -96,7 +96,6 @@ root_inc = include_directories(
     'buildjson',
     'dbus',
     'errors',
-    'experiments',
     'ipmi',
     'notimpl',
     'pid',
@@ -142,7 +141,6 @@ libswampd_sources = [
     'pid/pidloop.cpp',
     'pid/tuning.cpp',
     'buildjson/buildjson.cpp',
-    'experiments/drive.cpp',
 ]
 
 libmanualcmds_sources = [
