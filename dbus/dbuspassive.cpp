@@ -456,8 +456,7 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
         }
         owner->setFailed(asserted);
     }
-#ifdef UNC_FAILSAFE
-    else if (msgSensor == SensorThresholdWarning::interface)
+    else if (UNC_FAILSAFE && msgSensor == SensorThresholdWarning::interface)
     {
         auto warningAlarmHigh = msgData.find(
             SensorThresholdWarning::property_names::warning_alarm_high);
@@ -473,7 +472,6 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
         }
         owner->setFailed(asserted);
     }
-#endif
     else if (msgSensor == StateDecoratorAvailability::interface)
     {
         auto available =

@@ -27,7 +27,11 @@ else
     conf_data.set('OFFLINE_FAILSAFE_PWM', 0)
 endif
 
-conf_data.set('UNC_FAILSAFE', get_option('unc-failsafe'))
+if get_option('unc-failsafe')
+    conf_data.set('UNC_FAILSAFE', 1)
+else
+    conf_data.set('UNC_FAILSAFE', 0)
+endif
 
 if get_option('handle-missing-object-paths')
     conf_data.set('HANDLE_MISSING_OBJECT_PATHS', 1)
