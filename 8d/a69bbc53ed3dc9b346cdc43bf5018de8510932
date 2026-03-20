@@ -1,0 +1,8 @@
+Code-Review+2: Patrick Williams <patrick@stwcx.xyz>
+Verified+1: OpenBMC CI <openbmcbump-ci@yahoo.com>
+Submitted-by: Patrick Williams <patrick@stwcx.xyz>
+Submitted-at: Fri, 20 Mar 2026 16:12:46 +0000
+Reviewed-on: https://gerrit.openbmc.org/c/openbmc/phosphor-pid-control/+/87903
+Comments-Total: 2
+Project: openbmc/phosphor-pid-control
+Branch: refs/heads/master
