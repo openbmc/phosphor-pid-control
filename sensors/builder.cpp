@@ -167,7 +167,7 @@ SensorManager buildSensors(
                  */
                 auto sensor = HostSensor::createTemp(
                     name, info->timeout, hostSensorBus, info->readPath.c_str(),
-                    deferSignals);
+                    deferSignals, info->ignoreFailIfHostOff);
                 mgmr.addSensor(info->type, name, std::move(sensor));
             }
             else
