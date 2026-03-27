@@ -116,7 +116,7 @@ void DbusPidZone::markSensorMissing(const std::string& name,
     }
 
     outputFailsafeLogWithZone(_zoneId, this->getFailSafeMode(), name,
-                              "The sensor is missing.");
+                              "The sensor is missing: " + failReason + ".");
 
     if (debugEnabled)
     {
@@ -510,7 +510,7 @@ void DbusPidZone::initializeCache(void)
         _cachedFanOutputs[f] = {nan, nan};
 
         // Start all fans in fail-safe mode.
-        markSensorMissing(f, "");
+        markSensorMissing(f, "Initialization");
     }
 
     for (const auto& t : _thermalInputs)
@@ -518,7 +518,7 @@ void DbusPidZone::initializeCache(void)
         _cachedValuesByName[t] = {nan, nan};
 
         // Start all sensors in fail-safe mode.
-        markSensorMissing(t, "");
+        markSensorMissing(t, "Initialization");
     }
 }
 
