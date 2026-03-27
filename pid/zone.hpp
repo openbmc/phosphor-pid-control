@@ -197,9 +197,6 @@ class DbusPidZone : public ZoneInterface, public ModeObject
                 {
                     std::cerr << sensorInput << " sensor timeout\n";
                 }
-                outputFailsafeLogWithZone(_zoneId, this->getFailSafeMode(),
-                                          sensorInput,
-                                          "The sensor has timed out.");
             }
             else
             {
