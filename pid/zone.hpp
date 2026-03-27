@@ -100,7 +100,6 @@ class DbusPidZone : public ZoneInterface, public ModeObject
     uint64_t getUpdateThermalsCycle(void) const override;
 
     Sensor* getSensor(const std::string& name) override;
-    std::vector<std::string> getSensorNames(void) override;
     void determineMaxSetPointRequest(void) override;
     void updateFanTelemetry(void) override;
     void updateSensors(void) override;
@@ -200,9 +199,6 @@ class DbusPidZone : public ZoneInterface, public ModeObject
                     lg2::debug("{SENSOR} sensor timeout", "SENSOR",
                                sensorInput);
                 }
-                outputFailsafeLogWithZone(_zoneId, this->getFailSafeMode(),
-                                          sensorInput,
-                                          "The sensor has timed out.");
             }
             else
             {
