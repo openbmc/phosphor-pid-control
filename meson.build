@@ -133,6 +133,7 @@ libswampd_sources = [
     'dbus/dbuspassive.cpp',
     'dbus/dbuswrite.cpp',
     'failsafeloggers/builder.cpp',
+    'failsafeloggers/failsafe_logger.cpp',
     'failsafeloggers/failsafe_logger_utility.cpp',
     'sysfs/sysfsread.cpp',
     'sysfs/sysfswrite.cpp',
