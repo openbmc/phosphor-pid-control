@@ -3,7 +3,6 @@
 
 #include "host.hpp"
 
-#include "failsafeloggers/failsafe_logger_utility.hpp"
 #include "hoststatemonitor.hpp"
 #include "interfaces.hpp"
 #include "sensor.hpp"
@@ -89,9 +88,12 @@ bool HostSensor::getFailed(void)
         }
     }
 
-    outputFailsafeLogWithSensor(getName(), true, getName(),
-                                "The sensor has invalid readings.");
     return true;
+}
+
+std::string HostSensor::getFailReason(void)
+{
+    return "Invalid readings";
 }
 
 } // namespace pid_control

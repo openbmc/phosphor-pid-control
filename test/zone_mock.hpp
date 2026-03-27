@@ -59,7 +59,6 @@ class ZoneMock : public ZoneInterface
     MOCK_CONST_METHOD0(getAccSetPoint, bool());
 
     MOCK_METHOD1(getSensor, Sensor*(const std::string&));
-    MOCK_METHOD0(getSensorNames, std::vector<std::string>());
 
     MOCK_METHOD0(initializeLog, void());
     MOCK_METHOD1(writeLog, void(const std::string&));
