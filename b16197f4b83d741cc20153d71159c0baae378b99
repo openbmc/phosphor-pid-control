@@ -112,6 +112,30 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "49151b94_c609d53c",
+        "filename": "main.cpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-03-27T05:28:28Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f3361c80_e8864ba8",
+      "range": {
+        "startLine": 178,
+        "startChar": 46,
+        "endLine": 178,
+        "endChar": 62
+      },
+      "revId": "b16197f4b83d741cc20153d71159c0baae378b99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "e771d27a_b41e6da0",
@@ -143,6 +167,24 @@
       "side": 1,
       "message": "Acknowledged",
       "parentUuid": "e771d27a_b41e6da0",
+      "revId": "b16197f4b83d741cc20153d71159c0baae378b99",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "faa8e254_52cd57a0",
+        "filename": "pid/manual_mode_manager.hpp",
+        "patchSetId": 17
+      },
+      "lineNbr": 24,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-03-27T05:28:28Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "d6fde824_90720169",
       "revId": "b16197f4b83d741cc20153d71159c0baae378b99",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
