@@ -47,6 +47,7 @@ class HostSensor : public Sensor, public ValueObject
     ReadReturn read(void) override;
     void write(double value) override;
     bool getFailed(void) override;
+    std::string getFailReason(void) override;
 
   private:
     /*
