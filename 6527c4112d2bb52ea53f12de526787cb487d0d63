@@ -16,6 +16,24 @@
       "message": "Can you global rename slotId to hostId? A lot of other services use \"host\" to identify the server rather than \"slot\". I have a feeling that the term slotId is a very yosemite specific naming of hosts which is not widely used in the industry.",
       "revId": "6527c4112d2bb52ea53f12de526787cb487d0d63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "1b5404a5_f2e666b9",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-04-01T10:55:53Z",
+      "side": 1,
+      "message": "I’ve addressed this and aligned the naming to HostId. I pushed entity-manager [88838] to rename the existing SlotId key to HostId, and I also updated the corresponding consumer patches, including this change and [74073], so they now use HostId consistently as well.\n\n[88838]: https://gerrit.openbmc.org/c/openbmc/entity-manager/+/88838\n[74073]: https://gerrit.openbmc.org/c/openbmc/dbus-sensors/+/74073",
+      "parentUuid": "c5a1f709_58c7ba6f",
+      "revId": "6527c4112d2bb52ea53f12de526787cb487d0d63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
