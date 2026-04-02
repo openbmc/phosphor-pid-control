@@ -34,6 +34,24 @@
       "parentUuid": "c5a1f709_58c7ba6f",
       "revId": "6527c4112d2bb52ea53f12de526787cb487d0d63",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "033daa91_2a98f49c",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 28
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1002134
+      },
+      "writtenOn": "2026-04-02T08:13:20Z",
+      "side": 1,
+      "message": "I\u0027ve reverted the naming back to SlotId for now.\nIf we do need a separate HostId to express the host association independently of the physical slot, I\u0027ve prepared [88869] for that. Once the direction is confirmed I\u0027ll activate [88869] and update this change accordingly.\n\n[88869]: https://gerrit.openbmc.org/c/openbmc/entity-manager/+/88869",
+      "parentUuid": "1b5404a5_f2e666b9",
+      "revId": "6527c4112d2bb52ea53f12de526787cb487d0d63",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
