@@ -35,6 +35,24 @@
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "4391b240_88b8753f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1001712
+      },
+      "writtenOn": "2026-04-02T15:44:41Z",
+      "side": 1,
+      "message": "+1, @twpeng50606@gmail.com i would suggest the same to you.\n\nIn my (limited) practical experience with existing pid code and various \n2U chassis i did not have an issue with oscillations that could not be \nsolved with the existing configuration properties.\n\nI would go so far as to say that most chassis would get away with way fewer properties than what is possible with current `\"Type\": \"Pid\"` configuration.\n\n\nIf your change reduces oscillation or spiking fan response in some cases, maybe that\u0027s worth merging behind an option so people can try it out and see if it helps.\n\nThen later if others found it helpful either enable it by default or provide some opt in way through configuration.\n\nOverall many interesting ideas..",
+      "parentUuid": "3cb71845_f143af9c",
+      "revId": "d1d12e5f537fc23e159967794c869c467e6157dd",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "a952b558_337f4dee",
