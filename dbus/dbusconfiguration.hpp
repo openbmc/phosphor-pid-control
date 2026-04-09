@@ -33,7 +33,7 @@ using DbusVariantType =
                  std::vector<std::string>, std::vector<double>>;
 
 using ManagedObjectType = std::unordered_map<
-    sdbusplus::message::object_path,
+    sdbusplus::object_path,
     std::unordered_map<std::string,
                        std::unordered_map<std::string, DbusVariantType>>>;
 

@@ -192,7 +192,7 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
     sdbusplus::message_t message(m);
     if (std::string(message.get_member()) == "InterfacesAdded")
     {
-        sdbusplus::message::object_path path;
+        sdbusplus::object_path path;
         std::unordered_map<
             std::string,
             std::unordered_map<std::string, std::variant<Associations, bool>>>
