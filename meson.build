@@ -94,7 +94,11 @@ ipmid_dep = dependency('libipmid')
 if cxx.has_header('CLI/CLI.hpp')
     CLI11_dep = declare_dependency()
 else
-    CLI11_dep = dependency('CLI11')
+    CLI11_dep = dependency(
+        'CLI11',
+        include_type: 'system',
+        default_options: ['tests=disabled'],
+    )
 endif
 
 deps = [
