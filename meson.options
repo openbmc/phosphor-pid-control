@@ -1,5 +1,11 @@
 option('tests', type: 'feature', value: 'enabled', description: 'Build tests')
 option(
+    'ipmi',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Build the IPMI provider library',
+)
+option(
     'oe-sdk',
     type: 'feature',
     value: 'disabled',

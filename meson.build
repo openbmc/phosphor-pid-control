@@ -88,7 +88,7 @@ phosphor_dbus_interfaces_dep = dependency('phosphor-dbus-interfaces')
 phosphor_logging_dep = dependency('phosphor-logging')
 sdbusplus_dep = dependency('sdbusplus')
 libsystemd_dep = dependency('libsystemd')
-ipmid_dep = dependency('libipmid')
+ipmid_dep = dependency('libipmid', required: get_option('ipmi'))
 
 
 if cxx.has_header('CLI/CLI.hpp')
@@ -103,7 +103,6 @@ endif
 
 deps = [
     CLI11_dep,
-    ipmid_dep,
     libsystemd_dep,
     nlohmann_json_dep,
     phosphor_dbus_interfaces_dep,
@@ -169,16 +168,20 @@ libmanualcmds_sources = [
     'ipmi/dbus_mode.cpp',
 ]
 
-libmanualcmds = library(
-    'manualcmds',
-    libmanualcmds_sources,
-    implicit_include_directories: false,
-    dependencies: deps,
-    version: meson.project_version(),
-    override_options: ['b_lundef=false'],
-    install: true,
-    install_dir: get_option('libdir') / 'ipmid-providers',
-)
+if ipmid_dep.found()
+    library(
+        'manualcmds',
+        libmanualcmds_sources,
+        implicit_include_directories: false,
+        dependencies: deps + [ipmid_dep],
+        version: meson.project_version(),
+        override_options: ['b_lundef=false'],
+        install: true,
+        install_dir: get_option('libdir') / 'ipmid-providers',
+    )
+else
+    message('IPMI provider disabled: libipmid dependency not requested')
+endif
 
 executable(
     'swampd',
