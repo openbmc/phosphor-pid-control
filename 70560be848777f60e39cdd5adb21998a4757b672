@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "2ce60a6d_860d7c03",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1003015
+      },
+      "writtenOn": "2026-06-05T08:34:48Z",
+      "side": 1,
+      "message": "OpenBMC CI reports \"User not approved, see admin, no CI\".\nCould an admin please advise which ci-authorized group I should be added to?\nI have already completed a local build test:\nTested: bitbake phosphor-pid-control -c compile -f",
+      "revId": "70560be848777f60e39cdd5adb21998a4757b672",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    }
+  ]
+}
