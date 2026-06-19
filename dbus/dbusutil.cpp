@@ -143,7 +143,7 @@ std::string getSensorPath(const std::string& type, const std::string& id)
 
 std::string getMatch(const std::string& path)
 {
-    return sdbusplus::bus::match::rules::propertiesChangedNamespace(
+    return sdbusplus::match_rules::propertiesChangedNamespace(
         path, "xyz.openbmc_project");
 }
 

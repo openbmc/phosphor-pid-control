@@ -69,7 +69,7 @@ class DbusPassive : public ReadInterface
     void initFromSettings(const SensorProperties& settings, bool failed);
 
   private:
-    sdbusplus::bus::match_t _signal;
+    sdbusplus::match _signal;
     int64_t _scale;
     std::string _id; // for debug identification
     std::unique_ptr<DbusHelperInterface> _helper;

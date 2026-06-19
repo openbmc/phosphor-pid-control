@@ -48,7 +48,7 @@ class HostStateMonitor
 
     sdbusplus::bus_t& bus;
     bool powerStatusOn;
-    std::unique_ptr<sdbusplus::bus::match_t> hostStateMatch;
+    std::unique_ptr<sdbusplus::match> hostStateMatch;
 };
 
 // Implementation
@@ -74,9 +74,9 @@ inline void HostStateMonitor::startMonitoring()
 {
     if (hostStateMatch == nullptr)
     {
-        using namespace sdbusplus::bus::match::rules;
+        using namespace sdbusplus::match_rules;
 
-        hostStateMatch = std::make_unique<sdbusplus::bus::match_t>(
+        hostStateMatch = std::make_unique<sdbusplus::match>(
             bus,
             propertiesChangedNamespace(HOST_STATE_PATH, HostState::interface),
             [this](sdbusplus::message_t& message) {
