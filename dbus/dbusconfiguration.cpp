@@ -250,7 +250,7 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
 void createMatches(sdbusplus::bus_t& bus, boost::asio::steady_timer& timer)
 {
     // this is a list because the matches can't be moved
-    static std::list<sdbusplus::bus::match_t> matches;
+    static std::list<sdbusplus::match> matches;
 
     const std::array<std::string, 4> interfaces = {
         ControlThermalMode::interface, pidConfigurationInterface,

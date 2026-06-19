@@ -41,7 +41,7 @@ class DbusPassiveRedundancy
   private:
     void populateFailures(void);
 
-    sdbusplus::bus::match_t match;
+    sdbusplus::match match;
     std::set<std::string> failed;
     sdbusplus::bus_t& passiveBus;
 };
