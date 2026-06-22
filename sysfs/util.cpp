@@ -11,8 +11,8 @@ namespace pid_control
 
 /*
  * Replace "**" in the provided path string with an appropriate concrete path
- * component (the first directory entry found, on the assumption that there
- * will only be a single candidate).
+ * component by scanning entries under the base path and returning the first
+ * candidate whose full path exists.
  */
 
 namespace fs = std::filesystem;
@@ -26,24 +26,21 @@ std::string FixupPath(std::string original)
 
     if (n != std::string::npos)
     {
-        /* This path has some missing pieces and we support it. */
         std::string base = original.substr(0, n);
-        std::string fldr;
-        std::string f = original.substr(n + 2, original.size() - (n + 2));
+        std::string suffix = original.substr(n + 2);
 
-        /* Equivalent to glob and grab 0th entry. */
-        for (const auto& folder : fs::directory_iterator(base))
+        /* Try each subdirectory; return the first whose full path exists. */
+        for (const auto& entry : fs::directory_iterator(base))
         {
-            fldr = folder.path();
-            break;
+            std::string candidate = entry.path().string() + suffix;
+            if (fs::exists(candidate))
+            {
+                return candidate;
+            }
         }
 
-        if (!fldr.length())
-        {
-            return original;
-        }
-
-        return fldr + f;
+        /* No valid candidate found; return original and let the caller fail. */
+        return original;
     }
 
     /* It'll throw an exception when we use it if it's still bad. */
