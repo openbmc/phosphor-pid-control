@@ -14,6 +14,7 @@
 #include <iostream>
 #include <limits>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -194,8 +195,13 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
     // zone -> configs
     std::map<int64_t, conf::ZoneConfig> zoneConfig;
 
-    /* TODO: if zones is empty, that's invalid. */
     auto zones = data["zones"];
+    if (zones.empty())
+    {
+        throw std::invalid_argument(
+            "Invalid configuration: 'zones' must contain at least one zone");
+    }
+
     for (const auto& zone : zones)
     {
         int64_t id;

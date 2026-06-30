@@ -28,10 +28,8 @@ TEST(ZoneFromJson, emptyZone)
       }
     )"_json;
 
-    std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2);
-
-    EXPECT_TRUE(pidConfig.empty());
-    EXPECT_TRUE(zoneConfig.empty());
+    EXPECT_THROW(std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2),
+           std::invalid_argument);
 }
 
 TEST(ZoneFromJson, oneZoneOnePid)
