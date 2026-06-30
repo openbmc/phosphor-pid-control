@@ -5,6 +5,7 @@
 
 #include <cstdint>
 #include <map>
+#include <stdexcept>
 #include <tuple>
 
 #include <gtest/gtest.h>
@@ -17,10 +18,10 @@ namespace
 TEST(ZoneFromJson, emptyZone)
 {
     // There is a zone key, but it's empty.
-    // This is technically invalid.
+  // This is technically invalid.
 
-    std::map<int64_t, conf::PIDConf> pidConfig;
-    std::map<int64_t, conf::ZoneConfig> zoneConfig;
+  std::map<int64_t, conf::PIDConf> pidConfig;
+  std::map<int64_t, conf::ZoneConfig> zoneConfig;
 
     auto j2 = R"(
       {
@@ -28,10 +29,8 @@ TEST(ZoneFromJson, emptyZone)
       }
     )"_json;
 
-    std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2);
-
-    EXPECT_TRUE(pidConfig.empty());
-    EXPECT_TRUE(zoneConfig.empty());
+    EXPECT_THROW(std::tie(pidConfig, zoneConfig) = buildPIDsFromJson(j2),
+           std::invalid_argument);
 }
 
 TEST(ZoneFromJson, oneZoneOnePid)
