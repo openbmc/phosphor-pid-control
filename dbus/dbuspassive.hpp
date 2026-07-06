@@ -21,18 +21,16 @@
 namespace pid_control
 {
 
+class DbusPassive;
+
 int dbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
 
 /*
  * This ReadInterface will passively listen for Value updates from whomever
  * owns the associated dbus object.
  *
- * This requires another modification in phosphor-dbus-interfaces that will
- * signal a value update every time it's read instead of only when it changes
- * to help us:
- * - ensure we're still receiving data (since we don't control the reader)
- * - simplify stale data detection
- * - simplify error detection
+ * For fan sensors, it also watches the FanStatus.Running property on the
+ * same object path so a stopped fan is reflected immediately.
  */
 class DbusPassive : public ReadInterface
 {
@@ -60,6 +58,7 @@ class DbusPassive : public ReadInterface
     void setFailed(bool value);
     void setFunctional(bool value);
     void setAvailable(bool value);
+    void setFanRunning(bool value);
 
     int64_t getScale(void);
     std::string getID(void);
@@ -84,6 +83,7 @@ class DbusPassive : public ReadInterface
     bool _available = true;
     bool _availableOverridden = false;
     bool _unavailableAsFailed = true;
+    bool _fanRunning = true;
 
     bool _typeMargin = false;
     bool _typeFan = false;
