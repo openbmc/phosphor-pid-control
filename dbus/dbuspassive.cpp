@@ -48,6 +48,9 @@ using StateDecoratorAvailability =
 using StateDecoratorOperationalStatus = sdbusplus::common::xyz::
     openbmc_project::state::decorator::OperationalStatus;
 
+constexpr const char* fanStatusInterface = "xyz.openbmc_project.Sensor.FanStatus";
+constexpr const char* fanStatusRunningProperty = "Running";
+
 namespace pid_control
 {
 
@@ -253,6 +256,13 @@ bool DbusPassive::getFailed(void) const
         return true;
     }
 
+    if (_typeFan && !_fanRunning)
+    {
+        outputFailsafeLogWithSensor(_id, true, _id,
+                                    "The fan is not running.");
+        return true;
+    }
+
     if (_failed)
     {
         outputFailsafeLogWithSensor(
@@ -293,6 +303,10 @@ std::string DbusPassive::getFailReason(void) const
     {
         return "Margin hot";
     }
+    if (_typeFan && !_fanRunning)
+    {
+        return "Fan not running";
+    }
     if (_failed)
     {
         return "Sensor threshold asserted";
@@ -322,6 +336,16 @@ void DbusPassive::setAvailable(bool value)
 {
     _available = value;
     _availableOverridden = true;
+}
+
+void DbusPassive::setFanRunning(bool value)
+{
+    _fanRunning = value;
+}
+
+bool DbusPassive::isFanSensor() const
+{
+    return _typeFan;
 }
 
 void DbusPassive::initFromSettings(const SensorProperties& settings,
@@ -428,6 +452,23 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
                 std::visit(VariantToDoubleVisitor(), valPropMap->second);
 
             owner->updateValue(value, false);
+        }
+    }
+    else if (owner->isFanSensor() && msgSensor == fanStatusInterface)
+    {
+        auto running = msgData.find(fanStatusRunningProperty);
+        if (running == msgData.end())
+        {
+            return 0;
+        }
+
+        bool fanRunning = std::get<bool>(running->second);
+        owner->setFanRunning(fanRunning);
+
+        if (!fanRunning)
+        {
+            // Prevent stale RPM values from masking a stopped fan.
+            owner->updateValue(std::numeric_limits<double>::quiet_NaN(), true);
         }
     }
     else if (msgSensor == SensorThresholdCritical::interface)

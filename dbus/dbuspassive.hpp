@@ -60,6 +60,8 @@ class DbusPassive : public ReadInterface
     void setFailed(bool value);
     void setFunctional(bool value);
     void setAvailable(bool value);
+    void setFanRunning(bool value);
+    bool isFanSensor() const;
 
     int64_t getScale(void);
     std::string getID(void);
@@ -84,6 +86,7 @@ class DbusPassive : public ReadInterface
     bool _available = true;
     bool _availableOverridden = false;
     bool _unavailableAsFailed = true;
+    bool _fanRunning = true;
 
     bool _typeMargin = false;
     bool _typeFan = false;
