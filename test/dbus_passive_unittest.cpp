@@ -609,6 +609,165 @@ TEST_F(DbusPassiveTestObj, VerifyAvailableAssert)
     EXPECT_EQ(failed, false);
 }
 
+class DbusPassiveFanTestObj : public ::testing::Test
+{
+  protected:
+    DbusPassiveFanTestObj() :
+        sdbus_mock(), bus_mock(sdbusplus::get_mocked_new(&sdbus_mock)),
+        helper(std::make_unique<DbusHelperMock>())
+    {
+        EXPECT_CALL(*helper,
+                    getService(StrEq(SensorValue::interface), StrEq(path)))
+            .WillOnce(Return("asdf"));
+
+        EXPECT_CALL(*helper,
+                    getProperties(StrEq("asdf"), StrEq(path), NotNull()))
+            .WillOnce(Invoke([&]([[maybe_unused]] const std::string& service,
+                                 [[maybe_unused]] const std::string& path,
+                                 SensorProperties* prop) {
+                prop->scale = _scale;
+                prop->value = _value;
+                prop->unit = "x";
+                prop->min = 0;
+                prop->max = 0;
+                prop->available = true;
+            }));
+        EXPECT_CALL(*helper, thresholdsAsserted(StrEq("asdf"), StrEq(path)))
+            .WillOnce(Return(false));
+
+        auto info = conf::SensorConfig();
+        info.unavailableAsFailed = true;
+        ri = DbusPassive::createDbusPassive(bus_mock, type, id,
+                                            std::move(helper), &info, nullptr);
+        passive = reinterpret_cast<DbusPassive*>(ri.get());
+        EXPECT_FALSE(passive == nullptr);
+    }
+
+    sdbusplus::SdBusMock sdbus_mock;
+    sdbusplus::bus_t bus_mock;
+    std::unique_ptr<DbusHelperMock> helper;
+    std::string type = "fan";
+    std::string id = "id";
+    std::string path =
+        std::format("{}/{}/id", SensorValue::namespace_path::value,
+                    SensorValue::namespace_path::fan_tach);
+    int64_t _scale = 0;
+    int64_t _value = 1000;
+
+    std::unique_ptr<ReadInterface> ri;
+    DbusPassive* passive;
+};
+
+TEST_F(DbusPassiveFanTestObj, VerifyFanStatusRunningFalseTriggersFailSafe)
+{
+    EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
+        .WillOnce(Return(nullptr));
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
+
+    bool fanRunning = false;
+    const char* running = "Running";
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            *s = "xyz.openbmc_project.Sensor.FanStatus";
+            return 0;
+        }))
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            *s = running;
+            return 0;
+        }));
+
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'a', StrEq("{sv}")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock, sd_bus_message_at_end(IsNull(), 0))
+        .WillOnce(Return(0))
+        .WillOnce(Return(1));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'e', StrEq("sv")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(1));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
+            bool* s = static_cast<bool*>(p);
+            *s = fanRunning;
+            return 0;
+        }));
+    EXPECT_CALL(sdbus_mock, sd_bus_message_exit_container(IsNull()))
+        .WillOnce(Return(0))
+        .WillOnce(Return(0))
+        .WillOnce(Return(0));
+
+    int rv = handleSensorValue(msg, passive);
+    EXPECT_EQ(rv, 0);
+    EXPECT_TRUE(passive->getFailed());
+}
+
+TEST_F(DbusPassiveFanTestObj, VerifyFanStatusRunningTrueDoesNotFail)
+{
+    EXPECT_CALL(sdbus_mock, sd_bus_message_ref(IsNull()))
+        .WillOnce(Return(nullptr));
+    sdbusplus::message_t msg(nullptr, &sdbus_mock);
+
+    bool fanRunning = true;
+    const char* running = "Running";
+
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 's', NotNull()))
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            *s = "xyz.openbmc_project.Sensor.FanStatus";
+            return 0;
+        }))
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
+            const char** s = static_cast<const char**>(p);
+            *s = running;
+            return 0;
+        }));
+
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'a', StrEq("{sv}")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock, sd_bus_message_at_end(IsNull(), 0))
+        .WillOnce(Return(0))
+        .WillOnce(Return(1));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'e', StrEq("sv")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_verify_type(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(1));
+    EXPECT_CALL(sdbus_mock,
+                sd_bus_message_enter_container(IsNull(), 'v', StrEq("b")))
+        .WillOnce(Return(0));
+    EXPECT_CALL(sdbus_mock, sd_bus_message_read_basic(IsNull(), 'b', NotNull()))
+        .WillOnce(Invoke([&]([[maybe_unused]] sd_bus_message* m,
+                             [[maybe_unused]] char type, void* p) {
+            bool* s = static_cast<bool*>(p);
+            *s = fanRunning;
+            return 0;
+        }));
+    EXPECT_CALL(sdbus_mock, sd_bus_message_exit_container(IsNull()))
+        .WillOnce(Return(0))
+        .WillOnce(Return(0))
+        .WillOnce(Return(0));
+
+    int rv = handleSensorValue(msg, passive);
+    EXPECT_EQ(rv, 0);
+    EXPECT_FALSE(passive->getFailed());
+}
+
 class DbusPassiveTestUnaSensorNotAsFailedObj : public ::testing::Test
 {
   protected:
