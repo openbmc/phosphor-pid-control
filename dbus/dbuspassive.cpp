@@ -48,6 +48,8 @@ using StateDecoratorAvailability =
 using StateDecoratorOperationalStatus = sdbusplus::common::xyz::
     openbmc_project::state::decorator::OperationalStatus;
 
+constexpr const char* fanStatusInterface = "xyz.openbmc_project.Sensor.FanStatus";
+
 namespace pid_control
 {
 
@@ -165,6 +167,17 @@ DbusPassive::DbusPassive(
     // Cache this type knowledge, to avoid repeated string comparison
     _typeMargin = (type == "margin");
     _typeFan = (type == "fan");
+
+    if (_typeFan)
+    {
+        _fanRunningSignal = std::make_unique<sdbusplus::bus::match_t>(
+            bus,
+            "type='signal',member='FanRunning',path='" + path +
+                "',interface='" + std::string(fanStatusInterface) + "'",
+            [this](sdbusplus::message_t& msg) {
+                handleFanRunningSignal(msg, this);
+            });
+    }
 }
 
 ReadReturn DbusPassive::read(void)
@@ -324,6 +337,11 @@ void DbusPassive::setAvailable(bool value)
     _availableOverridden = true;
 }
 
+void DbusPassive::setFanRunning(bool value)
+{
+    _fanRunning = value;
+}
+
 void DbusPassive::initFromSettings(const SensorProperties& settings,
                                    bool failed)
 {
@@ -333,6 +351,10 @@ void DbusPassive::initFromSettings(const SensorProperties& settings,
     _max = settings.max * std::pow(10.0, _scale);
     _unavailableAsFailed = settings.unavailableAsFailed;
     setAvailableFromProperty(settings.available);
+    if (_typeFan)
+    {
+        _fanRunning = (settings.value > 0);
+    }
 
     // Force value to be stored, otherwise member would be uninitialized
     updateValue(settings.value, true);
@@ -513,6 +535,22 @@ int dbusHandleSignal(sd_bus_message* msg, void* usrData,
     DbusPassive* obj = static_cast<DbusPassive*>(usrData);
 
     return handleSensorValue(sdbpMsg, obj);
+}
+
+int handleFanRunningSignal(sdbusplus::message_t& msg, DbusPassive* owner)
+{
+    bool fanRunning = true;
+    msg.read(fanRunning);
+
+    owner->setFanRunning(fanRunning);
+
+    if (!fanRunning)
+    {
+        // Prevent stale RPM values from masking a stopped fan.
+        owner->updateValue(std::numeric_limits<double>::quiet_NaN(), true);
+    }
+
+    return 0;
 }
 
 } // namespace pid_control

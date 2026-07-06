@@ -21,7 +21,10 @@
 namespace pid_control
 {
 
+class DbusPassive;
+
 int dbusHandleSignal(sd_bus_message* msg, void* data, sd_bus_error* err);
+int handleFanRunningSignal(sdbusplus::message_t& msg, DbusPassive* owner);
 
 /*
  * This ReadInterface will passively listen for Value updates from whomever
@@ -60,6 +63,7 @@ class DbusPassive : public ReadInterface
     void setFailed(bool value);
     void setFunctional(bool value);
     void setAvailable(bool value);
+    void setFanRunning(bool value);
 
     int64_t getScale(void);
     std::string getID(void);
@@ -70,6 +74,7 @@ class DbusPassive : public ReadInterface
 
   private:
     sdbusplus::bus::match_t _signal;
+    std::unique_ptr<sdbusplus::bus::match_t> _fanRunningSignal;
     int64_t _scale;
     std::string _id; // for debug identification
     std::unique_ptr<DbusHelperInterface> _helper;
@@ -84,6 +89,7 @@ class DbusPassive : public ReadInterface
     bool _available = true;
     bool _availableOverridden = false;
     bool _unavailableAsFailed = true;
+    bool _fanRunning = true;
 
     bool _typeMargin = false;
     bool _typeFan = false;
