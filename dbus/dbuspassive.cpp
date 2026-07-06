@@ -48,6 +48,9 @@ using StateDecoratorAvailability =
 using StateDecoratorOperationalStatus = sdbusplus::common::xyz::
     openbmc_project::state::decorator::OperationalStatus;
 
+constexpr const char* fanStatusInterface =
+    "xyz.openbmc_project.Sensor.FanStatus";
+
 namespace pid_control
 {
 
@@ -324,6 +327,11 @@ void DbusPassive::setAvailable(bool value)
     _availableOverridden = true;
 }
 
+void DbusPassive::setFanRunning(bool value)
+{
+    _fanRunning = value;
+}
+
 void DbusPassive::initFromSettings(const SensorProperties& settings,
                                    bool failed)
 {
@@ -333,6 +341,10 @@ void DbusPassive::initFromSettings(const SensorProperties& settings,
     _max = settings.max * std::pow(10.0, _scale);
     _unavailableAsFailed = settings.unavailableAsFailed;
     setAvailableFromProperty(settings.available);
+    if (_typeFan)
+    {
+        _fanRunning = (settings.value > 0);
+    }
 
     // Force value to be stored, otherwise member would be uninitialized
     updateValue(settings.value, true);
@@ -501,6 +513,24 @@ int handleSensorValue(sdbusplus::message_t& msg, DbusPassive* owner)
         }
         bool asserted = std::get<bool>(functional->second);
         owner->setFunctional(asserted);
+    }
+    else if (msgSensor == fanStatusInterface)
+    {
+        auto running = msgData.find("Running");
+        if (running == msgData.end())
+        {
+            return 0;
+        }
+
+        bool asserted = std::get<bool>(running->second);
+        owner->setFanRunning(asserted);
+
+        if (!asserted)
+        {
+            // Clear the cached reading so a stopped fan is treated as a
+            // critical failure immediately.
+            owner->updateValue(std::numeric_limits<double>::quiet_NaN(), true);
+        }
     }
 
     return 0;
