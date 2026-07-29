@@ -8,7 +8,7 @@
 #include "dbushelper_interface.hpp"
 #include "dbusutil.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/ObjectMapper/common.hpp>
@@ -30,8 +30,6 @@ namespace pid_control
 using Property = std::string;
 using Value = std::variant<int64_t, double, std::string, bool>;
 using PropertyMap = std::map<Property, Value>;
-
-using namespace phosphor::logging;
 
 /* TODO(venture): Basically all phosphor apps need this, maybe it should be a
  * part of sdbusplus.  There is an old version in libmapper.
@@ -56,8 +54,7 @@ std::string DbusHelper::getService(const std::string& intf,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        log<level::ERR>("ObjectMapper call failure",
-                        entry("WHAT=%s", ex.what()));
+        lg2::error("ObjectMapper call failure: {ERROR}", "ERROR", ex.what());
         throw;
     }
 
@@ -86,8 +83,7 @@ void DbusHelper::getProperties(const std::string& service,
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        log<level::ERR>("GetAll Properties Failed",
-                        entry("WHAT=%s", ex.what()));
+        lg2::error("GetAll Properties Failed: {ERROR}", "ERROR", ex.what());
         throw;
     }
 
