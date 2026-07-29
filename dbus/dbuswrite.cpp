@@ -19,7 +19,7 @@
 #include "dbushelper_interface.hpp"
 #include "interfaces.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Control/FanPwm/client.hpp>
@@ -35,7 +35,6 @@ using ControlFanPwm = sdbusplus::common::xyz::openbmc_project::control::FanPwm;
 namespace pid_control
 {
 
-using namespace phosphor::logging;
 
 std::unique_ptr<WriteInterface> DbusWritePercent::createDbusWrite(
     const std::string& path, int64_t min, int64_t max,
@@ -94,8 +93,7 @@ void DbusWritePercent::write(double value, bool force, int64_t* written)
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
-                        entry("WHAT=%s", ex.what()));
+        lg2::error("Dbus Call Failure, path: {PATH}, error: {ERROR}", "PATH", path, "ERROR", ex.what());
     }
 
     oldValue = static_cast<int64_t>(ovalue);
@@ -156,8 +154,7 @@ void DbusWrite::write(double value, bool force, int64_t* written)
     }
     catch (const sdbusplus::exception_t& ex)
     {
-        log<level::ERR>("Dbus Call Failure", entry("PATH=%s", path.c_str()),
-                        entry("WHAT=%s", ex.what()));
+        lg2::error("Dbus Call Failure, path: {PATH}, error: {ERROR}", "PATH", path, "ERROR", ex.what());
     }
 
     oldValue = static_cast<int64_t>(value);

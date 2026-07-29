@@ -2,7 +2,7 @@
 
 #include "dbushelper_interface.hpp"
 
-#include <phosphor-logging/log.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/exception.hpp>
 #include <xyz/openbmc_project/Sensor/Threshold/Critical/common.hpp>
@@ -51,8 +51,6 @@ class DbusHelper : public DbusHelperInterface
                      const std::string& interface,
                      const std::string& propertyName, T& prop)
     {
-        namespace log = phosphor::logging;
-
         auto msg = _bus.new_method_call(service.c_str(), path.c_str(),
                                         propertiesintf, "Get");
 
@@ -66,8 +64,7 @@ class DbusHelper : public DbusHelperInterface
         }
         catch (const sdbusplus::exception_t& ex)
         {
-            log::log<log::level::ERR>("Get Property Failed",
-                                      log::entry("WHAT=%s", ex.what()));
+		lg2::error("Get Property Failed: {ERROR}", "ERROR", ex.what());
             throw;
         }
 
