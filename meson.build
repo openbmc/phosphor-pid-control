@@ -88,7 +88,7 @@ phosphor_dbus_interfaces_dep = dependency('phosphor-dbus-interfaces')
 phosphor_logging_dep = dependency('phosphor-logging')
 sdbusplus_dep = dependency('sdbusplus')
 libsystemd_dep = dependency('libsystemd')
-ipmid_dep = dependency('libipmid')
+ipmid_dep = dependency('libipmid', required: get_option('ipmi'))
 
 
 if cxx.has_header('CLI/CLI.hpp')
@@ -103,7 +103,6 @@ endif
 
 deps = [
     CLI11_dep,
-    ipmid_dep,
     libsystemd_dep,
     nlohmann_json_dep,
     phosphor_dbus_interfaces_dep,
@@ -111,17 +110,26 @@ deps = [
     sdbusplus_dep,
 ]
 
-root_inc = include_directories(
+if ipmid_dep.found()
+    deps += ipmid_dep
+endif
+
+root_inc_dirs = [
     '.',
     'buildjson',
     'dbus',
     'errors',
-    'ipmi',
     'notimpl',
     'pid',
     'sensors',
     'sysfs',
-)
+]
+
+if ipmid_dep.found()
+    root_inc_dirs += 'ipmi'
+endif
+
+root_inc = include_directories(root_inc_dirs)
 
 setsensor_sources = ['setsensor.cpp']
 
@@ -163,22 +171,24 @@ libswampd_sources = [
     'buildjson/buildjson.cpp',
 ]
 
-libmanualcmds_sources = [
-    'ipmi/main_ipmi.cpp',
-    'ipmi/manualcmds.cpp',
-    'ipmi/dbus_mode.cpp',
-]
+if ipmid_dep.found()
+    libmanualcmds_sources = [
+        'ipmi/main_ipmi.cpp',
+        'ipmi/manualcmds.cpp',
+        'ipmi/dbus_mode.cpp',
+    ]
 
-libmanualcmds = library(
-    'manualcmds',
-    libmanualcmds_sources,
-    implicit_include_directories: false,
-    dependencies: deps,
-    version: meson.project_version(),
-    override_options: ['b_lundef=false'],
-    install: true,
-    install_dir: get_option('libdir') / 'ipmid-providers',
-)
+    libmanualcmds = library(
+        'manualcmds',
+        libmanualcmds_sources,
+        implicit_include_directories: false,
+        dependencies: deps,
+        version: meson.project_version(),
+        override_options: ['b_lundef=false'],
+        install: true,
+        install_dir: get_option('libdir') / 'ipmid-providers',
+    )
+endif
 
 executable(
     'swampd',

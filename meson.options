@@ -35,3 +35,9 @@ option(
     value: false,
     description: 'Further handlings to sensors missing from D-Bus',
 )
+option(
+    'ipmi',
+    type: 'feature',
+    value: 'enabled',
+    description: 'Enable IPMI OEM commands support',
+)
