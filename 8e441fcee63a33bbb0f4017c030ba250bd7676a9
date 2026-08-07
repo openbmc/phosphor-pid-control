@@ -16,6 +16,24 @@
       "message": "_fanRunning is tracked and updated from FanStatus events, but I couldn\u0027t find a code path where it influences failure handling. Is that intentional?",
       "revId": "8e441fcee63a33bbb0f4017c030ba250bd7676a9",
       "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "d3242b3d_dad0681d",
+        "filename": "dbus/dbuspassive.hpp",
+        "patchSetId": 6
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1002970
+      },
+      "writtenOn": "2026-08-07T09:52:58Z",
+      "side": 1,
+      "message": "Not intentional. Fixed by directly checking _fanRunning in getFailed() and getFailReason() for fan-type sensors, so a stopped fan is always treated as failed regardless of subsequent value updates.",
+      "parentUuid": "d3e756dd_c0ceb032",
+      "revId": "8e441fcee63a33bbb0f4017c030ba250bd7676a9",
+      "serverId": "adbd0a64-1f21-4d83-b585-671fe73cb6e4"
     }
   ]
 }
