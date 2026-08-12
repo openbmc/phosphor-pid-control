@@ -175,6 +175,9 @@ Each zone has its own fields, and a list of controllers.
 | `minThermalOutput` | `double`          | This is the minimum value that should be considered from the thermal outputs. Commonly used as the minimum fan RPM.             |
 | `failsafePercent`  | `double`          | If there is a fan PID, it will use this value if the zone goes into fail-safe as the output value written to the fan's sensors. |
 | `pids`             | `list of strings` | Fan and thermal controllers used by the zone.                                                                                   |
+| `cycleIntervalTimeMS` | `uint64_t` | Milliseconds between fan PID cycles. Optional; defaults to 100. Values below 1 are rejected with a warning and the default is kept. |
+| `updateThermalsTimeMS` | `uint64_t` | Milliseconds between thermal PID updates; sensor timeouts are checked on the same cadence. Optional; defaults to 1000. Validated like `cycleIntervalTimeMS`. |
+| `accumulateSetPoint` | `bool` | Optional; defaults to `false`. When `true`, setpoints requested by controllers whose names share the profile suffix after the first `_` (e.g. `Linear_Temp_CPU0` and `PID_Temp_CPU0` both map to `Temp_CPU0`) are summed instead of each contributing separately to the zone-wide maximum. |
 
 The `id` field here is used in the d-bus path to talk to the
 `xyz.openbmc_project.Control.Mode` interface.
@@ -229,6 +232,7 @@ If the PID `type` is not `stepwise` then the PID field is defined as follows:
 | `samplePeriod`       | `double` | How frequently the value is sampled. 0.1 for fans, 1.0 for temperatures. |
 | `proportionalCoeff`  | `double` | The proportional coefficient.                                            |
 | `integralCoeff`      | `double` | The integral coefficient.                                                |
+| `derivativeCoeff`    | `double` | The derivative coefficient. Optional; defaults to 0, giving PI behaviour. Parsed as optional, unlike the other coefficients, so configurations that predate this field keep loading. |
 | `feedFwdOffsetCoeff` | `double` | The feed forward offset coefficient.                                     |
 | `feedFwdGainCoeff`   | `double` | The feed forward gain coefficient.                                       |
 | `integralLimit_min`  | `double` | The integral minimum clamp value.                                        |
@@ -249,7 +253,9 @@ and integralCoeff is %/RPM sec.
 
 **_NOTE:_** The sample periods are specified in the configuration as they are
 used in the PID computations, however, they are not truly configurable as they
-are used for the update periods for the fan and thermal sensors.
+are used for the update periods for the fan and thermal sensors. Those update
+periods are the zone's `cycleIntervalTimeMS` and `updateThermalsTimeMS`
+described above.
 
 #### type == "fan"
 
@@ -272,6 +278,7 @@ The type `fan` builds a `FanController` PID.
 | `name`     | `string`          | The name of the PID. This is just for humans and logging.                      |
 | `type`     | `string`          | `fan`                                                                          |
 | `inputs`   | `list of strings` | The names of the sensor(s) that are used as input and output for the PID loop. |
+| `missingIsAcceptable` | `list of strings` | Optional. Input sensors allowed to go missing without dragging the zone into fail-safe mode. |
 | `setpoint` | `double`          | Presently UNUSED                                                               |
 | `pid`      | `dictionary`      | A PID dictionary detailed above.                                               |
 
@@ -296,6 +303,8 @@ The type `margin` builds a `ThermalController` PID.
 | `name`     | `string`          | The name of the PID. This is just for humans and logging.                    |
 | `type`     | `string`          | `margin`                                                                     |
 | `inputs`   | `list of strings` | The names of the sensor(s) that are used as input for the PID loop.          |
+| `tempToMargin` | `list of doubles` | Optional. Entry _i_ is the margin zero point ("Tjmax", in degrees Celsius) for `inputs[i]`: that sensor's absolute temperature reading T is converted to Tjmax - T before the minimum-selection below. Inputs beyond the end of this list are used unconverted. |
+| `missingIsAcceptable` | `list of strings` | Optional. Input sensors allowed to go missing without dragging the zone into fail-safe mode. Related but different from the sensor-level `unavailableAsFailed` above: that one handles sensors that are present but report themselves unavailable. |
 | `setpoint` | `double`          | The setpoint value for the thermal PID. The setpoint for the margin sensors. |
 | `pid`      | `dictionary`      | A PID dictionary detailed above.                                             |
 
@@ -311,10 +320,16 @@ The output of a `margin` PID loop is that it sets the setpoint value for the
 zone. It does this by adding the value to a list of values. The value chosen by
 the fan PIDs (in this cascade configuration) is the maximum value.
 
+**_NOTE:_** In Entity Manager configurations the equivalent attributes are
+named `TempToMargin` and `MissingIsAcceptable`.
+
 #### type == "temp"
 
 Exactly the same as `margin` but all the inputs are supposed to be absolute
 temperatures and so the maximal value is used to feed the PID loop.
+`missingIsAcceptable` behaves the same here. `tempToMargin` has no effect on
+`temp` controllers: the conversion is applied only when the controller type is
+`margin`.
 
 #### type == "stepwise"
 
