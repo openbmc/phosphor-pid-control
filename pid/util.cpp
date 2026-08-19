@@ -28,6 +28,7 @@ void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
     info->slewPos = initial.slewPos;
     info->negativeHysteresis = initial.negativeHysteresis;
     info->positiveHysteresis = initial.positiveHysteresis;
+    info->incrementalMode = initial.incrementalMode;
 }
 
 void dumpPIDStruct(ec::pid_info_t* info)
@@ -45,6 +46,10 @@ void dumpPIDStruct(ec::pid_info_t* info)
               << " slewNeg: " << info->slewNeg << " slewPos: " << info->slewPos
               << " last_output: " << info->lastOutput
               << " last_error: " << info->lastError
+              << " lastInput: " << info->lastInput
+              << " lastLastInput: " << info->lastLastInput
+              << " lastSetpoint: " << info->lastSetpoint
+              << " incrementalMode: " << info->incrementalMode
               << " integral: " << info->integral << std::endl;
 
     return;

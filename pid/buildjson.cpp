@@ -83,6 +83,13 @@ void from_json(const json& j, conf::ControllerInfo& c)
         derivativeCoeff->get_to(derivativeCoeffValue);
     }
 
+    auto incrementalMode = p.find("incrementalMode");
+    auto incrementalModeValue = false;
+    if (incrementalMode != p.end())
+    {
+        incrementalMode->get_to(incrementalModeValue);
+    }
+
     auto failSafePercent = j.find("FailSafePercent");
     auto failSafePercentValue = 0;
     if (failSafePercent != j.end())
@@ -112,6 +119,7 @@ void from_json(const json& j, conf::ControllerInfo& c)
         c.pidInfo.negativeHysteresis = negativeHysteresisValue;
         c.pidInfo.derivativeCoeff = derivativeCoeffValue;
         c.pidInfo.checkHysterWithSetpt = checkHysterWithSetptValue;
+        c.pidInfo.incrementalMode = incrementalModeValue;
     }
     else
     {
