@@ -68,6 +68,7 @@ static void DumpContextHeader(std::ofstream& file)
     file << ",minOut,maxOut";
     file << ",integralTerm3,output3";
     file << ",integralTerm,output";
+    file << ",incrementalMode";
     file << "\n" << std::flush;
 }
 
@@ -84,6 +85,7 @@ static void DumpContextData(std::ofstream& file,
     file << "," << pc.minOut << "," << pc.maxOut;
     file << "," << pc.integralTerm3 << "," << pc.output3;
     file << "," << pc.integralTerm << "," << pc.output;
+    file << "," << (pc.incrementalMode ? "true" : "false");
     file << "\n" << std::flush;
 }
 

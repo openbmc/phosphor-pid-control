@@ -39,6 +39,8 @@ struct PidCoreContext
     double integralTerm;
     double output;
 
+    bool incrementalMode = false;
+
     bool operator!=(const PidCoreContext& rhs) const = default;
     bool operator==(const PidCoreContext& rhs) const = default;
 };
