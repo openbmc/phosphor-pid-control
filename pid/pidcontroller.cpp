@@ -35,11 +35,30 @@ double PIDController::calPIDOutput(double setpt, double input,
             lastInput = setpt;
             info->integral = 0;
             output = 0;
+            if (info->incrementalMode)
+            {
+                // Reset incremental-specific state so the next PID
+                // call starts fresh and avoids stale history spikes
+                info->lastInput = 0;
+                info->lastLastInput = 0;
+                info->lastError = 0;
+                info->lastSetpoint = 0;
+                info->initialized = false;
+            }
         }
         // inside the hysteresis bounds, keep last output
         else
         {
             lastInput = input;
+            if (info->incrementalMode)
+            {
+                // Update incremental state to keep input history current
+                // so the derivative term doesn't spike when PID resumes
+                info->lastLastInput = info->lastInput;
+                info->lastInput = input;
+                info->lastError = setpt - input;
+                info->lastSetpoint = setpt;
+            }
             output = info->lastOutput;
         }
 
