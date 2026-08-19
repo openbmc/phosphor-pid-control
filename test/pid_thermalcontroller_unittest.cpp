@@ -4,6 +4,7 @@
 #include "pid/thermalcontroller.hpp"
 #include "test/zone_mock.hpp"
 
+#include <cmath>
 #include <exception>
 #include <memory>
 #include <string>
@@ -249,6 +250,200 @@ TEST(ThermalControllerTest, PosHysteresis_BehavesAsExpected)
     ec::pidinfo initial;
     initial.checkHysterWithSetpt = false;
     initial.positiveHysteresis = 5.0;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
+        .Times(3)
+        .WillOnce(Return(8.0))
+        .WillOnce(Return(13.0))
+        .WillOnce(Return(14.0));
+
+    EXPECT_CALL(z, addSetPoint(_, "therm1")).Times(3);
+
+    std::vector<double> lastReadings = {8.0, 8.0, 14.0};
+    for (auto& reading : lastReadings)
+    {
+        p->process();
+        EXPECT_EQ(p->getLastInput(), reading);
+    }
+}
+
+// =========================================================================
+// Incremental mode hysteresis tests
+// =========================================================================
+
+TEST(ThermalControllerTest, IncrementalCheckHysterWithSetpt_ResetState)
+{
+    // Verifies that when input falls below (setpt - negativeHysteresis) in
+    // incremental mode with checkHysterWithSetpt=true, the PID state is
+    // properly reset (initialized=false, integral=0, output=0).
+
+    ZoneMock z;
+
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+    initial.checkHysterWithSetpt = true;
+    initial.positiveHysteresis = 2.0;
+    initial.negativeHysteresis = 2.0;
+    initial.incrementalMode = true;
+    initial.ts = 0.1;
+    initial.proportionalCoeff = 1.0;
+    initial.outLim.min = -100.0;
+    initial.outLim.max = 100.0;
+    initial.integralLimit.min = -100.0;
+    initial.integralLimit.max = 100.0;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    // First call: input=15 (above setpt+posHysteresis=12), PID runs
+    // Second call: input=5 (below setpt-negHysteresis=8), PID resets
+    // Third call: input=15 again, PID runs fresh (initialized was reset)
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
+        .Times(3)
+        .WillOnce(Return(15.0))
+        .WillOnce(Return(5.0))
+        .WillOnce(Return(15.0));
+
+    EXPECT_CALL(z, addSetPoint(_, "therm1")).Times(3);
+
+    // First call: PID runs, output should be non-zero
+    p->process();
+    auto info = p->getPIDInfo();
+    EXPECT_TRUE(info->initialized);
+    EXPECT_NE(info->lastOutput, 0.0);
+
+    // Second call: input below lower hysteresis bound, PID resets
+    p->process();
+    EXPECT_FALSE(info->initialized);
+    EXPECT_EQ(info->integral, 0.0);
+    EXPECT_EQ(info->lastOutput, 0.0);
+
+    // Third call: PID runs fresh from reset state
+    p->process();
+    EXPECT_TRUE(info->initialized);
+}
+
+TEST(ThermalControllerTest, IncrementalCheckHysterWithSetpt_HoldOutput)
+{
+    // Verifies that when input is inside hysteresis bounds in incremental
+    // mode with checkHysterWithSetpt=true, the output is held and the
+    // incremental state (lastInput, lastLastInput) is kept current.
+
+    ZoneMock z;
+
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+    initial.checkHysterWithSetpt = true;
+    initial.positiveHysteresis = 3.0;
+    initial.negativeHysteresis = 3.0;
+    initial.incrementalMode = true;
+    initial.ts = 0.1;
+    initial.proportionalCoeff = 1.0;
+    initial.outLim.min = -100.0;
+    initial.outLim.max = 100.0;
+    initial.integralLimit.min = -100.0;
+    initial.integralLimit.max = 100.0;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    // First call: input=15 (above 13), PID runs and produces output
+    // Second call: input=11 (inside [7,13]), output held, state updated
+    // Third call: input=15 (above 13), PID runs again, no spike from stale state
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
+        .Times(3)
+        .WillOnce(Return(15.0))
+        .WillOnce(Return(11.0))
+        .WillOnce(Return(15.0));
+
+    EXPECT_CALL(z, addSetPoint(_, "therm1")).Times(3);
+
+    // First call: PID runs
+    p->process();
+    auto info = p->getPIDInfo();
+    double firstOutput = info->lastOutput;
+    EXPECT_TRUE(info->initialized);
+
+    // Second call: inside hysteresis, output held
+    p->process();
+    EXPECT_EQ(info->lastOutput, firstOutput);
+    // State should be updated to current input to avoid stale history
+    EXPECT_DOUBLE_EQ(info->lastInput, 11.0);
+
+    // Third call: PID runs again, should produce finite output
+    p->process();
+    EXPECT_TRUE(std::isfinite(info->lastOutput));
+}
+
+TEST(ThermalControllerTest, IncrementalNegHysteresis_BehavesAsExpected)
+{
+    // Same as NegHysteresis_BehavesAsExpected but with incrementalMode=true.
+    // Verifies hysteresis behavior is unchanged in incremental mode when
+    // checkHysterWithSetpt=false.
+
+    ZoneMock z;
+
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+    initial.checkHysterWithSetpt = false;
+    initial.negativeHysteresis = 4.0;
+    initial.incrementalMode = true;
+    initial.ts = 0.1;
+    initial.proportionalCoeff = 1.0;
+    initial.outLim.min = -100.0;
+    initial.outLim.max = 100.0;
+    initial.integralLimit.min = -100.0;
+    initial.integralLimit.max = 100.0;
+
+    std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
+        &z, "therm1", inputs, setpoint, initial, ThermalType::margin);
+    EXPECT_FALSE(p == nullptr);
+
+    EXPECT_CALL(z, getCachedValue(StrEq("fleeting0")))
+        .Times(3)
+        .WillOnce(Return(12.0))
+        .WillOnce(Return(9.0))
+        .WillOnce(Return(7.0));
+
+    EXPECT_CALL(z, addSetPoint(_, "therm1")).Times(3);
+
+    std::vector<double> lastReadings = {12.0, 12.0, 7.0};
+    for (auto& reading : lastReadings)
+    {
+        p->process();
+        EXPECT_EQ(p->getLastInput(), reading);
+    }
+}
+
+TEST(ThermalControllerTest, IncrementalPosHysteresis_BehavesAsExpected)
+{
+    // Same as PosHysteresis_BehavesAsExpected but with incrementalMode=true.
+    // Verifies hysteresis behavior is unchanged in incremental mode when
+    // checkHysterWithSetpt=false.
+
+    ZoneMock z;
+
+    std::vector<pid_control::conf::SensorInput> inputs = {{"fleeting0"}};
+    double setpoint = 10.0;
+    ec::pidinfo initial;
+    initial.checkHysterWithSetpt = false;
+    initial.positiveHysteresis = 5.0;
+    initial.incrementalMode = true;
+    initial.ts = 0.1;
+    initial.proportionalCoeff = 1.0;
+    initial.outLim.min = -100.0;
+    initial.outLim.max = 100.0;
+    initial.integralLimit.min = -100.0;
+    initial.integralLimit.max = 100.0;
 
     std::unique_ptr<PIDController> p = ThermalController::createThermalPid(
         &z, "therm1", inputs, setpoint, initial, ThermalType::margin);

@@ -23,6 +23,7 @@ unit_tests = [
     'dbus_passive_unittest',
     'dbus_util_unittest',
     'json_parse_unittest',
+    'pid_ec_unittest',
     'pid_json_unittest',
     'pid_fancontroller_unittest',
     'pid_stepwisecontroller_unittest',
@@ -44,6 +45,11 @@ unittest_source = {
     ],
     'dbus_util_unittest': ['../dbus/dbusutil.cpp'],
     'json_parse_unittest': ['../buildjson/buildjson.cpp'],
+    'pid_ec_unittest': [
+        '../pid/ec/pid.cpp',
+        '../pid/ec/logging.cpp',
+        '../pid/tuning.cpp',
+    ],
     'pid_json_unittest': ['../pid/buildjson.cpp', '../util.cpp'],
     'pid_fancontroller_unittest': [
         '../pid/ec/pid.cpp',
