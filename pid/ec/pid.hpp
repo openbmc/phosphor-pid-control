@@ -25,7 +25,11 @@ struct pid_info_t
     double ts = 0.0;                   // sample time in seconds
     double integral = 0.0;             // integral of error
     double lastOutput = 0.0;           // value of last output
-    double lastError = 0.0;            // value of last error
+    double lastError = 0.0;            // value of last error (for positional)
+    double lastInput = 0.0;            // value of last input (for incremental)
+    double lastLastInput = 0.0;        // value of input[k-2] (for incremental)
+    double lastSetpoint = 0.0;         // value of last setpoint for incremental
+    bool incrementalMode = false;      // true=incremental, false=positional
 
     double proportionalCoeff = 0.0;    // coeff for P
     double integralCoeff = 0.0;        // coeff for I
@@ -62,6 +66,7 @@ struct pidinfo
     double slewPos = 0.0;
     double positiveHysteresis = 0.0;
     double negativeHysteresis = 0.0;
+    bool incrementalMode = false;      // true=incremental, false=positional
 };
 
 } // namespace ec
