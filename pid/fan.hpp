@@ -11,4 +11,4 @@ enum class FanSpeedDirection
     NEUTRAL, /* not sure this will ever happen, but for completeness. */
 };
 
-}
+} // namespace pid_control
