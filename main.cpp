@@ -26,6 +26,7 @@
 #include <boost/asio/post.hpp>
 #include <boost/asio/signal_set.hpp>
 #include <boost/asio/steady_timer.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/asio/connection.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/manager.hpp>
@@ -146,7 +147,7 @@ void restartControlLoops()
         }
         catch (const std::exception& e)
         {
-            std::cerr << "Failed during building: " << e.what() << "\n";
+            lg2::error("Failed during building: {ERROR}", "ERROR", e);
             exit(EXIT_FAILURE); /* fatal error. */
         }
     }
@@ -171,7 +172,7 @@ void restartControlLoops()
 
     if (0 == state::zones.size())
     {
-        std::cerr << "No zones defined, exiting.\n";
+        lg2::error("No zones defined, exiting");
         std::exit(EXIT_FAILURE);
     }
 
@@ -180,7 +181,7 @@ void restartControlLoops()
         std::shared_ptr<boost::asio::steady_timer> timer =
             state::timers.emplace_back(
                 std::make_shared<boost::asio::steady_timer>(io));
-        std::cerr << "pushing zone " << i.first << "\n";
+        lg2::info("Pushing zone {ZONE}", "ZONE", i.first);
         pidControlLoop(i.second, timer, &state::isCanceling);
     }
 }
@@ -203,8 +204,8 @@ void tryRestartControlLoops(bool first)
         }
         catch (const std::exception& e)
         {
-            std::cerr << "Failed during restartControlLoops, try again: "
-                      << e.what() << "\n";
+            lg2::error("Failed during restartControlLoops, try again: {ERROR}",
+                       "ERROR", e);
             tryRestartControlLoops(false);
         }
     };
@@ -244,8 +245,8 @@ void tryTerminateControlLoops(bool first)
         }
         catch (const std::exception& e)
         {
-            std::cerr << "Failed during stopControlLoops, try again: "
-                      << e.what() << "\n";
+            lg2::error("Failed during stopControlLoops, try again: {ERROR}",
+                       "ERROR", e);
             tryTerminateControlLoops(false);
             return;
         }
@@ -276,8 +277,8 @@ void signalHandler(const boost::system::error_code& error, int signal_number)
 
     if (error)
     {
-        std::cout << "Signal " << signal_number
-                  << " handler error: " << error.message() << "\n";
+        lg2::error("Signal {SIGNAL} handler error: {ERROR}", "SIGNAL",
+                   signal_number, "ERROR", error.message());
         return;
     }
     if (signal_number == SIGTERM)
@@ -290,11 +291,12 @@ void signalHandler(const boost::system::error_code& error, int signal_number)
         timer.async_wait([](const boost::system::error_code ec) {
             if (ec)
             {
-                std::cout << "Signal timer error: " << ec.message() << "\n";
+                lg2::error("Signal timer error: {ERROR}", "ERROR",
+                           ec.message());
                 return;
             }
 
-            std::cout << "reloading configuration\n";
+            lg2::info("Reloading configuration");
             pid_control::tryRestartControlLoops();
         });
     }
@@ -364,7 +366,7 @@ int main(int argc, char* argv[])
     }
     if (loggingEnabled)
     {
-        std::cerr << "Logging enabled: " << loggingPath << "\n";
+        lg2::info("Logging enabled: {PATH}", "PATH", loggingPath);
     }
 
     // If this file exists, enable tuning at runtime
@@ -374,7 +376,7 @@ int main(int argc, char* argv[])
     }
     if (tuningEnabled)
     {
-        std::cerr << "Tuning enabled\n";
+        lg2::info("Tuning enabled");
     }
 
     // If this file exists, enable debug mode at runtime
@@ -385,7 +387,7 @@ int main(int argc, char* argv[])
 
     if (debugEnabled)
     {
-        std::cerr << "Debug mode enabled\n";
+        lg2::info("Debug mode enabled");
     }
 
     // If this file exists, enable core logging at runtime
@@ -395,7 +397,7 @@ int main(int argc, char* argv[])
     }
     if (coreLoggingEnabled)
     {
-        std::cerr << "Core logging enabled\n";
+        lg2::info("Core logging enabled");
     }
 
     static constexpr auto modeRoot = "/xyz/openbmc_project/settings/fanctrl";
