@@ -13,12 +13,14 @@
 #include "pid/zone_interface.hpp"
 #include "util.hpp"
 
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 
 #include <cstdint>
 #include <iostream>
 #include <map>
 #include <memory>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -60,7 +62,7 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
             /* The Zone doesn't have a configuration, bail. */
             static constexpr auto err =
                 "Bailing during load, missing Zone Configuration";
-            std::cerr << err << std::endl;
+            lg2::error("{ERROR}", "ERROR", err);
             throw std::runtime_error(err);
         }
 
@@ -70,13 +72,13 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
             modeControlBus, getControlPath(zoneId).c_str(), deferSignals,
             zoneConf->second.accumulateSetPoint);
 
-        std::cerr << "Zone Id: " << zone->getZoneID() << "\n";
+        lg2::debug("Zone Id: {ZONE}", "ZONE", zone->getZoneID());
 
         // For each PID create a Controller and a Sensor.
         for (const auto& [name, info] : pidConfig)
         {
             std::vector<pid_control::conf::SensorInput> inputs;
-            std::cerr << "PID name: " << name << "\n";
+            lg2::debug("PID name: {PID_NAME}", "PID_NAME", name);
 
             /*
              * TODO(venture): Need to check if input is known to the
@@ -132,21 +134,21 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
                                             info.failSafePercent);
             }
 
-            std::cerr << "inputs: ";
+            std::ostringstream inputStr;
             for (const auto& i : inputs)
             {
-                std::cerr << i.name;
+                inputStr << i.name;
                 if (i.convertTempToMargin)
                 {
-                    std::cerr << "[" << i.convertMarginZero << "]";
+                    inputStr << "[" << i.convertMarginZero << "]";
                 }
                 if (i.missingIsAcceptable)
                 {
-                    std::cerr << "?";
+                    inputStr << "?";
                 }
-                std::cerr << ", ";
+                inputStr << ", ";
             }
-            std::cerr << "\n";
+            lg2::debug("inputs: {INPUTS}", "INPUTS", inputStr.str());
         }
 
         zone->emit_object_added();

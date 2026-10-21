@@ -23,9 +23,10 @@
 #include "util.hpp"
 #include "zone.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 #include <limits>
 #include <memory>
 #include <string>
@@ -93,8 +94,8 @@ double StepwiseController::inputProc(void)
 
     if (debugEnabled)
     {
-        std::cerr << getID()
-                  << " choose the maximum temperature value: " << value << "\n";
+        lg2::debug("{ID} choose the maximum temperature value: {VALUE}", "ID",
+                   getID(), "VALUE", value);
     }
 
     return value;
@@ -111,7 +112,8 @@ void StepwiseController::outputProc(double value)
         _owner->addSetPoint(value, _id);
         if (debugEnabled)
         {
-            std::cerr << getID() << " stepwise output pwm: " << value << "\n";
+            lg2::debug("{ID} stepwise output pwm: {PWM_VALUE}", "ID", getID(),
+                       "PWM_VALUE", value);
         }
     }
     return;

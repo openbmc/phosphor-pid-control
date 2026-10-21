@@ -5,6 +5,8 @@
 
 #include "ec/pid.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <cstring>
 #include <iostream>
 
@@ -32,21 +34,21 @@ void initializePIDStruct(ec::pid_info_t* info, const ec::pidinfo& initial)
 
 void dumpPIDStruct(ec::pid_info_t* info)
 {
-    std::cerr << " ts: " << info->ts
-              << " proportionalCoeff: " << info->proportionalCoeff
-              << " integralCoeff: " << info->integralCoeff
-              << " derivativeCoeff: " << info->derivativeCoeff
-              << " feedFwdOffset: " << info->feedFwdOffset
-              << " feedFwdGain: " << info->feedFwdGain
-              << " integralLimit.min: " << info->integralLimit.min
-              << " integralLimit.max: " << info->integralLimit.max
-              << " outLim.min: " << info->outLim.min
-              << " outLim.max: " << info->outLim.max
-              << " slewNeg: " << info->slewNeg << " slewPos: " << info->slewPos
-              << " last_output: " << info->lastOutput
-              << " last_error: " << info->lastError
-              << " integral: " << info->integral << std::endl;
-
+    lg2::debug(
+        "ts: {TS} proportionalCoeff: {PCOEFF} integralCoeff: {ICOEFF} "
+        "derivativeCoeff: {DCOEFF} feedFwdOffset: {FF_OFFSET} "
+        "feedFwdGain: {FF_GAIN} integralLimit.min: {ILIM_MIN} "
+        "integralLimit.max: {ILIM_MAX} outLim.min: {OLIM_MIN} "
+        "outLim.max: {OLIM_MAX} slewNeg: {SLEW_NEG} "
+        "slewPos: {SLEW_POS} last_output: {LAST_OUT} "
+        "last_error: {LAST_ERR} integral: {INTEGRAL}",
+        "TS", info->ts, "PCOEFF", info->proportionalCoeff, "ICOEFF",
+        info->integralCoeff, "DCOEFF", info->derivativeCoeff, "FF_OFFSET",
+        info->feedFwdOffset, "FF_GAIN", info->feedFwdGain, "ILIM_MIN",
+        info->integralLimit.min, "ILIM_MAX", info->integralLimit.max,
+        "OLIM_MIN", info->outLim.min, "OLIM_MAX", info->outLim.max, "SLEW_NEG",
+        info->slewNeg, "SLEW_POS", info->slewPos, "LAST_OUT", info->lastOutput,
+        "LAST_ERR", info->lastError, "INTEGRAL", info->integral);
     return;
 }
 

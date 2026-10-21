@@ -11,6 +11,8 @@
 #include "util.hpp"
 #include "zone_interface.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <algorithm>
 #include <cmath>
 #include <iostream>
@@ -122,10 +124,10 @@ double ThermalController::inputProc(void)
 
                 if (debugEnabled)
                 {
-                    std::cerr
-                        << "Converting temp to margin: temp " << cachedValue
-                        << ", Tjmax " << in.convertMarginZero << ", margin "
-                        << marginValue << "\n";
+                    lg2::debug(
+                        "Converting temp to margin: temp {TEMP}, Tjmax {TJMAX}, margin {MARGIN}",
+                        "TEMP", cachedValue, "TJMAX", in.convertMarginZero,
+                        "MARGIN", marginValue);
                 }
 
                 cachedValue = marginValue;
@@ -163,8 +165,8 @@ double ThermalController::inputProc(void)
 
     if (debugEnabled)
     {
-        std::cerr << getID() << " choose the temperature value: " << value
-                  << " " << leaderName << "\n";
+        lg2::debug("{ID} choose the temperature value: {VALUE} {LEADER}", "ID",
+                   getID(), "VALUE", value, "LEADER", leaderName);
     }
 
     return value;
@@ -184,7 +186,8 @@ void ThermalController::outputProc(double value)
 
     if (debugEnabled)
     {
-        std::cerr << getID() << " pid output pwm: " << value << "\n";
+        lg2::debug("{ID} pid output pwm: {PWM_VALUE}", "ID", getID(),
+                   "PWM_VALUE", value);
     }
 
     return;

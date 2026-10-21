@@ -10,6 +10,7 @@
 #include "tuning.hpp"
 #include "zone_interface.hpp"
 
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/server/object.hpp>
 #include <xyz/openbmc_project/Control/Mode/server.hpp>
@@ -175,8 +176,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
             if (debugEnabled)
             {
-                std::cerr << sensorInput << " sensor reading: " << r.value
-                          << "\n";
+                lg2::debug("{SENSOR} sensor reading: {VALUE}", "SENSOR",
+                           sensorInput, "VALUE", r.value);
             }
 
             // check if fan fail.
@@ -186,7 +187,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
                 if (debugEnabled)
                 {
-                    std::cerr << sensorInput << " sensor get failed\n";
+                    lg2::debug("{SENSOR} sensor get failed", "SENSOR",
+                               sensorInput);
                 }
             }
             else if (timeout != 0 && duration >= period)
@@ -195,7 +197,8 @@ class DbusPidZone : public ZoneInterface, public ModeObject
 
                 if (debugEnabled)
                 {
-                    std::cerr << sensorInput << " sensor timeout\n";
+                    lg2::debug("{SENSOR} sensor timeout", "SENSOR",
+                               sensorInput);
                 }
                 outputFailsafeLogWithZone(_zoneId, this->getFailSafeMode(),
                                           sensorInput,
@@ -209,8 +212,9 @@ class DbusPidZone : public ZoneInterface, public ModeObject
                 {
                     if (debugEnabled)
                     {
-                        std::cerr << sensorInput
-                                  << " is erased from failsafe sensor set\n";
+                        lg2::debug(
+                            "{SENSOR} is erased from failsafe sensor set",
+                            "SENSOR", sensorInput);
                     }
 
                     _failSafeSensors.erase(kt);
