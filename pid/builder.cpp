@@ -17,10 +17,10 @@
 #include <sdbusplus/bus.hpp>
 
 #include <cstdint>
+#include <format>
 #include <iostream>
 #include <map>
 #include <memory>
-#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
@@ -134,21 +134,21 @@ std::unordered_map<int64_t, std::shared_ptr<ZoneInterface>> buildZones(
                                             info.failSafePercent);
             }
 
-            std::ostringstream inputStr;
+            std::string inputStr;
             for (const auto& i : inputs)
             {
-                inputStr << i.name;
+                inputStr += i.name;
                 if (i.convertTempToMargin)
                 {
-                    inputStr << "[" << i.convertMarginZero << "]";
+                    inputStr += std::format("[{}]", i.convertMarginZero);
                 }
                 if (i.missingIsAcceptable)
                 {
-                    inputStr << "?";
+                    inputStr += '?';
                 }
-                inputStr << ", ";
+                inputStr += ", ";
             }
-            lg2::debug("inputs: {INPUTS}", "INPUTS", inputStr.str());
+            lg2::debug("inputs: {INPUTS}", "INPUTS", inputStr);
         }
 
         zone->emit_object_added();
