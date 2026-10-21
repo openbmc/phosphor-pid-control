@@ -13,8 +13,6 @@
 #include <chrono>
 #include <cstdint>
 #include <memory>
-#include <ostream>
-#include <sstream>
 
 namespace pid_control
 {
@@ -129,9 +127,7 @@ void pidControlLoop(const std::shared_ptr<ZoneInterface>& zone,
 
         if (loggingEnabled)
         {
-            std::ostringstream out;
-            out << "," << zone->getFailSafeMode() << std::endl;
-            zone->writeLog(out.str());
+            zone->writeLog(zone->getFailSafeMode() ? ",1\n" : ",0\n");
         }
 
         // Count how many milliseconds have elapsed, so we can know when

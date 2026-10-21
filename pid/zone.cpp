@@ -22,7 +22,6 @@
 #include <iostream>
 #include <limits>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -416,9 +415,8 @@ void DbusPidZone::determineMaxSetPointRequest(void)
         fileParseRpm(setpointpath, _maximumSetPoint);
 
         // Allow per-zone setpoint files to override overall setpoint file
-        std::ostringstream zoneSuffix;
-        zoneSuffix << ".zone" << _zoneId;
-        std::string zoneSetpointPath = setpointpath + zoneSuffix.str();
+        std::string zoneSetpointPath =
+            std::string(setpointpath) + ".zone" + std::to_string(_zoneId);
 
         fileParseRpm(zoneSetpointPath, _maximumSetPoint);
     }
