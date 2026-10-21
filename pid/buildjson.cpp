@@ -18,6 +18,8 @@
 #include <utility>
 #include <vector>
 
+#include <phosphor-logging/lg2.hpp>
+
 namespace pid_control
 {
 
@@ -175,14 +177,14 @@ inline void getCycleTimeSetting(const auto& zone, const int id,
         }
         else
         {
-            std::cerr << "Zone " << id << ": " << attributeName
-                      << " is invalid. Use default " << value << " ms\n";
+            lg2::error("Zone {ZONE_ID}: {ATTR} is invalid. Use default {VALUE} ms",
+                       "ZONE_ID", id, "ATTR", attributeName, "VALUE", value);
         }
     }
     else
     {
-        std::cerr << "Zone " << id << ": " << attributeName
-                  << " cannot find setting. Use default " << value << " ms\n";
+        lg2::error("Zone {ZONE_ID}: {ATTR} cannot find setting. Use default {VALUE} ms",
+                   "ZONE_ID", id, "ATTR", attributeName, "VALUE", value);
     }
 }
 
@@ -228,8 +230,8 @@ std::pair<std::map<int64_t, conf::PIDConf>, std::map<int64_t, conf::ZoneConfig>>
 
             if (thisZone.find(name) != thisZone.end())
             {
-                std::cerr << "Warning: zone " << id
-                          << " have the same pid name " << name << std::endl;
+                lg2::warning("Warning: zone {ZONE_ID} have the same pid name {PID_NAME}",
+                             "ZONE_ID", id, "PID_NAME", std::string(name));
             }
 
             thisZone[name] = item;

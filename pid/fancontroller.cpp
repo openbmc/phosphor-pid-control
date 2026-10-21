@@ -12,6 +12,8 @@
 #include "util.hpp"
 #include "zone_interface.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <algorithm>
 #include <cmath>
 #include <cstdint>
@@ -77,7 +79,7 @@ double FanController::inputProc(void)
     }
     catch (const std::exception& e)
     {
-        std::cerr << "exception on inputProc.\n";
+        lg2::error("Exception on inputProc: {ERROR}", "ERROR", e);
         throw;
     }
 
@@ -163,9 +165,11 @@ void FanController::outputProc(double value)
         // Always print if debug enabled
         if (debugEnabled)
         {
-            std::cerr << "Zone " << _owner->getZoneID() << " fans, "
-                      << (failsafeCurrState ? "failsafe" : "normal")
-                      << " mode, output pwm: " << percent << "\n";
+            lg2::debug(
+                "Zone {ZONE} fans, {STATE} mode, output pwm: {PWM_VALUE}",
+                "ZONE", _owner->getZoneID(), "STATE",
+                (failsafeCurrState ? "failsafe" : "normal"), "PWM_VALUE",
+                percent);
         }
         else
         {
@@ -173,17 +177,19 @@ void FanController::outputProc(double value)
             if (failsafeTransition)
             {
                 failsafeTransition = false;
-                std::cerr << "Zone " << _owner->getZoneID() << " fans, "
-                          << (failsafeCurrState ? "entering failsafe"
-                                                : "returning to normal")
-                          << " mode, output pwm: " << percent << "\n";
+                lg2::info(
+                    "Zone {ZONE} fans, {STATE} mode, output pwm: {PWM_VALUE}",
+                    "ZONE", _owner->getZoneID(), "STATE",
+                    (failsafeCurrState ? "entering failsafe"
+                                       : "returning to normal"),
+                    "PWM_VALUE", percent);
 
                 std::map<std::string, std::pair<std::string, double>>
                     failSensorList = _owner->getFailSafeSensors();
                 for (const auto& it : failSensorList)
                 {
-                    std::cerr << "Fail sensor: " << it.first
-                              << ", reason: " << it.second.first << "\n";
+                    lg2::info("Fail sensor: {SENSOR}, reason: {REASON}",
+                              "SENSOR", it.first, "REASON", it.second.first);
                 }
             }
         }
@@ -192,9 +198,9 @@ void FanController::outputProc(double value)
     {
         if (debugEnabled)
         {
-            std::cerr << "Zone " << _owner->getZoneID()
-                      << " fans, tuning mode, bypassing failsafe, output pwm: "
-                      << percent << "\n";
+            lg2::debug(
+                "Zone {ZONE} fans, tuning mode, bypassing failsafe, output pwm: {PWM_VALUE}",
+                "ZONE", _owner->getZoneID(), "PWM_VALUE", percent);
         }
     }
 
@@ -228,8 +234,8 @@ FanController::~FanController()
     double percent = _owner->getFailSafePercent();
     if (debugEnabled)
     {
-        std::cerr << "Zone " << _owner->getZoneID()
-                  << " offline fans output pwm: " << percent << "\n";
+        lg2::debug("Zone {ZONE} offline fans output pwm: {PWM_VALUE}", "ZONE",
+                   _owner->getZoneID(), "PWM_VALUE", percent);
     }
 
     // value and kFanFailSafeDutyCycle are 10 for 10% so let's fix that.

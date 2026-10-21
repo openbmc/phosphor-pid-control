@@ -6,6 +6,8 @@
 #include "../tuning.hpp"
 #include "pid.hpp"
 
+#include <phosphor-logging/lg2.hpp>
+
 #include <chrono>
 #include <cstddef>
 #include <fstream>
@@ -129,15 +131,16 @@ void LogInit(const std::string& name, pid_info_t* pidinfoptr)
 
     if (name.empty())
     {
-        std::cerr << "PID logging disabled because PID does not have a name\n";
+        lg2::error("PID logging disabled because PID does not have a name");
         return;
     }
 
     std::string cleanName = StrClean(name);
     if (cleanName.empty())
     {
-        std::cerr << "PID logging disabled because PID name is unusable: "
-                  << name << "\n";
+        lg2::error(
+            "PID logging disabled because PID name is unusable: {PID_NAME}",
+            "PID_NAME", name);
         return;
     }
 
@@ -145,7 +148,8 @@ void LogInit(const std::string& name, pid_info_t* pidinfoptr)
 
     if (iterExisting != nameToLog.end())
     {
-        std::cerr << "PID logging reusing existing file: " << name << "\n";
+        lg2::warning("PID logging reusing existing file: {PID_NAME}",
+                     "PID_NAME", name);
     }
     else
     {
@@ -155,8 +159,9 @@ void LogInit(const std::string& name, pid_info_t* pidinfoptr)
         {
             if (iter.second.nameClean == cleanName)
             {
-                std::cerr << "PID logging disabled because of name collision: "
-                          << name << "\n";
+                lg2::error(
+                    "PID logging disabled because of name collision: {PID_NAME}",
+                    "PID_NAME", name);
                 return;
             }
         }
@@ -170,8 +175,9 @@ void LogInit(const std::string& name, pid_info_t* pidinfoptr)
         outc.open(filec);
         if (!(outc.good()))
         {
-            std::cerr << "PID logging disabled because unable to open file: "
-                      << filec << "\n";
+            lg2::error(
+                "PID logging disabled because unable to open file: {FILE_NAME}",
+                "FILE_NAME", filec);
             return;
         }
 
@@ -181,8 +187,9 @@ void LogInit(const std::string& name, pid_info_t* pidinfoptr)
             // Be sure to clean up all previous initialization
             outf.close();
 
-            std::cerr << "PID logging disabled because unable to open file: "
-                      << filef << "\n";
+            lg2::error(
+                "PID logging disabled because unable to open file: {FILE_NAME}",
+                "FILE_NAME", filef);
             return;
         }
 
@@ -204,7 +211,7 @@ void LogInit(const std::string& name, pid_info_t* pidinfoptr)
         DumpContextHeader(iterExisting->second.fileContext);
         DumpCoeffsHeader(iterExisting->second.fileCoeffs);
 
-        std::cerr << "PID logging initialized: " << name << "\n";
+        lg2::info("PID logging initialized: {PID_NAME}", "PID_NAME", name);
     }
 
     auto msNow = LogTimestamp();
