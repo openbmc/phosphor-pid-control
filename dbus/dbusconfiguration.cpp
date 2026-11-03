@@ -28,6 +28,7 @@
 
 #include <boost/asio/error.hpp>
 #include <boost/asio/steady_timer.hpp>
+#include <phosphor-logging/lg2.hpp>
 #include <sdbusplus/bus.hpp>
 #include <sdbusplus/bus/match.hpp>
 #include <sdbusplus/exception.hpp>
@@ -166,12 +167,12 @@ std::vector<std::string> getSelectedProfiles(sdbusplus::bus_t& bus)
     }
     if (debugEnabled)
     {
-        std::cout << "Profiles selected: ";
+        std::string profileList;
         for (const auto& profile : ret)
         {
-            std::cout << profile << " ";
+            profileList += profile + " ";
         }
-        std::cout << "\n";
+        lg2::info("Profiles selected: {PROFILES}", "PROFILES", profileList);
     }
     return ret;
 }
@@ -215,13 +216,13 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
 
         if (debugEnabled)
         {
-            std::cout << "New config detected: " << path.str << std::endl;
+            lg2::info("New config detected: {PATH}", "PATH", path.str);
             for (auto& d : data)
             {
-                std::cout << "\tdata is " << d.first << std::endl;
+                lg2::info("data is {DATA}", "DATA", d.first);
                 for (auto& second : d.second)
                 {
-                    std::cout << "\t\tdata is " << second.first << std::endl;
+                    lg2::info("data is {DATA}", "DATA", second.first);
                 }
             }
         }
@@ -240,7 +241,7 @@ int eventHandler(sd_bus_message* m, void* context, sd_bus_error*)
             return;
         }
 
-        std::cout << "New configuration detected, reloading\n.";
+        lg2::info("New configuration detected, reloading.");
         tryRestartControlLoops();
     });
 
@@ -317,14 +318,16 @@ inline void getCycleTimeSetting(
         }
         else
         {
-            std::cerr << "Zone " << zoneIndex << ": " << attributeName
-                      << " is invalid. Use default " << value << " ms\n";
+            lg2::error(
+                "Zone {ZONE}: {ATTRIBUTE} is invalid. Use default {VALUE} ms",
+                "ZONE", zoneIndex, "ATTRIBUTE", attributeName, "VALUE", value);
         }
     }
     else
     {
-        std::cerr << "Zone " << zoneIndex << ": " << attributeName
-                  << " cannot find setting. Use default " << value << " ms\n";
+        lg2::error(
+            "Zone {ZONE}: {ATTRIBUTE} cannot find setting. Use default {VALUE} ms",
+            "ZONE", zoneIndex, "ATTRIBUTE", attributeName, "VALUE", value);
     }
 }
 
