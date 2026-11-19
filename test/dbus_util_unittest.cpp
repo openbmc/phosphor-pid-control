@@ -1,5 +1,6 @@
 #include "dbus/dbusutil.hpp"
 
+#include <sdbusplus/message/native_types.hpp>
 #include <xyz/openbmc_project/Sensor/Value/common.hpp>
 
 #include <cstdint>
@@ -21,6 +22,7 @@ namespace
 using SensorValue = sdbusplus::common::xyz::openbmc_project::sensor::Value;
 
 using ::testing::ContainerEq;
+using ::testing::ElementsAreArray;
 using ::testing::Eq;
 using ::testing::StrEq;
 using ::testing::UnorderedElementsAreArray;
@@ -107,6 +109,100 @@ TEST_F(FindSensorsTest, MultipleMatches)
     };
 
     EXPECT_THAT(results, UnorderedElementsAreArray(expected_results));
+}
+
+class FindSensorsPathsTest : public ::testing::Test
+{
+  protected:
+    static std::string path(const std::string& name)
+    {
+        return (sdbusplus::object_path(SensorValue::namespace_path::value) /
+                SensorValue::namespace_path::temperature / name)
+            .str;
+    }
+
+    const std::unordered_map<std::string, std::string> sensors = {
+        {path("SENTINEL_DOME_SLOT_1_DIMM_A0_TEMP_C"), "a0"},
+        {path("SENTINEL_DOME_SLOT_1_DIMM_B11_TEMP_C"), "b11"},
+        {path("SENTINEL_DOME_SLOT_1_DIMM_C0_TEMP_C"), "c0"},
+        {path("SENTINEL_DOME_SLOT_2_DIMM_A0_TEMP_C"), "slot2"},
+        {path("SENTINEL_DOME_SLOT_1_MB_CPU_TEMP_C"), "cpu"},
+        {path("SENTINEL_DOME_SLOT_1_MB_FIO_TEMP_C"), "fio"},
+        {path("SENTINEL_DOME_SLOT_1_MB_SSD_BOOT_TEMP_C"), "ssd"},
+    };
+
+    std::vector<std::pair<std::string, std::string>> results;
+};
+
+// A name written with regex syntax stands for every sensor it describes.
+TEST_F(FindSensorsPathsTest, RegexNameMatchesAllSensorsItDescribes)
+{
+    EXPECT_TRUE(findSensors(
+        sensors, R"(SENTINEL_DOME_SLOT_1_DIMM_[AB]\d+_TEMP_C)", results));
+    std::vector<std::pair<std::string, std::string>> expected = {
+        {path("SENTINEL_DOME_SLOT_1_DIMM_A0_TEMP_C"), "a0"},
+        {path("SENTINEL_DOME_SLOT_1_DIMM_B11_TEMP_C"), "b11"},
+    };
+    EXPECT_THAT(results, UnorderedElementsAreArray(expected));
+
+    results.clear();
+    EXPECT_TRUE(findSensors(sensors, "SENTINEL_DOME_SLOT_1_MB_(CPU|FIO)_TEMP_C",
+                            results));
+    expected = {
+        {path("SENTINEL_DOME_SLOT_1_MB_CPU_TEMP_C"), "cpu"},
+        {path("SENTINEL_DOME_SLOT_1_MB_FIO_TEMP_C"), "fio"},
+    };
+    EXPECT_THAT(results, UnorderedElementsAreArray(expected));
+
+    results.clear();
+    EXPECT_TRUE(
+        findSensors(sensors, "SENTINEL_DOME_SLOT_1_MB_.*_TEMP_C", results));
+    expected = {
+        {path("SENTINEL_DOME_SLOT_1_MB_CPU_TEMP_C"), "cpu"},
+        {path("SENTINEL_DOME_SLOT_1_MB_FIO_TEMP_C"), "fio"},
+        {path("SENTINEL_DOME_SLOT_1_MB_SSD_BOOT_TEMP_C"), "ssd"},
+    };
+    EXPECT_THAT(results, UnorderedElementsAreArray(expected));
+}
+
+// A name may include the directory of the sensor to tell apart sensors of
+// different types that share the last part of their path.
+TEST(FindSensorsNamespaceTest, NameWithDirectoryMatchesOnlyThatDirectory)
+{
+    const std::string tach =
+        (sdbusplus::object_path(SensorValue::namespace_path::value) /
+         SensorValue::namespace_path::fan_tach / "Fan_1")
+            .str;
+    const std::string temp =
+        (sdbusplus::object_path(SensorValue::namespace_path::value) /
+         SensorValue::namespace_path::temperature / "Fan_1")
+            .str;
+    const std::unordered_map<std::string, std::string> sensors = {
+        {tach, "tach"},
+        {temp, "temp"},
+    };
+    std::vector<std::pair<std::string, std::string>> results;
+
+    EXPECT_TRUE(findSensors(sensors, "fan_tach/Fan_1", results));
+    const std::vector<std::pair<std::string, std::string>> expected = {
+        {tach, "tach"},
+    };
+    EXPECT_THAT(results, ElementsAreArray(expected));
+}
+
+// The names of one controller are resolved into the same vector, so the sensors
+// found for an earlier name stay in it.
+TEST_F(FindSensorsPathsTest, SensorsOfSeveralNamesAreCollectedInOneVector)
+{
+    findSensors(sensors, "SENTINEL_DOME_SLOT_1_MB_CPU_TEMP_C", results);
+    findSensors(sensors, "SENTINEL_DOME_SLOT_1_NO_SUCH_SENSOR", results);
+    findSensors(sensors, "SENTINEL_DOME_SLOT_1_MB_FIO_TEMP_C", results);
+
+    const std::vector<std::pair<std::string, std::string>> expected = {
+        {path("SENTINEL_DOME_SLOT_1_MB_CPU_TEMP_C"), "cpu"},
+        {path("SENTINEL_DOME_SLOT_1_MB_FIO_TEMP_C"), "fio"},
+    };
+    EXPECT_THAT(results, ElementsAreArray(expected));
 }
 
 TEST(GetZoneIndexTest, ZoneAlreadyAssigned)
