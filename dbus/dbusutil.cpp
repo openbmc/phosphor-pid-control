@@ -1,4 +1,6 @@
 
+#include <systemd/sd-bus.h>
+
 #include <sdbusplus/bus/match.hpp>
 
 #include <cmath>
@@ -76,6 +78,22 @@ bool findSensors(const std::unordered_map<std::string, std::string>& sensors,
                  const std::string& search,
                  std::vector<std::pair<std::string, std::string>>& matches)
 {
+    // The characters of a D-Bus object path mean nothing in a regex, so a name
+    // that fits in one can only match itself. Comparing the end of each path
+    // finds it without trying a regex at every position of every path.
+    const std::string suffix = '/' + search;
+    if (sd_bus_object_path_is_valid(suffix.c_str()) > 0)
+    {
+        for (const auto& sensor : sensors)
+        {
+            if (sensor.first.ends_with(suffix))
+            {
+                matches.emplace_back(sensor);
+            }
+        }
+        return matches.size() > 0;
+    }
+
     std::smatch match;
     std::regex reg('/' + search + '$');
     for (const auto& sensor : sensors)
