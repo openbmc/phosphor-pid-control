@@ -17,8 +17,6 @@ namespace pid_control
 namespace
 {
 
-using ::testing::Invoke;
-
 TEST(PluggableSensorTest, BoringConstructorTest)
 {
     // Build a boring Pluggable Sensor.
@@ -59,7 +57,7 @@ TEST(PluggableSensorTest, TryReadingTest)
     r.value = 0.1;
     r.updated = std::chrono::high_resolution_clock::now();
 
-    EXPECT_CALL(*rip, read()).WillOnce(Invoke([&](void) { return r; }));
+    EXPECT_CALL(*rip, read()).WillOnce([&](void) { return r; });
 
     // TODO(venture): Implement comparison operator for ReadReturn.
     ReadReturn v = p.read();
