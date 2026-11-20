@@ -15,7 +15,6 @@ namespace pid_control
 {
 
 using ::testing::_;
-using ::testing::Invoke;
 using ::testing::IsNull;
 using ::testing::NotNull;
 using ::testing::Return;
@@ -58,13 +57,13 @@ void SetupDbusObject(sdbusplus::SdBusMock* sdbus_mock, bool defer,
                     sd_bus_emit_properties_changed_strv(IsNull(), StrEq(path),
                                                         StrEq(intf), NotNull()))
             .Times(properties.size())
-            .WillRepeatedly(Invoke([=]([[maybe_unused]] sd_bus* bus,
-                                       [[maybe_unused]] const char* path,
-                                       [[maybe_unused]] const char* interface,
-                                       const char** names) {
+            .WillRepeatedly([=]([[maybe_unused]] sd_bus* bus,
+                                [[maybe_unused]] const char* path,
+                                [[maybe_unused]] const char* interface,
+                                const char** names) {
                 EXPECT_STREQ(properties[(*index)++].c_str(), names[0]);
                 return 0;
-            }));
+            });
     }
 
     return;
